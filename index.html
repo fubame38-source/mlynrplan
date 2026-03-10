@@ -589,147 +589,111 @@ body.light .rev-card{background:#fff}
 body.light .rev-input{background:#f5f5f5;border-color:rgba(0,0,0,.12);color:#111}
 body.light .rev-total{color:#111}
 
+
+/* ── REVENUE ── */
+.rev-wrap{margin:0 0 28px}
+.rev-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;position:relative;overflow:hidden}
+.rev-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(74,222,128,.3),transparent)}
+.rev-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.rev-label{font-size:10px;font-family:var(--mono);letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;margin-bottom:4px}
+.rev-title{font-size:13px;font-weight:700;color:var(--text)}
+.rev-badge{display:flex;align-items:center;gap:5px;font-size:10px;font-family:var(--mono);color:#4ade80;letter-spacing:1px}
+.rev-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade80;animation:revpulse 2s ease-in-out infinite}
+@keyframes revpulse{0%,100%{opacity:1;box-shadow:0 0 4px #4ade80}50%{opacity:.4;box-shadow:0 0 10px #4ade80}}
+.rev-amount{font-size:36px;font-weight:900;letter-spacing:-2px;color:var(--white);font-family:var(--font);line-height:1;margin-bottom:4px}
+.rev-amount .rev-sign{font-size:22px;font-weight:700;color:#4ade80;margin-right:1px}
+.rev-amount .rev-num{color:var(--white)}
+.rev-sub{font-size:11px;color:var(--text3);margin-bottom:16px}
+.rev-sep{height:1px;background:var(--border);margin-bottom:14px}
+.rev-row{display:flex;gap:8px;align-items:center}
+.rev-inp{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:14px;font-family:var(--mono);outline:none;transition:border-color .2s;min-width:0}
+.rev-inp:focus{border-color:rgba(74,222,128,.5)}
+.rev-inp::placeholder{color:var(--text3);font-size:12px}
+.rev-btn{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);border-radius:8px;color:#4ade80;font-size:11px;font-weight:700;letter-spacing:.5px;padding:9px 14px;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:var(--mono)}
+.rev-btn:hover{background:rgba(74,222,128,.22);border-color:rgba(74,222,128,.4)}
+.rev-mine{font-size:11px;color:var(--text3);margin-top:10px;display:none}
+.rev-mine strong{color:#4ade80}
+body.light .rev-card{background:#fff}
+body.light .rev-inp{background:#f5f5f5;border-color:rgba(0,0,0,.1);color:#111}
+body.light .rev-amount .rev-num{color:#111}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-// ── REVENUE COUNTER ──────────────────────────────────
-var _revBase = 47320; // Mart başlangıç
-var _revHourly = 300; // saatte artış
-var _revTarget = 0;
-var _revCurrent = 0;
-var _revMyAmount = 0;
-var _revAnimFrame = null;
 
-function getRevMonthKey(){
-  var now = new Date();
-  return 'rev_' + now.getFullYear() + '_' + (now.getMonth()+1);
+
+
+// ── REVENUE ────────────────────────────────────────────
+var _revCur = 0, _revRaf = null;
+
+function revMonthKey(){
+  var d=new Date(); return 'rev_'+d.getFullYear()+'_'+(d.getMonth()+1);
 }
-
-function getMonthLabel(){
-  var months = ['OCAK','ŞUBAT','MART','NİSAN','MAYIS','HAZİRAN','TEMMUZ','AĞUSTOS','EYLÜL','EKİM','KASIM','ARALIK'];
-  var now = new Date();
-  return months[now.getMonth()] + ' ' + now.getFullYear();
+function revMonthLabel(){
+  var m=['OCAK','ŞUBAT','MART','NİSAN','MAYIS','HAZİRAN','TEMMUZ','AĞUSTOS','EYLÜL','EKİM','KASIM','ARALIK'];
+  var d=new Date(); return m[d.getMonth()]+' '+d.getFullYear();
 }
-
-function calcRevTotal(communityExtra){
-  // Base + hourly growth since month start
-  var now = new Date();
-  var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  var hoursElapsed = (now - monthStart) / 3600000;
-  return Math.floor(_revBase + (hoursElapsed * _revHourly) + (communityExtra || 0));
+function revCalc(extra){
+  var d=new Date();
+  var start=new Date(d.getFullYear(),d.getMonth(),1);
+  var hrs=(d-start)/3600000;
+  return Math.floor(47320+(hrs*300)+(extra||0));
 }
-
-function animateCounter(target){
-  if(_revAnimFrame) cancelAnimationFrame(_revAnimFrame);
-  var start = _revCurrent;
-  var diff = target - start;
-  var duration = 1200;
-  var startTime = null;
+function revAnimate(target){
+  if(_revRaf) cancelAnimationFrame(_revRaf);
+  var from=_revCur, diff=target-from, dur=1400, t0=null;
   function step(ts){
-    if(!startTime) startTime = ts;
-    var progress = Math.min((ts-startTime)/duration, 1);
-    var ease = 1 - Math.pow(1-progress, 3);
-    _revCurrent = Math.floor(start + diff * ease);
-    var el = document.getElementById('rev-counter');
-    if(el) el.textContent = _revCurrent.toLocaleString('en-US');
-    if(progress < 1) _revAnimFrame = requestAnimationFrame(step);
+    if(!t0)t0=ts;
+    var p=Math.min((ts-t0)/dur,1), e=1-Math.pow(1-p,4);
+    _revCur=Math.floor(from+diff*e);
+    var el=document.getElementById('rev-counter');
+    if(el) el.textContent=_revCur.toLocaleString('en-US');
+    if(p<1)_revRaf=requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }
-
-function drawRevBars(total){
-  var bars = document.getElementById('rev-bars');
-  if(!bars) return;
-  // Last 7 days simulation
-  bars.innerHTML = '';
-  var max = total;
-  for(var i=6; i>=0; i--){
-    var val = total - (i * _revHourly * 24 * 0.7);
-    var pct = Math.max(20, Math.min(100, (val/max)*100));
-    var bar = document.createElement('div');
-    bar.className = 'rev-bar';
-    bar.style.height = pct + '%';
-    bar.style.opacity = (1 - i*0.08).toFixed(2);
-    bars.appendChild(bar);
-  }
-}
-
 function initRevenue(){
-  // Set month label
-  var ml = document.getElementById('rev-month-label');
-  if(ml) ml.textContent = getMonthLabel();
-
-  // Load community extra from Supabase shared storage
-  var monthKey = getRevMonthKey();
-  _sb.from('revenue').select('total_extra,month_key').eq('month_key', monthKey).single().then(function(r){
-    var communityExtra = 0;
-    if(!r.error && r.data) communityExtra = r.data.total_extra || 0;
-    var total = calcRevTotal(communityExtra);
-    drawRevBars(total);
-    animateCounter(total);
-    _revTarget = total;
-
-    // Load my contribution from localStorage
-    try{
-      var myVal = localStorage.getItem('mlynr6_rev_' + monthKey);
-      if(myVal){
-        _revMyAmount = parseInt(myVal) || 0;
-        var myEl = document.getElementById('rev-my-text');
-        var myValEl = document.getElementById('rev-my-val');
-        if(_revMyAmount > 0 && myEl && myValEl){
-          myEl.style.display = 'block';
-          myValEl.textContent = '$' + _revMyAmount.toLocaleString('en-US');
-        }
-      }
-    }catch(e){}
-  }).catch(function(){
-    // If revenue table doesn't exist yet, just show base
-    var total = calcRevTotal(0);
-    drawRevBars(total);
-    animateCounter(total);
-  });
-
-  // Auto-update every hour
-  setInterval(function(){
-    _revTarget += _revHourly;
-    animateCounter(_revTarget);
-    drawRevBars(_revTarget);
-  }, 3600000);
-}
-
-function addMyRevenue(){
-  var inp = document.getElementById('rev-input');
-  if(!inp) return;
-  var val = parseInt(inp.value) || 0;
-  if(val <= 0){ inp.focus(); return; }
-  inp.value = '';
-  var monthKey = getRevMonthKey();
-
-  // Save my contribution locally
-  try{ localStorage.setItem('mlynr6_rev_' + monthKey, val); }catch(e){}
-  _revMyAmount = val;
-  var myEl = document.getElementById('rev-my-text');
-  var myValEl = document.getElementById('rev-my-val');
-  if(myEl && myValEl){
-    myEl.style.display = 'block';
-    myValEl.textContent = '$' + val.toLocaleString('en-US');
-  }
-
-  // Update Supabase shared revenue table
-  _sb.from('revenue').select('total_extra,id').eq('month_key', monthKey).single().then(function(r){
-    if(r.error || !r.data){
-      // Insert new row
-      _sb.from('revenue').insert({month_key: monthKey, total_extra: val}).then(function(){});
-    } else {
-      // Update existing
-      var newTotal = (r.data.total_extra || 0) + val;
-      _sb.from('revenue').update({total_extra: newTotal}).eq('month_key', monthKey).then(function(){});
+  var ml=document.getElementById('rev-month-label');
+  if(ml) ml.textContent=revMonthLabel();
+  var mk=revMonthKey();
+  // Load shared extra from Supabase
+  _sb.from('revenue').select('total_extra').eq('month_key',mk).maybeSingle().then(function(r){
+    var extra=(r.data&&r.data.total_extra)||0;
+    revAnimate(revCalc(extra));
+    // Tick every hour
+    setInterval(function(){revAnimate(revCalc(extra));},3600000);
+  }).catch(function(){ revAnimate(revCalc(0)); });
+  // Load my contribution
+  try{
+    var my=localStorage.getItem('mlynr6_rev_'+mk);
+    if(my&&parseInt(my)>0){
+      var m=document.getElementById('rev-mine');
+      var mv=document.getElementById('rev-mine-val');
+      if(m&&mv){m.style.display='block';mv.textContent='$'+parseInt(my).toLocaleString('en-US');}
     }
-    // Animate the new total
-    var total = calcRevTotal((r.data && r.data.total_extra || 0) + val);
-    _revTarget = total;
-    animateCounter(total);
-    drawRevBars(total);
-  }).catch(function(){});
+  }catch(e){}
+}
+function addMyRevenue(){
+  var inp=document.getElementById('rev-input');
+  var val=parseInt(inp&&inp.value)||0;
+  if(val<=0){if(inp)inp.focus();return;}
+  inp.value='';
+  var mk=revMonthKey();
+  // Save locally
+  try{localStorage.setItem('mlynr6_rev_'+mk,val);}catch(e){}
+  var m=document.getElementById('rev-mine');
+  var mv=document.getElementById('rev-mine-val');
+  if(m&&mv){m.style.display='block';mv.textContent='$'+val.toLocaleString('en-US');}
+  // Update Supabase
+  _sb.from('revenue').select('total_extra').eq('month_key',mk).maybeSingle().then(function(r){
+    var prev=(r.data&&r.data.total_extra)||0;
+    var next=prev+val;
+    if(r.data){
+      _sb.from('revenue').update({total_extra:next}).eq('month_key',mk).then(function(){});
+    } else {
+      _sb.from('revenue').insert({month_key:mk,total_extra:val}).then(function(){});
+    }
+    revAnimate(revCalc(next));
+  }).catch(function(){revAnimate(revCalc(val));});
 }
 
 </script>
@@ -981,33 +945,6 @@ function addMyRevenue(){
         <p>Önce eBay'de sistemi kur ve ilk kârını gör. Bu sırayı takip edenler çok daha sağlam ilerliyor.</p>
         <div class="btip">🎙 EBAY KÂRI GÖRMEDEN SHOPİFY'A GEÇME</div>
       </div>
-    </div>
-  </div>
-
-
-  <!-- REVENUE -->
-  <div class="rev-section">
-    <div class="rev-card">
-      <div class="rev-header">
-        <div class="rev-title-wrap">
-          <div class="rev-icon">📈</div>
-          <div>
-            <div class="rev-title">Toplam Kursiyer Cirosu</div>
-            <div class="rev-month" id="rev-month-label">MART 2026</div>
-          </div>
-        </div>
-        <div class="rev-live"><div class="rev-live-dot"></div>CANLI</div>
-      </div>
-      <div class="rev-bars" id="rev-bars"></div>
-      <div class="rev-total">$<span id="rev-counter">0</span></div>
-      <div class="rev-sub">Bu ay MLYNR. kursiyerlerinin toplam e-ticaret cirosu</div>
-      <div class="rev-divider"></div>
-      <div class="rev-add-label">Bu aya kendi ciron ekle</div>
-      <div class="rev-add-row">
-        <input class="rev-input" id="rev-input" type="number" min="0" placeholder="Örn: 1250">
-        <button class="rev-add-btn" onclick="addMyRevenue()">+ Ekle</button>
-      </div>
-      <div class="rev-my" id="rev-my-text" style="display:none">Senin katkın: <strong id="rev-my-val">$0</strong></div>
     </div>
   </div>
 
