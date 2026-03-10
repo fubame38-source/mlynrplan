@@ -283,11 +283,114 @@ body::after{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-
 
 @media(max-width:640px){.days{grid-template-columns:1fr 1fr}.week-num{font-size:56px}.topbar{padding:0 16px}.hero{padding:52px 16px 44px}.weeks-section,.prog-section,.banner-section,.tg-section{padding-left:16px;padding-right:16px}}
 @media(max-width:400px){.days{grid-template-columns:1fr}}
+
+/* ── CANBERK TRIGGER ─────────────────────────────────────── */
+.cb-trigger{
+  display:inline-flex;align-items:center;gap:12px;
+  margin-top:24px;
+  background:linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:12px 18px;
+  cursor:pointer;user-select:none;
+  transition:all .25s cubic-bezier(.34,1.2,.64,1);
+  position:relative;overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+.cb-trigger::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 30% 50%,rgba(255,255,255,.04),transparent 70%);pointer-events:none;opacity:0;transition:opacity .3s}
+.cb-trigger:hover{transform:translateY(-2px) scale(1.01);border-color:rgba(255,255,255,.2);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.cb-trigger:hover::before{opacity:1}
+.cb-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#e0e0e0,#888);color:#000;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
+.cb-info{}
+.cb-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.cb-preview{font-size:11px;color:var(--text2)}
+.cb-ping{position:absolute;top:10px;right:12px;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.6);animation:blink 1.5s ease-in-out infinite}
+
+/* ── CANBERK OVERLAY & POPUP ─────────────────────────────── */
+#canberk-overlay{position:fixed;inset:0;z-index:8100;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
+#canberk-overlay.show{opacity:1;pointer-events:auto}
+
+#canberk-popup{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9) translateY(20px);
+  z-index:8200;
+  width:min(560px,94vw);max-height:85vh;overflow-y:auto;
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  padding:32px;
+  opacity:0;pointer-events:none;
+  transition:all .4s cubic-bezier(.34,1.3,.64,1);
+  box-shadow:0 40px 100px rgba(0,0,0,.8);
+}
+#canberk-popup::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);border-radius:20px 20px 0 0;pointer-events:none}
+#canberk-popup.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1) translateY(0)}
+
+.cb-close-btn{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:50%;width:30px;height:30px;color:var(--text2);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1}
+.cb-close-btn:hover{background:rgba(255,255,255,.12);color:var(--text)}
+
+.cb-pop-header{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.cb-pop-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#e0e0e0,#888);color:#000;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.cb-pop-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px}
+.cb-pop-role{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
+
+.cb-pop-body{display:flex;flex-direction:column;gap:14px}
+.cb-pop-body p{font-size:13px;color:var(--text2);line-height:1.8}
+.cb-pop-body strong{color:var(--text);font-weight:600}
+.cb-hi{font-size:15px;font-weight:600;color:var(--text) !important}
+
+.cb-quote{background:rgba(255,255,255,.04);border-left:2px solid rgba(255,255,255,.2);border-radius:0 8px 8px 0;padding:14px 16px;font-size:13px;color:var(--text2);line-height:1.75;font-style:normal}
+.cb-quote em{color:var(--text);font-style:normal;font-weight:600}
+
+.cb-section-title{font-size:12px;font-weight:700;color:var(--text);letter-spacing:.3px;padding-top:4px}
+
+.cb-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.cb-list li{font-size:13px;color:var(--text2);padding-left:18px;position:relative;line-height:1.6}
+.cb-list li::before{content:'→';position:absolute;left:0;color:var(--text3);font-size:11px;top:2px}
+
+.cb-tip{font-family:var(--mono);font-size:11px;color:var(--text3) !important;letter-spacing:.3px}
+
+.cb-goal{display:flex;align-items:flex-start;gap:14px;background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.03));border:1px solid var(--green-ln);border-radius:12px;padding:16px 18px;margin-top:4px}
+.cb-goal-emoji{font-size:24px;flex-shrink:0}
+.cb-goal-title{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.cb-goal-text{font-size:13px;color:var(--text2);line-height:1.7}
+.cb-goal-text strong{color:var(--text)}
+
+.cb-pop-close-btn{
+  width:100%;margin-top:24px;
+  background:var(--white);color:#000;
+  border:none;border-radius:10px;
+  font-family:var(--font);font-size:13px;font-weight:700;
+  letter-spacing:.5px;padding:15px;
+  cursor:pointer;transition:all .2s;
+}
+.cb-pop-close-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
+
+/* BAŞARI TOAST */
+#success-toast{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.85);
+  z-index:9600;
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:16px;padding:28px 36px;
+  text-align:center;
+  opacity:0;pointer-events:none;
+  transition:all .5s cubic-bezier(.34,1.4,.64,1);
+  box-shadow:0 32px 80px rgba(0,0,0,.8);
+}
+#success-toast.show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+#success-toast::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);border-radius:16px 16px 0 0;pointer-events:none}
+.st-emoji{font-size:40px;margin-bottom:10px}
+.st-msg{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
+.st-sub{font-size:12px;color:var(--text2)}
 </style>
 </head>
 <body>
 
 <canvas id="confetti-canvas"></canvas>
+
+<div id="success-toast">
+  <div class="st-emoji">🎉</div>
+  <div class="st-msg">Başarılar Dilerim!</div>
+  <div class="st-sub">Artık başlamaya hazırsın. Hadi gidelim! 🚀</div>
+</div>
 
 <div id="motiv-popup">
   <div class="motiv-emoji" id="motiv-emoji">🔥</div>
@@ -336,8 +439,58 @@ body::after{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-
         <span class="htag g">Shopify · Sonraki Aşama</span>
         <span class="htag w">10:00–23:00 Destek</span>
       </div>
+
+      <div class="cb-trigger" onclick="openCanberk()">
+        <div class="cb-avatar">C</div>
+        <div class="cb-info">
+          <div class="cb-name">Canberk Öztürk</div>
+          <div class="cb-preview">Sana önemli bir mesajım var → Oku</div>
+        </div>
+        <div class="cb-ping"></div>
+      </div>
     </div>
   </section>
+
+  <!-- CANBERK POPUP -->
+  <div id="canberk-overlay" onclick="closeCanberk()"></div>
+  <div id="canberk-popup">
+    <button class="cb-close-btn" onclick="closeCanberk()">✕</button>
+    <div class="cb-pop-header">
+      <div class="cb-pop-avatar">C</div>
+      <div>
+        <div class="cb-pop-name">Canberk Öztürk</div>
+        <div class="cb-pop-role">MLYNR. Kurucu · Eğitmen</div>
+      </div>
+    </div>
+    <div class="cb-pop-body">
+      <p class="cb-hi">Merhaba, 👋</p>
+      <p>Bu eğitime katıldığın için seni tebrik ederim. Buraya gelen herkesin tek bir amacı var: <strong>online satıştan gerçek para kazanmak.</strong></p>
+      <p>Sana bu süreçte işe yarayan birkaç önemli tavsiye bırakıyorum.</p>
+
+      <div class="cb-quote">💡 Başarılı olanlar daha <em>zeki</em> olanlar değil, daha <em>hızlı deneyenlerdir.</em><br>İlk satış gelene kadar sabırlı ol.</div>
+
+      <div class="cb-section-title">🎯 eBay'de İlk Satış İçin</div>
+      <ul class="cb-list">
+        <li>Rekabeti düşük ürün seç</li>
+        <li>Rakip fiyatlarından biraz daha ucuz ol</li>
+        <li>Hızlı kargo avantajı sun</li>
+      </ul>
+      <p class="cb-tip">İlk satış geldikten sonra algoritma seni yukarı taşır. ⚡</p>
+
+      <div class="cb-section-title">📦 İlk Günlerden Kâr Hedefleme</div>
+      <p>Dropshipping bir <strong>test oyunudur.</strong> Kazananlar 5 ürün test edenler değil — <strong>50 ürün test edenlerdir.</strong></p>
+      <p>Her zaman ürün çeşitliliğini artırmaya odaklan. İşini sürece yay ve ölçekle.</p>
+
+      <div class="cb-goal">
+        <div class="cb-goal-emoji">🏆</div>
+        <div>
+          <div class="cb-goal-title">İlk Hedefiniz</div>
+          <div class="cb-goal-text">Günde <strong>7 satış</strong> · Ürün başı <strong>$5 kâr</strong><br>= Aylık ilk <strong>$1.000</strong> 🚀</div>
+        </div>
+      </div>
+    </div>
+    <button class="cb-pop-close-btn" onclick="closeCanberk()">Anladım, Başlıyorum! 💪</button>
+  </div>
 
   <div class="prog-section">
     <div class="prog-header">
@@ -386,6 +539,22 @@ body::after{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-
 <div class="toast" id="toast"></div>
 
 <script>
+function openCanberk(){
+  document.getElementById('canberk-overlay').classList.add('show');
+  document.getElementById('canberk-popup').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeCanberk(){
+  document.getElementById('canberk-overlay').classList.remove('show');
+  document.getElementById('canberk-popup').classList.remove('show');
+  document.body.style.overflow='';
+  // confetti + success toast
+  launchConfetti();
+  var t=document.getElementById('success-toast');
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3200);
+}
+
 function launchConfetti(){
   var c=document.getElementById('confetti-canvas');c.width=innerWidth;c.height=innerHeight;c.classList.add('show');
   var ctx=c.getContext('2d'),pieces=[],cols=['#fff','#aaa','#666','#22c55e','#4ade80'];
