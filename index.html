@@ -28,6 +28,31 @@
   --green-dim:rgba(34,197,94,.05);
   --r:14px;
 }
+body.light{
+  --bg:#f5f5f5;
+  --surface:#fff;
+  --surface2:#f0f0f0;
+  --border:rgba(0,0,0,.08);
+  --border2:rgba(0,0,0,.14);
+  --text:#111;
+  --text2:#555;
+  --text3:#aaa;
+  --white:#111;
+  --green:#16a34a;
+  --green-ln:rgba(22,163,74,.25);
+  --green-dim:rgba(22,163,74,.07);
+}
+body.light .bg-grid{background-image:linear-gradient(rgba(0,0,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px);background-size:48px 48px}
+body.light .bg-glow{background:radial-gradient(ellipse,rgba(0,0,0,.04),transparent 70%)}
+body.light .hero-title{color:#111}
+body.light .hero-title .dim{color:#ddd}
+body.light .week-num{color:#e8e8e8}
+body.light .login-card{box-shadow:0 8px 40px rgba(0,0,0,.1)}
+body.light .topbar{background:rgba(245,245,245,.9)}
+body.light #login-screen{background:#f5f5f5}
+body.light .day.done{background:#f0faf0;border-color:rgba(22,163,74,.2)}
+body.light .prog-fill{background:linear-gradient(90deg,#999,#111)}
+body.light .mc-bar-fill{background:linear-gradient(90deg,#999,#111)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
@@ -71,6 +96,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .logout-btn{background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text3);font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;cursor:pointer;transition:all .2s}
 .logout-btn:hover{border-color:var(--border2);color:var(--text2)}
+.theme-toggle{background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text3);font-size:14px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.theme-toggle:hover{border-color:var(--border2);color:var(--text2)}
 
 /* ── HERO ── */
 .hero{padding:clamp(72px,13vw,130px) clamp(20px,5vw,48px) clamp(56px,9vw,90px);position:relative;overflow:hidden;z-index:1}
@@ -290,6 +317,38 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   .topbar{padding:0 16px}
   .hero-bottom-row{flex-direction:column}
 }
+
+/* ── HERO ACTION BUTTONS ── */
+.hero-action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.hero-action-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font);font-size:12px;font-weight:600;padding:11px 18px;border-radius:10px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);border:1px solid var(--border2);-webkit-tap-highlight-color:transparent}
+.earn-btn{background:rgba(250,204,21,.08);border-color:rgba(250,204,21,.25);color:#facc15}
+.earn-btn:hover{transform:translateY(-2px);background:rgba(250,204,21,.14);box-shadow:0 8px 24px rgba(250,204,21,.1)}
+.sale-btn{background:var(--green-dim);border-color:var(--green-ln);color:var(--green)}
+.sale-btn:hover{transform:translateY(-2px);background:rgba(34,197,94,.1);box-shadow:0 8px 24px rgba(34,197,94,.15)}
+
+/* ── EARNINGS CALCULATOR ── */
+.earn-inputs{margin-bottom:20px}
+.earn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.earn-field{}
+.earn-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:8px}
+.earn-input-wrap{display:flex;align-items:center;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;overflow:hidden;transition:border-color .2s}
+.earn-input-wrap:focus-within{border-color:rgba(255,255,255,.3)}
+.earn-unit{padding:0 12px;font-size:13px;color:var(--text3);flex-shrink:0}
+.earn-input{background:transparent;border:none;outline:none;color:var(--text);font-family:var(--font);font-size:16px;font-weight:700;padding:12px 12px 12px 0;width:100%}
+.earn-result{background:linear-gradient(135deg,rgba(250,204,21,.08),rgba(250,204,21,.03));border:1px solid rgba(250,204,21,.2);border-radius:14px;padding:20px 22px;margin-bottom:16px}
+.earn-main-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(250,204,21,.6);margin-bottom:12px}
+.earn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.earn-stat{}
+.earn-stat-val{font-size:22px;font-weight:800;color:#facc15;letter-spacing:-.5px;line-height:1}
+.earn-stat-lbl{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-top:4px}
+.earn-scenarios{display:flex;flex-direction:column;gap:8px}
+.earn-sc-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+.earn-sc-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;transition:all .2s;cursor:pointer}
+.earn-sc-item:hover{border-color:var(--border2);background:rgba(255,255,255,.05)}
+.earn-sc-item.active{border-color:rgba(250,204,21,.3);background:rgba(250,204,21,.06)}
+.earn-sc-left{font-size:12px;color:var(--text2)}
+.earn-sc-left strong{color:var(--text);font-weight:600}
+.earn-sc-right{font-size:13px;font-weight:700;color:#facc15}
 </style>
 </head>
 <body>
@@ -320,6 +379,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="uname" id="uname"></div>
       </div>
       <a href="https://t.me/mlynr_bot" target="_blank" class="support-pill"><div class="dot"></div><span>Canlı Destek</span></a>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Tema değiştir">🌙</button>
       <button class="logout-btn" id="logout-btn">Çıkış</button>
     </div>
   </nav>
@@ -353,10 +413,55 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <div class="cb-ping" id="spin-ping"></div>
         </div>
       </div>
+      <div class="hero-action-row">
+        <button class="hero-action-btn earn-btn" onclick="openEarn()">💰 Ne Kadar Kazanırım?</button>
+        <button class="hero-action-btn sale-btn" id="first-sale-btn" onclick="openFirstSale()">🏆 İlk Satışımı Yaptım!</button>
+      </div>
     </div>
   </section>
 
-  <!-- CANBERK OVERLAY + POPUP -->
+  <!-- EARNINGS CALCULATOR -->
+  <div id="earn-overlay" class="overlay" onclick="closeEarn()"></div>
+  <div id="earn-popup" class="popup">
+    <button class="close-btn" onclick="closeEarn()">✕</button>
+    <div class="sp-header">
+      <div class="sp-avatar" style="background:linear-gradient(135deg,rgba(250,204,21,.15),rgba(250,204,21,.05));border-color:rgba(250,204,21,.3)">💰</div>
+      <div>
+        <div class="sp-title">Kazanç Hesaplayıcı</div>
+        <div class="sp-sub">Hedefini gir, potansiyelini gör</div>
+      </div>
+    </div>
+    <div class="earn-inputs">
+      <div class="earn-row">
+        <div class="earn-field">
+          <label class="earn-label">Günlük Satış Adedi</label>
+          <div class="earn-input-wrap"><span class="earn-unit">📦</span><input id="earn-sales" class="earn-input" type="number" min="1" max="999" value="3" oninput="calcEarn()"></div>
+        </div>
+        <div class="earn-field">
+          <label class="earn-label">Ürün Başı Kâr ($)</label>
+          <div class="earn-input-wrap"><span class="earn-unit">$</span><input id="earn-profit" class="earn-input" type="number" min="1" max="999" value="5" oninput="calcEarn()"></div>
+        </div>
+      </div>
+    </div>
+    <div id="earn-result" class="earn-result"></div>
+    <div id="earn-scenarios" class="earn-scenarios"></div>
+  </div>
+
+  <!-- FIRST SALE BUTTON -->
+  <div id="firstsale-overlay" class="overlay" onclick="closeFirstSale()"></div>
+  <div id="firstsale-popup" class="popup" style="text-align:center">
+    <button class="close-btn" onclick="closeFirstSale()">✕</button>
+    <div style="font-size:56px;margin-bottom:16px">🏆</div>
+    <div style="font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px;letter-spacing:-.5px">İlk Satış!</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px">Tebrikler! Bu an her şeyin başlangıcı.<br>Canberk ve tüm MLYNR ekibi seninle gurur duyuyor. 🚀</div>
+    <div style="background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(34,197,94,.05));border:1px solid var(--green-ln);border-radius:12px;padding:16px 20px;margin-bottom:20px">
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px">Canberk Öztürk</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7">"İlk satış en zor olanı. Artık algoritma seni tanıyor, sistem çalışıyor. Bundan sonrası sadece <strong style="color:var(--text)">ölçeklendirmek.</strong>"</div>
+    </div>
+    <button class="cb-pop-close-btn" onclick="closeFirstSale()">Devam Et, Büyüt! 💪</button>
+  </div>
+
+    <!-- CANBERK OVERLAY + POPUP -->
   <div id="canberk-overlay" class="overlay" onclick="closeCanberk()"></div>
   <div id="canberk-popup" class="popup">
     <button class="close-btn" onclick="closeCanberk()">✕</button>
@@ -744,11 +849,68 @@ function render(){
 var _st;function showSaved(){var el=document.getElementById('saved-dot');el.classList.add('show');clearTimeout(_st);_st=setTimeout(function(){el.classList.remove('show');},1600);}
 var _tt;function showToast(m,isS){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(isS?' green':'')+' show';clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);}
 
+// ── THEME TOGGLE ─────────────────────────────────────────────
+function toggleTheme(){
+  var isLight=document.body.classList.toggle('light');
+  document.getElementById('theme-toggle').textContent=isLight?'☀️':'🌙';
+  try{LS.setItem('mlynr6_theme',isLight?'light':'dark');}catch(e){}
+}
+function initTheme(){
+  try{var t=LS.getItem('mlynr6_theme');if(t==='light'){document.body.classList.add('light');document.getElementById('theme-toggle').textContent='☀️';}}catch(e){}
+}
+
+// ── EARNINGS CALCULATOR ───────────────────────────────────────
+function openEarn(){calcEarn();document.getElementById('earn-overlay').classList.add('show');document.getElementById('earn-popup').classList.add('show');}
+function closeEarn(){document.getElementById('earn-overlay').classList.remove('show');document.getElementById('earn-popup').classList.remove('show');}
+function calcEarn(){
+  var sales=Math.max(1,parseInt(document.getElementById('earn-sales').value)||3);
+  var profit=Math.max(1,parseFloat(document.getElementById('earn-profit').value)||5);
+  var daily=sales*profit;
+  var monthly=daily*30;
+  var yearly=daily*365;
+
+  document.getElementById('earn-result').innerHTML=
+    '<div class="earn-main-label">Mevcut Hedefin</div>'+
+    '<div class="earn-grid">'+
+      '<div class="earn-stat"><div class="earn-stat-val">$'+daily.toFixed(0)+'</div><div class="earn-stat-lbl">Günlük</div></div>'+
+      '<div class="earn-stat"><div class="earn-stat-val">$'+monthly.toFixed(0)+'</div><div class="earn-stat-lbl">Aylık</div></div>'+
+      '<div class="earn-stat"><div class="earn-stat-val">$'+yearly.toFixed(0)+'</div><div class="earn-stat-lbl">Yıllık</div></div>'+
+    '</div>';
+
+  var scenarios=[
+    {mult:2,label:'2x büyüme'},
+    {mult:5,label:'5x büyüme'},
+    {mult:10,label:'10x büyüme'}
+  ];
+  var msgs=[
+    'Günde '+Math.round(sales*2)+' satışla aylık <strong>$'+Math.round(monthly*2).toLocaleString()+'</strong> — küçük optimizasyonla ulaşılabilir hedef.',
+    'Günde '+Math.round(sales*5)+' satışla aylık <strong>$'+Math.round(monthly*5).toLocaleString()+'</strong> — portföyünü 5x genişletmek yeterli.',
+    'Günde '+Math.round(sales*10)+' satışla aylık <strong>$'+Math.round(monthly*10).toLocaleString()+'</strong> — otomasyon ve ölçekleme ile mümkün.'
+  ];
+  var html='<div class="earn-sc-label">Büyüme Senaryoları</div>';
+  scenarios.forEach(function(s,i){
+    html+='<div class="earn-sc-item"><div class="earn-sc-left">'+msgs[i]+'</div><div class="earn-sc-right">$'+Math.round(monthly*s.mult).toLocaleString()+'/ay</div></div>';
+  });
+  document.getElementById('earn-scenarios').innerHTML=html;
+}
+
+// ── FIRST SALE ────────────────────────────────────────────────
+function openFirstSale(){
+  document.getElementById('firstsale-overlay').classList.add('show');
+  document.getElementById('firstsale-popup').classList.add('show');
+  launchConfetti();
+}
+function closeFirstSale(){
+  document.getElementById('firstsale-overlay').classList.remove('show');
+  document.getElementById('firstsale-popup').classList.remove('show');
+}
+
 // ── INIT ──────────────────────────────────────────────────────
 document.getElementById('login-btn').addEventListener('click',doLogin);
 document.getElementById('inp-email').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
 document.getElementById('logout-btn').addEventListener('click',doLogout);
 
+initTheme();
 try{
   var ss=LS.getItem('mlynr6_sess');
   if(ss){email=ss;loadState();showApp();}
