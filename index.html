@@ -1523,15 +1523,22 @@ document.addEventListener('click',function(e){
   if(menu&&menu.classList.contains('open')&&!menu.contains(e.target)&&btn&&!btn.contains(e.target)){closeMenu();}
 });
 // ── AUTO LOGIN via Supabase session ──────────────────────
-_sb.auth.getSession().then(function(r){
-  if(r.data&&r.data.session&&r.data.session.user){
-    _user=r.data.session.user;
-    email=_user.email;
-    loadStateFromDB();
-  } else {
-    document.getElementById('login-screen').classList.remove('hidden');
-  }
-});
+// Şifre sıfırlama hash'i varsa getSession'ı atlıyoruz, onAuthStateChange halleder
+var _isRecovery = window.location.hash && window.location.hash.includes('type=recovery');
+if(!_isRecovery){
+  _sb.auth.getSession().then(function(r){
+    if(r.data&&r.data.session&&r.data.session.user){
+      _user=r.data.session.user;
+      email=_user.email;
+      loadStateFromDB();
+    } else {
+      document.getElementById('login-screen').classList.remove('hidden');
+    }
+  });
+} else {
+  // Şifre sıfırlama — login ekranını göster, onAuthStateChange tetiklenecek
+  document.getElementById('login-screen').classList.remove('hidden');
+}
 </script>
 
 <div id="ver-banner">
