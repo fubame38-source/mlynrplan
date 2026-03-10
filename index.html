@@ -1076,12 +1076,42 @@ function doReset(){
 }
 
 function handleLoginBtn(){
-  // If in password reset mode, use the custom handler set by showPasswordResetUI
-  if(document.getElementById('login-btn')._resetMode){
-    document.getElementById('login-btn')._resetHandler();
+  var emailEl = document.getElementById('inp-email');
+  // If email is hidden, we're in password reset mode
+  if(emailEl && emailEl.style.display==='none'){
+    doPasswordReset();
     return;
   }
   doAuth();
+}
+
+function doPasswordReset(){
+  var pw=document.getElementById('inp-pass').value;
+  var er=document.getElementById('login-err');
+  er.textContent='';
+  if(pw.length<6){
+    er.style.color='';
+    er.textContent='Şifre en az 6 karakter olmalı.';
+    return;
+  }
+  document.getElementById('login-btn').textContent='Güncelleniyor...';
+  _sb.auth.updateUser({password:pw}).then(function(r){
+    if(r.error){
+      er.style.color='';
+      er.textContent=r.error.message;
+      document.getElementById('login-btn').textContent='ŞİFREYİ GÜNCELLE →';
+      return;
+    }
+    er.style.color='#4ade80';
+    er.textContent='✓ Şifre güncellendi! Giriş yapılıyor...';
+    _sb.auth.getSession().then(function(s){
+      if(s.data&&s.data.session){
+        _user=s.data.session.user;
+        email=_user.email;
+        setTimeout(function(){loadStateFromDB();},1000);
+      }
+    });
+  });
 }
 
 function doAuth(){
