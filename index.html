@@ -449,7 +449,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .login-device-note-icon{font-size:13px;flex-shrink:0;margin-top:1px}
 .login-device-note-text{font-size:11px;color:var(--text3);line-height:1.6}
 .login-device-note-text strong{color:var(--text2);font-weight:600}
+
+/* ── LOGIN TABS ── */
+.login-tab{flex:1;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text3);font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:9px;cursor:pointer;transition:all .2s}
+.login-tab.active{background:var(--white);color:#000;border-color:var(--white)}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -459,11 +464,21 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <div class="login-card">
     <div class="login-logo">MLYNR.</div>
     <div class="login-logo-sub">Kursiyer Portalı</div>
+    <div id="login-tabs" style="display:flex;gap:8px;margin-bottom:20px">
+      <button class="login-tab active" id="tab-login" onclick="switchTab('login')">Giriş Yap</button>
+      <button class="login-tab" id="tab-register" onclick="switchTab('register')">Kayıt Ol</button>
+    </div>
     <label class="login-label" for="inp-email">E-Posta Adresi</label>
     <input id="inp-email" class="login-input" type="email" placeholder="ornek@gmail.com" autocomplete="email">
-    <button id="login-btn" class="login-btn">GİRİŞ YAP →</button>
+    <label class="login-label" for="inp-pass" style="margin-top:12px">Şifre</label>
+    <input id="inp-pass" class="login-input" type="password" placeholder="••••••••" autocomplete="current-password">
+    <div id="inp-pass2-wrap" style="display:none">
+      <label class="login-label" for="inp-pass2" style="margin-top:12px">Şifre Tekrar</label>
+      <input id="inp-pass2" class="login-input" type="password" placeholder="••••••••" autocomplete="new-password">
+    </div>
+    <button id="login-btn" class="login-btn" onclick="doAuth()">GİRİŞ YAP →</button>
     <div id="login-err" class="login-err"></div>
-    <div class="login-hint">Eğitim paneline kayıtlı olduğunuz mail adresiyle giriş sağlayabilirsiniz.</div>
+    <div class="login-hint" id="login-hint-text">Hesabınla giriş yap. Şifreni unuttuysan <span style="color:var(--text2);cursor:pointer;text-decoration:underline" onclick="doReset()">sıfırla</span>.</div>
     <div class="login-device-note"><span class="login-device-note-icon">📱</span><div class="login-device-note-text"><strong>Cihaza özel ilerleme:</strong> İlerleyişin bu tarayıcıda saklanır. Farklı bir cihazdan girersen ilerleme ayrı görünür.</div></div>
   </div>
 </div>
@@ -627,7 +642,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="cb-goal-emoji">🏆</div>
         <div>
           <div class="cb-goal-title">İlk Hedefiniz</div>
-          <div class="cb-goal-text">Günde <strong>7 satış</strong> · Ürün başı <strong>$5 kâr</strong><br>= Aylık ilk <strong>$1.050</strong> 🚀</div>
+          <div class="cb-goal-text">Günde <strong>7 satış</strong> · Ürün başı <strong>$5 kâr</strong><br>= Aylık ilk <strong>$1.000</strong> 🚀</div>
         </div>
       </div>
     </div>
@@ -715,6 +730,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <script>
 var LS=localStorage;
+
+// ── SUPABASE ─────────────────────────────────────────────
+var _sb = supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co', 'sb_publishable_fBqoPGz-1qHl1HU1PpbBTA_gBVZoodL');
+var _user = null;
 
 // ── CONFETTI ─────────────────────────────────────────────────
 function launchConfetti(){
@@ -819,7 +838,10 @@ function getTodayCats(){
   return indices;
 }
 function getSpinSt(){try{var r=LS.getItem(spinKey());if(r){var p=JSON.parse(r);if(p.date===todayStr())return p;}}catch(e){}return{date:todayStr(),used:0,last:null,hist:[]};}
-function saveSpinSt(s){try{LS.setItem(spinKey(),JSON.stringify(s));}catch(e){}}
+function saveSpinSt(st){
+  try{LS.setItem(spinKey(),JSON.stringify(st));}catch(e){}
+  if(_user){_sb.from('progress').update({spin:st,updated_at:new Date().toISOString()}).eq('user_id',_user.id).then(function(){});}
+}
 
 function openSpin(){renderSpin();document.getElementById('spin-overlay').classList.add('show');document.getElementById('spin-popup').classList.add('show');}
 function closeSpin(){document.getElementById('spin-overlay').classList.remove('show');document.getElementById('spin-popup').classList.remove('show');}
@@ -874,25 +896,110 @@ function doSpin(){
 var TOTAL=28;
 var email='',done=[],mc={},CW={};
 function stK(){return 'mlynr6_'+email.replace(/[^a-z0-9]/gi,'_');}
-function saveState(){if(!email)return;try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));showSaved();}catch(e){}}
-function loadState(){if(!email)return;try{var r=LS.getItem(stK());if(r){var d=JSON.parse(r);done=d.done||[];mc=d.mc||{};}else{done=[];mc={};}}catch(e){done=[];mc={};}}
+function saveState(){
+  if(!email)return;
+  // Save to localStorage as backup
+  try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
+  // Save to Supabase
+  if(_user){
+    _sb.from('progress').update({
+      done:done, mc:mc, updated_at:new Date().toISOString()
+    }).eq('user_id',_user.id).then(function(r){
+      if(r.error){console.warn('DB save error:',r.error);}
+    });
+  }
+  showSaved();
+}
+function loadState(){
+  if(!email)return;
+  try{var r=LS.getItem(stK());if(r){var d=JSON.parse(r);done=d.done||[];mc=d.mc||{};}else{done=[];mc={};}}catch(e){done=[];mc={};}
+}
+
+function loadStateFromDB(){
+  if(!_user){showApp();return;}
+  _sb.from('progress').select('done,mc,spin').eq('user_id',_user.id).single().then(function(r){
+    if(r.error){
+      // Row may not exist yet (trigger handles it), use empty state
+      done=[];mc={};
+    } else {
+      done=r.data.done||[];
+      mc=r.data.mc||{};
+      // restore spin data if any
+      if(r.data.spin){
+        var spKey='mlynr6_sp_'+email;
+        try{LS.setItem(spKey,JSON.stringify(r.data.spin));}catch(e){}
+      }
+    }
+    // Also sync spin state to DB when saving
+    showApp();
+  });
+}
 
 // ── AUTH ──────────────────────────────────────────────────────
+// ── AUTH MODE ─────────────────────────────────
+var _authMode = 'login'; // 'login' | 'register'
+
+function switchTab(mode){
+  _authMode = mode;
+  var isReg = mode==='register';
+  document.getElementById('tab-login').classList.toggle('active', !isReg);
+  document.getElementById('tab-register').classList.toggle('active', isReg);
+  document.getElementById('inp-pass2-wrap').style.display = isReg ? 'block' : 'none';
+  document.getElementById('login-btn').textContent = isReg ? 'KAYIT OL →' : 'GİRİŞ YAP →';
+  document.getElementById('login-hint-text').innerHTML = isReg
+    ? 'Kayıt olarak tüm cihazlardan ilerlemeni takip edebilirsin.'
+    : 'Hesabınla giriş yap. Şifreni unuttuysan <span style="color:var(--text2);cursor:pointer;text-decoration:underline" onclick="doReset()">sıfırla</span>.';
+  document.getElementById('login-err').textContent='';
+}
+
+function doReset(){
+  var v=document.getElementById('inp-email').value.trim();
+  if(!v){document.getElementById('login-err').textContent='Önce e-posta adresini gir.';return;}
+  _sb.auth.resetPasswordForEmail(v,{redirectTo:'https://mlynrplan.com'}).then(function(r){
+    if(r.error){document.getElementById('login-err').textContent=r.error.message;}
+    else{document.getElementById('login-err').style.color='#4ade80';document.getElementById('login-err').textContent='Şifre sıfırlama maili gönderildi!';}
+  });
+}
+
+function doAuth(){
+  var em=document.getElementById('inp-email').value.trim().toLowerCase();
+  var pw=document.getElementById('inp-pass').value;
+  var er=document.getElementById('login-err');er.textContent='';er.style.color='';
+  if(!em||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){er.textContent='Geçerli bir e-posta gir.';return;}
+  if(pw.length<6){er.textContent='Şifre en az 6 karakter olmalı.';return;}
+  if(_authMode==='register'){
+    var pw2=document.getElementById('inp-pass2').value;
+    if(pw!==pw2){er.textContent='Şifreler eşleşmiyor.';return;}
+    er.textContent='Kayıt olunuyor...';
+    _sb.auth.signUp({email:em,password:pw}).then(function(r){
+      if(r.error){er.textContent=r.error.message;return;}
+      er.style.color='#4ade80';
+      er.textContent='Kayıt başarılı! Mail kutunu kontrol et ve doğrula.';
+    });
+  } else {
+    er.textContent='Giriş yapılıyor...';
+    _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r){
+      if(r.error){er.textContent='Hatalı e-posta veya şifre.';return;}
+      _user=r.data.user;
+      email=_user.email;
+      loadStateFromDB();
+    });
+  }
+}
+
 function doLogin(){
-  var v=document.getElementById('inp-email').value.trim().toLowerCase();
-  var er=document.getElementById('login-err');er.textContent='';
-  if(!v||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){er.textContent='Geçerli bir e-posta gir.';return;}
-  email=v;loadState();
-  try{LS.setItem('mlynr6_sess',email);}catch(x){}
-  showApp();
+  doAuth();
 }
 function doLogout(){
+  _sb.auth.signOut();
   try{LS.removeItem('mlynr6_sess');}catch(x){}
-  email='';done=[];mc={};CW={};
+  _user=null;email='';done=[];mc={};CW={};
   document.getElementById('app').style.display='none';
   document.getElementById('login-screen').classList.remove('hidden');
   document.getElementById('inp-email').value='';
+  document.getElementById('inp-pass').value='';
   document.getElementById('login-err').textContent='';
+  closeMenu();
 }
 function showApp(){
   document.getElementById('login-screen').classList.add('hidden');
@@ -1266,11 +1373,16 @@ document.addEventListener('click',function(e){
   var btn=document.getElementById('hamburger-btn');
   if(menu&&menu.classList.contains('open')&&!menu.contains(e.target)&&btn&&!btn.contains(e.target)){closeMenu();}
 });
-try{
-  var ss=LS.getItem('mlynr6_sess');
-  if(ss){email=ss;loadState();showApp();}
-  else{document.getElementById('login-screen').classList.remove('hidden');}
-}catch(x){document.getElementById('login-screen').classList.remove('hidden');}
+// ── AUTO LOGIN via Supabase session ──────────────────────
+_sb.auth.getSession().then(function(r){
+  if(r.data&&r.data.session&&r.data.session.user){
+    _user=r.data.session.user;
+    email=_user.email;
+    loadStateFromDB();
+  } else {
+    document.getElementById('login-screen').classList.remove('hidden');
+  }
+});
 </script>
 
 <div id="ver-banner">
