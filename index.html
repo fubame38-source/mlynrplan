@@ -415,13 +415,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .hmenu-item.logout:hover{color:#f87171}
 
 /* ── VERSION BANNER ── */
-#ver-banner{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);z-index:9000;background:linear-gradient(135deg,#111,#1a1a1a);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 16px 48px rgba(0,0,0,.7);transition:transform .5s cubic-bezier(.34,1.2,.64,1);min-width:280px;max-width:360px}
+#ver-banner{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(200px);z-index:9000;background:linear-gradient(135deg,#111,#1a1a1a);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 16px 48px rgba(0,0,0,.7);transition:transform .5s cubic-bezier(.34,1.2,.64,1);width:calc(100% - 32px);max-width:400px;box-sizing:border-box}
 #ver-banner.show{transform:translateX(-50%) translateY(0)}
 .vb-emoji{font-size:22px;flex-shrink:0}
 .vb-text{}
 .vb-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
 .vb-sub{font-size:11px;color:#888}
-.vb-close{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#888;font-size:11px;padding:4px 10px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.vb-close{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#888;font-size:12px;font-weight:600;padding:10px 16px;min-width:60px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
 .vb-close:hover{background:rgba(255,255,255,.14);color:#fff}
 
 /* ── SCROLL ANIMATIONS ── */
@@ -561,35 +561,41 @@ body.light .footer-btn:hover {
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 // ── HANDLE AUTH CALLBACK (password reset) ──────────────
-(function(){
-  var hash = window.location.hash;
-  if(hash && hash.includes('access_token')){
-    // Parse the hash and set session
-    _sb.auth.getSession().then(function(r){
-      if(r.data&&r.data.session){
-        // Show password reset form
-        _user = r.data.session.user;
-        email = _user.email;
-        document.getElementById('login-screen').classList.remove('hidden');
-        document.getElementById('inp-pass').value='';
-        document.getElementById('login-err').style.color='#4ade80';
-        document.getElementById('login-err').textContent='Yeni şifreni gir ve kaydet.';
-        document.getElementById('login-btn').textContent='ŞİFREYİ GÜNCELLE →';
-        document.getElementById('login-btn').onclick=function(){
-          var pw=document.getElementById('inp-pass').value;
-          if(pw.length<6){document.getElementById('login-err').style.color='';document.getElementById('login-err').textContent='Şifre en az 6 karakter.';return;}
-          _sb.auth.updateUser({password:pw}).then(function(r){
-            if(r.error){document.getElementById('login-err').style.color='';document.getElementById('login-err').textContent=r.error.message;return;}
-            document.getElementById('login-err').textContent='Şifre güncellendi! Giriş yapılıyor...';
-            setTimeout(function(){loadStateFromDB();},1000);
-          });
-        };
-        // Clean URL
-        history.replaceState(null,'',window.location.pathname);
-      }
-    });
+_sb.auth.onAuthStateChange(function(event, session){
+  if(event === 'PASSWORD_RECOVERY'){
+    // Show password reset UI
+    document.getElementById('app').style.display='none';
+    document.getElementById('login-screen').classList.remove('hidden');
+    switchTab('login');
+    document.getElementById('inp-pass').value='';
+    document.getElementById('inp-pass2-wrap').style.display='block';
+    document.getElementById('login-err').style.color='#4ade80';
+    document.getElementById('login-err').textContent='Yeni şifreni belirle.';
+    document.getElementById('login-btn').textContent='ŞİFREYİ GÜNCELLE →';
+    document.getElementById('login-btn').onclick=function(){
+      var pw=document.getElementById('inp-pass').value;
+      var pw2=document.getElementById('inp-pass2').value;
+      if(pw.length<6){document.getElementById('login-err').style.color='';document.getElementById('login-err').textContent='Şifre en az 6 karakter.';return;}
+      if(pw!==pw2){document.getElementById('login-err').style.color='';document.getElementById('login-err').textContent='Şifreler eşleşmiyor.';return;}
+      _sb.auth.updateUser({password:pw}).then(function(r){
+        if(r.error){document.getElementById('login-err').style.color='';document.getElementById('login-err').textContent=r.error.message;return;}
+        document.getElementById('login-err').textContent='Şifre güncellendi! Giriş yapılıyor...';
+        document.getElementById('login-btn').textContent='GİRİŞ YAP →';
+        document.getElementById('login-btn').onclick=doAuth;
+        document.getElementById('inp-pass2-wrap').style.display='none';
+        _user=session.user; email=_user.email;
+        setTimeout(function(){loadStateFromDB();},1500);
+      });
+    };
+    history.replaceState(null,'',window.location.pathname);
+  } else if(event === 'SIGNED_IN' && !_user){
+    // Normal sign in from another tab etc
+    if(session && session.user && !document.getElementById('app').style.display){
+      _user=session.user; email=_user.email;
+      loadStateFromDB();
+    }
   }
-})();
+});
 
 </script>
 </head>
