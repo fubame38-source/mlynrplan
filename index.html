@@ -559,61 +559,7 @@ body.light .footer-btn:hover {
 }
 
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-// ── HANDLE AUTH CALLBACK (password reset) ──────────────
-_sb.auth.onAuthStateChange(function(event, session){
-  if(event === 'PASSWORD_RECOVERY'){
-    // Şifre sıfırlama modu
-    _user = null; // önceki session'ı sıfırla
-    var ls = document.getElementById('login-screen');
-    var app = document.getElementById('app');
-    ls.classList.remove('hidden');
-    app.classList.add('hidden');
-    // Tab'ları gizle, sadece şifre formu göster
-    document.getElementById('login-tabs').style.display='none';
-    document.getElementById('inp-pass2-wrap').style.display='none';
-    document.querySelector('.login-logo-sub').textContent='Yeni Şifre Belirle';
-    document.getElementById('inp-email').style.display='none';
-    document.querySelector('label[for="inp-email"]').style.display='none';
-    document.querySelector('label[for="inp-pass"]').textContent='YENİ ŞİFRE';
-    document.getElementById('inp-pass').value='';
-    document.getElementById('inp-pass').placeholder='En az 6 karakter';
-    document.getElementById('login-err').style.color='#4ade80';
-    document.getElementById('login-err').textContent='Yeni şifreni gir.';
-    document.getElementById('login-btn').textContent='ŞİFREYİ GÜNCELLE →';
-    document.getElementById('login-hint').style.display='none';
-    document.getElementById('login-btn').onclick=function(){
-      var pw=document.getElementById('inp-pass').value;
-      if(pw.length<6){
-        document.getElementById('login-err').style.color='';
-        document.getElementById('login-err').textContent='Şifre en az 6 karakter olmalı.';
-        return;
-      }
-      document.getElementById('login-btn').textContent='Güncelleniyor...';
-      _sb.auth.updateUser({password:pw}).then(function(r){
-        if(r.error){
-          document.getElementById('login-err').style.color='';
-          document.getElementById('login-err').textContent=r.error.message;
-          document.getElementById('login-btn').textContent='ŞİFREYİ GÜNCELLE →';
-          return;
-        }
-        document.getElementById('login-err').style.color='#4ade80';
-        document.getElementById('login-err').textContent='✓ Şifre güncellendi! Giriş yapılıyor...';
-        _user=session.user; email=_user.email;
-        history.replaceState(null,'',window.location.pathname);
-        setTimeout(function(){loadStateFromDB();},1200);
-      });
-    };
-    history.replaceState(null,'',window.location.pathname);
-  } else if(event === 'SIGNED_IN' && !_user){
-    if(session && session.user){
-      _user=session.user; email=_user.email;
-      loadStateFromDB();
-    }
-  }
-});
-
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -892,6 +838,55 @@ var LS=localStorage;
 
 // ── SUPABASE ─────────────────────────────────────────────
 var _sb = supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co', 'sb_publishable_fBqoPGz-1qHl1HU1PpbBTA_gBVZoodL');
+
+// ── HANDLE AUTH CALLBACK (password reset) ──────────────
+_sb.auth.onAuthStateChange(function(event, session){
+  if(event === 'PASSWORD_RECOVERY'){
+    _user = null;
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.getElementById('app').classList.add('hidden');
+    document.getElementById('login-tabs').style.display='none';
+    document.getElementById('inp-pass2-wrap').style.display='none';
+    document.querySelector('.login-logo-sub').textContent='Yeni Şifre Belirle';
+    document.getElementById('inp-email').style.display='none';
+    document.querySelector('label[for="inp-email"]').style.display='none';
+    document.querySelector('label[for="inp-pass"]').textContent='YENİ ŞİFRE';
+    document.getElementById('inp-pass').value='';
+    document.getElementById('inp-pass').placeholder='En az 6 karakter';
+    document.getElementById('login-err').style.color='#4ade80';
+    document.getElementById('login-err').textContent='Yeni şifreni gir.';
+    document.getElementById('login-btn').textContent='ŞİFREYİ GÜNCELLE →';
+    document.getElementById('login-hint').style.display='none';
+    document.getElementById('login-btn').onclick=function(){
+      var pw=document.getElementById('inp-pass').value;
+      if(pw.length<6){
+        document.getElementById('login-err').style.color='';
+        document.getElementById('login-err').textContent='Şifre en az 6 karakter olmalı.';
+        return;
+      }
+      document.getElementById('login-btn').textContent='Güncelleniyor...';
+      _sb.auth.updateUser({password:pw}).then(function(r){
+        if(r.error){
+          document.getElementById('login-err').style.color='';
+          document.getElementById('login-err').textContent=r.error.message;
+          document.getElementById('login-btn').textContent='ŞİFREYİ GÜNCELLE →';
+          return;
+        }
+        document.getElementById('login-err').style.color='#4ade80';
+        document.getElementById('login-err').textContent='✓ Şifre güncellendi! Giriş yapılıyor...';
+        _user=session.user; email=_user.email;
+        history.replaceState(null,'',window.location.pathname);
+        setTimeout(function(){loadStateFromDB();},1200);
+      });
+    };
+    history.replaceState(null,'',window.location.pathname);
+  } else if(event === 'SIGNED_IN' && !_user){
+    if(session && session.user){
+      _user=session.user; email=_user.email;
+      loadStateFromDB();
+    }
+  }
+});
 var _user = null;
 
 // ── CONFETTI ─────────────────────────────────────────────────
