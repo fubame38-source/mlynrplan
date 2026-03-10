@@ -1115,14 +1115,19 @@ function doAuth(){
     var pw2=document.getElementById('inp-pass2').value;
     if(pw!==pw2){er.textContent='Şifreler eşleşmiyor.';return;}
     er.textContent='Kayıt olunuyor...';
+    er.textContent='Kayıt olunuyor...';
     _sb.auth.signUp({email:em,password:pw}).then(function(r){
-      if(r.error){er.textContent='Hata: '+r.error.message;return;}
-      // Sign in immediately after signup
+      if(r.error && r.error.message && r.error.message.toLowerCase().indexOf('already')>=0){
+        er.style.color='';er.textContent='Bu e-posta zaten kayıtlı. Giriş yap.';return;
+      }
+      // Ignore other signup errors, try to sign in anyway
       _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r2){
-        if(r2.error){er.textContent='Kayıt oldu, giriş hatası: '+r2.error.message;return;}
+        if(r2.error){er.style.color='';er.textContent='Giriş hatası: '+r2.error.message;return;}
         _user=r2.data.user;
         email=_user.email;
-        // Manually create progress row (no trigger)
+        er.style.color='#4ade80';
+        er.textContent='Hoş geldin! Yükleniyor...';
+        // Create progress row silently
         _sb.from('progress').upsert({
           user_id:_user.id,
           done:[],
