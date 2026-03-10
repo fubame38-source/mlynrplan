@@ -73,7 +73,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .login-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:14px 16px;outline:none;transition:border-color .2s;margin-bottom:12px}
 .login-input:focus{border-color:rgba(255,255,255,.3)}
 .login-input::placeholder{color:var(--text3)}
-.login-btn{width:100%;background:var(--white);color:#000;border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:.5px;padding:15px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
+.login-btn{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:.5px;padding:15px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
 .login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
 .login-err{font-size:12px;color:#f87171;margin-top:8px;min-height:18px;text-align:center}
 .login-hint{font-size:11px;color:var(--text3);text-align:center;margin-top:16px;line-height:1.6}
@@ -221,7 +221,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .footer h2{font-size:clamp(22px,4vw,32px);font-weight:800;color:var(--text);margin-bottom:12px;letter-spacing:-.5px}
 .footer h2 em{color:var(--text2);font-style:normal}
 .footer-sub{font-size:13px;color:var(--text3);margin-bottom:28px}
-.footer-btn{display:inline-block;background:var(--white);color:#000;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.5px;padding:14px 28px;border-radius:10px;text-decoration:none;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
+.footer-btn{display:inline-block;background:var(--white);color:var(--bg);font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.5px;padding:14px 28px;border-radius:10px;text-decoration:none;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
 .footer-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
 .footer-disclaimer{max-width:440px;margin:28px auto 0;font-size:11px;color:var(--text3);line-height:1.7;opacity:.5}
 
@@ -255,7 +255,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .cb-goal-title{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
 .cb-goal-text{font-size:13px;color:var(--text2);line-height:1.7}
 .cb-goal-text strong{color:var(--text)}
-.cb-pop-close-btn{width:100%;margin-top:24px;background:var(--white);color:#000;border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:.5px;padding:15px;cursor:pointer;transition:all .2s}
+.cb-pop-close-btn{width:100%;margin-top:24px;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:.5px;padding:15px;cursor:pointer;transition:all .2s}
 .cb-pop-close-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
 
 /* ── SPIN POPUP ── */
@@ -282,7 +282,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sp-cat-tip{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);background:rgba(34,197,94,.06);border:1px solid var(--green-ln);border-radius:6px;padding:6px 10px}
 .sp-empty-emoji{font-size:36px;margin-bottom:10px}
 .sp-empty-txt{font-size:13px;color:var(--text3);line-height:1.7}
-.sp-btn{width:100%;margin-top:8px;background:var(--white);color:#000;border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:.5px;padding:14px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
+.sp-btn{width:100%;margin-top:8px;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:.5px;padding:14px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
 .sp-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
 .sp-btn:disabled{background:var(--border2);color:var(--text3);cursor:not-allowed;transform:none;box-shadow:none}
 
@@ -541,8 +541,57 @@ body.light .login-device-note{background:rgba(0,0,0,.04) !important;border-color
 body.light .login-device-note-text{color:#666 !important}
 body.light .login-device-note strong{color:#333 !important}
 
+
+/* ── LIGHT MODE BUTTON TEXT FIX ── */
+body.light .cb-pop-close-btn,
+body.light .sp-btn,
+body.light .close-btn,
+body.light .login-btn,
+body.light .footer-btn {
+  color:#fff !important;
+  background:#111 !important;
+}
+body.light .login-btn:hover,
+body.light .cb-pop-close-btn:hover,
+body.light .sp-btn:hover,
+body.light .footer-btn:hover {
+  background:#333 !important;
+}
+
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+// ── HANDLE AUTH CALLBACK (password reset) ──────────────
+(function(){
+  var hash = window.location.hash;
+  if(hash && hash.includes('access_token')){
+    // Parse the hash and set session
+    _sb.auth.getSession().then(function(r){
+      if(r.data&&r.data.session){
+        // Show password reset form
+        _user = r.data.session.user;
+        email = _user.email;
+        document.getElementById('login-screen').classList.remove('hidden');
+        document.getElementById('inp-pass').value='';
+        document.getElementById('login-err').style.color='#4ade80';
+        document.getElementById('login-err').textContent='Yeni şifreni gir ve kaydet.';
+        document.getElementById('login-btn').textContent='ŞİFREYİ GÜNCELLE →';
+        document.getElementById('login-btn').onclick=function(){
+          var pw=document.getElementById('inp-pass').value;
+          if(pw.length<6){document.getElementById('login-err').style.color='';document.getElementById('login-err').textContent='Şifre en az 6 karakter.';return;}
+          _sb.auth.updateUser({password:pw}).then(function(r){
+            if(r.error){document.getElementById('login-err').style.color='';document.getElementById('login-err').textContent=r.error.message;return;}
+            document.getElementById('login-err').textContent='Şifre güncellendi! Giriş yapılıyor...';
+            setTimeout(function(){loadStateFromDB();},1000);
+          });
+        };
+        // Clean URL
+        history.replaceState(null,'',window.location.pathname);
+      }
+    });
+  }
+})();
+
+</script>
 </head>
 <body>
 
@@ -1007,8 +1056,9 @@ function loadStateFromDB(){
   if(!_user){showApp();return;}
   _sb.from('progress').select('done,mc,spin').eq('user_id',_user.id).single().then(function(r){
     if(r.error){
-      // Row may not exist yet (trigger handles it), use empty state
+      // Row doesn't exist yet, create it
       done=[];mc={};
+      _sb.from('progress').upsert({user_id:_user.id,done:[],mc:{},spin:{}}).then(function(){});
     } else {
       done=r.data.done||[];
       mc=r.data.mc||{};
