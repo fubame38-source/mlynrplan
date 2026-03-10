@@ -1116,13 +1116,23 @@ function doAuth(){
     if(pw!==pw2){er.textContent='Şifreler eşleşmiyor.';return;}
     er.textContent='Kayıt olunuyor...';
     _sb.auth.signUp({email:em,password:pw}).then(function(r){
-      if(r.error){er.textContent='Hata: '+r.error.message+' ('+r.error.status+')';return;}
-      // Auto sign in after register
+      if(r.error){er.textContent='Hata: '+r.error.message;return;}
+      // Sign in immediately after signup
       _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r2){
-        if(r2.error){er.style.color='';er.textContent='Kayıt tamam, giriş yapılıyor...';return;}
+        if(r2.error){er.textContent='Kayıt oldu, giriş hatası: '+r2.error.message;return;}
         _user=r2.data.user;
         email=_user.email;
-        loadStateFromDB();
+        // Manually create progress row (no trigger)
+        _sb.from('progress').upsert({
+          user_id:_user.id,
+          done:[],
+          mc:{},
+          spin:{},
+          first_sale:false,
+          earn_opened:false
+        }).then(function(){
+          loadStateFromDB();
+        });
       });
     });
   } else {
