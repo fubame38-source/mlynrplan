@@ -1116,7 +1116,7 @@ function doAuth(){
     if(pw!==pw2){er.textContent='Şifreler eşleşmiyor.';return;}
     er.textContent='Kayıt olunuyor...';
     _sb.auth.signUp({email:em,password:pw}).then(function(r){
-      if(r.error){er.textContent=r.error.message;return;}
+      if(r.error){er.textContent='Hata: '+r.error.message+' ('+r.error.status+')';return;}
       // Auto sign in after register
       _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r2){
         if(r2.error){er.style.color='';er.textContent='Kayıt tamam, giriş yapılıyor...';return;}
