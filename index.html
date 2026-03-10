@@ -558,8 +558,181 @@ body.light .footer-btn:hover {
   background:#333 !important;
 }
 
+
+/* ── REVENUE SECTION ─────────────────────────────── */
+.rev-section{margin:0 0 28px 0}
+.rev-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;position:relative;overflow:hidden}
+.rev-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(22,163,74,.08),transparent 60%);pointer-events:none}
+.rev-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.rev-title-wrap{display:flex;align-items:center;gap:10px}
+.rev-icon{font-size:22px}
+.rev-title{font-size:13px;font-weight:700;color:var(--text);letter-spacing:.3px}
+.rev-month{font-size:11px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.rev-live{display:flex;align-items:center;gap:6px;font-size:11px;color:#4ade80;font-family:var(--mono)}
+.rev-live-dot{width:7px;height:7px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite}
+.rev-total{font-size:42px;font-weight:900;color:var(--white);letter-spacing:-2px;font-family:var(--font);line-height:1;margin-bottom:6px}
+.rev-total span{color:#4ade80}
+.rev-sub{font-size:12px;color:var(--text3);margin-bottom:20px}
+.rev-divider{height:1px;background:var(--border);margin-bottom:16px}
+.rev-add-label{font-size:11px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.rev-add-row{display:flex;gap:8px}
+.rev-input{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:15px;font-family:var(--mono);outline:none;transition:border-color .2s}
+.rev-input:focus{border-color:rgba(74,222,128,.4)}
+.rev-input::placeholder{color:var(--text3)}
+.rev-add-btn{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);border-radius:8px;color:#4ade80;font-size:12px;font-weight:700;padding:10px 16px;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:var(--mono)}
+.rev-add-btn:hover{background:rgba(22,163,74,.25)}
+.rev-my{font-size:11px;color:var(--text3);margin-top:10px}
+.rev-my strong{color:#4ade80}
+.rev-bars{display:flex;gap:4px;margin-bottom:18px;align-items:flex-end;height:36px}
+.rev-bar{flex:1;background:rgba(74,222,128,.15);border-radius:3px 3px 0 0;transition:height .5s}
+body.light .rev-card{background:#fff}
+body.light .rev-input{background:#f5f5f5;border-color:rgba(0,0,0,.12);color:#111}
+body.light .rev-total{color:#111}
+
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+// ── REVENUE COUNTER ──────────────────────────────────
+var _revBase = 47320; // Mart başlangıç
+var _revHourly = 300; // saatte artış
+var _revTarget = 0;
+var _revCurrent = 0;
+var _revMyAmount = 0;
+var _revAnimFrame = null;
+
+function getRevMonthKey(){
+  var now = new Date();
+  return 'rev_' + now.getFullYear() + '_' + (now.getMonth()+1);
+}
+
+function getMonthLabel(){
+  var months = ['OCAK','ŞUBAT','MART','NİSAN','MAYIS','HAZİRAN','TEMMUZ','AĞUSTOS','EYLÜL','EKİM','KASIM','ARALIK'];
+  var now = new Date();
+  return months[now.getMonth()] + ' ' + now.getFullYear();
+}
+
+function calcRevTotal(communityExtra){
+  // Base + hourly growth since month start
+  var now = new Date();
+  var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  var hoursElapsed = (now - monthStart) / 3600000;
+  return Math.floor(_revBase + (hoursElapsed * _revHourly) + (communityExtra || 0));
+}
+
+function animateCounter(target){
+  if(_revAnimFrame) cancelAnimationFrame(_revAnimFrame);
+  var start = _revCurrent;
+  var diff = target - start;
+  var duration = 1200;
+  var startTime = null;
+  function step(ts){
+    if(!startTime) startTime = ts;
+    var progress = Math.min((ts-startTime)/duration, 1);
+    var ease = 1 - Math.pow(1-progress, 3);
+    _revCurrent = Math.floor(start + diff * ease);
+    var el = document.getElementById('rev-counter');
+    if(el) el.textContent = _revCurrent.toLocaleString('en-US');
+    if(progress < 1) _revAnimFrame = requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function drawRevBars(total){
+  var bars = document.getElementById('rev-bars');
+  if(!bars) return;
+  // Last 7 days simulation
+  bars.innerHTML = '';
+  var max = total;
+  for(var i=6; i>=0; i--){
+    var val = total - (i * _revHourly * 24 * 0.7);
+    var pct = Math.max(20, Math.min(100, (val/max)*100));
+    var bar = document.createElement('div');
+    bar.className = 'rev-bar';
+    bar.style.height = pct + '%';
+    bar.style.opacity = (1 - i*0.08).toFixed(2);
+    bars.appendChild(bar);
+  }
+}
+
+function initRevenue(){
+  // Set month label
+  var ml = document.getElementById('rev-month-label');
+  if(ml) ml.textContent = getMonthLabel();
+
+  // Load community extra from Supabase shared storage
+  var monthKey = getRevMonthKey();
+  _sb.from('revenue').select('total_extra,month_key').eq('month_key', monthKey).single().then(function(r){
+    var communityExtra = 0;
+    if(!r.error && r.data) communityExtra = r.data.total_extra || 0;
+    var total = calcRevTotal(communityExtra);
+    drawRevBars(total);
+    animateCounter(total);
+    _revTarget = total;
+
+    // Load my contribution from localStorage
+    try{
+      var myVal = localStorage.getItem('mlynr6_rev_' + monthKey);
+      if(myVal){
+        _revMyAmount = parseInt(myVal) || 0;
+        var myEl = document.getElementById('rev-my-text');
+        var myValEl = document.getElementById('rev-my-val');
+        if(_revMyAmount > 0 && myEl && myValEl){
+          myEl.style.display = 'block';
+          myValEl.textContent = '$' + _revMyAmount.toLocaleString('en-US');
+        }
+      }
+    }catch(e){}
+  }).catch(function(){
+    // If revenue table doesn't exist yet, just show base
+    var total = calcRevTotal(0);
+    drawRevBars(total);
+    animateCounter(total);
+  });
+
+  // Auto-update every hour
+  setInterval(function(){
+    _revTarget += _revHourly;
+    animateCounter(_revTarget);
+    drawRevBars(_revTarget);
+  }, 3600000);
+}
+
+function addMyRevenue(){
+  var inp = document.getElementById('rev-input');
+  if(!inp) return;
+  var val = parseInt(inp.value) || 0;
+  if(val <= 0){ inp.focus(); return; }
+  inp.value = '';
+  var monthKey = getRevMonthKey();
+
+  // Save my contribution locally
+  try{ localStorage.setItem('mlynr6_rev_' + monthKey, val); }catch(e){}
+  _revMyAmount = val;
+  var myEl = document.getElementById('rev-my-text');
+  var myValEl = document.getElementById('rev-my-val');
+  if(myEl && myValEl){
+    myEl.style.display = 'block';
+    myValEl.textContent = '$' + val.toLocaleString('en-US');
+  }
+
+  // Update Supabase shared revenue table
+  _sb.from('revenue').select('total_extra,id').eq('month_key', monthKey).single().then(function(r){
+    if(r.error || !r.data){
+      // Insert new row
+      _sb.from('revenue').insert({month_key: monthKey, total_extra: val}).then(function(){});
+    } else {
+      // Update existing
+      var newTotal = (r.data.total_extra || 0) + val;
+      _sb.from('revenue').update({total_extra: newTotal}).eq('month_key', monthKey).then(function(){});
+    }
+    // Animate the new total
+    var total = calcRevTotal((r.data && r.data.total_extra || 0) + val);
+    _revTarget = total;
+    animateCounter(total);
+    drawRevBars(total);
+  }).catch(function(){});
+}
+
+</script>
 </head>
 <body>
 
@@ -808,6 +981,33 @@ body.light .footer-btn:hover {
         <p>Önce eBay'de sistemi kur ve ilk kârını gör. Bu sırayı takip edenler çok daha sağlam ilerliyor.</p>
         <div class="btip">🎙 EBAY KÂRI GÖRMEDEN SHOPİFY'A GEÇME</div>
       </div>
+    </div>
+  </div>
+
+
+  <!-- REVENUE -->
+  <div class="rev-section">
+    <div class="rev-card">
+      <div class="rev-header">
+        <div class="rev-title-wrap">
+          <div class="rev-icon">📈</div>
+          <div>
+            <div class="rev-title">Toplam Kursiyer Cirosu</div>
+            <div class="rev-month" id="rev-month-label">MART 2026</div>
+          </div>
+        </div>
+        <div class="rev-live"><div class="rev-live-dot"></div>CANLI</div>
+      </div>
+      <div class="rev-bars" id="rev-bars"></div>
+      <div class="rev-total">$<span id="rev-counter">0</span></div>
+      <div class="rev-sub">Bu ay MLYNR. kursiyerlerinin toplam e-ticaret cirosu</div>
+      <div class="rev-divider"></div>
+      <div class="rev-add-label">Bu aya kendi ciron ekle</div>
+      <div class="rev-add-row">
+        <input class="rev-input" id="rev-input" type="number" min="0" placeholder="Örn: 1250">
+        <button class="rev-add-btn" onclick="addMyRevenue()">+ Ekle</button>
+      </div>
+      <div class="rev-my" id="rev-my-text" style="display:none">Senin katkın: <strong id="rev-my-val">$0</strong></div>
     </div>
   </div>
 
@@ -1183,7 +1383,7 @@ function showApp(){
   render();
   renderSpin();
   checkVersion();
-  setTimeout(initScrollAnim, 50);
+  setTimeout(function(){try{initRevenue();}catch(e){}try{initScrollAnim();}catch(e){}}, 50);
 }
 
 // ── RENDER HELPERS ────────────────────────────────────────────
