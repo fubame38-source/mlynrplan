@@ -691,6 +691,25 @@ body.light #mentor-popup{background:#fff}
   .mp-title{font-size:20px}
   .mp-header,.mp-body{padding-left:20px;padding-right:20px}
 }
+
+/* ── NAME POPUP ────────────────────────────────────────────── */
+#name-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:9000;opacity:0;pointer-events:none;transition:opacity .3s}
+#name-overlay.show{opacity:1;pointer-events:all}
+#name-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-54%) scale(.95);z-index:9001;background:var(--surface);border:1px solid var(--green-ln);border-radius:16px;padding:32px 28px;width:min(360px,90vw);text-align:center;opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.34,1.2,.64,1)}
+#name-popup.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1)}
+#name-popup .np-emoji{font-size:36px;margin-bottom:10px}
+#name-popup .np-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:6px}
+#name-popup .np-sub{font-size:12px;color:var(--text2);margin-bottom:20px;line-height:1.5}
+#name-popup .np-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--text);font-family:var(--sans);outline:none;box-sizing:border-box;transition:border-color .2s;text-align:center}
+#name-popup .np-input:focus{border-color:var(--green)}
+#name-popup .np-btn{margin-top:14px;width:100%;background:var(--green);color:#000;font-weight:700;font-size:13px;padding:12px;border-radius:10px;border:none;cursor:pointer;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;transition:all .2s}
+#name-popup .np-btn:hover{background:#16a34a}
+
+/* ── WELCOME TOAST ─────────────────────────────────────────── */
+#welcome-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);z-index:8500;background:var(--surface);border:1px solid var(--green-ln);border-radius:12px;padding:12px 20px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:transform .4s cubic-bezier(.34,1.2,.64,1),opacity .4s;opacity:0;white-space:nowrap}
+#welcome-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+#welcome-toast .wt-name{color:var(--green);text-transform:uppercase;letter-spacing:.5px}
+
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -960,6 +979,22 @@ body.light #mentor-popup{background:#fff}
     </div>
   </div>
 
+
+  <!-- NAME POPUP -->
+  <div id="name-overlay"></div>
+  <div id="name-popup">
+    <div class="np-emoji">👋</div>
+    <div class="np-title">Sana nasıl hitap edelim?</div>
+    <div class="np-sub">İsmini gir, platform sana özel olsun.</div>
+    <input class="np-input" id="np-input" type="text" placeholder="Adın (örn. Furkan)" maxlength="30"
+      onkeydown="if(event.key==='Enter')saveUserName()">
+    <button class="np-btn" onclick="saveUserName()">DEVAM ET →</button>
+  </div>
+
+  <!-- WELCOME TOAST -->
+  <div id="welcome-toast">👋 Hoş geldin, <span class="wt-name" id="wt-name-span"></span>!</div>
+
+
   <!-- MENTOR POPUP -->
   <div id="mentor-overlay" onclick="closeMentorPopup()"></div>
   <div id="mentor-popup">
@@ -1017,6 +1052,7 @@ _sb.auth.onAuthStateChange(function(event, session){
   }
 });
 var _user = null;
+var _userName = ''; // kullanıcının adı
 
 // ── CONFETTI ─────────────────────────────────────────────────
 var _confettiRAF=null;
@@ -1358,12 +1394,24 @@ function showApp(){
   document.getElementById('login-screen').classList.add('hidden');
   document.getElementById('app').style.display='block';
   var d=email.split('@')[0];
-  document.getElementById('uav').textContent=d.charAt(0).toUpperCase();
-  document.getElementById('uname').textContent=d;
+  // Load saved name or fallback to email prefix
+  var sn = getUserName();
+  var disp = sn || d;
+  document.getElementById('uav').textContent = disp.charAt(0).toUpperCase();
+  document.getElementById('uname').textContent = disp;
   render();
   renderSpin();
   checkVersion();
   setTimeout(initScrollAnim, 50);
+  // First time? Ask for name. Returning user? Show welcome toast.
+  setTimeout(function(){
+    var sn2 = getUserName();
+    if(!sn2){
+      openNamePopup();
+    } else {
+      showWelcomeToast(sn2);
+    }
+  }, 600);
 }
 
 // ── RENDER HELPERS ────────────────────────────────────────────
@@ -1387,7 +1435,7 @@ function checkWk(wi){var w=WEEKS[wi],ok=true;for(var d2=0;d2<w.days.length;d2++)
 var WEEKS=[
   {n:1,t:'e',lbl:'Hafta 01',name:'Hesap Kurulumu & Sistemi Anlamak',desc:'eBay hesabı aç, platformu tanı, yol haritasını kavra ve ilk ürünleri listele.',
     days:[
-      {t:'eBay Hesap Açılışı',d:'Hesabı doğru kur: adres, ödeme, panel ayarları — baştan hata yapma.',tag:'Kurulum'},
+      {t:'eBay Hesap Açılışı',d:'Hesabı doğru kur: adres, vergi, panel ayarları — baştan hata yapma.',tag:'Kurulum'},
       {t:'Yol Haritasını Anlamak',d:'Sistem tanıtımı, neden Amazon tedarik, ilk 90 gün planı.',tag:'Temel'},
       {t:'Ürün Araştırma: Temel',d:'Sıfırdan ürün bulma, fiyat analizi, rakip mağaza incelemesi.',tag:'Araştırma'},
       {t:'Ürün Araştırma: İleri',d:'Yapay zeka ile ürün bulma, pratik araştırma teknikleri.',tag:'Araştırma'},
@@ -1668,6 +1716,54 @@ function calcEarn(){
 
 // ── FIRST SALE ────────────────────────────────────────────────
 
+
+
+// ── USER NAME ─────────────────────────────────────────────────
+function getUserName(){
+  if(_userName) return _userName;
+  try{ var n=LS.getItem('mlynr6_name_'+email); if(n) return n; }catch(e){}
+  return '';
+}
+function setUserName(name){
+  _userName = name.trim();
+  try{ LS.setItem('mlynr6_name_'+email, _userName); }catch(e){}
+}
+function openNamePopup(){
+  document.getElementById('name-overlay').classList.add('show');
+  document.getElementById('name-popup').classList.add('show');
+  setTimeout(function(){ document.getElementById('np-input').focus(); }, 350);
+}
+function closeNamePopup(){
+  document.getElementById('name-overlay').classList.remove('show');
+  document.getElementById('name-popup').classList.remove('show');
+}
+function saveUserName(){
+  var val = document.getElementById('np-input').value.trim();
+  if(!val) return;
+  setUserName(val);
+  closeNamePopup();
+  showWelcomeToast(val);
+  updateNameUI();
+}
+function showWelcomeToast(name){
+  var toast = document.getElementById('welcome-toast');
+  var span  = document.getElementById('wt-name-span');
+  if(!toast || !span) return;
+  span.textContent = name.toUpperCase();
+  toast.classList.add('show');
+  setTimeout(function(){ toast.classList.remove('show'); }, 3500);
+}
+function updateNameUI(){
+  var name = getUserName();
+  if(!name) return;
+  // Avatar initials
+  var av = document.getElementById('uav');
+  if(av) av.textContent = name.charAt(0).toUpperCase();
+  // uname in header
+  var un = document.getElementById('uname');
+  if(un) un.textContent = name;
+}
+
 function openMentorPopup(){
   document.getElementById('mentor-overlay').classList.add('show');
   document.getElementById('mentor-popup').classList.add('show');
@@ -1814,7 +1910,19 @@ function fsDrawCard(){
     ctx.fillStyle='rgba(255,255,255,0.4)';
     ctx.font='400 24px Arial, sans-serif';
     ctx.textAlign='center';
-    ctx.fillText('İlk adım atıldı. Yolculuk başlıyor.',W/2,1044);
+    // Personalized name on card
+    var fsName = getUserName();
+    if(fsName){
+      ctx.fillStyle='rgba(34,197,94,0.9)';
+      ctx.font='700 34px Arial, sans-serif';
+      ctx.textAlign='center';
+      ctx.fillText(fsName.toUpperCase() + ' — İLK ADIM ATILDI!',W/2,1038);
+    } else {
+      ctx.fillStyle='rgba(255,255,255,0.4)';
+      ctx.font='400 24px Arial, sans-serif';
+      ctx.textAlign='center';
+      ctx.fillText('İlk adım atıldı. Yolculuk başlıyor.',W/2,1044);
+    }
 
     // ── BADGES ──
     var badges=[{icon:'\u{1F3C6}',label:'İlk Satış'},{icon:'\u26A1',label:'Sistem Aktif'},{icon:'\u{1F680}',label:'Ölçeklendir'}];
