@@ -559,141 +559,120 @@ body.light .footer-btn:hover {
 }
 
 
-/* ── REVENUE SECTION ─────────────────────────────── */
-.rev-section{margin:0 0 28px 0}
-.rev-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;position:relative;overflow:hidden}
-.rev-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(22,163,74,.08),transparent 60%);pointer-events:none}
-.rev-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.rev-title-wrap{display:flex;align-items:center;gap:10px}
-.rev-icon{font-size:22px}
-.rev-title{font-size:13px;font-weight:700;color:var(--text);letter-spacing:.3px}
-.rev-month{font-size:11px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
-.rev-live{display:flex;align-items:center;gap:6px;font-size:11px;color:#4ade80;font-family:var(--mono)}
-.rev-live-dot{width:7px;height:7px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite}
-.rev-total{font-size:42px;font-weight:900;color:var(--white);letter-spacing:-2px;font-family:var(--font);line-height:1;margin-bottom:6px}
-.rev-total span{color:#4ade80}
-.rev-sub{font-size:12px;color:var(--text3);margin-bottom:20px}
-.rev-divider{height:1px;background:var(--border);margin-bottom:16px}
-.rev-add-label{font-size:11px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
-.rev-add-row{display:flex;gap:8px}
-.rev-input{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:15px;font-family:var(--mono);outline:none;transition:border-color .2s}
-.rev-input:focus{border-color:rgba(74,222,128,.4)}
-.rev-input::placeholder{color:var(--text3)}
-.rev-add-btn{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);border-radius:8px;color:#4ade80;font-size:12px;font-weight:700;padding:10px 16px;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:var(--mono)}
-.rev-add-btn:hover{background:rgba(22,163,74,.25)}
-.rev-my{font-size:11px;color:var(--text3);margin-top:10px}
-.rev-my strong{color:#4ade80}
-.rev-bars{display:flex;gap:4px;margin-bottom:18px;align-items:flex-end;height:36px}
-.rev-bar{flex:1;background:rgba(74,222,128,.15);border-radius:3px 3px 0 0;transition:height .5s}
-body.light .rev-card{background:#fff}
-body.light .rev-input{background:#f5f5f5;border-color:rgba(0,0,0,.12);color:#111}
-body.light .rev-total{color:#111}
-
-
-/* ── REVENUE ── */
-.rev-wrap{margin:0 0 28px}
-.rev-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;position:relative;overflow:hidden}
-.rev-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(74,222,128,.3),transparent)}
-.rev-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
-.rev-label{font-size:10px;font-family:var(--mono);letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;margin-bottom:4px}
-.rev-title{font-size:13px;font-weight:700;color:var(--text)}
-.rev-badge{display:flex;align-items:center;gap:5px;font-size:10px;font-family:var(--mono);color:#4ade80;letter-spacing:1px}
-.rev-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade80;animation:revpulse 2s ease-in-out infinite}
-@keyframes revpulse{0%,100%{opacity:1;box-shadow:0 0 4px #4ade80}50%{opacity:.4;box-shadow:0 0 10px #4ade80}}
-.rev-amount{font-size:36px;font-weight:900;letter-spacing:-2px;color:var(--white);font-family:var(--font);line-height:1;margin-bottom:4px}
-.rev-amount .rev-sign{font-size:22px;font-weight:700;color:#4ade80;margin-right:1px}
-.rev-amount .rev-num{color:var(--white)}
-.rev-sub{font-size:11px;color:var(--text3);margin-bottom:16px}
-.rev-sep{height:1px;background:var(--border);margin-bottom:14px}
-.rev-row{display:flex;gap:8px;align-items:center}
-.rev-inp{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:14px;font-family:var(--mono);outline:none;transition:border-color .2s;min-width:0}
-.rev-inp:focus{border-color:rgba(74,222,128,.5)}
-.rev-inp::placeholder{color:var(--text3);font-size:12px}
-.rev-btn{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);border-radius:8px;color:#4ade80;font-size:11px;font-weight:700;letter-spacing:.5px;padding:9px 14px;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:var(--mono)}
-.rev-btn:hover{background:rgba(74,222,128,.22);border-color:rgba(74,222,128,.4)}
-.rev-mine{font-size:11px;color:var(--text3);margin-top:10px;display:none}
-.rev-mine strong{color:#4ade80}
-body.light .rev-card{background:#fff}
-body.light .rev-inp{background:#f5f5f5;border-color:rgba(0,0,0,.1);color:#111}
-body.light .rev-amount .rev-num{color:#111}
+/* ── CİRO BÖLÜMÜ ── */
+.ciro-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin:0 0 28px;position:relative;overflow:hidden}
+.ciro-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(74,222,128,.4),transparent)}
+.ciro-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.ciro-meta{display:flex;flex-direction:column;gap:3px}
+.ciro-ay{font-size:10px;font-family:var(--mono);letter-spacing:1.5px;color:var(--text3);text-transform:uppercase}
+.ciro-baslik{font-size:13px;font-weight:700;color:var(--text)}
+.ciro-canli{display:flex;align-items:center;gap:5px;font-size:10px;font-family:var(--mono);color:#4ade80;letter-spacing:1px}
+.ciro-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:ciropulse 2.5s ease-in-out infinite}
+@keyframes ciropulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{opacity:.5;box-shadow:0 0 0 5px rgba(74,222,128,0)}}
+.ciro-sayi{font-size:38px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:4px;font-family:var(--font)}
+.ciro-sayi .ciro-sign{font-size:22px;color:#4ade80;font-weight:700}
+.ciro-sayi .ciro-num{color:var(--white)}
+.ciro-aciklama{font-size:11px;color:var(--text3);margin-bottom:16px}
+.ciro-sep{height:1px;background:var(--border);margin-bottom:14px}
+.ciro-ekle-label{font-size:10px;font-family:var(--mono);letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;margin-bottom:8px}
+.ciro-row{display:flex;gap:8px}
+.ciro-inp{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:14px;font-family:var(--mono);outline:none;transition:border-color .2s;min-width:0}
+.ciro-inp:focus{border-color:rgba(74,222,128,.5)}
+.ciro-inp::placeholder{color:var(--text3);font-size:12px}
+.ciro-btn{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);border-radius:8px;color:#4ade80;font-size:11px;font-weight:700;letter-spacing:.5px;padding:9px 16px;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:var(--mono)}
+.ciro-btn:hover{background:rgba(74,222,128,.22)}
+.ciro-benim{font-size:11px;color:var(--text3);margin-top:10px;display:none}
+.ciro-benim strong{color:#4ade80}
+body.light .ciro-card{background:#fff}
+body.light .ciro-inp{background:#f5f5f5;border-color:rgba(0,0,0,.1);color:#111}
+body.light .ciro-sayi .ciro-num{color:#111}
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+// ── CİRO ───────────────────────────────────────────────
+var _ciroCur = 0, _ciroRaf = null;
 
-
-
-// ── REVENUE ────────────────────────────────────────────
-var _revCur = 0, _revRaf = null;
-
-function revMonthKey(){
-  var d=new Date(); return 'rev_'+d.getFullYear()+'_'+(d.getMonth()+1);
+function ciroAyKey(){
+  var d = new Date();
+  return 'ciro_' + d.getFullYear() + '_' + (d.getMonth() + 1);
 }
-function revMonthLabel(){
-  var m=['OCAK','ŞUBAT','MART','NİSAN','MAYIS','HAZİRAN','TEMMUZ','AĞUSTOS','EYLÜL','EKİM','KASIM','ARALIK'];
-  var d=new Date(); return m[d.getMonth()]+' '+d.getFullYear();
+
+function ciroAyLabel(){
+  var aylar = ['OCAK','ŞUBAT','MART','NİSAN','MAYIS','HAZİRAN','TEMMUZ','AĞUSTOS','EYLÜL','EKİM','KASIM','ARALIK'];
+  var d = new Date();
+  return aylar[d.getMonth()] + ' ' + d.getFullYear();
 }
-function revCalc(extra){
-  var d=new Date();
-  var start=new Date(d.getFullYear(),d.getMonth(),1);
-  var hrs=(d-start)/3600000;
-  return Math.floor(47320+(hrs*300)+(extra||0));
+
+function ciroHesapla(extra){
+  var d = new Date();
+  var ayBasi = new Date(d.getFullYear(), d.getMonth(), 1);
+  var saatGecti = (d - ayBasi) / 3600000;
+  return Math.floor(47320 + (saatGecti * 300) + (extra || 0));
 }
-function revAnimate(target){
-  if(_revRaf) cancelAnimationFrame(_revRaf);
-  var from=_revCur, diff=target-from, dur=1400, t0=null;
-  function step(ts){
-    if(!t0)t0=ts;
-    var p=Math.min((ts-t0)/dur,1), e=1-Math.pow(1-p,4);
-    _revCur=Math.floor(from+diff*e);
-    var el=document.getElementById('rev-counter');
-    if(el) el.textContent=_revCur.toLocaleString('en-US');
-    if(p<1)_revRaf=requestAnimationFrame(step);
+
+function ciroAnimate(hedef){
+  if(_ciroRaf) cancelAnimationFrame(_ciroRaf);
+  var baslangic = _ciroCur, fark = hedef - baslangic, sure = 1400, t0 = null;
+  function adim(ts){
+    if(!t0) t0 = ts;
+    var p = Math.min((ts - t0) / sure, 1);
+    var e = 1 - Math.pow(1 - p, 4);
+    _ciroCur = Math.floor(baslangic + fark * e);
+    var el = document.getElementById('ciro-num');
+    if(el) el.textContent = _ciroCur.toLocaleString('en-US');
+    if(p < 1) _ciroRaf = requestAnimationFrame(adim);
   }
-  requestAnimationFrame(step);
+  requestAnimationFrame(adim);
 }
-function initRevenue(){
-  var ml=document.getElementById('rev-month-label');
-  if(ml) ml.textContent=revMonthLabel();
-  var mk=revMonthKey();
-  // Load shared extra from Supabase
-  _sb.from('revenue').select('total_extra').eq('month_key',mk).maybeSingle().then(function(r){
-    var extra=(r.data&&r.data.total_extra)||0;
-    revAnimate(revCalc(extra));
-    // Tick every hour
-    setInterval(function(){revAnimate(revCalc(extra));},3600000);
-  }).catch(function(){ revAnimate(revCalc(0)); });
-  // Load my contribution
+
+function initCiro(){
+  var ayEl = document.getElementById('ciro-ay');
+  if(ayEl) ayEl.textContent = ciroAyLabel();
+
+  var mk = ciroAyKey();
+
+  _sb.from('revenue').select('total_extra').eq('month_key', mk).maybeSingle().then(function(r){
+    var extra = (r && r.data && r.data.total_extra) || 0;
+    ciroAnimate(ciroHesapla(extra));
+    setInterval(function(){ ciroAnimate(ciroHesapla(extra)); }, 3600000);
+  }).catch(function(){
+    ciroAnimate(ciroHesapla(0));
+  });
+
+  // Benim katkım
   try{
-    var my=localStorage.getItem('mlynr6_rev_'+mk);
-    if(my&&parseInt(my)>0){
-      var m=document.getElementById('rev-mine');
-      var mv=document.getElementById('rev-mine-val');
-      if(m&&mv){m.style.display='block';mv.textContent='$'+parseInt(my).toLocaleString('en-US');}
+    var benim = localStorage.getItem('mlynr6_ciro_' + mk);
+    if(benim && parseInt(benim) > 0){
+      var el = document.getElementById('ciro-benim');
+      var val = document.getElementById('ciro-benim-val');
+      if(el && val){ el.style.display = 'block'; val.textContent = '$' + parseInt(benim).toLocaleString('en-US'); }
     }
   }catch(e){}
 }
-function addMyRevenue(){
-  var inp=document.getElementById('rev-input');
-  var val=parseInt(inp&&inp.value)||0;
-  if(val<=0){if(inp)inp.focus();return;}
-  inp.value='';
-  var mk=revMonthKey();
-  // Save locally
-  try{localStorage.setItem('mlynr6_rev_'+mk,val);}catch(e){}
-  var m=document.getElementById('rev-mine');
-  var mv=document.getElementById('rev-mine-val');
-  if(m&&mv){m.style.display='block';mv.textContent='$'+val.toLocaleString('en-US');}
-  // Update Supabase
-  _sb.from('revenue').select('total_extra').eq('month_key',mk).maybeSingle().then(function(r){
-    var prev=(r.data&&r.data.total_extra)||0;
-    var next=prev+val;
-    if(r.data){
-      _sb.from('revenue').update({total_extra:next}).eq('month_key',mk).then(function(){});
+
+function ciroEkle(){
+  var inp = document.getElementById('ciro-inp');
+  var val = parseInt(inp && inp.value) || 0;
+  if(val <= 0){ if(inp) inp.focus(); return; }
+  inp.value = '';
+
+  var mk = ciroAyKey();
+  try{ localStorage.setItem('mlynr6_ciro_' + mk, val); }catch(e){}
+
+  var benimEl = document.getElementById('ciro-benim');
+  var benimVal = document.getElementById('ciro-benim-val');
+  if(benimEl && benimVal){ benimEl.style.display = 'block'; benimVal.textContent = '$' + val.toLocaleString('en-US'); }
+
+  _sb.from('revenue').select('total_extra').eq('month_key', mk).maybeSingle().then(function(r){
+    var prev = (r && r.data && r.data.total_extra) || 0;
+    var yeni = prev + val;
+    if(r && r.data){
+      _sb.from('revenue').update({total_extra: yeni}).eq('month_key', mk).then(function(){});
     } else {
-      _sb.from('revenue').insert({month_key:mk,total_extra:val}).then(function(){});
+      _sb.from('revenue').insert({month_key: mk, total_extra: val}).then(function(){});
     }
-    revAnimate(revCalc(next));
-  }).catch(function(){revAnimate(revCalc(val));});
+    ciroAnimate(ciroHesapla(yeni));
+  }).catch(function(){ ciroAnimate(ciroHesapla(val)); });
 }
 
 </script>
@@ -948,28 +927,26 @@ function addMyRevenue(){
     </div>
   </div>
 
-
-  <!-- REVENUE -->
-  <div class="rev-wrap">
-    <div class="rev-card">
-      <div class="rev-top">
-        <div>
-          <div class="rev-label" id="rev-month-label">MART 2026</div>
-          <div class="rev-title">Toplam Kursiyer Cirosu</div>
-        </div>
-        <div class="rev-badge"><div class="rev-dot"></div>CANLI</div>
+  <!-- CİRO -->
+  <div class="ciro-card">
+    <div class="ciro-head">
+      <div class="ciro-meta">
+        <div class="ciro-ay" id="ciro-ay">MART 2026</div>
+        <div class="ciro-baslik">Toplam Kursiyer Cirosu</div>
       </div>
-      <div class="rev-amount"><span class="rev-sign">$</span><span class="rev-num" id="rev-counter">0</span></div>
-      <div class="rev-sub">Bu ay tüm MLYNR. kursiyerlerinin e-ticaret cirosu</div>
-      <div class="rev-sep"></div>
-      <div class="rev-label" style="margin-bottom:8px">Kendi cironu ekle</div>
-      <div class="rev-row">
-        <input class="rev-inp" id="rev-input" type="number" min="1" placeholder="Bu ay kaç $ ciro yaptın?">
-        <button class="rev-btn" onclick="addMyRevenue()">+ EKLE</button>
-      </div>
-      <div class="rev-mine" id="rev-mine">Senin katkın: <strong id="rev-mine-val">$0</strong></div>
+      <div class="ciro-canli"><div class="ciro-dot"></div>CANLI</div>
     </div>
+    <div class="ciro-sayi"><span class="ciro-sign">$</span><span class="ciro-num" id="ciro-num">0</span></div>
+    <div class="ciro-aciklama">Bu ay tüm MLYNR. kursiyerlerinin e-ticaret cirosu</div>
+    <div class="ciro-sep"></div>
+    <div class="ciro-ekle-label">Bu aya kendi cironu ekle</div>
+    <div class="ciro-row">
+      <input class="ciro-inp" id="ciro-inp" type="number" min="1" placeholder="Bu ay kaç $ ciro yaptın?">
+      <button class="ciro-btn" onclick="ciroEkle()">+ EKLE</button>
+    </div>
+    <div class="ciro-benim" id="ciro-benim">Senin katkın: <strong id="ciro-benim-val">$0</strong></div>
   </div>
+
   <!-- TG -->
   <div class="tg-section">
     <a href="https://t.me/mlynr_bot" target="_blank" class="tg-btn">
@@ -1342,7 +1319,7 @@ function showApp(){
   render();
   renderSpin();
   checkVersion();
-  setTimeout(function(){try{initRevenue();}catch(e){}try{initScrollAnim();}catch(e){}}, 50);
+  setTimeout(initScrollAnim, 50);
 }
 
 // ── RENDER HELPERS ────────────────────────────────────────────
