@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a0a; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 32px 16px; font-family: Arial, sans-serif; }
+h2 { color: rgba(255,255,255,0.4); font-size: 12px; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
+canvas { border-radius: 20px; box-shadow: 0 16px 64px rgba(34,197,94,0.18), 0 4px 24px rgba(0,0,0,0.6); max-width: 360px; width: 100%; }
+button { margin-top: 24px; background: #22c55e; color: #000; border: none; padding: 14px 40px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; letter-spacing: 0.5px; }
+button:hover { background: #16a34a; }
+</style>
+</head>
+<body>
+<h2>İlk Satış — Instagram Story Önizleme</h2>
+<canvas id="fs-canvas"></canvas>
+<button onclick="dl()">PNG İndir (1080×1920)</button>
+<script>
+window.onload = function(){ draw(); };
+function draw(){
+  var c=document.getElementById('fs-canvas');
+  var W=1080,H=1920;
+  c.width=W; c.height=H;
+  var ctx=c.getContext('2d');
+
+  ctx.fillStyle='#040904';
+  ctx.fillRect(0,0,W,H);
+
+  var gt=ctx.createRadialGradient(W/2,0,0,W/2,0,700);
+  gt.addColorStop(0,'rgba(34,197,94,0.10)');
+  gt.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=gt; ctx.fillRect(0,0,W,H);
+
+  var gc=ctx.createRadialGradient(W/2,H*0.42,0,W/2,H*0.42,640);
+  gc.addColorStop(0,'rgba(34,197,94,0.08)');
+  gc.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=gc; ctx.fillRect(0,0,W,H);
+
+  var gb=ctx.createRadialGradient(W/2,H,0,W/2,H,600);
+  gb.addColorStop(0,'rgba(34,197,94,0.14)');
+  gb.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=gb; ctx.fillRect(0,0,W,H);
+
+  ctx.fillStyle='rgba(34,197,94,0.055)';
+  for(var gx=60;gx<W;gx+=60)
+    for(var gy=60;gy<H;gy+=60){
+      ctx.beginPath(); ctx.arc(gx,gy,1.3,0,Math.PI*2); ctx.fill();
+    }
+
+  // TOP BAR
+  ctx.fillStyle='#ffffff';
+  ctx.font='900 30px Arial, sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText('MLYNR.',68,96);
+
+  ctx.beginPath(); ctx.arc(W-68,82,6,0,Math.PI*2);
+  ctx.fillStyle='#22c55e'; ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,0.28)';
+  ctx.font='500 13px monospace';
+  ctx.textAlign='right';
+  ctx.fillText('kursiyer portali',W-84,88);
+
+  ctx.strokeStyle='rgba(34,197,94,0.18)';
+  ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(68,114); ctx.lineTo(W-68,114); ctx.stroke();
+
+  ctx.font='140px serif';
+  ctx.textAlign='center';
+  ctx.fillText('🏆',W/2,360);
+
+  var pillW=300,pillH=48,pillX=(W-pillW)/2,pillY=386;
+  ctx.fillStyle='rgba(34,197,94,0.1)';
+  ctx.strokeStyle='rgba(34,197,94,0.4)';
+  ctx.lineWidth=1;
+  ctx.beginPath(); ctx.roundRect(pillX,pillY,pillW,pillH,24); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#22c55e';
+  ctx.font='700 15px Arial, sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('TEBRİKLER',W/2,419);
+
+  ctx.fillStyle='#ffffff';
+  ctx.font='900 260px Arial, sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('İLK',W/2,730);
+
+  ctx.shadowColor='rgba(34,197,94,0.6)';
+  ctx.shadowBlur=60;
+  ctx.fillStyle='#22c55e';
+  ctx.font='900 230px Arial, sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('SATIŞ!',W/2,960);
+  ctx.shadowBlur=0; ctx.shadowColor='transparent';
+
+  var ulW=600,ulX=(W-ulW)/2;
+  var ulg=ctx.createLinearGradient(ulX,0,ulX+ulW,0);
+  ulg.addColorStop(0,'rgba(34,197,94,0)');
+  ulg.addColorStop(0.5,'rgba(34,197,94,0.8)');
+  ulg.addColorStop(1,'rgba(34,197,94,0)');
+  ctx.fillStyle=ulg; ctx.fillRect(ulX,982,ulW,4);
+
+  ctx.fillStyle='rgba(255,255,255,0.4)';
+  ctx.font='400 24px Arial, sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('İlk adım atıldı. Yolculuk başlıyor.',W/2,1044);
+
+  var badges=[{icon:'🏆',label:'İlk Satış'},{icon:'⚡',label:'Sistem Aktif'},{icon:'🚀',label:'Ölçeklendir'}];
+  var bW=264,bH=104,bGap=24;
+  var bTotal=badges.length*bW+(badges.length-1)*bGap;
+  var bSX=(W-bTotal)/2, bY=1096;
+  badges.forEach(function(b,i){
+    var bx=bSX+i*(bW+bGap);
+    ctx.fillStyle='rgba(34,197,94,0.05)';
+    ctx.strokeStyle='rgba(34,197,94,0.2)';
+    ctx.lineWidth=1;
+    ctx.beginPath(); ctx.roundRect(bx,bY,bW,bH,12); ctx.fill(); ctx.stroke();
+    ctx.font='28px serif'; ctx.textAlign='center';
+    ctx.fillText(b.icon,bx+bW/2,bY+44);
+    ctx.fillStyle='rgba(255,255,255,0.55)';
+    ctx.font='700 14px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(b.label,bx+bW/2,bY+76);
+  });
+
+  var dg=ctx.createLinearGradient(68,0,W-68,0);
+  dg.addColorStop(0,'rgba(34,197,94,0)');
+  dg.addColorStop(0.5,'rgba(34,197,94,0.2)');
+  dg.addColorStop(1,'rgba(34,197,94,0)');
+  ctx.strokeStyle=dg; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(68,1240); ctx.lineTo(W-68,1240); ctx.stroke();
+
+  var qX=68,qY=1272,qW=W-136,qH=480;
+  ctx.fillStyle='rgba(255,255,255,0.025)';
+  ctx.strokeStyle='rgba(255,255,255,0.07)';
+  ctx.lineWidth=1;
+  ctx.beginPath(); ctx.roundRect(qX,qY,qW,qH,20); ctx.fill(); ctx.stroke();
+
+  var tg=ctx.createLinearGradient(qX,qY,qX+qW,qY);
+  tg.addColorStop(0,'rgba(34,197,94,0)');
+  tg.addColorStop(0.3,'rgba(34,197,94,0.5)');
+  tg.addColorStop(0.7,'rgba(34,197,94,0.5)');
+  tg.addColorStop(1,'rgba(34,197,94,0)');
+  ctx.fillStyle=tg; ctx.fillRect(qX+20,qY,qW-40,2);
+
+  ctx.fillStyle='rgba(34,197,94,0.08)';
+  ctx.font='900 200px Arial, sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText('"',qX+30,qY+200);
+
+  ctx.fillStyle='rgba(255,255,255,0.75)';
+  ctx.font='400 30px Arial, sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText('İlk satış en zor olanı.',qX+48,qY+148);
+  ctx.fillText('Artık algoritma seni tanıyor,',qX+48,qY+196);
+  ctx.fillText('sistem çalışıyor.',qX+48,qY+244);
+
+  ctx.fillStyle='#ffffff';
+  ctx.font='700 32px Arial, sans-serif';
+  ctx.fillText('Bundan sonrası sadece',qX+48,qY+308);
+  ctx.fillStyle='#22c55e';
+  ctx.font='700 32px Arial, sans-serif';
+  ctx.fillText('ölçeklendirmek.',qX+48,qY+354);
+
+  ctx.strokeStyle='rgba(34,197,94,0.25)';
+  ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(qX+48,qY+382); ctx.lineTo(qX+qW-48,qY+382); ctx.stroke();
+
+  ctx.fillStyle='rgba(34,197,94,0.7)';
+  ctx.font='700 14px monospace';
+  ctx.textAlign='left';
+  ctx.fillText('Canberk Öztürk',qX+48,qY+418);
+  ctx.fillStyle='rgba(255,255,255,0.3)';
+  ctx.font='400 13px monospace';
+  ctx.fillText('Kurucu, MLYNR.',qX+48,qY+444);
+
+  var now=new Date();
+  var months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  var ds=now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
+  ctx.fillStyle='rgba(255,255,255,0.15)';
+  ctx.font='400 14px monospace';
+  ctx.textAlign='center';
+  ctx.fillText(ds,W/2,1838);
+
+  ctx.strokeStyle='rgba(34,197,94,0.15)';
+  ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(68,1856); ctx.lineTo(W-68,1856); ctx.stroke();
+
+  ctx.beginPath(); ctx.arc(76,1874,5,0,Math.PI*2);
+  ctx.fillStyle='#22c55e'; ctx.fill();
+
+  ctx.fillStyle='rgba(255,255,255,0.55)';
+  ctx.font='700 14px monospace';
+  ctx.textAlign='left';
+  ctx.fillText('mlynr.com',90,1880);
+
+  ctx.fillStyle='rgba(255,255,255,0.22)';
+  ctx.font='400 14px monospace';
+  ctx.textAlign='right';
+  ctx.fillText('@canberkreels',W-68,1880);
+}
+
+function dl(){
+  var c=document.getElementById('fs-canvas');
+  var a=document.createElement('a');
+  a.download='ilk-satis-story.png';
+  a.href=c.toDataURL('image/png');
+  a.click();
+}
+</script>
+</body>
+</html>
