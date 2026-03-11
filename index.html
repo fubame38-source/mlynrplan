@@ -579,7 +579,7 @@ body.light .footer-btn:hover {
 
 
 /* == FIRST SALE CARD == */
-.fs-card{background:linear-gradient(160deg,#0a0a0a 0%,#111 40%,#0d1a0d 100%);border:1px solid rgba(34,197,94,.25);border-radius:20px;overflow:hidden;position:relative}
+.fs-card{background:linear-gradient(160deg,#0a0a0a 0%,#111 40%,#0d1a0d 100%);border:1px solid rgba(34,197,94,.25);border-radius:20px;position:relative}
 .fs-top-bar{background:linear-gradient(90deg,#22c55e,#16a34a,#22c55e);background-size:200% 100%;animation:fsShimmer 2.5s linear infinite;padding:6px 16px;font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#000;font-weight:700}
 @keyframes fsShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .fs-body{padding:28px 28px 24px}
@@ -763,7 +763,7 @@ body.light .footer-btn:hover {
 
   <!-- FIRST SALE BUTTON -->
   <div id="firstsale-overlay" class="overlay" onclick="closeFirstSale()"></div>
-  <div id="firstsale-popup" class="popup" style="text-align:center;max-width:400px;padding:0;overflow:hidden;background:transparent;border:none;box-shadow:none">
+  <div id="firstsale-popup" class="popup" style="text-align:center;max-width:400px;padding:0;overflow-y:auto;background:transparent;border:none;box-shadow:none">
     <div class="fs-card">
       <div class="fs-top-bar">🏆 MLYNR — İLK SATIŞ BAŞARISI</div>
       <div class="fs-body">
@@ -775,7 +775,7 @@ body.light .footer-btn:hover {
           <div class="fs-quote-author"><span class="fs-quote-dot"></span>Canberk Öztürk</div>
           <div class="fs-quote-text">"İlk satış en zor olanı. Artık algoritma seni tanıyor, sistem çalışıyor. Bundan sonrası sadece <strong>ölçeklendirmek.</strong>"</div>
         </div>
-        <div class="fs-canvas-wrap"><canvas id="fs-canvas" width="688" height="388"></canvas></div>
+        <div class="fs-canvas-wrap"><canvas id="fs-canvas" width="688" height="480"></canvas></div>
         <div class="fs-btn-row" id="fs-btn-row">
           <button class="fs-btn-dl" onclick="fsDownloadCard()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 15V3m0 12l-4-4m4 4l4-4"/><path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
@@ -1565,38 +1565,31 @@ function fsDrawCard(){
   try{
     var c=document.getElementById('fs-canvas');
     if(!c) return;
-    c.width=688; c.height=820;
+    c.width=688; c.height=480;
     var ctx=c.getContext('2d');
-    var W=688,H=820;
-    // BG
+    var W=688,H=480;
     var bg=ctx.createLinearGradient(0,0,0,H);
-    bg.addColorStop(0,'#060e06');
-    bg.addColorStop(0.4,'#0a150a');
-    bg.addColorStop(1,'#060e06');
+    bg.addColorStop(0,'#060e06'); bg.addColorStop(0.5,'#0a150a'); bg.addColorStop(1,'#060e06');
     ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
-    // Top glow
-    var glow=ctx.createRadialGradient(W/2,0,0,W/2,0,360);
-    glow.addColorStop(0,'rgba(34,197,94,0.22)');
-    glow.addColorStop(1,'rgba(34,197,94,0)');
+    var glow=ctx.createRadialGradient(W/2,0,0,W/2,0,320);
+    glow.addColorStop(0,'rgba(34,197,94,0.25)'); glow.addColorStop(1,'rgba(34,197,94,0)');
     ctx.fillStyle=glow; ctx.fillRect(0,0,W,H);
-    // Border
-    ctx.strokeStyle='rgba(34,197,94,0.4)'; ctx.lineWidth=1.5;
-    ctx.beginPath(); ctx.rect(2,2,W-4,H-4); ctx.stroke();
-    // Top bar
+    var glow2=ctx.createRadialGradient(W/2,H,0,W/2,H,200);
+    glow2.addColorStop(0,'rgba(34,197,94,0.12)'); glow2.addColorStop(1,'rgba(34,197,94,0)');
+    ctx.fillStyle=glow2; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(34,197,94,0.45)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.rect(1,1,W-2,H-2); ctx.stroke();
     var bar=ctx.createLinearGradient(0,0,W,0);
     bar.addColorStop(0,'#16a34a'); bar.addColorStop(0.5,'#22c55e'); bar.addColorStop(1,'#16a34a');
-    ctx.fillStyle=bar; ctx.fillRect(0,0,W,8);
-    // Bottom bar
-    ctx.fillStyle=bar; ctx.fillRect(0,H-8,W,8);
-    // Corner dots
-    var cdots=[[22,22],[W-22,22],[22,H-22],[W-22,H-22]];
+    ctx.fillStyle=bar; ctx.fillRect(0,0,W,7);
+    ctx.fillStyle=bar; ctx.fillRect(0,H-7,W,7);
+    var cdots=[[18,18],[W-18,18],[18,H-18],[W-18,H-18]];
     for(var i=0;i<cdots.length;i++){
       ctx.beginPath(); ctx.arc(cdots[i][0],cdots[i][1],4,0,Math.PI*2);
-      ctx.fillStyle='rgba(34,197,94,0.6)'; ctx.fill();
+      ctx.fillStyle='rgba(34,197,94,0.7)'; ctx.fill();
     }
-    // MLYNR badge
-    ctx.fillStyle='rgba(34,197,94,0.12)';
-    var bx=W/2-54,by=28,bw=108,bh=26,br=13;
+    var bx=W/2-56,by=22,bw=112,bh=26,br=13;
+    ctx.fillStyle='rgba(34,197,94,0.15)';
     ctx.beginPath();
     ctx.moveTo(bx+br,by); ctx.lineTo(bx+bw-br,by);
     ctx.quadraticCurveTo(bx+bw,by,bx+bw,by+br);
@@ -1604,64 +1597,26 @@ function fsDrawCard(){
     ctx.lineTo(bx+br,by+bh); ctx.quadraticCurveTo(bx,by+bh,bx,by+bh-br);
     ctx.lineTo(bx,by+br); ctx.quadraticCurveTo(bx,by,bx+br,by); ctx.closePath();
     ctx.fill();
-    ctx.strokeStyle='rgba(34,197,94,0.3)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.strokeStyle='rgba(34,197,94,0.4)'; ctx.lineWidth=1; ctx.stroke();
     ctx.fillStyle='#22c55e'; ctx.font='bold 11px monospace'; ctx.textAlign='center';
-    ctx.fillText('MLYNR.COM',W/2,46);
-    // Trophy
-    ctx.font='74px serif'; ctx.textAlign='center';
-    ctx.fillText('\u{1F3C6}',W/2,152);
-    // Title
-    ctx.fillStyle='#ffffff'; ctx.font='bold 60px Geist, Arial, sans-serif'; ctx.textAlign='center';
-    ctx.fillText('\u0130LK SATI\u015e!',W/2,224);
-    // Subtitle
-    ctx.fillStyle='#22c55e'; ctx.font='500 19px Geist, Arial, sans-serif'; ctx.textAlign='center';
-    ctx.fillText("\u0130lk ad\u0131m at\u0131ld\u0131. Yolculuk ba\u015fl\u0131yor.",W/2,260);
-    // Divider
+    ctx.fillText('MLYNR.COM',W/2,40);
+    ctx.font='90px serif'; ctx.textAlign='center';
+    ctx.fillText('🏆',W/2,160);
+    ctx.fillStyle='#ffffff'; ctx.font='bold 64px Arial, sans-serif'; ctx.textAlign='center';
+    ctx.fillText('İLK SATIŞ!',W/2,238);
+    ctx.fillStyle='#22c55e'; ctx.font='500 20px Arial, sans-serif'; ctx.textAlign='center';
+    ctx.fillText('İlk adım atıldı. Yolculuk başlıyor.',W/2,276);
     ctx.strokeStyle='rgba(34,197,94,0.2)'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(48,282); ctx.lineTo(W-48,282); ctx.stroke();
-    // Quote box
-    var qx=44,qy=298,qw=W-88,qh=330,qr=14;
-    ctx.fillStyle='rgba(34,197,94,0.07)';
-    ctx.beginPath();
-    ctx.moveTo(qx+qr,qy); ctx.lineTo(qx+qw-qr,qy);
-    ctx.quadraticCurveTo(qx+qw,qy,qx+qw,qy+qr);
-    ctx.lineTo(qx+qw,qy+qh-qr); ctx.quadraticCurveTo(qx+qw,qy+qh,qx+qw-qr,qy+qh);
-    ctx.lineTo(qx+qr,qy+qh); ctx.quadraticCurveTo(qx,qy+qh,qx,qy+qh-qr);
-    ctx.lineTo(qx,qy+qr); ctx.quadraticCurveTo(qx,qy,qx+qr,qy); ctx.closePath();
-    ctx.fill();
-    ctx.strokeStyle='rgba(34,197,94,0.18)'; ctx.lineWidth=1; ctx.stroke();
-    // Left accent line
-    ctx.fillStyle='#22c55e'; ctx.fillRect(qx,qy+14,3,qh-28);
-    // Author dot
-    ctx.beginPath(); ctx.arc(qx+22,qy+30,4,0,Math.PI*2);
-    ctx.fillStyle='#22c55e'; ctx.fill();
-    ctx.fillStyle='#22c55e'; ctx.font='bold 11px monospace'; ctx.textAlign='left';
-    ctx.fillText('CANBERK \u00d6ZT\u00dcRK',qx+34,qy+35);
-    // Quote lines (italic)
-    ctx.fillStyle='rgba(255,255,255,0.72)';
-    ctx.font='italic 19px Geist, Georgia, serif';
-    var qlines=[
-      '\u201cİlk sat\u0131\u015f en zor olan\u0131. Art\u0131k algoritma',
-      'seni tan\u0131yor, sistem \u00e7al\u0131\u015f\u0131yor.',
-      'Bundan sonras\u0131 sadece...\u201d'
-    ];
-    var ly=qy+72;
-    for(var i=0;i<qlines.length;i++){ ctx.fillText(qlines[i],qx+20,ly); ly+=32; }
-    // Bold conclusion
-    ctx.fillStyle='#ffffff'; ctx.font='bold 24px Geist, Arial, sans-serif';
-    ctx.fillText('\u201eölçeklendirmek.\u201d',qx+20,ly+10);
-    // Date
+    ctx.beginPath(); ctx.moveTo(60,306); ctx.lineTo(W-60,306); ctx.stroke();
     var now=new Date();
-    var months=['Ocak','\u015eubat','Mart','Nisan','May\u0131s','Haziran',
-                'Temmuz','A\u011fustos','Eyl\u00fcl','Ekim','Kas\u0131m','Aral\u0131k'];
+    var months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
     var dateStr=now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
-    ctx.fillStyle='rgba(255,255,255,0.28)'; ctx.font='13px monospace'; ctx.textAlign='center';
-    ctx.fillText(dateStr,W/2,qy+qh+38);
-    // Bottom branding
-    ctx.fillStyle='rgba(34,197,94,0.55)'; ctx.font='bold 12px monospace'; ctx.textAlign='left';
-    ctx.fillText('MLYNR.COM',30,H-22);
-    ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.font='12px monospace'; ctx.textAlign='right';
-    ctx.fillText('@canberkreels',W-30,H-22);
+    ctx.fillStyle='rgba(255,255,255,0.32)'; ctx.font='14px monospace'; ctx.textAlign='center';
+    ctx.fillText(dateStr,W/2,346);
+    ctx.fillStyle='rgba(34,197,94,0.6)'; ctx.font='bold 13px monospace'; ctx.textAlign='left';
+    ctx.fillText('MLYNR.COM',30,H-20);
+    ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.font='13px monospace'; ctx.textAlign='right';
+    ctx.fillText('@canberkreels',W-30,H-20);
   }catch(e){ console.error('fsDrawCard:',e); }
 }
 
