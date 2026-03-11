@@ -1952,276 +1952,302 @@ function certDraw(){
     var months2=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
     var recipientName = getUserName() || email.split('@')[0];
 
-    // ── BACKGROUND ─────────────────────────────────────────────
-    // Deep dark base
-    ctx.fillStyle='#07090a';
-    ctx.fillRect(0,0,W,H);
+    // ══════════════════════════════════════════════════════
+    // BACKGROUND — tam siyah, hiç şerit yok
+    // ══════════════════════════════════════════════════════
+    ctx.fillStyle = '#080a09';
+    ctx.fillRect(0, 0, W, H);
 
-    // Subtle grain texture via tiny dots
-    ctx.fillStyle='rgba(255,255,255,0.012)';
-    for(var tx=0;tx<W;tx+=4)
-      for(var ty=0;ty<H;ty+=4)
-        if(Math.random()>0.65){ctx.beginPath();ctx.arc(tx,ty,0.6,0,Math.PI*2);ctx.fill();}
+    // Subtle full-canvas vignette — sadece köşeler karartılıyor
+    var vig = ctx.createRadialGradient(W/2, H/2, H*0.2, W/2, H/2, H*0.9);
+    vig.addColorStop(0, 'rgba(0,0,0,0)');
+    vig.addColorStop(1, 'rgba(0,0,0,0.55)');
+    ctx.fillStyle = vig;
+    ctx.fillRect(0, 0, W, H);
 
-    // Left edge vertical gradient accent
-    var edgeL=ctx.createLinearGradient(0,0,0,H);
-    edgeL.addColorStop(0,'rgba(250,204,21,0)');
-    edgeL.addColorStop(0.4,'rgba(250,204,21,0.06)');
-    edgeL.addColorStop(0.6,'rgba(34,197,94,0.05)');
-    edgeL.addColorStop(1,'rgba(34,197,94,0)');
-    ctx.fillStyle=edgeL; ctx.fillRect(0,0,W*0.35,H);
+    // Çok hafif altın merkez parıltısı
+    var cGlow = ctx.createRadialGradient(W/2, H*0.45, 0, W/2, H*0.45, W*0.55);
+    cGlow.addColorStop(0, 'rgba(250,204,21,0.05)');
+    cGlow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = cGlow;
+    ctx.fillRect(0, 0, W, H);
 
-    // Right edge
-    var edgeR=ctx.createLinearGradient(W,0,W,H);
-    edgeR.addColorStop(0,'rgba(34,197,94,0)');
-    edgeR.addColorStop(0.4,'rgba(34,197,94,0.04)');
-    edgeR.addColorStop(0.6,'rgba(250,204,21,0.04)');
-    edgeR.addColorStop(1,'rgba(250,204,21,0)');
-    ctx.fillStyle=edgeR; ctx.fillRect(W*0.65,0,W*0.35,H);
+    // ══════════════════════════════════════════════════════
+    // ÇERÇEVELer — 3 katman
+    // ══════════════════════════════════════════════════════
+    var M = 60;
 
-    // Top center glow
-    var topGlow=ctx.createRadialGradient(W/2,0,0,W/2,0,H*0.6);
-    topGlow.addColorStop(0,'rgba(250,204,21,0.06)');
-    topGlow.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=topGlow; ctx.fillRect(0,0,W,H);
+    // 1. dış — ince altın
+    ctx.strokeStyle = 'rgba(250,204,21,0.55)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(M, M, W-M*2, H-M*2);
 
-    // Bottom glow
-    var botGlow=ctx.createRadialGradient(W/2,H,0,W/2,H,H*0.5);
-    botGlow.addColorStop(0,'rgba(34,197,94,0.05)');
-    botGlow.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=botGlow; ctx.fillRect(0,0,W,H);
+    // 2. orta — çok soluk
+    ctx.strokeStyle = 'rgba(250,204,21,0.12)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(M+16, M+16, W-M*2-32, H-M*2-32);
 
-    // ── LEFT COLUMN ACCENT ──────────────────────────────────────
-    // Thin vertical gold line left side
-    var vlineX=140;
-    var vg=ctx.createLinearGradient(0,80,0,H-80);
-    vg.addColorStop(0,'rgba(250,204,21,0)');
-    vg.addColorStop(0.2,'rgba(250,204,21,0.35)');
-    vg.addColorStop(0.8,'rgba(250,204,21,0.35)');
-    vg.addColorStop(1,'rgba(250,204,21,0)');
-    ctx.strokeStyle=vg; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(vlineX,80); ctx.lineTo(vlineX,H-80); ctx.stroke();
+    // 3. iç — neredeyse görünmez
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.strokeRect(M+28, M+28, W-M*2-56, H-M*2-56);
 
-    // Right mirror
-    var vlineX2=W-vlineX;
-    ctx.beginPath(); ctx.moveTo(vlineX2,80); ctx.lineTo(vlineX2,H-80); ctx.stroke();
-
-    // ── OUTER BORDER ────────────────────────────────────────────
-    var bm=52;
-    // Gold outer
-    ctx.strokeStyle='rgba(250,204,21,0.22)';
-    ctx.lineWidth=1.5;
-    ctx.strokeRect(bm,bm,W-bm*2,H-bm*2);
-    // Inset hairline
-    ctx.strokeStyle='rgba(250,204,21,0.07)';
-    ctx.lineWidth=1;
-    ctx.strokeRect(bm+14,bm+14,W-bm*2-28,H-bm*2-28);
-
-    // Corner ornaments — L-shaped, two layers
-    function corner(ox,oy,sx,sy){
-      var L1=72,L2=52,G=16;
-      ctx.strokeStyle='rgba(250,204,21,0.7)';
-      ctx.lineWidth=2;
+    // ── Köşe L-ornamentleri ──────────────────────────────
+    function drawCorner(ox, oy, sx, sy) {
+      var A = 80, B = 56, G = 18;
+      // dış L
+      ctx.strokeStyle = 'rgba(250,204,21,0.75)';
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'square';
       ctx.beginPath();
-      ctx.moveTo(ox+sx*L1,oy); ctx.lineTo(ox,oy); ctx.lineTo(ox,oy+sy*L1);
+      ctx.moveTo(ox + sx*A, oy);
+      ctx.lineTo(ox, oy);
+      ctx.lineTo(ox, oy + sy*A);
       ctx.stroke();
-      ctx.strokeStyle='rgba(250,204,21,0.2)';
-      ctx.lineWidth=1;
+      // iç L
+      ctx.strokeStyle = 'rgba(250,204,21,0.25)';
+      ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(ox+sx*(L2+G),oy+sy*G); ctx.lineTo(ox+sx*G,oy+sy*G);
-      ctx.lineTo(ox+sx*G,oy+sy*(L2+G));
+      ctx.moveTo(ox + sx*(B+G), oy+sy*G);
+      ctx.lineTo(ox+sx*G, oy+sy*G);
+      ctx.lineTo(ox+sx*G, oy+sy*(B+G));
       ctx.stroke();
-      // Corner dot
-      ctx.beginPath(); ctx.arc(ox,oy,3,0,Math.PI*2);
-      ctx.fillStyle='rgba(250,204,21,0.6)'; ctx.fill();
+      // köşe nokta
+      ctx.fillStyle = 'rgba(250,204,21,0.8)';
+      ctx.beginPath(); ctx.arc(ox, oy, 3.5, 0, Math.PI*2); ctx.fill();
     }
-    var cm=bm+4;
-    corner(cm,cm,1,1);
-    corner(W-cm,cm,-1,1);
-    corner(cm,H-cm,1,-1);
-    corner(W-cm,H-cm,-1,-1);
+    var CM = M+4;
+    drawCorner(CM, CM, 1, 1);
+    drawCorner(W-CM, CM, -1, 1);
+    drawCorner(CM, H-CM, 1, -1);
+    drawCorner(W-CM, H-CM, -1, -1);
 
-    // ── TOP SECTION ─────────────────────────────────────────────
-    var topY = bm+148; // dikeyde ortalamak için offset arttırıldı
+    // ── Kenar orta süsleri (top/bottom) ─────────────────
+    function midOrnament(cx, cy, horizontal) {
+      ctx.fillStyle = 'rgba(250,204,21,0.45)';
+      if(horizontal) {
+        [-16,-8,0,8,16].forEach(function(dx,i) {
+          var s = i===2 ? 3.5 : (Math.abs(i-2)===1 ? 2.5 : 1.5);
+          ctx.beginPath(); ctx.arc(cx+dx, cy, s, 0, Math.PI*2); ctx.fill();
+        });
+      } else {
+        [-16,-8,0,8,16].forEach(function(dy,i) {
+          var s = i===2 ? 3.5 : (Math.abs(i-2)===1 ? 2.5 : 1.5);
+          ctx.beginPath(); ctx.arc(cx, cy+dy, s, 0, Math.PI*2); ctx.fill();
+        });
+      }
+    }
+    midOrnament(W/2, M, true);
+    midOrnament(W/2, H-M, true);
+    midOrnament(M, H/2, false);
+    midOrnament(W-M, H/2, false);
 
-    // ── MLYNR. LOGO — centered, large, white, premium ──
-    // Logo background pill
-    var logoW=360, logoH=72, logoX=(W-logoW)/2, logoY2=topY-56;
-    
-    // MLYNR. — big centered white wordmark
-    ctx.fillStyle='#ffffff';
-    ctx.font='900 58px "Arial Black","Arial",sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText('MLYNR.',W/2,topY-4);
+    // ══════════════════════════════════════════════════════
+    // LOGO — MLYNR. tam ortada üstte
+    // ══════════════════════════════════════════════════════
+    var logoY = M + 148;
 
-    // Cert number — right aligned small
-    ctx.fillStyle='rgba(255,255,255,0.14)';
-    ctx.font='500 18px monospace';
-    ctx.textAlign='right';
-    var certNo='MLYNR-'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0');
-    ctx.fillText('NO: '+certNo, W-bm-70, topY-4);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '900 64px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('MLYNR.', W/2, logoY);
 
-    // Top rule
-    var ruleY=topY+46;
-    var rg=ctx.createLinearGradient(bm+70,0,W-bm-70,0);
-    rg.addColorStop(0,'rgba(250,204,21,0)');
-    rg.addColorStop(0.15,'rgba(250,204,21,0.4)');
-    rg.addColorStop(0.85,'rgba(250,204,21,0.4)');
-    rg.addColorStop(1,'rgba(250,204,21,0)');
-    ctx.strokeStyle=rg; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(bm+70,ruleY); ctx.lineTo(W-bm-70,ruleY); ctx.stroke();
+    // Logo altı küçük yeşil çizgi
+    var lgw = 120;
+    var lgg = ctx.createLinearGradient(W/2-lgw, 0, W/2+lgw, 0);
+    lgg.addColorStop(0, 'rgba(34,197,94,0)');
+    lgg.addColorStop(0.5, 'rgba(34,197,94,0.6)');
+    lgg.addColorStop(1, 'rgba(34,197,94,0)');
+    ctx.fillStyle = lgg;
+    ctx.fillRect(W/2-lgw, logoY+14, lgw*2, 2);
 
-    // ── CERTIFICATE LABEL ───────────────────────────────────────
-    var cLY=ruleY+90;
-    // Small diamond ornaments
-    function diamond(x,y,size,alpha){
-      ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI/4);
-      ctx.fillStyle='rgba(250,204,21,'+alpha+')';
-      ctx.fillRect(-size,-size,size*2,size*2);
+    // Sertifika no — sağ üst, çok soluk
+    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+    ctx.font = '400 18px monospace';
+    ctx.textAlign = 'right';
+    var certNo = 'MLYNR-'+now.getFullYear()+'-'+
+      String(now.getMonth()+1).padStart(2,'0')+
+      String(now.getDate()).padStart(2,'0');
+    ctx.fillText('NO: '+certNo, W-M-50, M+60);
+
+    // ══════════════════════════════════════════════════════
+    // ÜST KURAL ÇİZGİSİ
+    // ══════════════════════════════════════════════════════
+    var hr1Y = logoY + 50;
+    var hrg = ctx.createLinearGradient(M+60, 0, W-M-60, 0);
+    hrg.addColorStop(0, 'rgba(250,204,21,0)');
+    hrg.addColorStop(0.2, 'rgba(250,204,21,0.5)');
+    hrg.addColorStop(0.8, 'rgba(250,204,21,0.5)');
+    hrg.addColorStop(1, 'rgba(250,204,21,0)');
+    ctx.strokeStyle = hrg; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(M+60, hr1Y); ctx.lineTo(W-M-60, hr1Y); ctx.stroke();
+
+    // ══════════════════════════════════════════════════════
+    // SERTİFİKA LABEL
+    // ══════════════════════════════════════════════════════
+    var labY = hr1Y + 78;
+
+    // Diamond süsleri
+    function diamond(x, y, r, a) {
+      ctx.save(); ctx.translate(x,y); ctx.rotate(Math.PI/4);
+      ctx.fillStyle = 'rgba(250,204,21,'+a+')';
+      ctx.fillRect(-r,-r,r*2,r*2);
       ctx.restore();
     }
-    diamond(W/2-310,cLY-8,5,0.4);
-    diamond(W/2-280,cLY-8,2.5,0.2);
-    diamond(W/2+280,cLY-8,2.5,0.2);
-    diamond(W/2+310,cLY-8,5,0.4);
+    diamond(W/2-290, labY-10, 5.5, 0.5);
+    diamond(W/2-260, labY-10, 3,   0.25);
+    diamond(W/2+260, labY-10, 3,   0.25);
+    diamond(W/2+290, labY-10, 5.5, 0.5);
 
-    ctx.fillStyle='rgba(250,204,21,0.45)';
-    ctx.font='700 22px monospace';
-    ctx.textAlign='center';
-    ctx.fillText('S E R T İ F İ K A', W/2, cLY);
+    ctx.fillStyle = 'rgba(250,204,21,0.5)';
+    ctx.font = '600 22px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('S E R T İ F İ K A', W/2, labY);
 
-    // ── MAIN TITLE ──────────────────────────────────────────────
-    var titleY=cLY+118;
-    // Shadow glow pass
-    ctx.shadowColor='rgba(250,204,21,0.25)';
-    ctx.shadowBlur=80;
-    ctx.fillStyle='#facc15';
-    ctx.font='900 118px "Arial Black","Arial",sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText('E-TİCARET UZMANI',W/2,titleY);
-    ctx.shadowBlur=0; ctx.shadowColor='transparent';
+    // ══════════════════════════════════════════════════════
+    // ANA BAŞLIK — E-TİCARET UZMANI
+    // ══════════════════════════════════════════════════════
+    var titleY = labY + 126;
 
-    // Title underline — gradient bar
-    var ulY=titleY+22;
-    var ulg=ctx.createLinearGradient(W/2-420,0,W/2+420,0);
-    ulg.addColorStop(0,'rgba(250,204,21,0)');
-    ulg.addColorStop(0.3,'rgba(250,204,21,0.7)');
-    ulg.addColorStop(0.7,'rgba(34,197,94,0.5)');
-    ulg.addColorStop(1,'rgba(34,197,94,0)');
-    ctx.fillStyle=ulg; ctx.fillRect(W/2-420,ulY,840,3);
+    ctx.shadowColor = 'rgba(250,204,21,0.3)';
+    ctx.shadowBlur = 70;
+    ctx.fillStyle = '#facc15';
+    ctx.font = '900 128px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('E-TİCARET UZMANI', W/2, titleY);
+    ctx.shadowBlur = 0; ctx.shadowColor = 'transparent';
 
-    // ── AWARDED TO ──────────────────────────────────────────────
-    var aY=ulY+100;
-    ctx.fillStyle='rgba(255,255,255,0.25)';
-    ctx.font='400 28px monospace';
-    ctx.textAlign='center';
-    ctx.fillText('Bu sertifika,',W/2,aY);
+    // Başlık altı gradient bar
+    var barY = titleY + 24;
+    var bag = ctx.createLinearGradient(W/2-500, 0, W/2+500, 0);
+    bag.addColorStop(0,   'rgba(250,204,21,0)');
+    bag.addColorStop(0.3, 'rgba(250,204,21,0.8)');
+    bag.addColorStop(0.7, 'rgba(34,197,94,0.6)');
+    bag.addColorStop(1,   'rgba(34,197,94,0)');
+    ctx.fillStyle = bag;
+    ctx.fillRect(W/2-500, barY, 1000, 3);
 
-    // Recipient name
-    var nameY=aY+120;
-    ctx.shadowColor='rgba(255,255,255,0.1)';
-    ctx.shadowBlur=24;
-    ctx.fillStyle='#ffffff';
-    ctx.font='800 96px "Arial",sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText(recipientName,W/2,nameY);
-    ctx.shadowBlur=0; ctx.shadowColor='transparent';
+    // ══════════════════════════════════════════════════════
+    // KİŞİ ADI
+    // ══════════════════════════════════════════════════════
+    var preY = barY + 108;
+    ctx.fillStyle = 'rgba(255,255,255,0.28)';
+    ctx.font = '400 27px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('Bu sertifika,', W/2, preY);
 
-    // Name underline — green
-    var nmw=Math.min(ctx.measureText(recipientName).width*0.65, 680);
-    var nug=ctx.createLinearGradient(W/2-nmw/2,0,W/2+nmw/2,0);
-    nug.addColorStop(0,'rgba(34,197,94,0)');
-    nug.addColorStop(0.5,'rgba(34,197,94,0.65)');
-    nug.addColorStop(1,'rgba(34,197,94,0)');
-    ctx.fillStyle=nug; ctx.fillRect(W/2-nmw/2,nameY+16,nmw,2);
+    var nameY = preY + 122;
+    ctx.shadowColor = 'rgba(255,255,255,0.12)';
+    ctx.shadowBlur = 28;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '800 104px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(recipientName, W/2, nameY);
+    ctx.shadowBlur = 0; ctx.shadowColor = 'transparent';
 
-    ctx.fillStyle='rgba(255,255,255,0.22)';
-    ctx.font='400 28px monospace';
-    ctx.textAlign='center';
-    ctx.fillText('adına verilmiştir.',W/2,nameY+68);
+    // İsim altı ince yeşil çizgi
+    var nmw2 = Math.min(ctx.measureText(recipientName).width * 0.62, 720);
+    var nug = ctx.createLinearGradient(W/2-nmw2/2, 0, W/2+nmw2/2, 0);
+    nug.addColorStop(0,   'rgba(34,197,94,0)');
+    nug.addColorStop(0.5, 'rgba(34,197,94,0.7)');
+    nug.addColorStop(1,   'rgba(34,197,94,0)');
+    ctx.fillStyle = nug;
+    ctx.fillRect(W/2-nmw2/2, nameY+18, nmw2, 2);
 
-    // ── DESCRIPTION ─────────────────────────────────────────────
-    var descY=nameY+136;
-    ctx.fillStyle='rgba(255,255,255,0.38)';
-    ctx.font='400 28px "Arial",sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText('Start & Scale Dropshipping programını başarıyla tamamlayarak',W/2,descY);
-    ctx.fillText('eBay & Shopify e-ticaret alanında uzman seviyeye ulaşmıştır.',W/2,descY+44);
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    ctx.font = '400 27px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('adına verilmiştir.', W/2, nameY+72);
 
-    // ── DIVIDER ─────────────────────────────────────────────────
-    var divY=descY+114;
-    var dg=ctx.createLinearGradient(bm+70,0,W-bm-70,0);
-    dg.addColorStop(0,'rgba(255,255,255,0)');
-    dg.addColorStop(0.5,'rgba(255,255,255,0.06)');
-    dg.addColorStop(1,'rgba(255,255,255,0)');
-    ctx.strokeStyle=dg; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(bm+70,divY); ctx.lineTo(W-bm-70,divY); ctx.stroke();
+    // ══════════════════════════════════════════════════════
+    // AÇIKLAMA
+    // ══════════════════════════════════════════════════════
+    var descY = nameY + 148;
+    ctx.fillStyle = 'rgba(255,255,255,0.36)';
+    ctx.font = '400 28px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Start & Scale Dropshipping programını başarıyla tamamlayarak', W/2, descY);
+    ctx.fillText('eBay & Shopify e-ticaret alanında uzman seviyeye ulaşmıştır.', W/2, descY+44);
 
-    // ── SIGNATURE AREA ──────────────────────────────────────────
-    var sigY=divY+96;
-    var sigLX=W/2-360, sigRX=W/2+360, sigLineW=280;
+    // ══════════════════════════════════════════════════════
+    // ALT DIVIDER
+    // ══════════════════════════════════════════════════════
+    var divY = descY + 116;
+    var divg = ctx.createLinearGradient(M+60, 0, W-M-60, 0);
+    divg.addColorStop(0,   'rgba(255,255,255,0)');
+    divg.addColorStop(0.5, 'rgba(255,255,255,0.07)');
+    divg.addColorStop(1,   'rgba(255,255,255,0)');
+    ctx.strokeStyle = divg; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(M+60, divY); ctx.lineTo(W-M-60, divY); ctx.stroke();
 
-    // LEFT — Canberk imza
-    ctx.strokeStyle='rgba(255,255,255,0.12)';
-    ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(sigLX-sigLineW/2,sigY+52); ctx.lineTo(sigLX+sigLineW/2,sigY+52); ctx.stroke();
+    // ══════════════════════════════════════════════════════
+    // İMZA ALANI
+    // ══════════════════════════════════════════════════════
+    var sigY = divY + 100;
+    var LX = W/2 - 380, RX = W/2 + 380, LW = 300;
 
-    ctx.fillStyle='rgba(255,255,255,0.82)';
-    ctx.font='700 italic 36px Georgia,serif';
-    ctx.textAlign='center';
-    ctx.fillText('Canberk Öztürk',sigLX,sigY+44);
-    ctx.fillStyle='rgba(250,204,21,0.55)';
-    ctx.font='600 19px monospace';
-    ctx.textAlign='center';
-    ctx.fillText('KURUCU · MLYNR.',sigLX,sigY+84);
+    // Sol — Canberk Öztürk
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(LX-LW/2, sigY+56); ctx.lineTo(LX+LW/2, sigY+56); ctx.stroke();
 
-    // RIGHT — Tarih
-    var ds2=now.getDate()+' '+months2[now.getMonth()]+' '+now.getFullYear();
-    ctx.strokeStyle='rgba(255,255,255,0.12)';
-    ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(sigRX-sigLineW/2,sigY+52); ctx.lineTo(sigRX+sigLineW/2,sigY+52); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.font = 'italic 700 38px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Canberk Öztürk', LX, sigY+48);
 
-    ctx.fillStyle='rgba(255,255,255,0.82)';
-    ctx.font='700 36px "Arial",sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText(ds2,sigRX,sigY+44);
-    ctx.fillStyle='rgba(255,255,255,0.28)';
-    ctx.font='600 19px monospace';
-    ctx.textAlign='center';
-    ctx.fillText('TAMAMLANMA TARİHİ',sigRX,sigY+84);
+    ctx.fillStyle = 'rgba(250,204,21,0.5)';
+    ctx.font = '600 19px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('KURUCU · MLYNR.', LX, sigY+90);
 
-    // CENTER SEAL ────────────────────────────────────────────────
-    var sx=W/2, sy=sigY+26;
-    // Outer ring
-    ctx.beginPath(); ctx.arc(sx,sy,58,0,Math.PI*2);
-    ctx.strokeStyle='rgba(250,204,21,0.35)'; ctx.lineWidth=1.5; ctx.stroke();
-    // Middle ring
-    ctx.beginPath(); ctx.arc(sx,sy,48,0,Math.PI*2);
-    ctx.strokeStyle='rgba(250,204,21,0.15)'; ctx.lineWidth=1; ctx.stroke();
+    // Sağ — Tarih
+    var ds2 = now.getDate()+' '+months2[now.getMonth()]+' '+now.getFullYear();
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(RX-LW/2, sigY+56); ctx.lineTo(RX+LW/2, sigY+56); ctx.stroke();
+
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.font = '700 38px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(ds2, RX, sigY+48);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.font = '600 19px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('TAMAMLANMA TARİHİ', RX, sigY+90);
+
+    // Merkez mühür
+    var sX = W/2, sY2 = sigY+30;
+    // Halka 1
+    ctx.beginPath(); ctx.arc(sX, sY2, 58, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(250,204,21,0.45)'; ctx.lineWidth = 1.5; ctx.stroke();
+    // Halka 2
+    ctx.beginPath(); ctx.arc(sX, sY2, 47, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(250,204,21,0.15)'; ctx.lineWidth = 1; ctx.stroke();
     // Fill
-    ctx.beginPath(); ctx.arc(sx,sy,46,0,Math.PI*2);
-    var sealFill=ctx.createRadialGradient(sx,sy,0,sx,sy,46);
-    sealFill.addColorStop(0,'rgba(250,204,21,0.1)');
-    sealFill.addColorStop(1,'rgba(250,204,21,0.03)');
-    ctx.fillStyle=sealFill; ctx.fill();
-    // Check mark
-    ctx.strokeStyle='#facc15';
-    ctx.lineWidth=5;
-    ctx.lineCap='round';
-    ctx.lineJoin='round';
+    var sf = ctx.createRadialGradient(sX, sY2, 0, sX, sY2, 47);
+    sf.addColorStop(0, 'rgba(250,204,21,0.1)');
+    sf.addColorStop(1, 'rgba(250,204,21,0.02)');
+    ctx.beginPath(); ctx.arc(sX, sY2, 46, 0, Math.PI*2);
+    ctx.fillStyle = sf; ctx.fill();
+    // Checkmark
+    ctx.strokeStyle = '#facc15'; ctx.lineWidth = 5;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.beginPath();
-    ctx.moveTo(sx-16,sy+2);
-    ctx.lineTo(sx-4,sy+14);
-    ctx.lineTo(sx+18,sy-12);
+    ctx.moveTo(sX-17, sY2+2);
+    ctx.lineTo(sX-4,  sY2+15);
+    ctx.lineTo(sX+19, sY2-13);
     ctx.stroke();
-    ctx.lineCap='butt'; ctx.lineJoin='miter';
+    ctx.lineCap = 'butt'; ctx.lineJoin = 'miter';
 
-    // ── BOTTOM FOOTER ────────────────────────────────────────────
-    var ftY=H-bm-52;
-    ctx.fillStyle='rgba(255,255,255,0.1)';
-    ctx.font='400 19px monospace';
-    ctx.textAlign='center';
-    ctx.fillText('mlynr.com  ·  okul.mlynr.com  ·  Start & Scale Dropshipping',W/2,ftY);
+    // ══════════════════════════════════════════════════════
+    // ALT FOOTER
+    // ══════════════════════════════════════════════════════
+    var ftY = H - M - 50;
+    ctx.fillStyle = 'rgba(255,255,255,0.09)';
+    ctx.font = '400 18px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('mlynr.com  ·  okul.mlynr.com  ·  Start & Scale Dropshipping', W/2, ftY);
 
   }catch(e){ console.error('certDraw error',e); }
 }
