@@ -1302,7 +1302,7 @@ function getTodayCats(){
 function getSpinSt(){try{var r=LS.getItem(spinKey());if(r){var p=JSON.parse(r);if(p.date===todayStr())return p;}}catch(e){}return{date:todayStr(),used:0,last:null,hist:[]};}
 function saveSpinSt(st){
   try{LS.setItem(spinKey(),JSON.stringify(st));}catch(e){}
-  if(_user){_sb.from('progress').update({spin:st,updated_at:new Date().toISOString()}).eq('user_id',_user.id).then(function(){});}
+  if(_user){_sb.from('progress').upsert({user_id:_user.id,spin:st,updated_at:new Date().toISOString()},{onConflict:'user_id'}).then(function(){});}
 }
 
 function openSpin(){renderSpin();document.getElementById('spin-overlay').classList.add('show');document.getElementById('spin-popup').classList.add('show');}
@@ -1360,15 +1360,20 @@ var email='',done=[],mc={},CW={};
 function stK(){return 'mlynr6_'+email.replace(/[^a-z0-9]/gi,'_');}
 function saveState(){
   if(!email)return;
-  // Save to localStorage as backup
+  // localStorage backup
   try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
-  // Save to Supabase
+  // Supabase — upsert garantisi (insert + update, row yoksa da yazar)
   if(_user){
     var fsVal=false;try{fsVal=LS.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
     var spVal={};try{var spRaw=LS.getItem('mlynr6_sp_'+email);if(spRaw)spVal=JSON.parse(spRaw);}catch(e){}
-    _sb.from('progress').update({
-      done:done, mc:mc, first_sale:fsVal, spin:spVal, updated_at:new Date().toISOString()
-    }).eq('user_id',_user.id).then(function(r){
+    _sb.from('progress').upsert({
+      user_id:_user.id,
+      done:done,
+      mc:mc,
+      first_sale:fsVal,
+      spin:spVal,
+      updated_at:new Date().toISOString()
+    },{onConflict:'user_id'}).then(function(r){
       if(r.error){console.warn('DB save error:',r.error);}
     });
   }
@@ -1380,25 +1385,51 @@ function loadState(){
 }
 
 function loadStateFromDB(){
-  if(!_user){showApp();return;}
-  _sb.from('progress').select('done,mc,spin,first_sale,earn_opened').eq('user_id',_user.id).single().then(function(r){
-    if(r.error){
-      // Row does not exist yet, create it
-      done=[];mc={};
-      _sb.from('progress').upsert({user_id:_user.id,done:[],mc:{},spin:{}}).then(function(){});
-    } else {
-      done=r.data.done||[];
-      mc=r.data.mc||{};
-      if(r.data.first_sale){ try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){} }
-      // restore spin data if any
-      if(r.data.spin){
-        var spKey='mlynr6_sp_'+email;
-        try{LS.setItem(spKey,JSON.stringify(r.data.spin));}catch(e){}
-      }
-    }
-    // Also sync spin state to DB when saving
+  if(!_user){
+    // DB yok, localStorage'dan yükle
+    loadState();
     showApp();
-  });
+    return;
+  }
+  _sb.from('progress')
+    .select('done,mc,spin,first_sale,earn_opened')
+    .eq('user_id',_user.id)
+    .single()
+    .then(function(r){
+      if(r.error || !r.data){
+        // DB'de kayıt yok — localStorage'dan al, sonra DB'ye yaz
+        loadState();
+        _sb.from('progress').upsert({
+          user_id:_user.id,
+          done:done,
+          mc:mc,
+          spin:{},
+          first_sale:false,
+          updated_at:new Date().toISOString()
+        },{onConflict:'user_id'}).then(function(){});
+      } else {
+        // DB verisi localStorage'dan her zaman önceliklidir
+        var dbDone = r.data.done||[];
+        var lsDone = [];
+        try{var ls=LS.getItem(stK());if(ls){var p=JSON.parse(ls);lsDone=p.done||[];}}catch(e){}
+        // İki kaynaktan en güncelini al (daha fazla ilerleme = daha güncel)
+        done = dbDone.length >= lsDone.length ? dbDone : lsDone;
+        mc   = r.data.mc||{};
+        if(r.data.first_sale){ try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){} }
+        if(r.data.spin){
+          try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(r.data.spin));}catch(e){}
+        }
+        // localStorage'ı DB ile senkronize et
+        try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
+      }
+      showApp();
+    })
+    .catch(function(err){
+      // Network hatası — localStorage fallback
+      console.warn('DB load failed, using localStorage:', err);
+      loadState();
+      showApp();
+    });
 }
 
 // ── AUTH ──────────────────────────────────────────────────────
@@ -1489,14 +1520,16 @@ function doAuth(){
         er.style.color='#4ade80';
         er.textContent='Hoş geldin! Yükleniyor...';
         // Create progress row silently
+        // Yeni kullanıcı için sadece row oluştur, mevcut veri varsa üzerine yazma
         _sb.from('progress').upsert({
           user_id:_user.id,
           done:[],
           mc:{},
           spin:{},
           first_sale:false,
-          earn_opened:false
-        }).then(function(){
+          earn_opened:false,
+          updated_at:new Date().toISOString()
+        },{onConflict:'user_id',ignoreDuplicates:true}).then(function(){
           loadStateFromDB();
         });
       });
@@ -2272,8 +2305,7 @@ function openFirstSale(){
   // Save first_sale flag to localStorage + Supabase
   try{ LS.setItem('mlynr6_fs_'+email,'1'); }catch(e){}
   if(_user){
-    _sb.from('progress').update({first_sale:true,updated_at:new Date().toISOString()})
-      .eq('user_id',_user.id).then(function(){});
+    _sb.from('progress').upsert({user_id:_user.id,first_sale:true,updated_at:new Date().toISOString()},{onConflict:'user_id'}).then(function(){});
   }
   launchConfetti();
   playMoneySound();
