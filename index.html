@@ -800,6 +800,14 @@ body.light #mentor-popup{background:#fff}
 // ═══════════════════════════════════════════════════════════════
 var _adminData = [];
 
+
+// Admin olarak eklemek istersen: ADMIN_EMAILS.push('yeni@mail.com')
+
+// ═══════════════════════════════════════════════════════════════
+// ADMIN FONKSİYONLARI
+// ═══════════════════════════════════════════════════════════════
+var _adminData = [];
+
 function showAdminPanel(){
   document.getElementById('login-screen').classList.add('hidden');
   document.getElementById('app').style.display = 'none';
@@ -811,8 +819,6 @@ function loadAdminData(){
   document.getElementById('adm-empty').style.display = 'block';
   document.getElementById('adm-tbody').innerHTML = '';
   document.getElementById('adm-stats-row').innerHTML = '<div style="color:var(--text2);font-family:var(--mono);font-size:12px;padding:8px;">Yükleniyor...</div>';
-
-  // Tüm kullanıcıları auth'dan çekemeyiz (güvenlik), progress tablosundan çek
   _sb.from('progress')
     .select('user_id, done, mc, first_sale, earn_opened, updated_at')
     .order('updated_at', {ascending: false})
@@ -842,7 +848,6 @@ function renderAdminStats(data){
     }
   });
   avg = total ? Math.round(avg/total) : 0;
-
   var cards = [
     {icon:'👥', label:'Toplam Kursiyer', val: total, color:'#ffffff'},
     {icon:'🔥', label:'Son 7 Gün Aktif', val: active7, color:'#22c55e'},
@@ -850,7 +855,6 @@ function renderAdminStats(data){
     {icon:'🏆', label:'İlk Satış Yapan', val: firstSale, color:'#a78bfa'},
     {icon:'🎓', label:'Programı Bitiren', val: finished, color:'#38bdf8'},
   ];
-
   var html = '';
   cards.forEach(function(c){
     html += '<div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:20px 24px;">' +
@@ -866,9 +870,8 @@ function renderAdminTable(data){
   var tbody = document.getElementById('adm-tbody');
   tbody.innerHTML = '';
   document.getElementById('adm-empty').style.display = data.length ? 'none' : 'block';
-
   var now = new Date();
-  data.forEach(function(u, idx){
+  data.forEach(function(u){
     var doneCnt = Array.isArray(u.done) ? u.done.length : 0;
     var pct = Math.round(doneCnt / 28 * 100);
     var lastLogin = u.updated_at ? new Date(u.updated_at) : null;
@@ -877,13 +880,10 @@ function renderAdminTable(data){
     if(daysSince <= 1){ status = '● AKTİF'; statusColor = '#22c55e'; }
     else if(daysSince <= 7){ status = '● BU HAFTA'; statusColor = '#facc15'; }
     else { status = '● PASİF'; statusColor = '#ef4444'; }
-
     var lastStr = lastLogin
       ? lastLogin.getDate() + ' ' + ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'][lastLogin.getMonth()] + ' ' + lastLogin.getFullYear()
       : '—';
-
     var barColor = pct >= 80 ? '#22c55e' : pct >= 40 ? '#facc15' : '#ef4444';
-
     var tr = document.createElement('tr');
     tr.style.cssText = 'border-bottom:1px solid rgba(255,255,255,0.04);transition:background .15s;';
     tr.onmouseover = function(){ this.style.background='rgba(255,255,255,0.02)'; };
@@ -891,14 +891,7 @@ function renderAdminTable(data){
     tr.innerHTML =
       '<td style="padding:14px 16px;font-family:var(--mono);font-size:11px;color:var(--text2);">' + u.user_id.slice(0,8) + '…</td>' +
       '<td style="text-align:center;padding:14px 16px;font-weight:700;font-size:13px;">' + doneCnt + ' <span style="color:var(--text2);font-size:10px;font-weight:400;">/ 28</span></td>' +
-      '<td style="padding:14px 24px;">' +
-        '<div style="display:flex;align-items:center;gap:8px;">' +
-          '<div style="flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;">' +
-            '<div style="height:100%;width:' + pct + '%;background:' + barColor + ';border-radius:3px;transition:width .3s;"></div>' +
-          '</div>' +
-          '<span style="font-size:11px;font-family:var(--mono);color:var(--text2);min-width:32px;">' + pct + '%</span>' +
-        '</div>' +
-      '</td>' +
+      '<td style="padding:14px 24px;"><div style="display:flex;align-items:center;gap:8px;"><div style="flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;"><div style="height:100%;width:' + pct + '%;background:' + barColor + ';border-radius:3px;"></div></div><span style="font-size:11px;font-family:var(--mono);color:var(--text2);min-width:32px;">' + pct + '%</span></div></td>' +
       '<td style="text-align:center;padding:14px 16px;">' + (u.first_sale ? '🏆' : '<span style="color:var(--text2);">—</span>') + '</td>' +
       '<td style="text-align:center;padding:14px 16px;">' + (doneCnt >= 28 ? '🎓' : '<span style="color:var(--text2);">—</span>') + '</td>' +
       '<td style="text-align:center;padding:14px 16px;font-family:var(--mono);font-size:11px;color:var(--text2);">' + lastStr + '</td>' +
@@ -909,12 +902,9 @@ function renderAdminTable(data){
 
 function adminFilter(){
   var q = document.getElementById('adm-search').value.toLowerCase();
-  // user_id üzerinden filtrele
   var filtered = _adminData.filter(function(u){ return u.user_id.toLowerCase().indexOf(q) > -1; });
   renderAdminTable(filtered);
 }
-
-// Admin olarak eklemek istersen: ADMIN_EMAILS.push('yeni@mail.com')
 
 </script>
 </head>
@@ -1300,6 +1290,10 @@ function adminFilter(){
 var LS; try{ LS=localStorage; }catch(e){ LS={getItem:function(){return null;},setItem:function(){},removeItem:function(){}}; }
 
 // ── SUPABASE ─────────────────────────────────────────────
+// ── ADMIN ─────────────────────────────────────────────────────
+var ADMIN_EMAILS = ['fege.glc@gmail.com'];
+function isAdmin(){ return ADMIN_EMAILS.indexOf(email.toLowerCase()) > -1; }
+
 var _sb = supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co', 'sb_publishable_fBqoPGz-1qHl1HU1PpbBTA_gBVZoodL');
 
 // ── AUTH STATE CHANGE ──────────────────────────────────
@@ -1702,10 +1696,6 @@ function doLogout(){
   document.getElementById('login-err').textContent='';
   closeMenu();
 }
-// ── ADMIN ─────────────────────────────────────────────────────
-var ADMIN_EMAILS = ['fege.glc@gmail.com'];
-function isAdmin(){ return ADMIN_EMAILS.indexOf(email.toLowerCase()) > -1; }
-
 function showApp(){
   if(isAdmin()){ showAdminPanel(); return; }
   document.getElementById('login-screen').classList.add('hidden');
