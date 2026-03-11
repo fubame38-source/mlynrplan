@@ -1371,23 +1371,16 @@ function saveState(){
     var fsVal=false; try{fsVal=LS.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
     var spVal={}; try{var sr=LS.getItem('mlynr6_sp_'+email);if(sr)spVal=JSON.parse(sr);}catch(e){}
     _sb.from('progress')
-      .update({
+      .upsert({
+        user_id: _user.id,
         done: done,
         mc: mc,
         first_sale: fsVal,
         spin: spVal,
         updated_at: new Date().toISOString()
-      })
-      .eq('user_id', _user.id)
+      }, {onConflict:'user_id'})
       .then(function(r){
-        if(r.error){
-          // update başarısız olduysa upsert dene
-          _sb.from('progress').upsert({
-            user_id:_user.id, done:done, mc:mc,
-            first_sale:fsVal, spin:spVal,
-            updated_at:new Date().toISOString()
-          }).then(function(){});
-        }
+        if(r.error){ console.warn('DB save error:',r.error); }
       });
   }
   showSaved();
@@ -1416,13 +1409,18 @@ function loadStateFromDB(){
       if(r.error){ console.warn('DB load error:',r.error); loadState(); showApp(); return; }
 
       if(!r.data){
-        // İlk giriş — yeni satır oluştur, done boş başlasın
+        // İlk giriş — yeni satır oluştur
         done=[]; mc={};
         _sb.from('progress').insert({
           user_id:_user.id, done:[], mc:{}, spin:{},
           first_sale:false, earn_opened:false,
           updated_at:new Date().toISOString()
-        }).then(function(){});
+        }).then(function(){
+          // Insert bitti, şimdi showApp + popup
+          showApp();
+          setTimeout(function(){ openNamePopup(); }, 400);
+        });
+        return; // insert async, return et
       } else {
         // DB'den gelen done kesinlikle array olmalı
         var raw = r.data.done;
@@ -1565,19 +1563,8 @@ function doAuth(){
         er.textContent='Hoş geldin! Yükleniyor...';
         // Create progress row silently
         // Yeni kullanıcı — satır yoksa oluştur, varsa dokunma
-        _sb.from('progress')
-          .select('user_id').eq('user_id',_user.id).maybeSingle()
-          .then(function(chk){
-            if(!chk.data){
-              _sb.from('progress').insert({
-                user_id:_user.id, done:[], mc:{}, spin:{},
-                first_sale:false, earn_opened:false,
-                updated_at:new Date().toISOString()
-              }).then(function(){ loadStateFromDB(); });
-            } else {
-              loadStateFromDB();
-            }
-          });
+        // Direkt loadStateFromDB çağır — o zaten satır yoksa oluşturur
+        loadStateFromDB();
       });
     });
   } else {
