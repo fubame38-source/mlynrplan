@@ -1934,10 +1934,16 @@ function setUserName(name){
   _userName = name.trim();
   try{ LS.setItem('mlynr6_name_'+email, _userName); }catch(e){}
   if(_user){
+    // upsert — satır yoksa da yazar, varsa günceller
     _sb.from('progress')
-      .update({ full_name: _userName, updated_at: new Date().toISOString() })
-      .eq('user_id', _user.id)
-      .then(function(){});
+      .upsert({
+        user_id: _user.id,
+        full_name: _userName,
+        updated_at: new Date().toISOString()
+      }, {onConflict:'user_id'})
+      .then(function(r){
+        if(r.error) console.warn('İsim kaydedilemedi:', r.error);
+      });
   }
 }
 function openNamePopup(){
