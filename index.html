@@ -984,9 +984,9 @@ body.light #mentor-popup{background:#fff}
   <div id="name-overlay"></div>
   <div id="name-popup">
     <div class="np-emoji">👋</div>
-    <div class="np-title">Sana nasıl hitap edelim?</div>
-    <div class="np-sub">İsmini gir, platform sana özel olsun.</div>
-    <input class="np-input" id="np-input" type="text" placeholder="Adın (örn. Furkan)" maxlength="30"
+    <div class="np-title">Tebrikler, aramıza hoş geldin! 🎉</div>
+    <div class="np-sub">Sana nasıl sesleneceğimizi öğrenelim.</div>
+    <input class="np-input" id="np-input" type="text" placeholder="Adın (örn. Canberk)" maxlength="30"
       onkeydown="if(event.key==='Enter')saveUserName()">
     <button class="np-btn" onclick="saveUserName()">DEVAM ET →</button>
   </div>
@@ -1916,7 +1916,7 @@ function fsDrawCard(){
       ctx.fillStyle='rgba(34,197,94,0.9)';
       ctx.font='700 34px Arial, sans-serif';
       ctx.textAlign='center';
-      ctx.fillText(fsName.toUpperCase() + ' — İLK ADIM ATILDI!',W/2,1038);
+      ctx.fillText('Tebrikler ' + fsName.toUpperCase() + '!',W/2,1038);
     } else {
       ctx.fillStyle='rgba(255,255,255,0.4)';
       ctx.font='400 24px Arial, sans-serif';
