@@ -1171,7 +1171,15 @@ body.light #mentor-popup{background:#fff}
 var LS; try{ LS=localStorage; }catch(e){ LS={getItem:function(){return null;},setItem:function(){},removeItem:function(){}}; }
 
 // ── SUPABASE ─────────────────────────────────────────────
-var _sb = supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co', 'sb_publishable_fBqoPGz-1qHl1HU1PpbBTA_gBVZoodL');
+var _sb = supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co', 'sb_publishable_fBqoPGz-1qHl1HU1PpbBTA_gBVZoodL', {
+  auth: {
+    persistSession: true,
+    storageKey: 'mlynr_auth',
+    storage: window.localStorage,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});
 
 // ── AUTH STATE CHANGE ──────────────────────────────────
 _sb.auth.onAuthStateChange(function(event, session){
