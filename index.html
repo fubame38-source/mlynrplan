@@ -1077,12 +1077,12 @@ body.light #mentor-popup{background:#fff}
       <div class="np-row">
         <div class="np-field">
           <span class="np-label">Ad</span>
-          <input class="np-input" id="np-input" type="text" placeholder="Adın" maxlength="30"
+          <input class="np-input" id="np-input" type="text" placeholder="Adın" maxlength="30" autocomplete="given-name"
             onkeydown="if(event.key==='Enter')document.getElementById('np-input2').focus()">
         </div>
         <div class="np-field">
           <span class="np-label">Soyad</span>
-          <input class="np-input" id="np-input2" type="text" placeholder="Soyadın" maxlength="30"
+          <input class="np-input" id="np-input2" type="text" placeholder="Soyadın" maxlength="30" autocomplete="family-name"
             onkeydown="if(event.key==='Enter')saveUserName()">
         </div>
       </div>
@@ -1545,9 +1545,10 @@ function showApp(){
     if(!sn2){
       openNamePopup();
     } else {
-      showWelcomeToast(sn2);
+      var firstName2 = sn2.split(' ')[0];
+      showWelcomeToast(firstName2);
     }
-  }, 600);
+  }, 700);
 }
 
 // ── RENDER HELPERS ────────────────────────────────────────────
@@ -2041,26 +2042,27 @@ function certDraw(){
     corner(W-cm,H-cm,-1,-1);
 
     // ── TOP SECTION ─────────────────────────────────────────────
-    var topY = bm+88;
+    var topY = bm+148; // dikeyde ortalamak için offset arttırıldı
 
-    // MLYNR. wordmark — left
+    // ── MLYNR. LOGO — centered, large, white, premium ──
+    // Logo background pill
+    var logoW=360, logoH=72, logoX=(W-logoW)/2, logoY2=topY-56;
+    
+    // MLYNR. — big centered white wordmark
     ctx.fillStyle='#ffffff';
-    ctx.font='900 40px "Arial", sans-serif';
-    ctx.textAlign='left';
-    ctx.fillText('MLYNR.',bm+70,topY);
-    // Green dot after logo
-    ctx.beginPath(); ctx.arc(bm+70+200,topY-13,5.5,0,Math.PI*2);
-    ctx.fillStyle='#22c55e'; ctx.fill();
+    ctx.font='900 58px "Arial Black","Arial",sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('MLYNR.',W/2,topY-4);
 
-    // Right — cert number
-    ctx.fillStyle='rgba(255,255,255,0.18)';
-    ctx.font='500 20px monospace';
+    // Cert number — right aligned small
+    ctx.fillStyle='rgba(255,255,255,0.14)';
+    ctx.font='500 18px monospace';
     ctx.textAlign='right';
     var certNo='MLYNR-'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0');
-    ctx.fillText('NO: '+certNo, W-bm-70, topY);
+    ctx.fillText('NO: '+certNo, W-bm-70, topY-4);
 
     // Top rule
-    var ruleY=topY+28;
+    var ruleY=topY+46;
     var rg=ctx.createLinearGradient(bm+70,0,W-bm-70,0);
     rg.addColorStop(0,'rgba(250,204,21,0)');
     rg.addColorStop(0.15,'rgba(250,204,21,0.4)');
