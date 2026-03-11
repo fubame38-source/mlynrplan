@@ -1385,17 +1385,49 @@ function checkWk(wi){var w=WEEKS[wi],ok=true;for(var d2=0;d2<w.days.length;d2++)
 
 // ── MAIN RENDER ───────────────────────────────────────────────
 var WEEKS=[
-  {n:1,t:'e',lbl:'Hafta 01',name:'Giriş & Temel Kurulum',desc:'Hesap açılışından ilk listing\'e kadar her şeyin temeli burada atılıyor.',
-    days:[{t:'Hesap Açılışı & Platform Turu',d:'eBay hesabını doğru kur, platforma hakim ol.',tag:'Kurulum'},{t:'Dropshipping Modeli',d:'Stoksuz satışın tam mantığını kavra.',tag:'Temel'},{t:'Tedarikçi Araştırması',d:'Güvenilir tedarikçiyi nerede bulursun?',tag:'Tedarik'},{t:'Ürün Araştırma',d:'Kazandıran ürünü bulmak için teknikler.',tag:'Araştırma'},{t:'Rakip Analizi',d:'En çok satan mağazaları incele, strateji çıkar.',tag:'Analiz'},{t:'İlk Listing\'i Hazırla',d:'Başlık, açıklama ve fotoğraf formülü.',tag:'İçerik'},{t:'İlk Ürünü Yayınla',d:'Hazırladığın listing\'i canlıya al.',tag:'Aksiyon'}],
-    chk:{q:'İlk 4 modülü tamamladın mı?',hint:'Bu haftanın konularına geçmeden önce ilk 4 modülü bitir.',items:['Modül 1 — Platforma Giriş & Hesap Kurulumu','Modül 2 — Dropshipping Modeli & Temel Kavramlar','Modül 3 — Tedarikçi Araştırması','Modül 4 — Ürün Araştırma Yöntemleri']}},
-  {n:2,t:'e',lbl:'Hafta 02',name:'Satış & Optimizasyon',desc:'Listing\'leri iyileştir, algoritmayı anla, satışa daha da yaklaş.',
-    days:[{t:'eBay Algoritması & SEO',d:'Arama sıralamalarını yükseltmek için keyword stratejisi.',tag:'SEO'},{t:'Fiyatlandırma Stratejisi',d:'Kâr marjını korurken rekabetçi fiyat.',tag:'Finans'},{t:'Listing Optimizasyonu',d:'İlk haftanın verileriyle listing\'leri güncelle.',tag:'Optimize'},{t:'Müşteri Mesajları',d:'Mesajlara doğru yanıt ver, güven artır.',tag:'Müşteri'},{t:'Portföyü Genişlet',d:'5+ ürün yayınla. Çalışanı ölçekle.',tag:'Büyüme'},{t:'İade & Sorun Yönetimi',d:'Beklenmedik durumlarla nasıl başa çıkılır?',tag:'Yönetim'},{t:'Hafta 2 Değerlendirmesi',d:'Hangi ürünler tıklandı, hangisi dönüştü?',tag:'Analiz'}],
-    chk:{q:'İlk 6 modül tamamlandı mı?',hint:'6. modüle kadar olan içerikleri bitir.',items:['Modül 1 — Platforma Giriş & Hesap Kurulumu','Modül 2 — Dropshipping Modeli & Temel Kavramlar','Modül 3 — Tedarikçi Araştırması','Modül 4 — Ürün Araştırma Yöntemleri','Modül 5 — Rakip Analizi & Listing Stratejisi','Modül 6 — İlk Listing Hazırlığı & Yayınlama']}},
-  {n:3,t:'e',lbl:'Hafta 03',name:'Sistemi Oturt & İlk Kâr',desc:'Düzenli satış altyapısını kur, ilk kârını gör.',
-    days:[{t:'Ödeme & Para Transferi',d:'eBay ödemeleri ve Türkiye\'ye para transferi.',tag:'Finans'},{t:'Sipariş Yönetimi',d:'Sipariş geldi, ne yaparsın? Adım adım.',tag:'Operasyon'},{t:'Tedarikçiyle İletişim',d:'Doğru iletişim kur, sorunları çöz.',tag:'Tedarik'},{t:'Otomasyon Araçları',d:'Zamanını geri kazandıran araçlar.',tag:'Otomasyon'},{t:'Yorum & Güven Stratejisi',d:'İlk yorumları al, seller puanını yükselt.',tag:'Güven'},{t:'Finansal Takip',d:'Gelir, gider ve net kâr takibi.',tag:'Finans'},{t:'İlk Kâr Analizi',d:'3 haftanın muhasebesi. Ne kazandın?',tag:'Analiz'}],
-    chk:{q:'İlk 8 modül tamamlandı mı?',hint:'8. modüle kadar olan içerikleri bitir.',items:['Modül 1 — Platforma Giriş & Hesap Kurulumu','Modül 2 — Dropshipping Modeli & Temel Kavramlar','Modül 3 — Tedarikçi Araştırması','Modül 4 — Ürün Araştırma Yöntemleri','Modül 5 — Rakip Analizi & Listing Stratejisi','Modül 6 — İlk Listing Hazırlığı & Yayınlama','Modül 7 — Sipariş & Operasyon Yönetimi','Modül 8 — Fiyatlandırma, Kâr & Finansal Takip']}},
-  {n:4,t:'s',lbl:'Hafta 04',name:'Shopify\'a Hazırlık',desc:'eBay\'de sistemi oturttuktan sonra Shopify modülüne geçiyoruz.',
-    days:[{t:'Shopify\'a Geçiş Kararı',d:'eBay\'de para kazandığında geçiş zamanıdır.',tag:'Strateji'},{t:'Mağaza Kurulumu',d:'Tema, domain bağlantısı, temel sayfalar.',tag:'Kurulum'},{t:'Ürün Sayfası Tasarımı',d:'Dönüşüm odaklı sayfa: başlık, görsel, açıklama.',tag:'Tasarım'},{t:'Ödeme & Kargo',d:'Ödeme sistemi ve kargo entegrasyonu.',tag:'Altyapı'},{t:'Shopify SEO',d:'Google\'da görünür olmak için temel SEO.',tag:'SEO'},{t:'İlk Ürünü Yayınla',d:'Shopify mağazanda ilk ürün canlıda.',tag:'Aksiyon'},{t:'Sonraki 30 Günü Planla',d:'Hedefleri yaz, planı netleştir.',tag:'Hedef'}],
+  {n:1,t:'e',lbl:'Hafta 01',name:'Hesap Kurulumu & Sistemi Anlamak',desc:'eBay hesabı aç, platformu tanı, yol haritasını kavra ve ilk ürünleri listele.',
+    days:[
+      {t:'eBay Hesap Açılışı',d:'Hesabı doğru kur: adres, vergi, panel ayarları — baştan hata yapma.',tag:'Kurulum'},
+      {t:'Yol Haritasını Anlamak',d:'Sistem tanıtımı, neden Amazon tedarik, ilk 90 gün planı.',tag:'Temel'},
+      {t:'Ürün Araştırma: Temel',d:'Sıfırdan ürün bulma, fiyat analizi, rakip mağaza incelemesi.',tag:'Araştırma'},
+      {t:'Ürün Araştırma: İleri',d:'Yapay zeka ile ürün bulma, pratik araştırma teknikleri.',tag:'Araştırma'},
+      {t:'VeRO & Markalı Ürün Riski',d:'Listeleme yasağı olan markaları tanı, VeRO listesini öğren.',tag:'Risk'},
+      {t:'İlk Ürünleri Listele',d:'Manuel listeleme adımları, Amazon\'dan ürün çekme, excluded locations.',tag:'Listeleme'},
+      {t:'Fiyat & Stok Kontrolü',d:'Günlük rutin kur: fiyat takibi, envanter yönetimi.',tag:'Yönetim'}
+    ],
+    chk:{q:'eBay Modül 1, 2 ve 3\'ü tamamladın mı?',hint:'Hesap açılışı, yol haritası ve ürün araştırma modüllerini bitir.',items:['eBay Modül 1 — Motivasyon ve Hesap Açma','eBay Modül 2 — Yol Haritasını Anlamak','eBay Modül 3 — Ana Yöntemde Ürün Bulmak']}},
+  {n:2,t:'e',lbl:'Hafta 02',name:'Otomasyon & Sipariş Yönetimi',desc:'AutoDS ile sistemi otomatize et, ilk siparişleri al ve yönet.',
+    days:[
+      {t:'AutoDS Kurulumu',d:'AutoDS hesap aç, paneli tanı, Non-API bağlantısı yap.',tag:'Otomasyon'},
+      {t:'AutoDS Ürün & Envanter',d:'Ürün ekle, envanter ayarları, auto order kur.',tag:'Otomasyon'},
+      {t:'Listeleme: Detaylar',d:'İspanyolca listeleme, varyasyon oluşturma, excluded locations.',tag:'Listeleme'},
+      {t:'İlk Sipariş Geldi!',d:'Amazon\'dan manuel sipariş geç, tracking ID gir, müşteriye mesaj at.',tag:'Sipariş'},
+      {t:'Sipariş Sorunları',d:'Out of stock, ürünle alakalı sorular, Trackerbot kurulumu.',tag:'Sipariş'},
+      {t:'Wholesale Dropshipping',d:'Wholesale nedir, hangi supplier\'ları kullanabilirsin?',tag:'Tedarik'},
+      {t:'eBay 2.0 Kârlılık Hesabı',d:'Satış sonrası net kâr hesaplama, Payoneer fees, Excel tablosu.',tag:'Finans'}
+    ],
+    chk:{q:'eBay Modül 4, 5 ve 6\'yı tamamladın mı?',hint:'Otomasyon, listeleme ve sipariş modüllerini bitir.',items:['eBay Modül 4 — Otomasyon (AutoDS)','eBay Modül 5 — Listeleme','eBay Modül 6 — Sipariş Yönetimi']}},
+  {n:3,t:'e',lbl:'Hafta 03',name:'Hesap Sağlığı & Ölçekleme',desc:'Hesabı koru, satış limitini artır ve sistemi büyüt.',
+    days:[
+      {t:'Hesap Yönetimi',d:'Excel gelir-gider tablosu, satış analizi, feedbackler.',tag:'Yönetim'},
+      {t:'Müşteri İletişimi',d:'Mesaj şablonları, iade yönetimi, item not received.',tag:'Müşteri'},
+      {t:'Hesap Sağlığı',d:'Flagged olmak, MC011, suspend ile nasıl başa çıkılır?',tag:'Sağlık'},
+      {t:'Suspend Çözümleri',d:'İlk suspend, itiraz süreci, tüm çözüm yolları.',tag:'Sağlık'},
+      {t:'Taktikler & 5 Altın Kural',d:'80/20 kuralı, rekabette öne çıkma, cashback & kupon.',tag:'Taktik'},
+      {t:'Satış Limiti & Watches',d:'Limiti nasıl artırırsın, views & watches stratejisi.',tag:'Büyüme'},
+      {t:'Reklam & Satılmayan Ürün',d:'eBay reklam stratejisi, satılmayan ürünler için plan.',tag:'Optimize'}
+    ],
+    chk:{q:'eBay Modül 7, 8, 9 ve 10\'u tamamladın mı?',hint:'Wholesale, hesap yönetimi, taktikler ve hesap sağlığı modüllerini bitir.',items:['eBay Modül 7 — Wholesale Dropshipping','eBay Modül 8 — Hesap Yönetimi','eBay Modül 9 — Taktikler ve Ölçekleme','eBay Modül 10 — Hesap Sağlığı']}},
+  {n:4,t:'s',lbl:'Hafta 04',name:'Shopify\'a Geçiş',desc:'eBay\'de kâr gördükten sonra Shopify ile kendi mağazanı kur.',
+    days:[
+      {t:'Shopify\'a Geçiş Kararı',d:'eBay kârı gördükten sonra geçiş zamanı. Neden Shopify?',tag:'Strateji'},
+      {t:'Dropshipping\'i Anlamak',d:'Shopify dropshipping modeli, süreci kavra, farkları gör.',tag:'Temel'},
+      {t:'Mağaza Kurulumu',d:'Tema, domain, temel sayfalar ve mağaza ayarları.',tag:'Kurulum'},
+      {t:'Ürün Sayfası & Tasarım',d:'Dönüşüm odaklı ürün sayfası: başlık, görsel, açıklama.',tag:'Tasarım'},
+      {t:'Ödeme & Kargo Altyapısı',d:'Ödeme sistemi, kargo entegrasyonu, tedarikçi bağlantısı.',tag:'Altyapı'},
+      {t:'İlk Ürünü Yayınla',d:'Shopify mağazanda ilk ürün canlıda, test siparişi al.',tag:'Aksiyon'},
+      {t:'Sonraki 30 Günü Planla',d:'Hedefleri yaz, ölçekleme planını netleştir.',tag:'Hedef'}
+    ],
     chk:{q:'Eğitimi tamamlayıp notlarını aldın mı?',hint:'Shopify modülüne geçmeden önce eBay eğitiminin tamamını bitir.',isS:true,items:['eBay eğitiminin tüm 10 modülünü tamamladım','Her modülden notlar aldım ve tekrar ettim','eBay mağazamda aktif listing\'lerim var','En az bir satış yaptım veya satışa çok yakınım','Shopify\'a geçmeye hazır olduğuma karar verdim']}}
 ];
 
