@@ -610,6 +610,18 @@ body.light .footer-btn:hover {
 .fs-share-tip strong{color:#22c55e}
 .fs-btn-insta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:13px;border:none;border-radius:10px;cursor:pointer;text-decoration:none;transition:all .2s}
 .fs-btn-insta:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(253,29,29,.3)}
+
+/* ── FIRST SALE v2 — PREMIUM ── */
+.fs2-wrap{position:relative;background:#000;border-radius:16px;overflow:hidden;box-shadow:0 0 0 1px rgba(34,197,94,.2),0 40px 80px rgba(0,0,0,.8)}
+.fs2-close{position:absolute;top:14px;right:14px;z-index:10;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:12px;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.fs2-close:hover{background:rgba(255,255,255,.12);color:#fff}
+.fs2-canvas-wrap{display:block;line-height:0}
+.fs2-canvas-wrap canvas{width:100%;display:block;max-width:100%}
+.fs2-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px}
+.fs2-btn-primary{background:linear-gradient(135deg,#22c55e,#16a34a);color:#000;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:800;padding:14px 16px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.fs2-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(34,197,94,.4)}
+.fs2-btn-insta{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:800;padding:14px 16px;border-radius:10px;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
+.fs2-btn-insta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(253,29,29,.35)}
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -635,6 +647,7 @@ body.light .footer-btn:hover {
     </div>
     <button id="login-btn" class="login-btn" onclick="handleLoginBtn()">GİRİŞ YAP →</button>
     <div id="login-err" class="login-err"></div>
+  <div style="text-align:right;margin-top:6px"><button onclick="doReset()" style="background:none;border:none;color:rgba(255,255,255,0.35);font-size:11px;font-family:var(--mono);letter-spacing:1px;cursor:pointer;text-transform:uppercase;padding:0;transition:color .2s" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Şifremi Unuttum →</button></div>
     <div class="login-hint" id="login-hint-text">Hesabınla giriş yap. Şifreni unuttuysan <span style="color:var(--text2);cursor:pointer;text-decoration:underline" onclick="doReset()">sıfırla</span>.</div>
     <div class="login-device-note"><span class="login-device-note-icon">☁️</span><div class="login-device-note-text"><strong>Bulut senkronizasyonu:</strong> İlerlemen hesabına kaydedilir. Her cihazdan aynı noktadan devam edersin.</div></div>
   </div>
@@ -763,37 +776,21 @@ body.light .footer-btn:hover {
 
   <!-- FIRST SALE BUTTON -->
   <div id="firstsale-overlay" class="overlay" onclick="closeFirstSale()"></div>
-  <div id="firstsale-popup" class="popup" style="text-align:center;max-width:400px;padding:0;overflow-y:auto;background:transparent;border:none;box-shadow:none">
-    <div class="fs-card">
-      <div class="fs-top-bar">🏆 MLYNR — İLK SATIŞ BAŞARISI</div>
-      <div class="fs-body">
-        <div class="fs-trophy">🏆</div>
-        <div class="fs-title">İlk <span>Satışın</span> Tamam!</div>
-        <div class="fs-sub">İlk adım atıldı. Yolculuk başlıyor.</div>
-        <div class="fs-divider"></div>
-        <div class="fs-quote">
-          <div class="fs-quote-author"><span class="fs-quote-dot"></span>Canberk Öztürk</div>
-          <div class="fs-quote-text">"İlk satış en zor olanı. Artık algoritma seni tanıyor, sistem çalışıyor. Bundan sonrası sadece <strong>ölçeklendirmek.</strong>"</div>
-        </div>
-        <div class="fs-canvas-wrap"><canvas id="fs-canvas" width="750" height="920"></canvas></div>
-        <div class="fs-btn-row" id="fs-btn-row">
-          <button class="fs-btn-dl" onclick="fsDownloadCard()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 15V3m0 12l-4-4m4 4l4-4"/><path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
-            Kartı İndir
-          </button>
-          <button class="fs-btn-sh" onclick="fsShowShare()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-            Paylaş
-          </button>
-        </div>
-        <div id="fs-share-area">
-          <div class="fs-share-tip">Kartı indirip <strong>@canberkreels</strong> ile paylaş!</div>
-          <a class="fs-btn-insta" href="https://www.instagram.com/canberkreels/?hl=en" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-            Canberk ile Paylaş
-          </a>
-        </div>
-        <div class="fs-close-row"><button class="fs-close-txt" onclick="closeFirstSale()">kapat &amp; devam et</button></div>
+  <div id="firstsale-popup" class="popup" style="text-align:center;width:min(480px,96vw);padding:0;background:transparent;border:none;box-shadow:none;max-height:none;overflow:visible">
+    <div class="fs2-wrap">
+      <button class="fs2-close" onclick="closeFirstSale()">✕</button>
+      <div class="fs2-canvas-wrap">
+        <canvas id="fs-canvas" width="800" height="500"></canvas>
+      </div>
+      <div class="fs2-actions">
+        <button class="fs2-btn-primary" onclick="fsDownloadCard()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 15V3m0 12l-4-4m4 4l4-4"/><path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
+          Kartı İndir
+        </button>
+        <a class="fs2-btn-insta" href="https://www.instagram.com/canberkreels/?hl=en" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          @canberkreels ile Paylaş
+        </a>
       </div>
     </div>
   </div>
@@ -1094,8 +1091,9 @@ function saveState(){
   try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
   // Save to Supabase
   if(_user){
+    var fsVal=false;try{fsVal=LS.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
     _sb.from('progress').update({
-      done:done, mc:mc, updated_at:new Date().toISOString()
+      done:done, mc:mc, first_sale:fsVal, updated_at:new Date().toISOString()
     }).eq('user_id',_user.id).then(function(r){
       if(r.error){console.warn('DB save error:',r.error);}
     });
@@ -1109,7 +1107,7 @@ function loadState(){
 
 function loadStateFromDB(){
   if(!_user){showApp();return;}
-  _sb.from('progress').select('done,mc,spin').eq('user_id',_user.id).single().then(function(r){
+  _sb.from('progress').select('done,mc,spin,first_sale,earn_opened').eq('user_id',_user.id).single().then(function(r){
     if(r.error){
       // Row does not exist yet, create it
       done=[];mc={};
@@ -1117,6 +1115,7 @@ function loadStateFromDB(){
     } else {
       done=r.data.done||[];
       mc=r.data.mc||{};
+      if(r.data.first_sale){ try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){} }
       // restore spin data if any
       if(r.data.spin){
         var spKey='mlynr6_sp_'+email;
@@ -1563,96 +1562,151 @@ function fsDrawCard(){
   try{
     var c=document.getElementById('fs-canvas');
     if(!c) return;
-    c.width=750; c.height=920;
+    var W=800,H=500;
+    c.width=W; c.height=H;
     var ctx=c.getContext('2d');
-    var W=750,H=920;
-    // BG
-    var bg=ctx.createLinearGradient(0,0,0,H);
-    bg.addColorStop(0,'#050d05'); bg.addColorStop(0.5,'#091209'); bg.addColorStop(1,'#050d05');
-    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
-    // Glow top
-    var g1=ctx.createRadialGradient(W/2,0,0,W/2,0,380);
-    g1.addColorStop(0,'rgba(34,197,94,0.22)'); g1.addColorStop(1,'rgba(34,197,94,0)');
+
+    // ── BACKGROUND: deep black with subtle green mesh ──
+    ctx.fillStyle='#030803';
+    ctx.fillRect(0,0,W,H);
+
+    // Mesh gradient - top left
+    var g1=ctx.createRadialGradient(0,0,0,0,0,420);
+    g1.addColorStop(0,'rgba(34,197,94,0.18)');
+    g1.addColorStop(1,'rgba(34,197,94,0)');
     ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
-    // Glow bottom
-    var g2=ctx.createRadialGradient(W/2,H,0,W/2,H,280);
-    g2.addColorStop(0,'rgba(34,197,94,0.1)'); g2.addColorStop(1,'rgba(34,197,94,0)');
+
+    // Mesh gradient - bottom right
+    var g2=ctx.createRadialGradient(W,H,0,W,H,360);
+    g2.addColorStop(0,'rgba(34,197,94,0.1)');
+    g2.addColorStop(1,'rgba(34,197,94,0)');
     ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
-    // Border
-    ctx.strokeStyle='rgba(34,197,94,0.5)'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.rect(1,1,W-2,H-2); ctx.stroke();
-    // Top + bottom bar
-    var bar=ctx.createLinearGradient(0,0,W,0);
-    bar.addColorStop(0,'#16a34a'); bar.addColorStop(0.5,'#22c55e'); bar.addColorStop(1,'#16a34a');
-    ctx.fillStyle=bar; ctx.fillRect(0,0,W,8);
-    ctx.fillStyle=bar; ctx.fillRect(0,H-8,W,8);
-    // Corner dots
-    [[18,18],[W-18,18],[18,H-18],[W-18,H-18]].forEach(function(d){
-      ctx.beginPath(); ctx.arc(d[0],d[1],4,0,Math.PI*2);
-      ctx.fillStyle='rgba(34,197,94,0.7)'; ctx.fill();
-    });
-    // MLYNR badge
-    var bx=W/2-60,by=22,bw=120,bh=28,br=14;
-    ctx.fillStyle='rgba(34,197,94,0.15)';
-    ctx.beginPath();
-    ctx.moveTo(bx+br,by); ctx.lineTo(bx+bw-br,by);
-    ctx.quadraticCurveTo(bx+bw,by,bx+bw,by+br);
-    ctx.lineTo(bx+bw,by+bh-br); ctx.quadraticCurveTo(bx+bw,by+bh,bx+bw-br,by+bh);
-    ctx.lineTo(bx+br,by+bh); ctx.quadraticCurveTo(bx,by+bh,bx,by+bh-br);
-    ctx.lineTo(bx,by+br); ctx.quadraticCurveTo(bx,by,bx+br,by); ctx.closePath();
-    ctx.fill();
-    ctx.strokeStyle='rgba(34,197,94,0.4)'; ctx.lineWidth=1; ctx.stroke();
-    ctx.fillStyle='#22c55e'; ctx.font='bold 12px monospace'; ctx.textAlign='center';
-    ctx.fillText('MLYNR.COM',W/2,42);
+
+    // ── SUBTLE GRID PATTERN ──
+    ctx.strokeStyle='rgba(34,197,94,0.04)';
+    ctx.lineWidth=1;
+    for(var gx=0;gx<W;gx+=40){
+      ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,H); ctx.stroke();
+    }
+    for(var gy=0;gy<H;gy+=40){
+      ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke();
+    }
+
+    // ── LEFT SIDE: big trophy + title ──
+    // Green vertical accent line
+    ctx.fillStyle='#22c55e';
+    ctx.fillRect(48,40,3,H-80);
+
     // Trophy
-    ctx.font='100px serif'; ctx.textAlign='center';
-    ctx.fillText('🏆',W/2,178);
-    // Title
-    ctx.fillStyle='#ffffff'; ctx.font='bold 72px Arial, sans-serif'; ctx.textAlign='center';
-    ctx.fillText('İLK SATIŞ!',W/2,264);
-    // Subtitle green
-    ctx.fillStyle='#22c55e'; ctx.font='500 22px Arial, sans-serif'; ctx.textAlign='center';
-    ctx.fillText('İlk adım atıldı. Yolculuk başlıyor.',W/2,304);
-    // Divider
-    ctx.strokeStyle='rgba(34,197,94,0.2)'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(50,334); ctx.lineTo(W-50,334); ctx.stroke();
-    // Quote box
-    var qx=44,qy=354,qw=W-88,qh=360,qr=16;
-    ctx.fillStyle='rgba(34,197,94,0.07)';
-    ctx.beginPath();
-    ctx.moveTo(qx+qr,qy); ctx.lineTo(qx+qw-qr,qy);
-    ctx.quadraticCurveTo(qx+qw,qy,qx+qw,qy+qr);
-    ctx.lineTo(qx+qw,qy+qh-qr); ctx.quadraticCurveTo(qx+qw,qy+qh,qx+qw-qr,qy+qh);
-    ctx.lineTo(qx+qr,qy+qh); ctx.quadraticCurveTo(qx,qy+qh,qx,qy+qh-qr);
-    ctx.lineTo(qx,qy+qr); ctx.quadraticCurveTo(qx,qy,qx+qr,qy); ctx.closePath();
-    ctx.fill();
-    ctx.strokeStyle='rgba(34,197,94,0.2)'; ctx.lineWidth=1; ctx.stroke();
-    // Green left accent
-    ctx.fillStyle='#22c55e'; ctx.fillRect(qx,qy+16,3,qh-32);
-    // Author dot
-    ctx.beginPath(); ctx.arc(qx+22,qy+32,5,0,Math.PI*2);
+    ctx.font='88px serif';
+    ctx.textAlign='left';
+    ctx.fillText('🏆',68,148);
+
+    // ILK — big, white
+    ctx.fillStyle='rgba(255,255,255,0.08)';
+    ctx.font='bold 110px Arial Black, Arial, sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText('İLK',68,270);
+
+    ctx.fillStyle='#ffffff';
+    ctx.font='bold 110px Arial Black, Arial, sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText('İLK',66,268);
+
+    // SATIŞ! — green
+    ctx.fillStyle='rgba(34,197,94,0.15)';
+    ctx.font='bold 110px Arial Black, Arial, sans-serif';
+    ctx.fillText('SATIŞ!',68,378);
+
+    ctx.fillStyle='#22c55e';
+    ctx.font='bold 110px Arial Black, Arial, sans-serif';
+    ctx.fillText('SATIŞ!',66,376);
+
+    // Subtitle below
+    ctx.fillStyle='rgba(255,255,255,0.35)';
+    ctx.font='500 15px monospace';
+    ctx.textAlign='left';
+    ctx.fillText('İlk adım atıldı. Yolculuk başlıyor.',68,415);
+
+    // ── DIVIDER ──
+    ctx.strokeStyle='rgba(34,197,94,0.2)';
+    ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(W/2+10,40); ctx.lineTo(W/2+10,H-40); ctx.stroke();
+
+    // ── RIGHT SIDE: quote block ──
+    var rx = W/2+36;
+    var rw = W - rx - 44;
+
+    // CANBERK label
+    ctx.fillStyle='#22c55e';
+    ctx.font='bold 10px monospace';
+    ctx.textAlign='left';
+    ctx.letterSpacing='3px';
+    ctx.fillText('CANBERK ÖZTÜRK',rx,80);
+
+    // Small green dot animated indicator (static here)
+    ctx.beginPath(); ctx.arc(rx+rw-8,74,4,0,Math.PI*2);
     ctx.fillStyle='#22c55e'; ctx.fill();
-    ctx.fillStyle='#22c55e'; ctx.font='bold 12px monospace'; ctx.textAlign='left';
-    ctx.fillText('CANBERK ÖZTÜRK',qx+36,qy+37);
-    // Quote lines italic
-    ctx.fillStyle='rgba(255,255,255,0.75)';
-    ctx.font='italic 22px Georgia, serif';
-    ctx.fillText('“İlk satış en zor olanı. Artık algoritma seni tanıyor,',qx+20,qy+80);
-    ctx.fillText('sistem çalışıyor. Bundan sonrası sadece”',qx+20,qy+112);
+
+    // Quote mark - big decorative
+    ctx.fillStyle='rgba(34,197,94,0.12)';
+    ctx.font='bold 90px Georgia, serif';
+    ctx.textAlign='left';
+    ctx.fillText('“',rx-4,150);
+
+    // Quote lines
+    ctx.fillStyle='rgba(255,255,255,0.8)';
+    ctx.font='italic 18px Georgia, serif';
+    ctx.textAlign='left';
+
+    // Word wrap for quote
+    var words='İlk satış en zor olanı. Artık algoritma seni tanıyor, sistem çalışıyor. Bundan sonrası sadece…'.split(' ');
+    var line='', qy=168, lineH=26;
+    for(var i=0;i<words.length;i++){
+      var test=line+words[i]+' ';
+      if(ctx.measureText(test).width > rw && line!=''){
+        ctx.fillText(line.trim(),rx,qy); qy+=lineH; line=words[i]+' ';
+      } else { line=test; }
+    }
+    if(line.trim()) { ctx.fillText(line.trim(),rx,qy); qy+=lineH; }
+
     // Bold conclusion
-    ctx.fillStyle='#ffffff'; ctx.font='bold 26px Arial, sans-serif';
-    ctx.fillText('„ölçeklendirmek.”',qx+20,qy+162);
-    // Date
+    qy+=8;
+    ctx.fillStyle='#ffffff';
+    ctx.font='bold 20px Arial, sans-serif';
+    ctx.fillText('„ölçeklendirmek.”',rx,qy);
+
+    // ── Date ──
     var now=new Date();
     var months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
     var ds=now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
-    ctx.fillStyle='rgba(255,255,255,0.28)'; ctx.font='15px monospace'; ctx.textAlign='center';
-    ctx.fillText(ds,W/2,qy+qh+46);
-    // Branding
-    ctx.fillStyle='rgba(34,197,94,0.6)'; ctx.font='bold 14px monospace'; ctx.textAlign='left';
-    ctx.fillText('MLYNR.COM',30,H-22);
-    ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.font='14px monospace'; ctx.textAlign='right';
-    ctx.fillText('@canberkreels',W-30,H-22);
+    ctx.fillStyle='rgba(255,255,255,0.2)';
+    ctx.font='12px monospace';
+    ctx.textAlign='left';
+    ctx.fillText(ds,rx,H-42);
+
+    // ── Bottom branding bar ──
+    var barGrad=ctx.createLinearGradient(0,0,W,0);
+    barGrad.addColorStop(0,'#0a1a0a');
+    barGrad.addColorStop(0.5,'#112211');
+    barGrad.addColorStop(1,'#0a1a0a');
+    ctx.fillStyle=barGrad;
+    ctx.fillRect(0,H-30,W,30);
+
+    ctx.strokeStyle='rgba(34,197,94,0.25)';
+    ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(0,H-30); ctx.lineTo(W,H-30); ctx.stroke();
+
+    ctx.fillStyle='rgba(34,197,94,0.7)';
+    ctx.font='bold 11px monospace';
+    ctx.textAlign='left';
+    ctx.fillText('MLYNR.COM',18,H-11);
+
+    ctx.fillStyle='rgba(255,255,255,0.25)';
+    ctx.font='11px monospace';
+    ctx.textAlign='right';
+    ctx.fillText('@canberkreels',W-18,H-11);
+
   }catch(e){ console.error('fsDrawCard:',e); }
 }
 
