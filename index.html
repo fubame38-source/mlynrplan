@@ -1400,7 +1400,7 @@ function loadStateFromDB(){
     return;
   }
   _sb.from('progress')
-    .select('done,mc,spin,first_sale,earn_opened')
+    .select('done,mc,spin,first_sale,earn_opened,full_name')
     .eq('user_id',_user.id)
     .maybeSingle()
     .then(function(r){
@@ -1439,6 +1439,10 @@ function loadStateFromDB(){
         }
         // localStorage'ı güncel tut
         try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
+        // İsim DB'den geliyorsa localStorage'a yaz (cihazlar arası senkron)
+        if(r.data.full_name){
+          try{ LS.setItem('mlynr6_name_'+email, r.data.full_name); }catch(e){}
+        }
       }
       showApp();
     })
@@ -1919,6 +1923,21 @@ function getUserName(){
 function setUserName(name){
   _userName = name.trim();
   try{ LS.setItem('mlynr6_name_'+email, _userName); }catch(e){}
+  // DB'ye de kaydet — tüm cihazlardan erişilebilsin
+  if(_user){
+    _sb.from('progress')
+      .update({ full_name: _userName, updated_at: new Date().toISOString() })
+      .eq('user_id', _user.id)
+      .then(function(r){
+        if(r.error){
+          // satır yoksa upsert dene
+          _sb.from('progress').upsert({
+            user_id:_user.id, full_name:_userName,
+            updated_at:new Date().toISOString()
+          }).then(function(){});
+        }
+      });
+  }
 }
 function openNamePopup(){
   document.getElementById('name-overlay').classList.add('show');
