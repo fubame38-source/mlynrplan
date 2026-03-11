@@ -68,9 +68,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .login-card{width:min(420px,94vw);background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:40px 36px;position:relative}
 .login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);border-radius:20px 20px 0 0;pointer-events:none}
 .login-logo{font-size:48px;font-weight:900;letter-spacing:-2px;color:var(--white);text-align:center;margin-bottom:4px;line-height:1}
-.login-logo .dot{color:#111;transition:color .3s}
+.login-logo .dot{color:#ffffff;transition:color .3s}
 body.light .login-logo .dot{color:#111}
-.login-logo-sub{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);text-align:center;margin-top:4px;margin-bottom:32px}
+.login-logo-sub{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text3);text-align:center;margin-top:6px;margin-bottom:32px}
 .login-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:block}
 .login-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:14px 16px;outline:none;transition:border-color .2s;margin-bottom:12px}
 .login-input:focus{border-color:rgba(255,255,255,.3)}
@@ -554,6 +554,7 @@ body.light .login-input:focus{border-color:#111 !important}
 body.light .login-label{color:#555 !important}
 body.light .login-logo{color:#111 !important}
 body.light .login-logo .dot{color:#111 !important}
+body:not(.light) .login-logo .dot{color:#ffffff !important}
 body.light .login-logo-sub{color:#888 !important}
 body.light .login-hint{color:#888 !important}
 body.light .login-err{color:#e53e3e !important}
