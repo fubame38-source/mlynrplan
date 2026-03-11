@@ -1516,6 +1516,8 @@ function loadState(){
 }
 
 function loadStateFromDB(){
+  // Admin ise DB sorgusu yapma, direkt paneli aç
+  if(isAdmin()){ showAdminPanel(); return; }
   if(!_user){
     loadState();
     showApp();
