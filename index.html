@@ -230,6 +230,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* ── OVERLAYS: shared ── */
 .overlay{position:fixed;inset:0;z-index:8100;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
 .overlay.show{opacity:1;pointer-events:auto}
+#firstsale-popup{top:50%;left:50%}
 .popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9) translateY(20px);z-index:8200;width:min(560px,94vw);max-height:85vh;overflow-y:auto;background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:32px;opacity:0;pointer-events:none;transition:all .4s cubic-bezier(.34,1.3,.64,1);box-shadow:0 40px 100px rgba(0,0,0,.8)}
 .popup::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);border-radius:20px 20px 0 0;pointer-events:none}
 .popup.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1) translateY(0)}
@@ -776,7 +777,7 @@ body.light .footer-btn:hover {
 
   <!-- FIRST SALE BUTTON -->
   <div id="firstsale-overlay" class="overlay" onclick="closeFirstSale()"></div>
-  <div id="firstsale-popup" class="popup" style="width:min(420px,96vw);padding:0;background:transparent;border:none;box-shadow:none;max-height:95vh;overflow-y:auto;left:50%;transform:translate(-50%,-50%) scale(1) translateY(0)">
+  <div id="firstsale-popup" class="popup" style="width:min(420px,96vw);padding:0;background:transparent;border:none;box-shadow:none;max-height:95vh;overflow-y:auto">
     <div class="fs2-wrap">
       <button class="fs2-close" onclick="closeFirstSale()">✕</button>
       <div class="fs2-canvas-wrap">
