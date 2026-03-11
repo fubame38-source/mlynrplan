@@ -600,11 +600,6 @@ function revMonthLabel(){
   var d=new Date();
   return m[d.getMonth()]+' '+d.getFullYear();
 }
-function revBase(extra){
-  var d=new Date();
-  var hrs=(d - new Date(d.getFullYear(),d.getMonth(),1))/3600000;
-  return Math.floor(47320 + (hrs*300) + (extra||0));
-}
 function revAnimate(target){
   if(_revRaf) cancelAnimationFrame(_revRaf);
   var from=_revTarget, dur=1200, t0=null;
@@ -620,11 +615,22 @@ function revAnimate(target){
   }
   requestAnimationFrame(step);
 }
+function revLoadAndShow(){
+  var mk=revMonthKey();
+  _sb.from('revenue').select('total_extra,user_totals').eq('month_key',mk).maybeSingle()
+  .then(function(res){
+    var extra=(res&&res.data&&res.data.total_extra)||0;
+    revAnimate(extra);
+  })['catch'](function(e){
+    console.log('rev load err',e);
+    revAnimate(0);
+  });
+}
 function initRevenue(){
   var ml=document.getElementById('rev-month-label');
   if(ml) ml.textContent=revMonthLabel();
   var mk=revMonthKey();
-  // Show my saved contribution
+  // Show my saved contribution from localStorage
   try{
     var myVal=parseInt(localStorage.getItem('mlynr6_rev_'+mk)||'0');
     if(myVal>0){
@@ -633,15 +639,7 @@ function initRevenue(){
       if(mEl&&mvEl){mEl.style.display='block';mvEl.textContent='$'+myVal.toLocaleString('en-US');}
     }
   }catch(e){}
-  // Load from Supabase
-  _sb.from('revenue').select('total_extra').eq('month_key',mk).maybeSingle()
-  .then(function(res){
-    var extra=(res.data&&res.data.total_extra)||0;
-    revAnimate(revBase(extra));
-    setInterval(function(){revAnimate(revBase(extra));},3600000);
-  })['catch'](function(){
-    revAnimate(revBase(0));
-  });
+  revLoadAndShow();
 }
 function addMyRevenue(){
   var inp=document.getElementById('rev-input');
@@ -650,31 +648,37 @@ function addMyRevenue(){
   if(val<=0){inp.focus();return;}
   inp.value='';
   var mk=revMonthKey();
-  // Save locally
+  var uid=_user?_user.id:'anon';
+  // Save locally (overwrite, not cumulative)
+  var prevMyVal=0;
+  try{prevMyVal=parseInt(localStorage.getItem('mlynr6_rev_'+mk)||'0');}catch(e){}
   try{localStorage.setItem('mlynr6_rev_'+mk,String(val));}catch(e){}
-  // Show my contribution
+  // Show my contribution immediately
   var mEl=document.getElementById('rev-mine');
   var mvEl=document.getElementById('rev-mine-val');
   if(mEl&&mvEl){mEl.style.display='block';mvEl.textContent='$'+val.toLocaleString('en-US');}
-  // Update Supabase
+  // Update Supabase: adjust total by (newVal - prevMyVal)
+  var diff=val-prevMyVal;
   _sb.from('revenue').select('total_extra').eq('month_key',mk).maybeSingle()
   .then(function(res){
-    var prev=(res.data&&res.data.total_extra)||0;
-    var next=prev+val;
-    if(res.data){
+    var prev=(res&&res.data&&res.data.total_extra)||0;
+    var next=Math.max(0,prev+diff);
+    if(res&&res.data){
       return _sb.from('revenue').update({total_extra:next}).eq('month_key',mk);
     } else {
-      return _sb.from('revenue').insert({month_key:mk,total_extra:val});
+      return _sb.from('revenue').insert({month_key:mk,total_extra:Math.max(0,val)});
     }
   })
   .then(function(){
-    // Re-fetch and animate
-    return _sb.from('revenue').select('total_extra').eq('month_key',mk).maybeSingle();
-  })
-  .then(function(res){
-    var extra=(res.data&&res.data.total_extra)||0;
-    revAnimate(revBase(extra));
-  })['catch'](function(e){console.log('rev err',e);});
+    revLoadAndShow();
+  })['catch'](function(e){
+    console.log('rev err',e);
+    // Show local fallback
+    try{
+      var localExtra=parseInt(localStorage.getItem('mlynr6_rev_'+mk)||'0');
+      revAnimate(localExtra);
+    }catch(ex){}
+  });
 }
 
 </script>
@@ -1611,7 +1615,7 @@ function closeFirstSale(){
 
 // ── VERSION SYSTEM ───────────────────────────────────────────
 // ⚠️ SADECE BU SATIRI DEĞİŞTİR — her güncellemede versiyon numarasını artır
-var APP_VERSION = '1.1';
+var APP_VERSION = '1.2';
 var VER_DESC = 'Toplam kursiyer cirosu bölümü eklendi 📈';
 // ──────────────────────────────────────────────────────────────
 
