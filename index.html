@@ -1279,7 +1279,7 @@ var CATS=[
 var MAX_SPIN=5;
 
 function spinKey(){return 'mlynr6_sp_'+email.replace(/[^a-z0-9]/gi,'_');}
-function todayStr(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function todayStr(){var d=new Date();var m=d.getMonth()+1;var dd=d.getDate();return d.getFullYear()+'-'+(m<10?'0'+m:m)+'-'+(dd<10?'0'+dd:dd);}
 function dayIndex(){
   var d=new Date();
   var start=new Date(d.getFullYear(),0,0);
@@ -1441,8 +1441,16 @@ function loadStateFromDB(){
           mc = {};
         }
         if(r.data.first_sale){ try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){} }
-        if(r.data.spin && typeof r.data.spin==='object'){
-          try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(r.data.spin));}catch(e){}
+        if(r.data.spin && typeof r.data.spin==='object' && Object.keys(r.data.spin).length>0){
+          // DB'deki spin bugüne aitse localStorage'a yaz
+          var spDB = r.data.spin;
+          var today = todayStr();
+          if(spDB.date === today){
+            try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(spDB));}catch(e){}
+          } else {
+            // Eski tarih — localStorage'ı temizle, yeni gün başlasın
+            try{LS.removeItem('mlynr6_sp_'+email);}catch(e){}
+          }
         }
         // localStorage'ı güncel tut
         try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
@@ -1925,7 +1933,6 @@ function setUserName(name){
   _userName = name.trim();
   try{ LS.setItem('mlynr6_name_'+email, _userName); }catch(e){}
   if(_user){
-    // upsert — satır yoksa da yazar, varsa günceller
     _sb.from('progress')
       .upsert({
         user_id: _user.id,
@@ -1933,7 +1940,7 @@ function setUserName(name){
         updated_at: new Date().toISOString()
       }, {onConflict:'user_id'})
       .then(function(r){
-        if(r.error) console.warn('İsim kaydedilemedi:', r.error);
+        if(r.error) console.warn('İsim DB hatası:', r.error);
       });
   }
 }
