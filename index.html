@@ -693,17 +693,70 @@ body.light #mentor-popup{background:#fff}
 }
 
 /* ── NAME POPUP ────────────────────────────────────────────── */
-#name-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:9000;opacity:0;pointer-events:none;transition:opacity .3s}
+#name-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(16px);z-index:9000;opacity:0;pointer-events:none;transition:opacity .4s}
 #name-overlay.show{opacity:1;pointer-events:all}
-#name-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-54%) scale(.95);z-index:9001;background:var(--surface);border:1px solid var(--green-ln);border-radius:16px;padding:32px 28px;width:min(360px,90vw);text-align:center;opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.34,1.2,.64,1)}
+#name-popup{
+  position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-56%) scale(.93);
+  z-index:9001;
+  background:linear-gradient(160deg,#0e1410 0%,#080b09 100%);
+  border:1px solid rgba(34,197,94,.2);
+  border-radius:20px;
+  padding:0;
+  width:min(400px,92vw);
+  text-align:center;
+  opacity:0;pointer-events:none;
+  transition:all .4s cubic-bezier(.34,1.2,.64,1);
+  overflow:hidden;
+  box-shadow:0 40px 80px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04);
+}
 #name-popup.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1)}
-#name-popup .np-emoji{font-size:36px;margin-bottom:10px}
-#name-popup .np-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:6px}
-#name-popup .np-sub{font-size:12px;color:var(--text2);margin-bottom:20px;line-height:1.5}
-#name-popup .np-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--text);font-family:var(--sans);outline:none;box-sizing:border-box;transition:border-color .2s;text-align:center}
-#name-popup .np-input:focus{border-color:var(--green)}
-#name-popup .np-btn{margin-top:14px;width:100%;background:var(--green);color:#000;font-weight:700;font-size:13px;padding:12px;border-radius:10px;border:none;cursor:pointer;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;transition:all .2s}
-#name-popup .np-btn:hover{background:#16a34a}
+#name-popup .np-top-bar{
+  background:linear-gradient(90deg,rgba(34,197,94,.12),rgba(34,197,94,.06),rgba(34,197,94,.12));
+  border-bottom:1px solid rgba(34,197,94,.12);
+  padding:14px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+#name-popup .np-logo{font-size:11px;font-weight:900;letter-spacing:3px;color:#fff;font-family:var(--mono)}
+#name-popup .np-dot{width:6px;height:6px;border-radius:50%;background:#22c55e}
+#name-popup .np-body{padding:32px 28px 28px}
+#name-popup .np-icon-wrap{
+  width:56px;height:56px;border-radius:16px;
+  background:rgba(34,197,94,.08);
+  border:1px solid rgba(34,197,94,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;margin:0 auto 18px;
+}
+#name-popup .np-title{font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;letter-spacing:-.3px}
+#name-popup .np-sub{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:24px;line-height:1.6;font-family:var(--mono);letter-spacing:.3px}
+#name-popup .np-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+#name-popup .np-field{display:flex;flex-direction:column;gap:5px;text-align:left}
+#name-popup .np-label{font-size:9px;font-weight:600;color:rgba(255,255,255,.25);font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;padding-left:2px}
+#name-popup .np-input{
+  width:100%;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:12px 14px;
+  font-size:14px;color:#fff;font-family:var(--sans);
+  outline:none;box-sizing:border-box;
+  transition:border-color .2s,background .2s;
+}
+#name-popup .np-input::placeholder{color:rgba(255,255,255,.18)}
+#name-popup .np-input:focus{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.04)}
+#name-popup .np-btn{
+  width:100%;background:#22c55e;color:#000;
+  font-weight:800;font-size:12px;padding:14px;
+  border-radius:10px;border:none;cursor:pointer;
+  font-family:var(--mono);letter-spacing:2px;
+  text-transform:uppercase;transition:all .2s;
+  margin-top:4px;
+}
+#name-popup .np-btn:hover{background:#16a34a;transform:translateY(-1px)}
+#name-popup .np-skip{
+  margin-top:12px;font-size:10px;color:rgba(255,255,255,.18);
+  font-family:var(--mono);letter-spacing:1px;cursor:pointer;
+  transition:color .2s;text-transform:uppercase;
+}
+#name-popup .np-skip:hover{color:rgba(255,255,255,.4)}
 
 /* ── WELCOME TOAST ─────────────────────────────────────────── */
 #welcome-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);z-index:8500;background:var(--surface);border:1px solid var(--green-ln);border-radius:12px;padding:12px 20px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:transform .4s cubic-bezier(.34,1.2,.64,1),opacity .4s;opacity:0;white-space:nowrap}
@@ -1013,12 +1066,29 @@ body.light #mentor-popup{background:#fff}
   <!-- NAME POPUP -->
   <div id="name-overlay"></div>
   <div id="name-popup">
-    <div class="np-emoji">👋</div>
-    <div class="np-title">Tebrikler, aramıza hoş geldin! 🎉</div>
-    <div class="np-sub">Sana nasıl sesleneceğimizi öğrenelim.</div>
-    <input class="np-input" id="np-input" type="text" placeholder="Adın (örn. Canberk)" maxlength="30"
-      onkeydown="if(event.key==='Enter')saveUserName()">
-    <button class="np-btn" onclick="saveUserName()">DEVAM ET →</button>
+    <div class="np-top-bar">
+      <span class="np-logo">MLYNR.</span>
+      <span class="np-dot"></span>
+    </div>
+    <div class="np-body">
+      <div class="np-icon-wrap">👋</div>
+      <div class="np-title">Aramıza Hoş Geldin</div>
+      <div class="np-sub">Sana özel deneyim için adını gir</div>
+      <div class="np-row">
+        <div class="np-field">
+          <span class="np-label">Ad</span>
+          <input class="np-input" id="np-input" type="text" placeholder="Adın" maxlength="30"
+            onkeydown="if(event.key==='Enter')document.getElementById('np-input2').focus()">
+        </div>
+        <div class="np-field">
+          <span class="np-label">Soyad</span>
+          <input class="np-input" id="np-input2" type="text" placeholder="Soyadın" maxlength="30"
+            onkeydown="if(event.key==='Enter')saveUserName()">
+        </div>
+      </div>
+      <button class="np-btn" onclick="saveUserName()">PLATFORMA GİR →</button>
+      <div class="np-skip" onclick="skipUserName()">Şimdi değil</div>
+    </div>
   </div>
 
   <!-- WELCOME TOAST -->
@@ -1805,12 +1875,17 @@ function closeNamePopup(){
   document.getElementById('name-popup').classList.remove('show');
 }
 function saveUserName(){
-  var val = document.getElementById('np-input').value.trim();
-  if(!val) return;
-  setUserName(val);
+  var first = document.getElementById('np-input').value.trim();
+  var last  = document.getElementById('np-input2') ? document.getElementById('np-input2').value.trim() : '';
+  if(!first) { document.getElementById('np-input').focus(); return; }
+  var full = last ? first + ' ' + last : first;
+  setUserName(full);
   closeNamePopup();
-  showWelcomeToast(val);
+  showWelcomeToast(first); // toast shows first name only
   updateNameUI();
+}
+function skipUserName(){
+  closeNamePopup();
 }
 function showWelcomeToast(name){
   var toast = document.getElementById('welcome-toast');
@@ -1823,12 +1898,11 @@ function showWelcomeToast(name){
 function updateNameUI(){
   var name = getUserName();
   if(!name) return;
-  // Avatar initials
+  var firstName = name.split(' ')[0];
   var av = document.getElementById('uav');
-  if(av) av.textContent = name.charAt(0).toUpperCase();
-  // uname in header
+  if(av) av.textContent = firstName.charAt(0).toUpperCase();
   var un = document.getElementById('uname');
-  if(un) un.textContent = name;
+  if(un) un.textContent = firstName;
 }
 
 
@@ -1870,67 +1944,95 @@ function certDraw(){
   try{
     var c = document.getElementById('cert-canvas');
     if(!c) return;
-    // A4 landscape 2x
     var W=2480, H=1754;
     c.width=W; c.height=H;
     var ctx = c.getContext('2d');
+    var now = new Date();
+    var months2=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+    var recipientName = getUserName() || email.split('@')[0];
 
-    // ── BACKGROUND: deep dark ──────────────────────────────
-    ctx.fillStyle='#06080a';
+    // ── BACKGROUND ─────────────────────────────────────────────
+    // Deep dark base
+    ctx.fillStyle='#07090a';
     ctx.fillRect(0,0,W,H);
 
-    // Subtle texture — diagonal lines
-    ctx.strokeStyle='rgba(255,255,255,0.018)';
-    ctx.lineWidth=1;
-    for(var i=-H;i<W+H;i+=40){
-      ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i+H,H); ctx.stroke();
-    }
+    // Subtle grain texture via tiny dots
+    ctx.fillStyle='rgba(255,255,255,0.012)';
+    for(var tx=0;tx<W;tx+=4)
+      for(var ty=0;ty<H;ty+=4)
+        if(Math.random()>0.65){ctx.beginPath();ctx.arc(tx,ty,0.6,0,Math.PI*2);ctx.fill();}
 
-    // Top-left gold glow
-    var g1=ctx.createRadialGradient(0,0,0,0,0,900);
-    g1.addColorStop(0,'rgba(250,204,21,0.09)');
-    g1.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
+    // Left edge vertical gradient accent
+    var edgeL=ctx.createLinearGradient(0,0,0,H);
+    edgeL.addColorStop(0,'rgba(250,204,21,0)');
+    edgeL.addColorStop(0.4,'rgba(250,204,21,0.06)');
+    edgeL.addColorStop(0.6,'rgba(34,197,94,0.05)');
+    edgeL.addColorStop(1,'rgba(34,197,94,0)');
+    ctx.fillStyle=edgeL; ctx.fillRect(0,0,W*0.35,H);
 
-    // Bottom-right green glow
-    var g2=ctx.createRadialGradient(W,H,0,W,H,1000);
-    g2.addColorStop(0,'rgba(34,197,94,0.07)');
-    g2.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
+    // Right edge
+    var edgeR=ctx.createLinearGradient(W,0,W,H);
+    edgeR.addColorStop(0,'rgba(34,197,94,0)');
+    edgeR.addColorStop(0.4,'rgba(34,197,94,0.04)');
+    edgeR.addColorStop(0.6,'rgba(250,204,21,0.04)');
+    edgeR.addColorStop(1,'rgba(250,204,21,0)');
+    ctx.fillStyle=edgeR; ctx.fillRect(W*0.65,0,W*0.35,H);
 
-    // Center soft glow
-    var g3=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,700);
-    g3.addColorStop(0,'rgba(250,204,21,0.03)');
-    g3.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=g3; ctx.fillRect(0,0,W,H);
+    // Top center glow
+    var topGlow=ctx.createRadialGradient(W/2,0,0,W/2,0,H*0.6);
+    topGlow.addColorStop(0,'rgba(250,204,21,0.06)');
+    topGlow.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=topGlow; ctx.fillRect(0,0,W,H);
 
-    // ── OUTER BORDER ──────────────────────────────────────
-    var bm=48;
-    // Gold outer line
-    ctx.strokeStyle='rgba(250,204,21,0.35)';
+    // Bottom glow
+    var botGlow=ctx.createRadialGradient(W/2,H,0,W/2,H,H*0.5);
+    botGlow.addColorStop(0,'rgba(34,197,94,0.05)');
+    botGlow.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=botGlow; ctx.fillRect(0,0,W,H);
+
+    // ── LEFT COLUMN ACCENT ──────────────────────────────────────
+    // Thin vertical gold line left side
+    var vlineX=140;
+    var vg=ctx.createLinearGradient(0,80,0,H-80);
+    vg.addColorStop(0,'rgba(250,204,21,0)');
+    vg.addColorStop(0.2,'rgba(250,204,21,0.35)');
+    vg.addColorStop(0.8,'rgba(250,204,21,0.35)');
+    vg.addColorStop(1,'rgba(250,204,21,0)');
+    ctx.strokeStyle=vg; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(vlineX,80); ctx.lineTo(vlineX,H-80); ctx.stroke();
+
+    // Right mirror
+    var vlineX2=W-vlineX;
+    ctx.beginPath(); ctx.moveTo(vlineX2,80); ctx.lineTo(vlineX2,H-80); ctx.stroke();
+
+    // ── OUTER BORDER ────────────────────────────────────────────
+    var bm=52;
+    // Gold outer
+    ctx.strokeStyle='rgba(250,204,21,0.22)';
     ctx.lineWidth=1.5;
     ctx.strokeRect(bm,bm,W-bm*2,H-bm*2);
-
-    // Inner line slightly inset
-    ctx.strokeStyle='rgba(250,204,21,0.12)';
+    // Inset hairline
+    ctx.strokeStyle='rgba(250,204,21,0.07)';
     ctx.lineWidth=1;
-    ctx.strokeRect(bm+12,bm+12,W-bm*2-24,H-bm*2-24);
+    ctx.strokeRect(bm+14,bm+14,W-bm*2-28,H-bm*2-28);
 
-    // Corner ornaments
-    function corner(x,y,sx,sy){
-      var L=60, G=14;
-      ctx.strokeStyle='rgba(250,204,21,0.6)';
+    // Corner ornaments — L-shaped, two layers
+    function corner(ox,oy,sx,sy){
+      var L1=72,L2=52,G=16;
+      ctx.strokeStyle='rgba(250,204,21,0.7)';
       ctx.lineWidth=2;
       ctx.beginPath();
-      ctx.moveTo(x+sx*(L),y);
-      ctx.lineTo(x,y);
-      ctx.lineTo(x,y+sy*L);
+      ctx.moveTo(ox+sx*L1,oy); ctx.lineTo(ox,oy); ctx.lineTo(ox,oy+sy*L1);
       ctx.stroke();
+      ctx.strokeStyle='rgba(250,204,21,0.2)';
+      ctx.lineWidth=1;
       ctx.beginPath();
-      ctx.moveTo(x+sx*(L-G),y+sy*G);
-      ctx.lineTo(x+sx*G,y+sy*G);
-      ctx.lineTo(x+sx*G,y+sy*(L-G));
+      ctx.moveTo(ox+sx*(L2+G),oy+sy*G); ctx.lineTo(ox+sx*G,oy+sy*G);
+      ctx.lineTo(ox+sx*G,oy+sy*(L2+G));
       ctx.stroke();
+      // Corner dot
+      ctx.beginPath(); ctx.arc(ox,oy,3,0,Math.PI*2);
+      ctx.fillStyle='rgba(250,204,21,0.6)'; ctx.fill();
     }
     var cm=bm+4;
     corner(cm,cm,1,1);
@@ -1938,180 +2040,186 @@ function certDraw(){
     corner(cm,H-cm,1,-1);
     corner(W-cm,H-cm,-1,-1);
 
-    // ── TOP BAR ───────────────────────────────────────────
-    var topY=bm+80;
+    // ── TOP SECTION ─────────────────────────────────────────────
+    var topY = bm+88;
 
-    // MLYNR. wordmark left
+    // MLYNR. wordmark — left
     ctx.fillStyle='#ffffff';
-    ctx.font='900 38px Arial, sans-serif';
+    ctx.font='900 40px "Arial", sans-serif';
     ctx.textAlign='left';
     ctx.fillText('MLYNR.',bm+70,topY);
-
-    // Green dot
-    ctx.beginPath(); ctx.arc(bm+70+178,topY-10,5,0,Math.PI*2);
+    // Green dot after logo
+    ctx.beginPath(); ctx.arc(bm+70+200,topY-13,5.5,0,Math.PI*2);
     ctx.fillStyle='#22c55e'; ctx.fill();
 
-    // Right: seri no / yıl
-    var now=new Date();
-    ctx.fillStyle='rgba(255,255,255,0.2)';
-    ctx.font='500 22px monospace';
+    // Right — cert number
+    ctx.fillStyle='rgba(255,255,255,0.18)';
+    ctx.font='500 20px monospace';
     ctx.textAlign='right';
-    ctx.fillText('NO: MLYNR-'+now.getFullYear()+'-'+String(Math.floor(Math.random()*9000)+1000),W-bm-70,topY);
+    var certNo='MLYNR-'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0');
+    ctx.fillText('NO: '+certNo, W-bm-70, topY);
 
-    // Horizontal rule under top bar
-    var hrY=topY+30;
-    var hrg=ctx.createLinearGradient(bm+70,0,W-bm-70,0);
-    hrg.addColorStop(0,'rgba(250,204,21,0)');
-    hrg.addColorStop(0.2,'rgba(250,204,21,0.4)');
-    hrg.addColorStop(0.8,'rgba(250,204,21,0.4)');
-    hrg.addColorStop(1,'rgba(250,204,21,0)');
-    ctx.strokeStyle=hrg; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(bm+70,hrY); ctx.lineTo(W-bm-70,hrY); ctx.stroke();
+    // Top rule
+    var ruleY=topY+28;
+    var rg=ctx.createLinearGradient(bm+70,0,W-bm-70,0);
+    rg.addColorStop(0,'rgba(250,204,21,0)');
+    rg.addColorStop(0.15,'rgba(250,204,21,0.4)');
+    rg.addColorStop(0.85,'rgba(250,204,21,0.4)');
+    rg.addColorStop(1,'rgba(250,204,21,0)');
+    ctx.strokeStyle=rg; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(bm+70,ruleY); ctx.lineTo(W-bm-70,ruleY); ctx.stroke();
 
-    // ── CERTIFICATE LABEL ─────────────────────────────────
-    var cLabelY = hrY+100;
-    ctx.fillStyle='rgba(250,204,21,0.55)';
-    ctx.font='600 24px monospace';
+    // ── CERTIFICATE LABEL ───────────────────────────────────────
+    var cLY=ruleY+90;
+    // Small diamond ornaments
+    function diamond(x,y,size,alpha){
+      ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI/4);
+      ctx.fillStyle='rgba(250,204,21,'+alpha+')';
+      ctx.fillRect(-size,-size,size*2,size*2);
+      ctx.restore();
+    }
+    diamond(W/2-310,cLY-8,5,0.4);
+    diamond(W/2-280,cLY-8,2.5,0.2);
+    diamond(W/2+280,cLY-8,2.5,0.2);
+    diamond(W/2+310,cLY-8,5,0.4);
+
+    ctx.fillStyle='rgba(250,204,21,0.45)';
+    ctx.font='700 22px monospace';
     ctx.textAlign='center';
-    ctx.letterSpacing='8px';
-    ctx.fillText('S E R T İ F İ K A', W/2, cLabelY);
+    ctx.fillText('S E R T İ F İ K A', W/2, cLY);
 
-    // Small ornament dots around label
-    [-340,-180,180,340].forEach(function(dx){
-      ctx.beginPath(); ctx.arc(W/2+dx, cLabelY-10, 2.5, 0, Math.PI*2);
-      ctx.fillStyle='rgba(250,204,21,0.3)'; ctx.fill();
-    });
-
-    // ── MAIN TITLE ────────────────────────────────────────
-    ctx.shadowColor='rgba(250,204,21,0.3)';
-    ctx.shadowBlur=60;
+    // ── MAIN TITLE ──────────────────────────────────────────────
+    var titleY=cLY+118;
+    // Shadow glow pass
+    ctx.shadowColor='rgba(250,204,21,0.25)';
+    ctx.shadowBlur=80;
     ctx.fillStyle='#facc15';
-    ctx.font='900 102px Arial, sans-serif';
+    ctx.font='900 118px "Arial Black","Arial",sans-serif';
     ctx.textAlign='center';
-    ctx.fillText('E-TİCARET UZMANI', W/2, cLabelY+140);
+    ctx.fillText('E-TİCARET UZMANI',W/2,titleY);
     ctx.shadowBlur=0; ctx.shadowColor='transparent';
 
-    // Underline gradient
-    var ulg2=ctx.createLinearGradient(W/2-380,0,W/2+380,0);
-    ulg2.addColorStop(0,'rgba(250,204,21,0)');
-    ulg2.addColorStop(0.5,'rgba(250,204,21,0.6)');
-    ulg2.addColorStop(1,'rgba(250,204,21,0)');
-    ctx.fillStyle=ulg2;
-    ctx.fillRect(W/2-380, cLabelY+160, 760, 3);
+    // Title underline — gradient bar
+    var ulY=titleY+22;
+    var ulg=ctx.createLinearGradient(W/2-420,0,W/2+420,0);
+    ulg.addColorStop(0,'rgba(250,204,21,0)');
+    ulg.addColorStop(0.3,'rgba(250,204,21,0.7)');
+    ulg.addColorStop(0.7,'rgba(34,197,94,0.5)');
+    ulg.addColorStop(1,'rgba(34,197,94,0)');
+    ctx.fillStyle=ulg; ctx.fillRect(W/2-420,ulY,840,3);
 
-    // ── AWARDED TO ────────────────────────────────────────
-    var awardY = cLabelY + 248;
-    ctx.fillStyle='rgba(255,255,255,0.3)';
-    ctx.font='400 26px monospace';
+    // ── AWARDED TO ──────────────────────────────────────────────
+    var aY=ulY+100;
+    ctx.fillStyle='rgba(255,255,255,0.25)';
+    ctx.font='400 28px monospace';
     ctx.textAlign='center';
-    ctx.fillText('Bu sertifika,', W/2, awardY);
+    ctx.fillText('Bu sertifika,',W/2,aY);
 
-    // Recipient name — big and white
-    var recipientName = getUserName() || email.split('@')[0];
+    // Recipient name
+    var nameY=aY+120;
+    ctx.shadowColor='rgba(255,255,255,0.1)';
+    ctx.shadowBlur=24;
     ctx.fillStyle='#ffffff';
-    ctx.font='800 88px Arial, sans-serif';
+    ctx.font='800 96px "Arial",sans-serif';
     ctx.textAlign='center';
-    // Name shadow/glow
-    ctx.shadowColor='rgba(255,255,255,0.15)';
-    ctx.shadowBlur=30;
-    ctx.fillText(recipientName, W/2, awardY+116);
+    ctx.fillText(recipientName,W/2,nameY);
     ctx.shadowBlur=0; ctx.shadowColor='transparent';
 
-    // Name underline — thin green
-    var nuw=ctx.measureText(recipientName).width * 0.7;
-    var nug=ctx.createLinearGradient(W/2-nuw/2,0,W/2+nuw/2,0);
+    // Name underline — green
+    var nmw=Math.min(ctx.measureText(recipientName).width*0.65, 680);
+    var nug=ctx.createLinearGradient(W/2-nmw/2,0,W/2+nmw/2,0);
     nug.addColorStop(0,'rgba(34,197,94,0)');
-    nug.addColorStop(0.5,'rgba(34,197,94,0.7)');
+    nug.addColorStop(0.5,'rgba(34,197,94,0.65)');
     nug.addColorStop(1,'rgba(34,197,94,0)');
-    ctx.fillStyle=nug;
-    ctx.fillRect(W/2-nuw/2, awardY+130, nuw, 2);
+    ctx.fillStyle=nug; ctx.fillRect(W/2-nmw/2,nameY+16,nmw,2);
 
-    // awarded to text
-    ctx.fillStyle='rgba(255,255,255,0.28)';
-    ctx.font='400 26px monospace';
+    ctx.fillStyle='rgba(255,255,255,0.22)';
+    ctx.font='400 28px monospace';
     ctx.textAlign='center';
-    ctx.fillText("adına verilmiştir.", W/2, awardY+175);
+    ctx.fillText('adına verilmiştir.',W/2,nameY+68);
 
-    // ── DESCRIPTION ───────────────────────────────────────
-    var descY = awardY + 240;
-    ctx.fillStyle='rgba(255,255,255,0.42)';
-    ctx.font='400 28px Arial, sans-serif';
+    // ── DESCRIPTION ─────────────────────────────────────────────
+    var descY=nameY+136;
+    ctx.fillStyle='rgba(255,255,255,0.38)';
+    ctx.font='400 28px "Arial",sans-serif';
     ctx.textAlign='center';
-    ctx.fillText('Start & Scale Dropshipping programını eksiksiz tamamlayarak', W/2, descY);
-    ctx.fillText('eBay ve Shopify e-ticaret alanında uzman seviyeye ulaşmıştır.', W/2, descY+42);
+    ctx.fillText('Start & Scale Dropshipping programını başarıyla tamamlayarak',W/2,descY);
+    ctx.fillText('eBay & Shopify e-ticaret alanında uzman seviyeye ulaşmıştır.',W/2,descY+44);
 
-    // ── DIVIDER ───────────────────────────────────────────
-    var divY = descY + 100;
-    var divg=ctx.createLinearGradient(bm+70,0,W-bm-70,0);
-    divg.addColorStop(0,'rgba(255,255,255,0)');
-    divg.addColorStop(0.5,'rgba(255,255,255,0.08)');
-    divg.addColorStop(1,'rgba(255,255,255,0)');
-    ctx.strokeStyle=divg; ctx.lineWidth=1;
+    // ── DIVIDER ─────────────────────────────────────────────────
+    var divY=descY+114;
+    var dg=ctx.createLinearGradient(bm+70,0,W-bm-70,0);
+    dg.addColorStop(0,'rgba(255,255,255,0)');
+    dg.addColorStop(0.5,'rgba(255,255,255,0.06)');
+    dg.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.strokeStyle=dg; ctx.lineWidth=1;
     ctx.beginPath(); ctx.moveTo(bm+70,divY); ctx.lineTo(W-bm-70,divY); ctx.stroke();
 
-    // ── SIGNATURE AREA ────────────────────────────────────
-    var sigY = divY + 80;
-    var sigX1 = W/2 - 320;
-    var sigX2 = W/2 + 320;
+    // ── SIGNATURE AREA ──────────────────────────────────────────
+    var sigY=divY+96;
+    var sigLX=W/2-360, sigRX=W/2+360, sigLineW=280;
 
-    // Left — Issuer
-    // Signature line
-    ctx.strokeStyle='rgba(255,255,255,0.15)';
+    // LEFT — Canberk imza
+    ctx.strokeStyle='rgba(255,255,255,0.12)';
     ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(sigX1-160,sigY+60); ctx.lineTo(sigX1+160,sigY+60); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(sigLX-sigLineW/2,sigY+52); ctx.lineTo(sigLX+sigLineW/2,sigY+52); ctx.stroke();
 
-    // "Canberk Öztürk" in italic style
-    ctx.fillStyle='rgba(255,255,255,0.85)';
-    ctx.font='700 italic 34px Arial, sans-serif';
+    ctx.fillStyle='rgba(255,255,255,0.82)';
+    ctx.font='700 italic 36px Georgia,serif';
     ctx.textAlign='center';
-    ctx.fillText('Canberk Öztürk', sigX1, sigY+50);
-
-    ctx.fillStyle='rgba(255,255,255,0.3)';
-    ctx.font='400 22px monospace';
+    ctx.fillText('Canberk Öztürk',sigLX,sigY+44);
+    ctx.fillStyle='rgba(250,204,21,0.55)';
+    ctx.font='600 19px monospace';
     ctx.textAlign='center';
-    ctx.fillText('KURUCU · MLYNR.', sigX1, sigY+90);
+    ctx.fillText('KURUCU · MLYNR.',sigLX,sigY+84);
 
-    // Right — Date
-    var months2=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+    // RIGHT — Tarih
     var ds2=now.getDate()+' '+months2[now.getMonth()]+' '+now.getFullYear();
-
-    ctx.strokeStyle='rgba(255,255,255,0.15)';
+    ctx.strokeStyle='rgba(255,255,255,0.12)';
     ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(sigX2-160,sigY+60); ctx.lineTo(sigX2+160,sigY+60); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(sigRX-sigLineW/2,sigY+52); ctx.lineTo(sigRX+sigLineW/2,sigY+52); ctx.stroke();
 
-    ctx.fillStyle='rgba(255,255,255,0.85)';
-    ctx.font='700 34px Arial, sans-serif';
+    ctx.fillStyle='rgba(255,255,255,0.82)';
+    ctx.font='700 36px "Arial",sans-serif';
     ctx.textAlign='center';
-    ctx.fillText(ds2, sigX2, sigY+50);
-
-    ctx.fillStyle='rgba(255,255,255,0.3)';
-    ctx.font='400 22px monospace';
+    ctx.fillText(ds2,sigRX,sigY+44);
+    ctx.fillStyle='rgba(255,255,255,0.28)';
+    ctx.font='600 19px monospace';
     ctx.textAlign='center';
-    ctx.fillText('TAMAMLANMA TARİHİ', sigX2, sigY+90);
+    ctx.fillText('TAMAMLANMA TARİHİ',sigRX,sigY+84);
 
-    // Center seal
-    var sealX=W/2, sealY=sigY+28;
+    // CENTER SEAL ────────────────────────────────────────────────
+    var sx=W/2, sy=sigY+26;
     // Outer ring
-    ctx.beginPath(); ctx.arc(sealX,sealY,54,0,Math.PI*2);
-    ctx.strokeStyle='rgba(250,204,21,0.5)'; ctx.lineWidth=1.5; ctx.stroke();
-    // Inner ring
-    ctx.beginPath(); ctx.arc(sealX,sealY,44,0,Math.PI*2);
-    ctx.strokeStyle='rgba(250,204,21,0.25)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.beginPath(); ctx.arc(sx,sy,58,0,Math.PI*2);
+    ctx.strokeStyle='rgba(250,204,21,0.35)'; ctx.lineWidth=1.5; ctx.stroke();
+    // Middle ring
+    ctx.beginPath(); ctx.arc(sx,sy,48,0,Math.PI*2);
+    ctx.strokeStyle='rgba(250,204,21,0.15)'; ctx.lineWidth=1; ctx.stroke();
     // Fill
-    ctx.beginPath(); ctx.arc(sealX,sealY,42,0,Math.PI*2);
-    ctx.fillStyle='rgba(250,204,21,0.06)'; ctx.fill();
-    // Seal text
-    ctx.fillStyle='#facc15';
-    ctx.font='900 28px Arial, sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText('✓', sealX, sealY+10);
+    ctx.beginPath(); ctx.arc(sx,sy,46,0,Math.PI*2);
+    var sealFill=ctx.createRadialGradient(sx,sy,0,sx,sy,46);
+    sealFill.addColorStop(0,'rgba(250,204,21,0.1)');
+    sealFill.addColorStop(1,'rgba(250,204,21,0.03)');
+    ctx.fillStyle=sealFill; ctx.fill();
+    // Check mark
+    ctx.strokeStyle='#facc15';
+    ctx.lineWidth=5;
+    ctx.lineCap='round';
+    ctx.lineJoin='round';
+    ctx.beginPath();
+    ctx.moveTo(sx-16,sy+2);
+    ctx.lineTo(sx-4,sy+14);
+    ctx.lineTo(sx+18,sy-12);
+    ctx.stroke();
+    ctx.lineCap='butt'; ctx.lineJoin='miter';
 
-    // ── BOTTOM FOOTER ──────────────────────────────────────
-    var ftY=H-bm-55;
-    ctx.fillStyle='rgba(255,255,255,0.12)';
-    ctx.font='400 20px monospace';
+    // ── BOTTOM FOOTER ────────────────────────────────────────────
+    var ftY=H-bm-52;
+    ctx.fillStyle='rgba(255,255,255,0.1)';
+    ctx.font='400 19px monospace';
     ctx.textAlign='center';
-    ctx.fillText('mlynr.com  ·  okul.mlynr.com  ·  Start & Scale Dropshipping', W/2, ftY);
+    ctx.fillText('mlynr.com  ·  okul.mlynr.com  ·  Start & Scale Dropshipping',W/2,ftY);
 
   }catch(e){ console.error('certDraw error',e); }
 }
