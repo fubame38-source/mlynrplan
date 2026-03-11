@@ -1397,6 +1397,11 @@ function loadStateFromDB(){
   if(!_user){
     loadState();
     showApp();
+    setTimeout(function(){
+      var nm = getUserName();
+      if(!nm){ openNamePopup(); }
+      else { showWelcomeToast(nm.split(' ')[0]); }
+    }, 400);
     return;
   }
   _sb.from('progress')
@@ -1439,17 +1444,31 @@ function loadStateFromDB(){
         }
         // localStorage'ı güncel tut
         try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
-        // İsim DB'den geliyorsa localStorage'a yaz
+        // full_name DB'den geliyorsa localStorage'a yaz
         if(r.data.full_name){
           try{ LS.setItem('mlynr6_name_'+email, r.data.full_name); }catch(e){}
         }
       }
       showApp();
+      // Popup/toast kararı: DB sorgusu bitti, isim kesin belli
+      setTimeout(function(){
+        var nm = getUserName();
+        if(!nm){
+          openNamePopup();
+        } else {
+          showWelcomeToast(nm.split(' ')[0]);
+        }
+      }, 400);
     })
     .catch(function(err){
       console.warn('DB load failed, localStorage fallback:', err);
       loadState();
       showApp();
+      setTimeout(function(){
+        var nm = getUserName();
+        if(!nm){ openNamePopup(); }
+        else { showWelcomeToast(nm.split(' ')[0]); }
+      }, 400);
     });
 }
 
@@ -1595,16 +1614,7 @@ function showApp(){
   renderSpin();
   checkVersion();
   setTimeout(initScrollAnim, 50);
-  // First time? Ask for name. Returning user? Show welcome toast.
-  setTimeout(function(){
-    var sn2 = getUserName();
-    if(!sn2){
-      openNamePopup();
-    } else {
-      var firstName2 = sn2.split(' ')[0];
-      showWelcomeToast(firstName2);
-    }
-  }, 700);
+  // İsim popup kararı loadStateFromDB tarafından verilir
 }
 
 // ── RENDER HELPERS ────────────────────────────────────────────
