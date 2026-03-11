@@ -606,7 +606,7 @@ body.light .footer-btn:hover {
 .fs-close-row{margin-top:12px}
 .fs-close-txt{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.25);text-transform:uppercase;cursor:pointer;background:none;border:none;transition:color .2s}
 .fs-close-txt:hover{color:rgba(255,255,255,.5)}
-#fs-share-area{display:block;margin-top:14px}
+#fs-insta-btn{display:block;margin-top:14px}
 .fs-share-tip{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:12px}
 .fs-share-tip strong{color:#22c55e}
 .fs-btn-insta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:13px;border:none;border-radius:10px;cursor:pointer;text-decoration:none;transition:all .2s}
@@ -907,7 +907,14 @@ _sb.auth.onAuthStateChange(function(event, session){
 var _user = null;
 
 // ── CONFETTI ─────────────────────────────────────────────────
+var _confettiRAF=null;
+function stopConfetti(){
+  if(_confettiRAF){cancelAnimationFrame(_confettiRAF);_confettiRAF=null;}
+  var c=document.getElementById('confetti-canvas');
+  if(c){c.classList.remove('show');c.getContext('2d').clearRect(0,0,c.width,c.height);}
+}
 function launchConfetti(){
+  stopConfetti();
   var c=document.getElementById('confetti-canvas');
   c.width=window.innerWidth;c.height=window.innerHeight;
   c.classList.add('show');
@@ -916,8 +923,8 @@ function launchConfetti(){
   var pieces=[];
   for(var i=0;i<120;i++){pieces.push({x:Math.random()*c.width,y:-10,vx:(Math.random()-0.5)*4,vy:Math.random()*4+2,rot:Math.random()*360,vr:(Math.random()-0.5)*8,w:Math.random()*8+4,h:Math.random()*4+2,col:cols[Math.floor(Math.random()*cols.length)],o:1});}
   var f=0;
-  function run(){ctx.clearRect(0,0,c.width,c.height);f++;var alive=false;for(var i=0;i<pieces.length;i++){var p=pieces[i];p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;if(f>70)p.o-=.022;if(p.o>0){alive=true;ctx.save();ctx.globalAlpha=Math.max(0,p.o);ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.col;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();}}if(alive)requestAnimationFrame(run);else{c.classList.remove('show');ctx.clearRect(0,0,c.width,c.height);}}
-  run();
+  function run(){ctx.clearRect(0,0,c.width,c.height);f++;var alive=false;for(var i=0;i<pieces.length;i++){var p=pieces[i];p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;if(f>70)p.o-=.022;if(p.o>0){alive=true;ctx.save();ctx.globalAlpha=Math.max(0,p.o);ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.col;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();}}if(alive){_confettiRAF=requestAnimationFrame(run);}else{c.classList.remove('show');ctx.clearRect(0,0,c.width,c.height);_confettiRAF=null;}}
+  _confettiRAF=requestAnimationFrame(run);
 }
 
 // ── MOTIVATION ───────────────────────────────────────────────
@@ -1074,8 +1081,9 @@ function saveState(){
   // Save to Supabase
   if(_user){
     var fsVal=false;try{fsVal=LS.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
+    var spVal={};try{var spRaw=LS.getItem('mlynr6_sp_'+email);if(spRaw)spVal=JSON.parse(spRaw);}catch(e){}
     _sb.from('progress').update({
-      done:done, mc:mc, first_sale:fsVal, updated_at:new Date().toISOString()
+      done:done, mc:mc, first_sale:fsVal, spin:spVal, updated_at:new Date().toISOString()
     }).eq('user_id',_user.id).then(function(r){
       if(r.error){console.warn('DB save error:',r.error);}
     });
@@ -1523,6 +1531,12 @@ function openFirstSale(){
   var instaBtn=document.getElementById('fs-insta-btn');
   if(dlBtn){ dlBtn.style.display='flex'; }
   if(instaBtn){ instaBtn.style.display='none'; }
+  // Save first_sale flag to localStorage + Supabase
+  try{ LS.setItem('mlynr6_fs_'+email,'1'); }catch(e){}
+  if(_user){
+    _sb.from('progress').update({first_sale:true,updated_at:new Date().toISOString()})
+      .eq('user_id',_user.id).then(function(){});
+  }
   launchConfetti();
   playMoneySound();
   setTimeout(fsDrawCard,80);
@@ -1530,6 +1544,7 @@ function openFirstSale(){
 function closeFirstSale(){
   document.getElementById('firstsale-overlay').classList.remove('show');
   document.getElementById('firstsale-popup').classList.remove('show');
+  stopConfetti();
 }
 function fsShowShare(){
   var dlBtn=document.getElementById('fs-dl-btn');
@@ -1892,7 +1907,7 @@ function showPasswordResetUI(session){
   document.getElementById('login-err').style.color='#4ade80';
   document.getElementById('login-err').textContent='Yeni şifreni gir.';
   document.getElementById('login-btn').textContent='ŞİFREYİ GÜNCELLE →';
-  document.getElementById('login-hint').style.display='none';
+  document.getElementById('login-hint-text').style.display='none';
   document.getElementById('login-btn')._resetMode = true;
   document.getElementById('login-btn')._resetHandler = function(){
     var pw=document.getElementById('inp-pass').value;
