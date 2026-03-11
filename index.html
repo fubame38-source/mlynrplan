@@ -605,7 +605,7 @@ body.light .footer-btn:hover {
 .fs-close-row{margin-top:12px}
 .fs-close-txt{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.25);text-transform:uppercase;cursor:pointer;background:none;border:none;transition:color .2s}
 .fs-close-txt:hover{color:rgba(255,255,255,.5)}
-#fs-share-area{display:none;margin-top:14px}
+#fs-share-area{display:block;margin-top:14px}
 .fs-share-tip{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:12px}
 .fs-share-tip strong{color:#22c55e}
 .fs-btn-insta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:13px;border:none;border-radius:10px;cursor:pointer;text-decoration:none;transition:all .2s}
@@ -775,7 +775,7 @@ body.light .footer-btn:hover {
           <div class="fs-quote-author"><span class="fs-quote-dot"></span>Canberk Öztürk</div>
           <div class="fs-quote-text">"İlk satış en zor olanı. Artık algoritma seni tanıyor, sistem çalışıyor. Bundan sonrası sadece <strong>ölçeklendirmek.</strong>"</div>
         </div>
-        <div class="fs-canvas-wrap"><canvas id="fs-canvas" width="688" height="480"></canvas></div>
+        <div class="fs-canvas-wrap"><canvas id="fs-canvas" width="750" height="920"></canvas></div>
         <div class="fs-btn-row" id="fs-btn-row">
           <button class="fs-btn-dl" onclick="fsDownloadCard()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 15V3m0 12l-4-4m4 4l4-4"/><path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
@@ -1537,8 +1537,6 @@ function calcEarn(){
 function openFirstSale(){
   document.getElementById('firstsale-overlay').classList.add('show');
   document.getElementById('firstsale-popup').classList.add('show');
-  var sa=document.getElementById('fs-share-area');
-  if(sa) sa.style.display='none';
   launchConfetti();
   playMoneySound();
   setTimeout(fsDrawCard,80);
@@ -1565,30 +1563,36 @@ function fsDrawCard(){
   try{
     var c=document.getElementById('fs-canvas');
     if(!c) return;
-    c.width=688; c.height=480;
+    c.width=750; c.height=920;
     var ctx=c.getContext('2d');
-    var W=688,H=480;
+    var W=750,H=920;
+    // BG
     var bg=ctx.createLinearGradient(0,0,0,H);
-    bg.addColorStop(0,'#060e06'); bg.addColorStop(0.5,'#0a150a'); bg.addColorStop(1,'#060e06');
+    bg.addColorStop(0,'#050d05'); bg.addColorStop(0.5,'#091209'); bg.addColorStop(1,'#050d05');
     ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
-    var glow=ctx.createRadialGradient(W/2,0,0,W/2,0,320);
-    glow.addColorStop(0,'rgba(34,197,94,0.25)'); glow.addColorStop(1,'rgba(34,197,94,0)');
-    ctx.fillStyle=glow; ctx.fillRect(0,0,W,H);
-    var glow2=ctx.createRadialGradient(W/2,H,0,W/2,H,200);
-    glow2.addColorStop(0,'rgba(34,197,94,0.12)'); glow2.addColorStop(1,'rgba(34,197,94,0)');
-    ctx.fillStyle=glow2; ctx.fillRect(0,0,W,H);
-    ctx.strokeStyle='rgba(34,197,94,0.45)'; ctx.lineWidth=2;
+    // Glow top
+    var g1=ctx.createRadialGradient(W/2,0,0,W/2,0,380);
+    g1.addColorStop(0,'rgba(34,197,94,0.22)'); g1.addColorStop(1,'rgba(34,197,94,0)');
+    ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
+    // Glow bottom
+    var g2=ctx.createRadialGradient(W/2,H,0,W/2,H,280);
+    g2.addColorStop(0,'rgba(34,197,94,0.1)'); g2.addColorStop(1,'rgba(34,197,94,0)');
+    ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
+    // Border
+    ctx.strokeStyle='rgba(34,197,94,0.5)'; ctx.lineWidth=2;
     ctx.beginPath(); ctx.rect(1,1,W-2,H-2); ctx.stroke();
+    // Top + bottom bar
     var bar=ctx.createLinearGradient(0,0,W,0);
     bar.addColorStop(0,'#16a34a'); bar.addColorStop(0.5,'#22c55e'); bar.addColorStop(1,'#16a34a');
-    ctx.fillStyle=bar; ctx.fillRect(0,0,W,7);
-    ctx.fillStyle=bar; ctx.fillRect(0,H-7,W,7);
-    var cdots=[[18,18],[W-18,18],[18,H-18],[W-18,H-18]];
-    for(var i=0;i<cdots.length;i++){
-      ctx.beginPath(); ctx.arc(cdots[i][0],cdots[i][1],4,0,Math.PI*2);
+    ctx.fillStyle=bar; ctx.fillRect(0,0,W,8);
+    ctx.fillStyle=bar; ctx.fillRect(0,H-8,W,8);
+    // Corner dots
+    [[18,18],[W-18,18],[18,H-18],[W-18,H-18]].forEach(function(d){
+      ctx.beginPath(); ctx.arc(d[0],d[1],4,0,Math.PI*2);
       ctx.fillStyle='rgba(34,197,94,0.7)'; ctx.fill();
-    }
-    var bx=W/2-56,by=22,bw=112,bh=26,br=13;
+    });
+    // MLYNR badge
+    var bx=W/2-60,by=22,bw=120,bh=28,br=14;
     ctx.fillStyle='rgba(34,197,94,0.15)';
     ctx.beginPath();
     ctx.moveTo(bx+br,by); ctx.lineTo(bx+bw-br,by);
@@ -1598,25 +1602,57 @@ function fsDrawCard(){
     ctx.lineTo(bx,by+br); ctx.quadraticCurveTo(bx,by,bx+br,by); ctx.closePath();
     ctx.fill();
     ctx.strokeStyle='rgba(34,197,94,0.4)'; ctx.lineWidth=1; ctx.stroke();
-    ctx.fillStyle='#22c55e'; ctx.font='bold 11px monospace'; ctx.textAlign='center';
-    ctx.fillText('MLYNR.COM',W/2,40);
-    ctx.font='90px serif'; ctx.textAlign='center';
-    ctx.fillText('🏆',W/2,160);
-    ctx.fillStyle='#ffffff'; ctx.font='bold 64px Arial, sans-serif'; ctx.textAlign='center';
-    ctx.fillText('İLK SATIŞ!',W/2,238);
-    ctx.fillStyle='#22c55e'; ctx.font='500 20px Arial, sans-serif'; ctx.textAlign='center';
-    ctx.fillText('İlk adım atıldı. Yolculuk başlıyor.',W/2,276);
+    ctx.fillStyle='#22c55e'; ctx.font='bold 12px monospace'; ctx.textAlign='center';
+    ctx.fillText('MLYNR.COM',W/2,42);
+    // Trophy
+    ctx.font='100px serif'; ctx.textAlign='center';
+    ctx.fillText('🏆',W/2,178);
+    // Title
+    ctx.fillStyle='#ffffff'; ctx.font='bold 72px Arial, sans-serif'; ctx.textAlign='center';
+    ctx.fillText('İLK SATIŞ!',W/2,264);
+    // Subtitle green
+    ctx.fillStyle='#22c55e'; ctx.font='500 22px Arial, sans-serif'; ctx.textAlign='center';
+    ctx.fillText('İlk adım atıldı. Yolculuk başlıyor.',W/2,304);
+    // Divider
     ctx.strokeStyle='rgba(34,197,94,0.2)'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(60,306); ctx.lineTo(W-60,306); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(50,334); ctx.lineTo(W-50,334); ctx.stroke();
+    // Quote box
+    var qx=44,qy=354,qw=W-88,qh=360,qr=16;
+    ctx.fillStyle='rgba(34,197,94,0.07)';
+    ctx.beginPath();
+    ctx.moveTo(qx+qr,qy); ctx.lineTo(qx+qw-qr,qy);
+    ctx.quadraticCurveTo(qx+qw,qy,qx+qw,qy+qr);
+    ctx.lineTo(qx+qw,qy+qh-qr); ctx.quadraticCurveTo(qx+qw,qy+qh,qx+qw-qr,qy+qh);
+    ctx.lineTo(qx+qr,qy+qh); ctx.quadraticCurveTo(qx,qy+qh,qx,qy+qh-qr);
+    ctx.lineTo(qx,qy+qr); ctx.quadraticCurveTo(qx,qy,qx+qr,qy); ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle='rgba(34,197,94,0.2)'; ctx.lineWidth=1; ctx.stroke();
+    // Green left accent
+    ctx.fillStyle='#22c55e'; ctx.fillRect(qx,qy+16,3,qh-32);
+    // Author dot
+    ctx.beginPath(); ctx.arc(qx+22,qy+32,5,0,Math.PI*2);
+    ctx.fillStyle='#22c55e'; ctx.fill();
+    ctx.fillStyle='#22c55e'; ctx.font='bold 12px monospace'; ctx.textAlign='left';
+    ctx.fillText('CANBERK ÖZTÜRK',qx+36,qy+37);
+    // Quote lines italic
+    ctx.fillStyle='rgba(255,255,255,0.75)';
+    ctx.font='italic 22px Georgia, serif';
+    ctx.fillText('“İlk satış en zor olanı. Artık algoritma seni tanıyor,',qx+20,qy+80);
+    ctx.fillText('sistem çalışıyor. Bundan sonrası sadece”',qx+20,qy+112);
+    // Bold conclusion
+    ctx.fillStyle='#ffffff'; ctx.font='bold 26px Arial, sans-serif';
+    ctx.fillText('„ölçeklendirmek.”',qx+20,qy+162);
+    // Date
     var now=new Date();
     var months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-    var dateStr=now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
-    ctx.fillStyle='rgba(255,255,255,0.32)'; ctx.font='14px monospace'; ctx.textAlign='center';
-    ctx.fillText(dateStr,W/2,346);
-    ctx.fillStyle='rgba(34,197,94,0.6)'; ctx.font='bold 13px monospace'; ctx.textAlign='left';
-    ctx.fillText('MLYNR.COM',30,H-20);
-    ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.font='13px monospace'; ctx.textAlign='right';
-    ctx.fillText('@canberkreels',W-30,H-20);
+    var ds=now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
+    ctx.fillStyle='rgba(255,255,255,0.28)'; ctx.font='15px monospace'; ctx.textAlign='center';
+    ctx.fillText(ds,W/2,qy+qh+46);
+    // Branding
+    ctx.fillStyle='rgba(34,197,94,0.6)'; ctx.font='bold 14px monospace'; ctx.textAlign='left';
+    ctx.fillText('MLYNR.COM',30,H-22);
+    ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.font='14px monospace'; ctx.textAlign='right';
+    ctx.fillText('@canberkreels',W-30,H-22);
   }catch(e){ console.error('fsDrawCard:',e); }
 }
 
