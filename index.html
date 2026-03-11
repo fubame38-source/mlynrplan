@@ -67,10 +67,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 #login-screen::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(255,255,255,.04),transparent 70%);pointer-events:none}
 .login-card{width:min(420px,94vw);background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:40px 36px;position:relative}
 .login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);border-radius:20px 20px 0 0;pointer-events:none}
-.login-logo{font-size:48px;font-weight:900;letter-spacing:-2px;color:var(--white);text-align:center;margin-bottom:4px;line-height:1}
-.login-logo .dot{color:#ffffff;transition:color .3s}
-body.light .login-logo .dot{color:#111}
-.login-logo-sub{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text3);text-align:center;margin-top:6px;margin-bottom:32px}
+.login-logo{font-size:36px;font-weight:900;letter-spacing:-1.5px;color:var(--white);text-align:center;margin-bottom:4px;line-height:1}
+.login-logo-sub{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);text-align:center;margin-top:4px;margin-bottom:32px}
 .login-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:block}
 .login-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:14px 16px;outline:none;transition:border-color .2s;margin-bottom:12px}
 .login-input:focus{border-color:rgba(255,255,255,.3)}
@@ -553,8 +551,6 @@ body.light .login-input::placeholder{color:#aaa !important}
 body.light .login-input:focus{border-color:#111 !important}
 body.light .login-label{color:#555 !important}
 body.light .login-logo{color:#111 !important}
-body.light .login-logo .dot{color:#111 !important}
-body:not(.light) .login-logo .dot{color:#ffffff !important}
 body.light .login-logo-sub{color:#888 !important}
 body.light .login-hint{color:#888 !important}
 body.light .login-err{color:#e53e3e !important}
@@ -806,7 +802,7 @@ body.light #mentor-popup{background:#fff}
 
 <div id="login-screen" class="hidden">
   <div class="login-card">
-    <div class="login-logo">MLYNR<span class="dot" style="color:#ffffff;">.</span></div>
+    <div class="login-logo">MLYNR.</div>
     <div class="login-logo-sub">Kursiyer Portalı</div>
     <div id="login-tabs" style="display:flex;gap:8px;margin-bottom:20px">
       <button class="login-tab active" id="tab-login" onclick="switchTab('login')">Giriş Yap</button>
@@ -1279,7 +1275,7 @@ var CATS=[
 var MAX_SPIN=5;
 
 function spinKey(){return 'mlynr6_sp_'+email.replace(/[^a-z0-9]/gi,'_');}
-function todayStr(){var d=new Date();var m=d.getMonth()+1;var dd=d.getDate();return d.getFullYear()+'-'+(m<10?'0'+m:m)+'-'+(dd<10?'0'+dd:dd);}
+function todayStr(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 function dayIndex(){
   var d=new Date();
   var start=new Date(d.getFullYear(),0,0);
@@ -1371,16 +1367,23 @@ function saveState(){
     var fsVal=false; try{fsVal=LS.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
     var spVal={}; try{var sr=LS.getItem('mlynr6_sp_'+email);if(sr)spVal=JSON.parse(sr);}catch(e){}
     _sb.from('progress')
-      .upsert({
-        user_id: _user.id,
+      .update({
         done: done,
         mc: mc,
         first_sale: fsVal,
         spin: spVal,
         updated_at: new Date().toISOString()
-      }, {onConflict:'user_id'})
+      })
+      .eq('user_id', _user.id)
       .then(function(r){
-        if(r.error){ console.warn('DB save error:',r.error); }
+        if(r.error){
+          // update başarısız olduysa upsert dene
+          _sb.from('progress').upsert({
+            user_id:_user.id, done:done, mc:mc,
+            first_sale:fsVal, spin:spVal,
+            updated_at:new Date().toISOString()
+          }).then(function(){});
+        }
       });
   }
   showSaved();
@@ -1395,10 +1398,9 @@ function loadStateFromDB(){
     loadState();
     showApp();
     setTimeout(function(){
-      var nm = getUserName();
-      if(!nm){ openNamePopup(); }
-      else { showWelcomeToast(nm.split(' ')[0]); }
-    }, 400);
+      var nm=getUserName();
+      if(!nm){openNamePopup();}else{showWelcomeToast(nm.split(' ')[0]);}
+    },400);
     return;
   }
   _sb.from('progress')
@@ -1409,18 +1411,17 @@ function loadStateFromDB(){
       if(r.error){ console.warn('DB load error:',r.error); loadState(); showApp(); return; }
 
       if(!r.data){
-        // İlk giriş — yeni satır oluştur
+        // İlk giriş — yeni satır oluştur, done boş başlasın
         done=[]; mc={};
         _sb.from('progress').insert({
           user_id:_user.id, done:[], mc:{}, spin:{},
           first_sale:false, earn_opened:false,
           updated_at:new Date().toISOString()
         }).then(function(){
-          // Insert bitti, şimdi showApp + popup
           showApp();
-          setTimeout(function(){ openNamePopup(); }, 400);
+          setTimeout(function(){openNamePopup();},400);
         });
-        return; // insert async, return et
+        return;
       } else {
         // DB'den gelen done kesinlikle array olmalı
         var raw = r.data.done;
@@ -1441,44 +1442,27 @@ function loadStateFromDB(){
           mc = {};
         }
         if(r.data.first_sale){ try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){} }
-        if(r.data.spin && typeof r.data.spin==='object' && Object.keys(r.data.spin).length>0){
-          // DB'deki spin bugüne aitse localStorage'a yaz
-          var spDB = r.data.spin;
-          var today = todayStr();
-          if(spDB.date === today){
-            try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(spDB));}catch(e){}
-          } else {
-            // Eski tarih — localStorage'ı temizle, yeni gün başlasın
-            try{LS.removeItem('mlynr6_sp_'+email);}catch(e){}
-          }
+        if(r.data.spin && typeof r.data.spin==='object'){
+          try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(r.data.spin));}catch(e){}
         }
         // localStorage'ı güncel tut
         try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
-        // full_name DB'den geliyorsa localStorage'a yaz
-        if(r.data.full_name){
-          try{ LS.setItem('mlynr6_name_'+email, r.data.full_name); }catch(e){}
-        }
+        if(r.data.full_name){try{LS.setItem('mlynr6_name_'+email,r.data.full_name);}catch(e){}}
       }
       showApp();
-      // Popup/toast kararı: DB sorgusu bitti, isim kesin belli
       setTimeout(function(){
-        var nm = getUserName();
-        if(!nm){
-          openNamePopup();
-        } else {
-          showWelcomeToast(nm.split(' ')[0]);
-        }
-      }, 400);
+        var nm=getUserName();
+        if(!nm){openNamePopup();}else{showWelcomeToast(nm.split(' ')[0]);}
+      },400);
     })
     .catch(function(err){
       console.warn('DB load failed, localStorage fallback:', err);
       loadState();
       showApp();
       setTimeout(function(){
-        var nm = getUserName();
-        if(!nm){ openNamePopup(); }
-        else { showWelcomeToast(nm.split(' ')[0]); }
-      }, 400);
+        var nm=getUserName();
+        if(!nm){openNamePopup();}else{showWelcomeToast(nm.split(' ')[0]);}
+      },400);
     });
 }
 
@@ -1571,8 +1555,19 @@ function doAuth(){
         er.textContent='Hoş geldin! Yükleniyor...';
         // Create progress row silently
         // Yeni kullanıcı — satır yoksa oluştur, varsa dokunma
-        // Direkt loadStateFromDB çağır — o zaten satır yoksa oluşturur
-        loadStateFromDB();
+        _sb.from('progress')
+          .select('user_id').eq('user_id',_user.id).maybeSingle()
+          .then(function(chk){
+            if(!chk.data){
+              _sb.from('progress').insert({
+                user_id:_user.id, done:[], mc:{}, spin:{},
+                first_sale:false, earn_opened:false,
+                updated_at:new Date().toISOString()
+              }).then(function(){ loadStateFromDB(); });
+            } else {
+              loadStateFromDB();
+            }
+          });
       });
     });
   } else {
@@ -1613,7 +1608,7 @@ function showApp(){
   renderSpin();
   checkVersion();
   setTimeout(initScrollAnim, 50);
-  // İsim popup kararı loadStateFromDB tarafından verilir
+  // Popup kararı loadStateFromDB'den sonra verilir
 }
 
 // ── RENDER HELPERS ────────────────────────────────────────────
@@ -1934,14 +1929,8 @@ function setUserName(name){
   try{ LS.setItem('mlynr6_name_'+email, _userName); }catch(e){}
   if(_user){
     _sb.from('progress')
-      .upsert({
-        user_id: _user.id,
-        full_name: _userName,
-        updated_at: new Date().toISOString()
-      }, {onConflict:'user_id'})
-      .then(function(r){
-        if(r.error) console.warn('İsim DB hatası:', r.error);
-      });
+      .upsert({user_id:_user.id, full_name:_userName, updated_at:new Date().toISOString()},{onConflict:'user_id'})
+      .then(function(r){if(r.error)console.warn('İsim kaydedilemedi:',r.error);});
   }
 }
 function openNamePopup(){
