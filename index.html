@@ -201,7 +201,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .module-check.sc .mc-ratio{color:var(--green)}
 
 /* ── BANNER ── */
-.banner-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:64px}
+.banner-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:16px}
 .banner{border:1px solid var(--green-ln);border-radius:var(--r);padding:22px 26px;background:var(--green-dim);display:flex;gap:16px;align-items:flex-start}
 .bicon{font-size:20px;flex-shrink:0;margin-top:1px}
 .btxt h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
@@ -209,7 +209,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btip{margin-top:10px;font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--green);text-transform:uppercase}
 
 /* ── TG BUTTON ── */
-.tg-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:24px}
+.tg-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:16px}
 .tg-btn{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 22px;text-decoration:none;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
 .tg-btn:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.5);border-color:var(--border2)}
 .tg-icon{width:38px;height:38px;border-radius:10px;background:#229ED9;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
@@ -623,6 +623,94 @@ body.light .footer-btn:hover {
 .fs2-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(34,197,94,.4)}
 .fs2-btn-insta{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:800;padding:14px 16px;border-radius:10px;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
 .fs2-btn-insta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(253,29,29,.35)}
+
+/* ── MENTORSHIP SECTION ─────────────────────────────── */
+.mentor-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:32px}
+.mentor-card{
+  position:relative;overflow:hidden;
+  border-radius:var(--r);
+  border:1px solid rgba(34,197,94,.35);
+  background:linear-gradient(135deg,rgba(34,197,94,.06) 0%,rgba(0,0,0,0) 60%),var(--surface);
+  padding:28px 28px 24px;
+  cursor:pointer;
+  transition:all .3s cubic-bezier(.34,1.2,.64,1);
+}
+.mentor-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,#22c55e,transparent);
+}
+.mentor-card::after{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(34,197,94,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.mentor-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(34,197,94,.12),0 8px 32px rgba(0,0,0,.4);border-color:rgba(34,197,94,.6);}
+.mentor-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.mentor-eyebrow::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.mentor-title{font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px;letter-spacing:-.4px;line-height:1.2}
+.mentor-subtitle{font-size:12px;color:var(--text2);margin-bottom:20px;line-height:1.6}
+.mentor-features{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px}
+.mentor-feature{display:flex;align-items:flex-start;gap:8px;font-size:11.5px;color:var(--text2);line-height:1.4}
+.mentor-feature .mf-check{color:var(--green);font-size:13px;flex-shrink:0;margin-top:1px}
+.mentor-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.mentor-capital{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--text3);display:flex;align-items:center;gap:6px}
+.mentor-capital strong{color:var(--green);font-size:13px}
+.mentor-cta{display:flex;align-items:center;gap:8px;background:var(--green);color:#000;font-weight:700;font-size:12px;padding:10px 20px;border-radius:8px;border:none;cursor:pointer;transition:all .2s;letter-spacing:.3px;font-family:var(--mono);text-transform:uppercase}
+.mentor-cta:hover{background:#16a34a;transform:scale(1.03)}
+.mentor-cta-arrow{font-size:16px;transition:transform .2s}
+.mentor-card:hover .mentor-cta-arrow{transform:translate(3px,-3px)}
+
+/* ── MENTOR POPUP ────────────────────────────────────── */
+#mentor-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9998;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(6px)}
+#mentor-popup{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.96);
+  z-index:9999;opacity:0;pointer-events:none;
+  transition:opacity .3s,transform .3s cubic-bezier(.34,1.2,.64,1);
+  width:min(520px,94vw);
+  background:var(--surface);
+  border:1px solid rgba(34,197,94,.3);
+  border-radius:20px;
+  overflow:hidden;
+}
+#mentor-overlay.show,#mentor-popup.show{opacity:1;pointer-events:auto}
+#mentor-popup.show{transform:translate(-50%,-50%) scale(1)}
+.mp-header{
+  background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(0,0,0,0));
+  border-bottom:1px solid rgba(34,197,94,.15);
+  padding:28px 28px 22px;
+  position:relative;
+}
+.mp-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#22c55e,transparent)}
+.mp-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:4px;line-height:1;transition:color .2s}
+.mp-close:hover{color:var(--text)}
+.mp-badge{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--green);background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);padding:4px 10px;border-radius:20px;display:inline-block;margin-bottom:12px}
+.mp-title{font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.5px;line-height:1.15;margin-bottom:6px}
+.mp-desc{font-size:12px;color:var(--text2);line-height:1.65}
+.mp-body{padding:22px 28px 28px}
+.mp-features-title{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:14px}
+.mp-features{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.mp-feature{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;color:var(--text2);line-height:1.5}
+.mp-feature .mpf-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+.mp-divider{height:1px;background:var(--border);margin:0 0 22px}
+.mp-contact-label{font-size:11px;color:var(--text3);margin-bottom:12px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase}
+.mp-buttons{display:flex;flex-direction:column;gap:10px}
+.mp-btn-primary{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--green);color:#000;font-weight:700;font-size:13px;padding:14px 24px;border-radius:10px;text-decoration:none;transition:all .2s;font-family:var(--mono);letter-spacing:.5px;text-transform:uppercase}
+.mp-btn-primary:hover{background:#16a34a;transform:translateY(-2px);box-shadow:0 8px 24px rgba(34,197,94,.25)}
+.mp-btn-secondary{display:flex;align-items:center;justify-content:center;gap:10px;background:transparent;color:var(--text2);font-size:12px;padding:11px 24px;border-radius:10px;text-decoration:none;border:1px solid var(--border);transition:all .2s}
+.mp-btn-secondary:hover{border-color:var(--border2);color:var(--text);transform:translateY(-1px)}
+.mp-note{font-size:10px;color:var(--text3);text-align:center;margin-top:14px;line-height:1.6;font-family:var(--mono);letter-spacing:.5px}
+body.light .mentor-card{background:linear-gradient(135deg,rgba(34,197,94,.04) 0%,rgba(255,255,255,0) 60%),#fff}
+body.light .mp-header{background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(255,255,255,0))}
+body.light #mentor-popup{background:#fff}
+@media(max-width:540px){
+  .mentor-features{grid-template-columns:1fr}
+  .mentor-bottom{flex-direction:column;align-items:flex-start}
+  .mentor-cta{width:100%;justify-content:center}
+  .mp-title{font-size:20px}
+  .mp-header,.mp-body{padding-left:20px;padding-right:20px}
+}
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -876,6 +964,60 @@ body.light .footer-btn:hover {
       <div class="tg-info"><h3>Canlı Destek Ekibi</h3><p>Takıldığında direkt yaz, ekip cevap verir.</p></div>
       <div class="tg-time">10:00 – 23:00</div>
     </a>
+  </div>
+
+
+  <!-- MENTORSHIP -->
+  <div class="mentor-section">
+    <div class="mentor-card" onclick="openMentorPopup()">
+      <div class="mentor-eyebrow">Özel Program · Sınırlı Kontenjan</div>
+      <div class="mentor-title">1-1 Birebir Mentörlük</div>
+      <div class="mentor-subtitle">Shopify Dropshipping'te hızlı ilerlemenin en kısa yolu — doğrudan danışmanınla çalış.</div>
+      <div class="mentor-features">
+        <div class="mentor-feature"><span class="mf-check">✓</span><span>Eğitim videolarına tam erişim</span></div>
+        <div class="mentor-feature"><span class="mf-check">✓</span><span>6 haftalık birebir süreç (42 gün)</span></div>
+        <div class="mentor-feature"><span class="mf-check">✓</span><span>Danışmanla özel WhatsApp grubu</span></div>
+        <div class="mentor-feature"><span class="mf-check">✓</span><span>Haftada 1 saat özel video görüşme</span></div>
+        <div class="mentor-feature"><span class="mf-check">✓</span><span>Her aşama için yönlendirici ödevler</span></div>
+        <div class="mentor-feature"><span class="mf-check">✓</span><span>Öğrenci topluluğuna özel erişim</span></div>
+        <div class="mentor-feature"><span class="mf-check">✓</span><span>Program sonu uzatılabilir danışmanlık</span></div>
+        <div class="mentor-feature"><span class="mf-check">✓</span><span>Mağaza kurulum & ürün seçim desteği</span></div>
+      </div>
+      <div class="mentor-bottom">
+        <div class="mentor-capital">Gerekli sermaye: <strong>min. $4.000</strong></div>
+        <button class="mentor-cta">Danışmanınla Görüş <span class="mentor-cta-arrow">↗</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENTOR POPUP -->
+  <div id="mentor-overlay" onclick="closeMentorPopup()"></div>
+  <div id="mentor-popup">
+    <div class="mp-header">
+      <button class="mp-close" onclick="closeMentorPopup()">✕</button>
+      <div class="mp-badge">● Shopify Dropshipping · Birebir Mentörlük</div>
+      <div class="mp-title">Danışmanına<br>Mesaj At</div>
+      <div class="mp-desc">Programa başlamak veya detaylı bilgi almak için danışmanına direkt ulaş. Sınırlı kontenjan nedeniyle ön görüşme zorunludur.</div>
+    </div>
+    <div class="mp-body">
+      <div class="mp-features-title">Programa Dahil Olanlar</div>
+      <div class="mp-features">
+        <div class="mp-feature"><span class="mpf-icon">🎥</span><span>Shopify Dropshipping eğitim videolarına tam erişim</span></div>
+        <div class="mp-feature"><span class="mpf-icon">💬</span><span>Danışmanınla birebir özel WhatsApp iletişimi</span></div>
+        <div class="mp-feature"><span class="mpf-icon">📹</span><span>Haftada 1 saat birebir video görüşme (6 hafta)</span></div>
+        <div class="mp-feature"><span class="mpf-icon">📋</span><span>Kişiselleştirilmiş görev planı ve ödevler</span></div>
+        <div class="mp-feature"><span class="mpf-icon">🏪</span><span>Mağaza kurulumu ve ürün seçim sürecinde rehberlik</span></div>
+        <div class="mp-feature"><span class="mpf-icon">👥</span><span>Öğrenci topluluğuna ve özel gruba erişim</span></div>
+        <div class="mp-feature"><span class="mpf-icon">🔄</span><span>Program sonu uzatılabilir danışmanlık opsiyonu</span></div>
+      </div>
+      <div class="mp-divider"></div>
+      <div class="mp-contact-label">İletişim Kanalı Seç</div>
+      <div class="mp-buttons">
+        <a href="https://t.me/mlynr_bot" target="_blank" class="mp-btn-primary">✈️ &nbsp;Telegram'dan Mesaj At</a>
+        <a href="https://instagram.com/canberkreels" target="_blank" class="mp-btn-secondary">📸 &nbsp;Instagram'dan Ulaş</a>
+      </div>
+      <div class="mp-note">Gerekli sermaye: min. $4.000 · Ön görüşme zorunludur · Kontenjan sınırlıdır</div>
+    </div>
   </div>
 
   <!-- FOOTER -->
@@ -1523,6 +1665,16 @@ function calcEarn(){
 }
 
 // ── FIRST SALE ────────────────────────────────────────────────
+
+function openMentorPopup(){
+  document.getElementById('mentor-overlay').classList.add('show');
+  document.getElementById('mentor-popup').classList.add('show');
+}
+function closeMentorPopup(){
+  document.getElementById('mentor-overlay').classList.remove('show');
+  document.getElementById('mentor-popup').classList.remove('show');
+}
+
 function openFirstSale(){
   document.getElementById('firstsale-overlay').classList.add('show');
   document.getElementById('firstsale-popup').classList.add('show');
