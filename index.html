@@ -596,7 +596,7 @@ body.light .footer-btn:hover {
 .fs-quote-text{font-size:13px;color:rgba(255,255,255,.7);line-height:1.7;font-style:italic}
 .fs-quote-text strong{color:#fff;font-style:normal}
 .fs-canvas-wrap{border-radius:12px;overflow:hidden;margin-bottom:16px;border:1px solid rgba(34,197,94,.2);box-shadow:0 4px 24px rgba(0,0,0,.4)}
-#fs-canvas{display:block;width:100%;max-width:344px}
+#fs-canvas{display:block;width:100%;max-width:360px;aspect-ratio:9/16}
 .fs-btn-row{display:flex;gap:10px}
 .fs-btn-dl{flex:1;background:linear-gradient(135deg,#22c55e,#16a34a);color:#000;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:12px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
 .fs-btn-dl:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(34,197,94,.35)}
@@ -780,7 +780,7 @@ body.light .footer-btn:hover {
     <div class="fs2-wrap">
       <button class="fs2-close" onclick="closeFirstSale()">✕</button>
       <div class="fs2-canvas-wrap">
-        <canvas id="fs-canvas" width="800" height="500"></canvas>
+        <canvas id="fs-canvas" width="1080" height="1920"></canvas>
       </div>
       <div class="fs2-actions">
         <button class="fs2-btn-primary" onclick="fsDownloadCard()">
@@ -1562,150 +1562,209 @@ function fsDrawCard(){
   try{
     var c=document.getElementById('fs-canvas');
     if(!c) return;
-    var W=800,H=500;
+    var W=1080,H=1920;
     c.width=W; c.height=H;
     var ctx=c.getContext('2d');
 
-    // ── BACKGROUND: deep black with subtle green mesh ──
-    ctx.fillStyle='#030803';
+    // ── BACKGROUND ──
+    ctx.fillStyle='#040904';
     ctx.fillRect(0,0,W,H);
 
-    // Mesh gradient - top left
-    var g1=ctx.createRadialGradient(0,0,0,0,0,420);
-    g1.addColorStop(0,'rgba(34,197,94,0.18)');
-    g1.addColorStop(1,'rgba(34,197,94,0)');
-    ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
+    // Top radial glow
+    var gt=ctx.createRadialGradient(W/2,0,0,W/2,0,700);
+    gt.addColorStop(0,'rgba(34,197,94,0.10)');
+    gt.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=gt; ctx.fillRect(0,0,W,H);
 
-    // Mesh gradient - bottom right
-    var g2=ctx.createRadialGradient(W,H,0,W,H,360);
-    g2.addColorStop(0,'rgba(34,197,94,0.1)');
-    g2.addColorStop(1,'rgba(34,197,94,0)');
-    ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
+    // Center glow
+    var gc=ctx.createRadialGradient(W/2,H*0.42,0,W/2,H*0.42,640);
+    gc.addColorStop(0,'rgba(34,197,94,0.08)');
+    gc.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=gc; ctx.fillRect(0,0,W,H);
 
-    // ── SUBTLE GRID PATTERN ──
-    ctx.strokeStyle='rgba(34,197,94,0.04)';
-    ctx.lineWidth=1;
-    for(var gx=0;gx<W;gx+=40){
-      ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,H); ctx.stroke();
-    }
-    for(var gy=0;gy<H;gy+=40){
-      ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke();
-    }
+    // Bottom glow
+    var gb=ctx.createRadialGradient(W/2,H,0,W/2,H,600);
+    gb.addColorStop(0,'rgba(34,197,94,0.14)');
+    gb.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=gb; ctx.fillRect(0,0,W,H);
 
-    // ── LEFT SIDE: big trophy + title ──
-    // Green vertical accent line
-    ctx.fillStyle='#22c55e';
-    ctx.fillRect(48,40,3,H-80);
+    // Dot grid
+    ctx.fillStyle='rgba(34,197,94,0.055)';
+    for(var gx=60;gx<W;gx+=60)
+      for(var gy=60;gy<H;gy+=60){
+        ctx.beginPath(); ctx.arc(gx,gy,1.3,0,Math.PI*2); ctx.fill();
+      }
 
-    // Trophy
-    ctx.font='88px serif';
-    ctx.textAlign='left';
-    ctx.fillText('🏆',68,148);
-
-    // ILK — big, white
-    ctx.fillStyle='rgba(255,255,255,0.08)';
-    ctx.font='bold 110px Arial Black, Arial, sans-serif';
-    ctx.textAlign='left';
-    ctx.fillText('İLK',68,270);
-
+    // ── TOP BAR ──
     ctx.fillStyle='#ffffff';
-    ctx.font='bold 110px Arial Black, Arial, sans-serif';
+    ctx.font='900 30px Arial, sans-serif';
     ctx.textAlign='left';
-    ctx.fillText('İLK',66,268);
+    ctx.fillText('MLYNR.',68,96);
 
-    // SATIŞ! — green
-    ctx.fillStyle='rgba(34,197,94,0.15)';
-    ctx.font='bold 110px Arial Black, Arial, sans-serif';
-    ctx.fillText('SATIŞ!',68,378);
+    ctx.beginPath(); ctx.arc(W-68,82,6,0,Math.PI*2);
+    ctx.fillStyle='#22c55e'; ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.28)';
+    ctx.font='500 13px monospace';
+    ctx.textAlign='right';
+    ctx.fillText('kursiyer portali',W-84,88);
 
+    ctx.strokeStyle='rgba(34,197,94,0.18)';
+    ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(68,114); ctx.lineTo(W-68,114); ctx.stroke();
+
+    // ── TROPHY ──
+    ctx.font='140px serif';
+    ctx.textAlign='center';
+    ctx.fillText('\u{1F3C6}',W/2,360);
+
+    // ── TEBRİKLER PILL ──
+    var pillW=300,pillH=48,pillX=(W-pillW)/2,pillY=386;
+    ctx.fillStyle='rgba(34,197,94,0.1)';
+    ctx.strokeStyle='rgba(34,197,94,0.4)';
+    ctx.lineWidth=1;
+    ctx.beginPath(); ctx.roundRect(pillX,pillY,pillW,pillH,24); ctx.fill(); ctx.stroke();
     ctx.fillStyle='#22c55e';
-    ctx.font='bold 110px Arial Black, Arial, sans-serif';
-    ctx.fillText('SATIŞ!',66,376);
+    ctx.font='700 15px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('TEBRİKLER',W/2,419);
 
-    // Subtitle below
-    ctx.fillStyle='rgba(255,255,255,0.35)';
-    ctx.font='500 15px monospace';
-    ctx.textAlign='left';
-    ctx.fillText('İlk adım atıldı. Yolculuk başlıyor.',68,415);
+    // ── İLK ──
+    ctx.fillStyle='#ffffff';
+    ctx.font='900 260px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('İLK',W/2,730);
+
+    // ── SATIŞ! ──
+    ctx.shadowColor='rgba(34,197,94,0.6)';
+    ctx.shadowBlur=60;
+    ctx.fillStyle='#22c55e';
+    ctx.font='900 230px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('SATIŞ!',W/2,960);
+    ctx.shadowBlur=0; ctx.shadowColor='transparent';
+
+    // Underline gradient
+    var ulW=600,ulX=(W-ulW)/2;
+    var ulg=ctx.createLinearGradient(ulX,0,ulX+ulW,0);
+    ulg.addColorStop(0,'rgba(34,197,94,0)');
+    ulg.addColorStop(0.5,'rgba(34,197,94,0.8)');
+    ulg.addColorStop(1,'rgba(34,197,94,0)');
+    ctx.fillStyle=ulg;
+    ctx.fillRect(ulX,982,ulW,4);
+
+    // ── TAGLINE ──
+    ctx.fillStyle='rgba(255,255,255,0.4)';
+    ctx.font='400 24px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('İlk adım atıldı. Yolculuk başlıyor.',W/2,1044);
+
+    // ── BADGES ──
+    var badges=[{icon:'\u{1F3C6}',label:'İlk Satış'},{icon:'\u26A1',label:'Sistem Aktif'},{icon:'\u{1F680}',label:'Ölçeklendir'}];
+    var bW=264,bH=104,bGap=24;
+    var bTotal=badges.length*bW+(badges.length-1)*bGap;
+    var bSX=(W-bTotal)/2, bY=1096;
+    badges.forEach(function(b,i){
+      var bx=bSX+i*(bW+bGap);
+      ctx.fillStyle='rgba(34,197,94,0.05)';
+      ctx.strokeStyle='rgba(34,197,94,0.2)';
+      ctx.lineWidth=1;
+      ctx.beginPath(); ctx.roundRect(bx,bY,bW,bH,12); ctx.fill(); ctx.stroke();
+      ctx.font='28px serif'; ctx.textAlign='center';
+      ctx.fillStyle='rgba(255,255,255,1)';
+      ctx.fillText(b.icon,bx+bW/2,bY+44);
+      ctx.fillStyle='rgba(255,255,255,0.55)';
+      ctx.font='700 14px Arial, sans-serif';
+      ctx.textAlign='center';
+      ctx.fillText(b.label,bx+bW/2,bY+76);
+    });
 
     // ── DIVIDER ──
-    ctx.strokeStyle='rgba(34,197,94,0.2)';
+    var dg=ctx.createLinearGradient(68,0,W-68,0);
+    dg.addColorStop(0,'rgba(34,197,94,0)');
+    dg.addColorStop(0.5,'rgba(34,197,94,0.2)');
+    dg.addColorStop(1,'rgba(34,197,94,0)');
+    ctx.strokeStyle=dg;
     ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(W/2+10,40); ctx.lineTo(W/2+10,H-40); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(68,1240); ctx.lineTo(W-68,1240); ctx.stroke();
 
-    // ── RIGHT SIDE: quote block ──
-    var rx = W/2+36;
-    var rw = W - rx - 44;
+    // ── QUOTE CARD ──
+    var qX=68,qY=1272,qW=W-136,qH=480;
+    ctx.fillStyle='rgba(255,255,255,0.025)';
+    ctx.strokeStyle='rgba(255,255,255,0.07)';
+    ctx.lineWidth=1;
+    ctx.beginPath(); ctx.roundRect(qX,qY,qW,qH,20); ctx.fill(); ctx.stroke();
 
-    // CANBERK label
-    ctx.fillStyle='#22c55e';
-    ctx.font='bold 10px monospace';
+    // Top gradient accent
+    var tg=ctx.createLinearGradient(qX,qY,qX+qW,qY);
+    tg.addColorStop(0,'rgba(34,197,94,0)');
+    tg.addColorStop(0.3,'rgba(34,197,94,0.5)');
+    tg.addColorStop(0.7,'rgba(34,197,94,0.5)');
+    tg.addColorStop(1,'rgba(34,197,94,0)');
+    ctx.fillStyle=tg;
+    ctx.fillRect(qX+20,qY,qW-40,2);
+
+    // Big decorative quote mark
+    ctx.fillStyle='rgba(34,197,94,0.08)';
+    ctx.font='900 200px Arial, sans-serif';
     ctx.textAlign='left';
-    ctx.letterSpacing='3px';
-    ctx.fillText('CANBERK ÖZTÜRK',rx,80);
+    ctx.fillText('"',qX+30,qY+200);
 
-    // Small green dot animated indicator (static here)
-    ctx.beginPath(); ctx.arc(rx+rw-8,74,4,0,Math.PI*2);
-    ctx.fillStyle='#22c55e'; ctx.fill();
-
-    // Quote mark - big decorative
-    ctx.fillStyle='rgba(34,197,94,0.12)';
-    ctx.font='bold 90px Georgia, serif';
+    // Quote text lines
+    ctx.fillStyle='rgba(255,255,255,0.75)';
+    ctx.font='400 30px Arial, sans-serif';
     ctx.textAlign='left';
-    ctx.fillText('“',rx-4,150);
+    ctx.fillText('İlk satış en zor olanı.',qX+48,qY+148);
+    ctx.fillText('Artık algoritma seni tanıyor,',qX+48,qY+196);
+    ctx.fillText('sistem çalışıyor.',qX+48,qY+244);
 
-    // Quote lines
-    ctx.fillStyle='rgba(255,255,255,0.8)';
-    ctx.font='italic 18px Georgia, serif';
-    ctx.textAlign='left';
-
-    // Word wrap for quote
-    var words='İlk satış en zor olanı. Artık algoritma seni tanıyor, sistem çalışıyor. Bundan sonrası sadece…'.split(' ');
-    var line='', qy=168, lineH=26;
-    for(var i=0;i<words.length;i++){
-      var test=line+words[i]+' ';
-      if(ctx.measureText(test).width > rw && line!=''){
-        ctx.fillText(line.trim(),rx,qy); qy+=lineH; line=words[i]+' ';
-      } else { line=test; }
-    }
-    if(line.trim()) { ctx.fillText(line.trim(),rx,qy); qy+=lineH; }
-
-    // Bold conclusion
-    qy+=8;
+    // Second part — bold
     ctx.fillStyle='#ffffff';
-    ctx.font='bold 20px Arial, sans-serif';
-    ctx.fillText('„ölçeklendirmek.”',rx,qy);
+    ctx.font='700 32px Arial, sans-serif';
+    ctx.fillText('Bundan sonrası sadece',qX+48,qY+308);
+    ctx.fillStyle='#22c55e';
+    ctx.font='700 32px Arial, sans-serif';
+    ctx.fillText('ölçeklendirmek.',qX+48,qY+354);
 
-    // ── Date ──
+    // Separator
+    ctx.strokeStyle='rgba(34,197,94,0.25)';
+    ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(qX+48,qY+382); ctx.lineTo(qX+qW-48,qY+382); ctx.stroke();
+
+    // Author
+    ctx.fillStyle='rgba(34,197,94,0.7)';
+    ctx.font='700 14px monospace';
+    ctx.textAlign='left';
+    ctx.fillText('Canberk Öztürk',qX+48,qY+418);
+    ctx.fillStyle='rgba(255,255,255,0.3)';
+    ctx.font='400 13px monospace';
+    ctx.fillText('Kurucu, MLYNR.',qX+48,qY+444);
+
+    // ── DATE ──
     var now=new Date();
     var months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
     var ds=now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
-    ctx.fillStyle='rgba(255,255,255,0.2)';
-    ctx.font='12px monospace';
-    ctx.textAlign='left';
-    ctx.fillText(ds,rx,H-42);
+    ctx.fillStyle='rgba(255,255,255,0.15)';
+    ctx.font='400 14px monospace';
+    ctx.textAlign='center';
+    ctx.fillText(ds,W/2,1838);
 
-    // ── Bottom branding bar ──
-    var barGrad=ctx.createLinearGradient(0,0,W,0);
-    barGrad.addColorStop(0,'#0a1a0a');
-    barGrad.addColorStop(0.5,'#112211');
-    barGrad.addColorStop(1,'#0a1a0a');
-    ctx.fillStyle=barGrad;
-    ctx.fillRect(0,H-30,W,30);
-
-    ctx.strokeStyle='rgba(34,197,94,0.25)';
+    // ── BOTTOM BAR ──
+    ctx.strokeStyle='rgba(34,197,94,0.15)';
     ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(0,H-30); ctx.lineTo(W,H-30); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(68,1856); ctx.lineTo(W-68,1856); ctx.stroke();
 
-    ctx.fillStyle='rgba(34,197,94,0.7)';
-    ctx.font='bold 11px monospace';
+    ctx.beginPath(); ctx.arc(76,1874,5,0,Math.PI*2);
+    ctx.fillStyle='#22c55e'; ctx.fill();
+
+    ctx.fillStyle='rgba(255,255,255,0.55)';
+    ctx.font='700 14px monospace';
     ctx.textAlign='left';
-    ctx.fillText('MLYNR.COM',18,H-11);
+    ctx.fillText('mlynr.com',90,1880);
 
-    ctx.fillStyle='rgba(255,255,255,0.25)';
-    ctx.font='11px monospace';
+    ctx.fillStyle='rgba(255,255,255,0.22)';
+    ctx.font='400 14px monospace';
     ctx.textAlign='right';
-    ctx.fillText('@canberkreels',W-18,H-11);
+    ctx.fillText('@canberkreels',W-68,1880);
 
   }catch(e){ console.error('fsDrawCard:',e); }
 }
