@@ -164,14 +164,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .day.g-done .dtag{color:rgba(34,197,94,.5);border-color:rgba(34,197,94,.15)}
 
 /* ── LINK CARDS ── */
-.day-link-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;text-decoration:none;transition:all .25s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
-.day-link-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 16px 48px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);background:var(--surface2)}
-.dlc-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
-.dlc-title{font-size:12.5px;font-weight:600;color:var(--text2);line-height:1.5;flex:1}
-.dlc-arrow{font-size:20px;margin-top:14px;color:var(--text3)}
-.day-link-card:hover .dlc-arrow{color:var(--white)}
-.day-link-card.support{border-color:rgba(34,197,94,.2);background:rgba(34,197,94,.03)}
+.day-link-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;display:flex;align-items:center;gap:14px;text-decoration:none;transition:all .25s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
+.day-link-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.5);border-color:rgba(255,255,255,.15);background:var(--surface2)}
+.dlc-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
+.dlc-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.45;flex:1}
+.dlc-body{flex:1}
+.dlc-arrow{font-size:16px;color:var(--text3);flex-shrink:0;margin-left:auto;transition:all .2s}
+.day-link-card:hover .dlc-arrow{color:var(--white);transform:translate(2px,-2px)}
+.day-link-card.support{border-color:rgba(34,197,94,.18);background:rgba(34,197,94,.03)}
 .day-link-card.support .dlc-eyebrow{color:var(--green)}
+.day-link-card.support .dlc-title{color:var(--text)}
 
 /* ── MODULE CHECK ── */
 .module-check{border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;background:var(--surface);position:relative;overflow:hidden;margin-top:0}
@@ -454,7 +456,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* ── COMPLETED WEEK STYLE ── */
 .week-block.week-done .week-num{color:rgba(34,197,94,.15)}
 .week-block.week-done .week-name{color:var(--text)}
-.week-block.week-done::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--green),transparent);border-radius:2px;opacity:.4}
+.week-block.week-done::before{content:'';position:absolute;left:-12px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--green),transparent);border-radius:2px;opacity:.4}
 .week-block{position:relative}
 
 
@@ -1276,11 +1278,11 @@ function render(){
     if(rem!==0){
       var fill2=cols-rem;
       var s2=document.createElement('a');s2.href='https://t.me/mlynr_bot';s2.target='_blank';s2.className='day-link-card support';
-      s2.innerHTML='<div class="dlc-eyebrow">● Canlı Destek · 10:00–23:00</div><div class="dlc-title">Takıldığınız her adımda destek ekibimize sorun</div><div class="dlc-arrow">↗</div>';
+      s2.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow">● Canlı Destek · 10:00–23:00</div><div class="dlc-title">Takıldığında direkt yaz, ekip cevap verir</div></div><div class="dlc-arrow">↗</div>';
       grid.appendChild(s2);
       if(fill2===2){
         var p2=document.createElement('a');p2.href='https://okul.mlynr.com/products/start-scale-e-ticaret';p2.target='_blank';p2.className='day-link-card';
-        p2.innerHTML='<div class="dlc-eyebrow">Eğitim Paneli</div><div class="dlc-title">Tüm modüllere erişmek için paneli aç</div><div class="dlc-arrow">↗</div>';
+        p2.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow">Eğitim Paneli</div><div class="dlc-title">Tüm modüllere erişmek için paneli aç</div></div><div class="dlc-arrow">↗</div>';
         grid.appendChild(p2);
       }
     }
@@ -1490,7 +1492,7 @@ function closeFirstSale(){
 
 // ── VERSION SYSTEM ───────────────────────────────────────────
 // ⚠️ SADECE BU SATIRI DEĞİŞTİR — her güncellemede versiyon numarasını artır
-var APP_VERSION = '1.5';
+var APP_VERSION = '1.6';
 var VER_DESC = 'Toplam kursiyer cirosu bölümü eklendi 📈';
 // ──────────────────────────────────────────────────────────────
 
