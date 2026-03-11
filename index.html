@@ -2808,18 +2808,22 @@ function renderAdminStats(data){
     if(u.updated_at && (now-new Date(u.updated_at))<7*86400000) active++;
   });
   var avg = total ? Math.round(sum/total) : 0;
+  var pct28 = total ? Math.round(done28/total*100) : 0;
   var cards=[
-    {icon:'👥',label:'Toplam Kursiyer',val:total,col:'#fff'},
-    {icon:'🔥',label:'Son 7 Gün Aktif',val:active,col:'#22c55e'},
-    {icon:'📊',label:'Ort. Tamamlanan',val:avg+'/28',col:'#facc15'},
-    {icon:'🏆',label:'İlk Satış',val:sale,col:'#a78bfa'},
-    {icon:'🎓',label:'Programı Bitiren',val:done28,col:'#38bdf8'}
+    {label:'Toplam Kursiyer', val:total, sub:'kayıtlı hesap', col:'#ffffff', bg:'rgba(255,255,255,0.04)', border:'rgba(255,255,255,0.08)', icon:'👥'},
+    {label:'Son 7 Gün Aktif', val:active, sub:'bu hafta giriş yaptı', col:'#22c55e', bg:'rgba(34,197,94,0.05)', border:'rgba(34,197,94,0.15)', icon:'🔥'},
+    {label:'Ort. Tamamlanan', val:avg+' / 28', sub:'gün ortalama', col:'#facc15', bg:'rgba(250,204,21,0.05)', border:'rgba(250,204,21,0.15)', icon:'📈'},
+    {label:'İlk Satış Yapan', val:sale, sub:'kursiyer', col:'#a78bfa', bg:'rgba(167,139,250,0.05)', border:'rgba(167,139,250,0.15)', icon:'🏆'},
+    {label:'Programı Bitiren', val:done28, sub:pct28+'% tamamlama oranı', col:'#38bdf8', bg:'rgba(56,189,248,0.05)', border:'rgba(56,189,248,0.15)', icon:'🎓'}
   ];
+  var lbl = document.getElementById('adm-count-label');
+  if(lbl) lbl.textContent = total + ' kayıtlı kursiyer';
   el.innerHTML = cards.map(function(c){
-    return '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 24px;">'+
-      '<div style="font-size:22px;margin-bottom:6px;">'+c.icon+'</div>'+
-      '<div style="font-size:24px;font-weight:900;color:'+c.col+';">'+c.val+'</div>'+
-      '<div style="font-size:10px;color:rgba(255,255,255,0.35);font-family:monospace;letter-spacing:1px;margin-top:4px;">'+c.label+'</div>'+
+    return '<div style="background:'+c.bg+';border:1px solid '+c.border+';border-radius:14px;padding:24px 24px 20px;position:relative;overflow:hidden;">'+
+      '<div style="position:absolute;top:16px;right:18px;font-size:28px;opacity:0.5;">'+c.icon+'</div>'+
+      '<div style="font-size:11px;font-family:monospace;color:rgba(255,255,255,0.35);letter-spacing:1.5px;font-weight:600;margin-bottom:12px;">'+c.label.toUpperCase()+'</div>'+
+      '<div style="font-size:32px;font-weight:900;color:'+c.col+';letter-spacing:-1px;line-height:1;">'+c.val+'</div>'+
+      '<div style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px;">'+c.sub+'</div>'+
     '</div>';
   }).join('');
 }
@@ -2828,30 +2832,51 @@ function renderAdminTable(data){
   var tbody=document.getElementById('adm-tbody');
   if(!tbody) return;
   tbody.innerHTML='';
+  var lbl=document.getElementById('adm-count-label');
+  if(lbl) lbl.textContent=data.length+' kursiyer';
   var now=new Date();
   var months=['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
   if(!data.length){
-    tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);font-size:12px;">Henüz kayıtlı kursiyer yok</td></tr>';
+    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:60px;color:rgba(255,255,255,0.2);font-size:13px;">Henüz kayıtlı kursiyer yok</td></tr>';
     return;
   }
-  data.forEach(function(u){
+  data.forEach(function(u, idx){
     var cnt=Array.isArray(u.done)?u.done.length:0;
     var pct=Math.round(cnt/28*100);
     var last=u.updated_at?new Date(u.updated_at):null;
     var days=last?Math.floor((now-last)/86400000):999;
     var sc=days<=1?'#22c55e':days<=7?'#facc15':'#ef4444';
-    var st=days<=1?'AKTİF':days<=7?'BU HAFTA':'PASİF';
+    var sb=days<=1?'rgba(34,197,94,0.1)':days<=7?'rgba(250,204,21,0.1)':'rgba(239,68,68,0.1)';
+    var st=days<=1?'● Aktif':days<=7?'● Bu hafta':'● Pasif';
     var lastStr=last?last.getDate()+' '+months[last.getMonth()]+' '+last.getFullYear():'—';
     var bc=pct>=80?'#22c55e':pct>=40?'#facc15':'#ef4444';
+    var isEven = idx%2===0;
     var tr=document.createElement('tr');
-    tr.style.borderBottom='1px solid rgba(255,255,255,0.05)';
+    tr.style.cssText='border-bottom:1px solid rgba(255,255,255,0.04);background:'+(isEven?'transparent':'rgba(255,255,255,0.01)')+';transition:background .15s;';
+    tr.onmouseover=function(){this.style.background='rgba(255,255,255,0.03)';};
+    tr.onmouseout=function(){this.style.background=isEven?'transparent':'rgba(255,255,255,0.01)';};
     tr.innerHTML=
-      '<td style="padding:12px 16px;font-family:monospace;font-size:11px;color:rgba(255,255,255,0.4);">'+u.user_id.slice(0,12)+'…</td>'+
-      '<td style="text-align:center;padding:12px;font-weight:700;">'+cnt+' <span style="color:rgba(255,255,255,0.3);font-size:10px;">/28</span></td>'+
-      '<td style="padding:12px 20px;min-width:140px;"><div style="display:flex;align-items:center;gap:8px;"><div style="flex:1;height:5px;background:rgba(255,255,255,0.07);border-radius:3px;"><div style="width:'+pct+'%;height:100%;background:'+bc+';border-radius:3px;"></div></div><span style="font-size:10px;font-family:monospace;color:rgba(255,255,255,0.4);">'+pct+'%</span></div></td>'+
-      '<td style="text-align:center;padding:12px;">'+(u.first_sale?'🏆':'<span style="color:rgba(255,255,255,0.2);">—</span>')+'</td>'+
-      '<td style="text-align:center;padding:12px;font-family:monospace;font-size:11px;color:rgba(255,255,255,0.4);">'+lastStr+'</td>'+
-      '<td style="text-align:center;padding:12px;font-family:monospace;font-size:10px;font-weight:700;color:'+sc+';">'+st+'</td>';
+      '<td style="padding:16px 20px;">' +
+        '<div style="font-family:monospace;font-size:12px;color:rgba(255,255,255,0.5);">'+u.user_id.slice(0,16)+'…</div>' +
+      '</td>'+
+      '<td style="text-align:center;padding:16px;">' +
+        '<span style="font-size:18px;font-weight:900;color:#fff;">'+cnt+'</span>' +
+        '<span style="color:rgba(255,255,255,0.25);font-size:11px;"> / 28</span>' +
+      '</td>'+
+      '<td style="padding:16px 20px;min-width:180px;">' +
+        '<div style="display:flex;align-items:center;gap:10px;">' +
+          '<div style="flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:6px;overflow:hidden;">' +
+            '<div style="width:'+pct+'%;height:100%;background:'+bc+';border-radius:6px;transition:width .4s;"></div>' +
+          '</div>' +
+          '<span style="font-size:11px;font-family:monospace;color:rgba(255,255,255,0.4);min-width:36px;">'+pct+'%</span>' +
+        '</div>' +
+      '</td>'+
+      '<td style="text-align:center;padding:16px;font-size:18px;">'+(u.first_sale?'🏆':'<span style="color:rgba(255,255,255,0.12);font-size:14px;">—</span>')+'</td>'+
+      '<td style="text-align:center;padding:16px;font-size:18px;">'+(cnt>=28?'🎓':'<span style="color:rgba(255,255,255,0.12);font-size:14px;">—</span>')+'</td>'+
+      '<td style="text-align:center;padding:16px;font-family:monospace;font-size:12px;color:rgba(255,255,255,0.35);">'+lastStr+'</td>'+
+      '<td style="text-align:center;padding:16px;">' +
+        '<span style="font-family:monospace;font-size:10px;font-weight:700;color:'+sc+';background:'+sb+';padding:4px 10px;border-radius:20px;letter-spacing:0.5px;">'+st+'</span>' +
+      '</td>';
     tbody.appendChild(tr);
   });
 }
@@ -2863,34 +2888,62 @@ function adminFilter(){
 </script>
 
 <!-- ADMIN PANEL -->
-<div id="admin-panel" style="display:none;min-height:100vh;background:#0a0c0b;color:#fff;font-family:'Geist',sans-serif;">
-  <div style="position:sticky;top:0;background:#0a0c0b;border-bottom:1px solid rgba(255,255,255,0.08);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;z-index:100;">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <span style="font-size:18px;font-weight:900;">MLYNR.</span>
-      <span style="font-size:10px;font-weight:700;color:#22c55e;font-family:monospace;letter-spacing:2px;background:rgba(34,197,94,0.1);padding:3px 10px;border-radius:20px;border:1px solid rgba(34,197,94,0.2);">ADMIN</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <span id="adm-refresh-time" style="font-size:11px;color:rgba(255,255,255,0.3);font-family:monospace;"></span>
-      <button onclick="loadAdminData()" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:#22c55e;font-family:monospace;font-size:11px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:8px;cursor:pointer;">↻ YENİLE</button>
-      <button onclick="doLogout()" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-family:monospace;font-size:11px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:8px;cursor:pointer;">ÇIKIŞ</button>
+<div id="admin-panel" style="display:none;min-height:100vh;background:#070908;color:#fff;font-family:'Geist',sans-serif;">
+
+  <!-- Top navbar -->
+  <div style="position:sticky;top:0;z-index:100;background:rgba(7,9,8,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 32px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;height:60px;">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <span style="font-size:20px;font-weight:900;letter-spacing:-0.5px;">MLYNR.</span>
+        <div style="width:1px;height:20px;background:rgba(255,255,255,0.1);"></div>
+        <span style="font-size:11px;font-weight:700;color:#22c55e;font-family:monospace;letter-spacing:2.5px;">ADMIN PANELİ</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span id="adm-refresh-time" style="font-size:11px;color:rgba(255,255,255,0.2);font-family:monospace;margin-right:4px;"></span>
+        <button onclick="loadAdminData()" style="display:flex;align-items:center;gap:6px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#22c55e;font-family:monospace;font-size:11px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(34,197,94,0.15)'" onmouseout="this.style.background='rgba(34,197,94,0.08)'">↻ YENİLE</button>
+        <button onclick="doLogout()" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.35);font-family:monospace;font-size:11px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all .2s;" onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">ÇIKIŞ →</button>
+      </div>
     </div>
   </div>
-  <div id="adm-stats-row" style="padding:24px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;"></div>
-  <div style="padding:0 28px 40px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-      <span style="font-size:12px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.6);">KURSİYERLER</span>
-      <input id="adm-search" oninput="adminFilter()" placeholder="Ara..." style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;font-family:monospace;font-size:12px;padding:7px 14px;border-radius:8px;outline:none;width:200px;">
+
+  <!-- Page title -->
+  <div style="padding:40px 32px 8px;">
+    <div style="font-size:28px;font-weight:900;letter-spacing:-0.5px;">Genel Bakış</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.3);margin-top:4px;">Platform istatistikleri ve kursiyer takibi</div>
+  </div>
+
+  <!-- Stat cards -->
+  <div id="adm-stats-row" style="padding:24px 32px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;"></div>
+
+  <!-- Divider -->
+  <div style="margin:0 32px;height:1px;background:rgba(255,255,255,0.05);"></div>
+
+  <!-- Table section -->
+  <div style="padding:32px 32px 60px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <div style="font-size:16px;font-weight:700;">Kursiyerler</div>
+        <div id="adm-count-label" style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:2px;"></div>
+      </div>
+      <div style="position:relative;">
+        <input id="adm-search" oninput="adminFilter()" placeholder="Mail veya ID ara..." 
+          style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;font-family:'Geist',sans-serif;font-size:13px;padding:10px 16px 10px 38px;border-radius:10px;outline:none;width:240px;transition:border .2s;"
+          onfocus="this.style.borderColor='rgba(34,197,94,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.25);font-size:14px;">⌕</span>
+      </div>
     </div>
-    <div style="border:1px solid rgba(255,255,255,0.08);border-radius:12px;overflow:hidden;">
-      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+
+    <div style="border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;background:rgba(255,255,255,0.015);">
+      <table style="width:100%;border-collapse:collapse;">
         <thead>
-          <tr style="background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.08);">
-            <th style="text-align:left;padding:10px 16px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:1.5px;font-weight:600;">KULLANICI</th>
-            <th style="text-align:center;padding:10px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:1.5px;font-weight:600;">GÜN</th>
-            <th style="text-align:left;padding:10px 20px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:1.5px;font-weight:600;">İLERLEME</th>
-            <th style="text-align:center;padding:10px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:1.5px;font-weight:600;">SATIŞ</th>
-            <th style="text-align:center;padding:10px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:1.5px;font-weight:600;">SON GİRİŞ</th>
-            <th style="text-align:center;padding:10px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:1.5px;font-weight:600;">DURUM</th>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.07);">
+            <th style="text-align:left;padding:14px 20px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:2px;font-weight:600;">KULLANICI ID</th>
+            <th style="text-align:center;padding:14px 16px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:2px;font-weight:600;">TAMAMLANAN</th>
+            <th style="text-align:left;padding:14px 20px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:2px;font-weight:600;">İLERLEME</th>
+            <th style="text-align:center;padding:14px 16px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:2px;font-weight:600;">İLK SATIŞ</th>
+            <th style="text-align:center;padding:14px 16px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:2px;font-weight:600;">SERTİFİKA</th>
+            <th style="text-align:center;padding:14px 16px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:2px;font-weight:600;">SON AKTİVİTE</th>
+            <th style="text-align:center;padding:14px 16px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:2px;font-weight:600;">DURUM</th>
           </tr>
         </thead>
         <tbody id="adm-tbody"></tbody>
