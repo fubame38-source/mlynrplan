@@ -577,6 +577,39 @@ body.light .footer-btn:hover {
 
 
 
+
+/* == FIRST SALE CARD == */
+.fs-card{background:linear-gradient(160deg,#0a0a0a 0%,#111 40%,#0d1a0d 100%);border:1px solid rgba(34,197,94,.25);border-radius:20px;overflow:hidden;position:relative}
+.fs-top-bar{background:linear-gradient(90deg,#22c55e,#16a34a,#22c55e);background-size:200% 100%;animation:fsShimmer 2.5s linear infinite;padding:6px 16px;font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#000;font-weight:700}
+@keyframes fsShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.fs-body{padding:28px 28px 24px}
+.fs-trophy{font-size:54px;margin-bottom:6px;filter:drop-shadow(0 0 20px rgba(34,197,94,.5));animation:fsTrophyPop .5s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes fsTrophyPop{from{transform:scale(0) rotate(-15deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
+.fs-title{font-family:'Geist',sans-serif;font-weight:900;font-size:28px;color:#fff;letter-spacing:-1px;margin-bottom:4px;line-height:1}
+.fs-title span{color:#22c55e}
+.fs-sub{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:#22c55e;text-transform:uppercase;margin-bottom:20px;opacity:.8}
+.fs-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.3),transparent);margin:0 -4px 20px}
+.fs-quote{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:12px;padding:14px 16px;margin-bottom:20px;text-align:left}
+.fs-quote-author{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:#22c55e;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.fs-quote-dot{width:5px;height:5px;border-radius:50%;background:#22c55e;animation:fsPulse 1.5s ease-in-out infinite}
+@keyframes fsPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.fs-quote-text{font-size:13px;color:rgba(255,255,255,.7);line-height:1.7;font-style:italic}
+.fs-quote-text strong{color:#fff;font-style:normal}
+.fs-canvas-wrap{border-radius:12px;overflow:hidden;margin-bottom:16px;border:1px solid rgba(34,197,94,.2);box-shadow:0 4px 24px rgba(0,0,0,.4)}
+#fs-canvas{display:block;width:100%;max-width:344px}
+.fs-btn-row{display:flex;gap:10px}
+.fs-btn-dl{flex:1;background:linear-gradient(135deg,#22c55e,#16a34a);color:#000;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:12px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.fs-btn-dl:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(34,197,94,.35)}
+.fs-btn-sh{flex:1;background:transparent;color:#fff;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:12px;border:1px solid rgba(255,255,255,.15);border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.fs-btn-sh:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.3)}
+.fs-close-row{margin-top:12px}
+.fs-close-txt{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.25);text-transform:uppercase;cursor:pointer;background:none;border:none;transition:color .2s}
+.fs-close-txt:hover{color:rgba(255,255,255,.5)}
+#fs-share-area{display:none;margin-top:14px}
+.fs-share-tip{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:12px}
+.fs-share-tip strong{color:#22c55e}
+.fs-btn-insta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:13px;border:none;border-radius:10px;cursor:pointer;text-decoration:none;transition:all .2s}
+.fs-btn-insta:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(253,29,29,.3)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
@@ -732,48 +765,12 @@ body.light .footer-btn:hover {
   <!-- FIRST SALE BUTTON -->
   <div id="firstsale-overlay" class="overlay" onclick="closeFirstSale()"></div>
   <div id="firstsale-popup" class="popup" style="text-align:center;max-width:400px;padding:0;overflow:hidden;background:transparent;border:none;box-shadow:none">
-    <style>
-      .fs-card{background:linear-gradient(160deg,#0a0a0a 0%,#111 40%,#0d1a0d 100%);border:1px solid rgba(34,197,94,.25);border-radius:20px;overflow:hidden;position:relative}
-      .fs-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(34,197,94,.12) 0%,transparent 70%);pointer-events:none}
-      .fs-top-bar{background:linear-gradient(90deg,#22c55e,#16a34a,#22c55e);background-size:200% 100%;animation:fsShimmer 2.5s linear infinite;padding:6px 16px;font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#000;font-weight:700}
-      @keyframes fsShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-      .fs-body{padding:28px 28px 24px}
-      .fs-trophy{font-size:54px;margin-bottom:6px;filter:drop-shadow(0 0 20px rgba(34,197,94,.5));animation:fsTrophyPop .5s cubic-bezier(.34,1.56,.64,1) both}
-      @keyframes fsTrophyPop{from{transform:scale(0) rotate(-15deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
-      .fs-title{font-family:'Geist',sans-serif;font-weight:900;font-size:28px;color:#fff;letter-spacing:-1px;margin-bottom:4px;line-height:1}
-      .fs-title span{color:#22c55e}
-      .fs-sub{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:#22c55e;text-transform:uppercase;margin-bottom:20px;opacity:.8}
-      .fs-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.3),transparent);margin:0 -4px 20px}
-      .fs-quote{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:12px;padding:14px 16px;margin-bottom:20px;text-align:left}
-      .fs-quote-author{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:#22c55e;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-      .fs-quote-dot{width:5px;height:5px;border-radius:50%;background:#22c55e;animation:fsPulse 1.5s ease-in-out infinite}
-      @keyframes fsPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-      .fs-quote-text{font-size:13px;color:rgba(255,255,255,.7);line-height:1.7;font-style:italic}
-      .fs-quote-text strong{color:#fff;font-style:normal}
-      .fs-canvas-wrap{border-radius:12px;overflow:hidden;margin-bottom:16px;border:1px solid rgba(34,197,94,.2);box-shadow:0 4px 24px rgba(0,0,0,.4)}
-      #fs-canvas{display:block;width:100%;max-width:344px}
-      .fs-btn-row{display:flex;gap:10px}
-      .fs-btn-download{flex:1;background:linear-gradient(135deg,#22c55e,#16a34a);color:#000;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:12px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
-      .fs-btn-download:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(34,197,94,.35)}
-      .fs-btn-share{flex:1;background:transparent;color:#fff;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:12px;border:1px solid rgba(255,255,255,.15);border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
-      .fs-btn-share:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.3)}
-      .fs-btn-share svg,.fs-btn-download svg{width:14px;height:14px;flex-shrink:0}
-      .fs-close-row{margin-top:12px}
-      .fs-close-txt{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.25);text-transform:uppercase;cursor:pointer;background:none;border:none;transition:color .2s}
-      .fs-close-txt:hover{color:rgba(255,255,255,.5)}
-      #fs-share-area{display:none;margin-top:14px;animation:fsFadeIn .3s ease}
-      @keyframes fsFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-      .fs-share-tip{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:12px}
-      .fs-share-tip strong{color:#22c55e}
-      .fs-btn-insta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:13px;border:none;border-radius:10px;cursor:pointer;text-decoration:none;transition:all .2s}
-      .fs-btn-insta:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(253,29,29,.3)}
-    </style>
     <div class="fs-card">
       <div class="fs-top-bar">🏆 MLYNR — İLK SATIŞ BAŞARISI</div>
       <div class="fs-body">
         <div class="fs-trophy">🏆</div>
         <div class="fs-title">İlk <span>Satışın</span> Tamam!</div>
-        <div class="fs-sub">Türkiye'den Amerika'ya — Başardın</div>
+        <div class="fs-sub">Başardın — Artık Ölçeklen</div>
         <div class="fs-divider"></div>
         <div class="fs-quote">
           <div class="fs-quote-author"><span class="fs-quote-dot"></span>Canberk Öztürk</div>
@@ -781,20 +778,20 @@ body.light .footer-btn:hover {
         </div>
         <div class="fs-canvas-wrap"><canvas id="fs-canvas" width="688" height="388"></canvas></div>
         <div class="fs-btn-row" id="fs-btn-row">
-          <button class="fs-btn-download" onclick="fsDownloadCard()">
+          <button class="fs-btn-dl" onclick="fsDownloadCard()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 15V3m0 12l-4-4m4 4l4-4"/><path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
             Kartı İndir
           </button>
-          <button class="fs-btn-share" onclick="fsShowShare()">
+          <button class="fs-btn-sh" onclick="fsShowShare()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
             Paylaş
           </button>
         </div>
         <div id="fs-share-area">
-          <div class="fs-share-tip">Kartı indirip <strong>@canberkreels</strong>'e DM at veya Story'de etiketle. Canberk seni kutlasın! 🎉</div>
+          <div class="fs-share-tip">Kartı indirip <strong>@canberkreels</strong> ile paylaş!</div>
           <a class="fs-btn-insta" href="https://www.instagram.com/canberkreels/?hl=en" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-            Canberk ile Paylaş →
+            Canberk ile Paylaş
           </a>
         </div>
         <div class="fs-close-row"><button class="fs-close-txt" onclick="closeFirstSale()">kapat &amp; devam et</button></div>
@@ -1541,98 +1538,19 @@ function calcEarn(){
 function openFirstSale(){
   document.getElementById('firstsale-overlay').classList.add('show');
   document.getElementById('firstsale-popup').classList.add('show');
-  // reset share area
-  document.getElementById('fs-share-area').style.display='none';
-  document.getElementById('fs-btn-row').style.display='flex';
+  var sa=document.getElementById('fs-share-area');
+  if(sa) sa.style.display='none';
   launchConfetti();
   playMoneySound();
-  setTimeout(fsDrawCard, 80);
+  setTimeout(fsDrawCard,80);
 }
 function closeFirstSale(){
   document.getElementById('firstsale-overlay').classList.remove('show');
   document.getElementById('firstsale-popup').classList.remove('show');
 }
 function fsShowShare(){
-  document.getElementById('fs-share-area').style.display='block';
-}
-function fsDrawCard(){
-  try{
-    var c=document.getElementById('fs-canvas');
-    if(!c) return;
-    var ctx=c.getContext('2d');
-    var W=688,H=388;
-    // BG gradient
-    var bg=ctx.createLinearGradient(0,0,W,H);
-    bg.addColorStop(0,'#0a0a0a');
-    bg.addColorStop(0.5,'#0f1f0f');
-    bg.addColorStop(1,'#0a0a0a');
-    ctx.fillStyle=bg;
-    ctx.fillRect(0,0,W,H);
-    // Top glow
-    var glow=ctx.createRadialGradient(W/2,0,0,W/2,0,260);
-    glow.addColorStop(0,'rgba(34,197,94,0.18)');
-    glow.addColorStop(1,'rgba(34,197,94,0)');
-    ctx.fillStyle=glow;
-    ctx.fillRect(0,0,W,H);
-    // Border
-    ctx.strokeStyle='rgba(34,197,94,0.35)';
-    ctx.lineWidth=1.5;
-    ctx.roundRect ? ctx.roundRect(2,2,W-4,H-4,16) : ctx.rect(2,2,W-4,H-4);
-    ctx.stroke();
-    // Top accent bar
-    var bar=ctx.createLinearGradient(0,0,W,0);
-    bar.addColorStop(0,'#22c55e');
-    bar.addColorStop(0.5,'#16a34a');
-    bar.addColorStop(1,'#22c55e');
-    ctx.fillStyle=bar;
-    ctx.fillRect(0,0,W,6);
-    // Trophy emoji
-    ctx.font='80px serif';
-    ctx.textAlign='center';
-    ctx.fillText('🏆',W/2,108);
-    // Title
-    ctx.fillStyle='#ffffff';
-    ctx.font='bold 46px Geist, sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText('İLK SATIŞ!',W/2,168);
-    // Green subtitle
-    ctx.fillStyle='#22c55e';
-    ctx.font='600 18px Geist, sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText('Türkiye'den Amerika'ya — Başardın 🚀',W/2,202);
-    // Divider line
-    ctx.strokeStyle='rgba(34,197,94,0.3)';
-    ctx.lineWidth=1;
-    ctx.beginPath();
-    ctx.moveTo(60,226); ctx.lineTo(W-60,226);
-    ctx.stroke();
-    // Date
-    var now=new Date();
-    var months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-    var dateStr=now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
-    ctx.fillStyle='rgba(255,255,255,0.35)';
-    ctx.font='13px monospace';
-    ctx.textAlign='center';
-    ctx.fillText(dateStr,W/2,252);
-    // MLYNR branding
-    ctx.fillStyle='rgba(34,197,94,0.6)';
-    ctx.font='bold 13px monospace';
-    ctx.textAlign='left';
-    ctx.fillText('MLYNR.COM',34,360);
-    // Right tag
-    ctx.fillStyle='rgba(255,255,255,0.2)';
-    ctx.font='12px monospace';
-    ctx.textAlign='right';
-    ctx.fillText('@canberkreels',W-34,360);
-    // Corner dots
-    var dots=[[34,34],[W-34,34],[34,H-34],[W-34,H-34]];
-    dots.forEach(function(d){
-      ctx.beginPath();
-      ctx.arc(d[0],d[1],3,0,Math.PI*2);
-      ctx.fillStyle='rgba(34,197,94,0.5)';
-      ctx.fill();
-    });
-  }catch(e){}
+  var sa=document.getElementById('fs-share-area');
+  if(sa) sa.style.display='block';
 }
 function fsDownloadCard(){
   try{
@@ -1641,17 +1559,82 @@ function fsDownloadCard(){
     a.download='mlynr-ilk-satis.png';
     a.href=c.toDataURL('image/png');
     a.click();
-    // Show share button after download
-    setTimeout(function(){
-      document.getElementById('fs-share-area').style.display='block';
-    },400);
+    setTimeout(function(){ fsShowShare(); },400);
+  }catch(e){}
+}
+function fsDrawCard(){
+  try{
+    var c=document.getElementById('fs-canvas');
+    if(!c) return;
+    var ctx=c.getContext('2d');
+    var W=688,H=388;
+    var bg=ctx.createLinearGradient(0,0,W,H);
+    bg.addColorStop(0,'#0a0a0a');
+    bg.addColorStop(0.5,'#0f1f0f');
+    bg.addColorStop(1,'#0a0a0a');
+    ctx.fillStyle=bg;
+    ctx.fillRect(0,0,W,H);
+    var glow=ctx.createRadialGradient(W/2,0,0,W/2,0,260);
+    glow.addColorStop(0,'rgba(34,197,94,0.18)');
+    glow.addColorStop(1,'rgba(34,197,94,0)');
+    ctx.fillStyle=glow;
+    ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(34,197,94,0.35)';
+    ctx.lineWidth=1.5;
+    ctx.beginPath();
+    ctx.rect(2,2,W-4,H-4);
+    ctx.stroke();
+    var bar=ctx.createLinearGradient(0,0,W,0);
+    bar.addColorStop(0,'#22c55e');
+    bar.addColorStop(0.5,'#16a34a');
+    bar.addColorStop(1,'#22c55e');
+    ctx.fillStyle=bar;
+    ctx.fillRect(0,0,W,6);
+    ctx.font='80px serif';
+    ctx.textAlign='center';
+    ctx.fillText("🏆",W/2,108);
+    ctx.fillStyle='#ffffff';
+    ctx.font='bold 46px Geist, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText("İLK SATIŞ!",W/2,168);
+    ctx.fillStyle='#22c55e';
+    ctx.font='600 18px Geist, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText("Başardın — Artık Ölçeklen 🚀",W/2,202);
+    ctx.strokeStyle='rgba(34,197,94,0.3)';
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.moveTo(60,226); ctx.lineTo(W-60,226);
+    ctx.stroke();
+    var now=new Date();
+    var months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+    var dateStr=now.getDate()+" "+months[now.getMonth()]+" "+now.getFullYear();
+    ctx.fillStyle='rgba(255,255,255,0.35)';
+    ctx.font='13px monospace';
+    ctx.textAlign='center';
+    ctx.fillText(dateStr,W/2,252);
+    ctx.fillStyle='rgba(34,197,94,0.6)';
+    ctx.font='bold 13px monospace';
+    ctx.textAlign='left';
+    ctx.fillText('MLYNR.COM',34,360);
+    ctx.fillStyle='rgba(255,255,255,0.2)';
+    ctx.font='12px monospace';
+    ctx.textAlign='right';
+    ctx.fillText('@canberkreels',W-34,360);
+    var dots=[[34,34],[W-34,34],[34,H-34],[W-34,H-34]];
+    for(var i=0;i<dots.length;i++){
+      ctx.beginPath();
+      ctx.arc(dots[i][0],dots[i][1],3,0,Math.PI*2);
+      ctx.fillStyle='rgba(34,197,94,0.5)';
+      ctx.fill();
+    }
   }catch(e){}
 }
 
 // ── VERSION SYSTEM ───────────────────────────────────────────
 // ⚠️ SADECE BU SATIRI DEĞİŞTİR — her güncellemede versiyon numarasını artır
 var APP_VERSION = '1.8';
-var VER_DESC = 'İlk satış başarı kartı — İndir & Canberk ile paylaş! 🏆';
+var VER_DESC = 'İlk satış başarı kartı — İndir & Paylaş! 🏆';
 // ──────────────────────────────────────────────────────────────
 
 var VER_KEY = 'mlynr6_ver';
