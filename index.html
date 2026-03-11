@@ -710,6 +710,36 @@ body.light #mentor-popup{background:#fff}
 #welcome-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 #welcome-toast .wt-name{color:var(--green);text-transform:uppercase;letter-spacing:.5px}
 
+
+/* ── CERTIFICATE SECTION ───────────────────────────────────── */
+.cert-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:32px}
+.cert-locked{border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;background:var(--surface);display:flex;gap:16px;align-items:center;opacity:.5;cursor:not-allowed}
+.cert-locked-icon{width:38px;height:38px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.cert-locked-body h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.cert-locked-body p{font-size:11px;color:var(--text2)}
+.cert-locked-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-top:6px}
+.cert-card{border:1px solid rgba(250,204,21,.25);border-radius:var(--r);padding:22px 26px;background:linear-gradient(135deg,rgba(250,204,21,.04),rgba(34,197,94,.03));display:flex;gap:16px;align-items:center;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
+.cert-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(250,204,21,.08),0 4px 16px rgba(0,0,0,.4);border-color:rgba(250,204,21,.45)}
+.cert-card-icon{width:38px;height:38px;border-radius:10px;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.cert-card-body h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.cert-card-body p{font-size:11px;color:var(--text2)}
+.cert-card-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:rgba(250,204,21,.7);text-transform:uppercase;margin-top:6px}
+.cert-card-arrow{font-size:16px;color:rgba(250,204,21,.5);flex-shrink:0;margin-left:auto;transition:all .2s}
+.cert-card:hover .cert-card-arrow{color:rgba(250,204,21,.9);transform:translate(2px,-2px)}
+
+/* ── CERTIFICATE POPUP ─────────────────────────────────────── */
+#cert-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);z-index:3000;opacity:0;pointer-events:none;transition:opacity .3s}
+#cert-overlay.show{opacity:1;pointer-events:all}
+#cert-popup{position:fixed;inset:0;z-index:3001;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.34,1.2,.64,1);transform:scale(.96)}
+#cert-popup.show{opacity:1;pointer-events:all;transform:scale(1)}
+.cert-popup-wrap{width:min(840px,94vw);background:transparent}
+#cert-canvas{display:block;width:100%;border-radius:8px;box-shadow:0 32px 80px rgba(0,0,0,.7)}
+.cert-popup-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.cert-dl-btn{display:flex;align-items:center;gap:8px;background:rgba(250,204,21,1);color:#000;font-weight:700;font-size:11px;padding:11px 22px;border-radius:8px;border:none;cursor:pointer;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;transition:all .2s}
+.cert-dl-btn:hover{background:#eab308;transform:scale(1.03)}
+.cert-close-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);color:var(--text2);font-weight:600;font-size:11px;padding:11px 22px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;transition:all .2s}
+.cert-close-btn:hover{background:rgba(255,255,255,.1)}
+
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -1022,6 +1052,42 @@ body.light #mentor-popup{background:#fff}
         <a href="https://instagram.com/canberkreels" target="_blank" class="mp-btn-secondary">📸 &nbsp;Instagram'dan Ulaş</a>
       </div>
       <div class="mp-note">Gerekli sermaye: min. $4.000 · Ön görüşme zorunludur · Kontenjan sınırlıdır</div>
+    </div>
+  </div>
+
+
+  <!-- CERTIFICATE -->
+  <div class="cert-section" id="cert-section">
+    <!-- locked state, shown when not completed -->
+    <div class="cert-locked" id="cert-locked">
+      <div class="cert-locked-icon">🔒</div>
+      <div class="cert-locked-body">
+        <h3>E-Ticaret Uzmanı Sertifikası</h3>
+        <p>28 günlük programı tamamladığında sertifikan hazır olacak.</p>
+        <div class="cert-locked-tag">● 28/28 gün gerekli · Kilitli</div>
+      </div>
+    </div>
+    <!-- unlocked state, shown when all 28 days done -->
+    <div class="cert-card" id="cert-unlocked" style="display:none" onclick="openCert()">
+      <div class="cert-card-icon">🏆</div>
+      <div class="cert-card-body">
+        <h3>E-Ticaret Uzmanı Sertifikası</h3>
+        <p>Programı başarıyla tamamladın. Sertifikanı indir ve paylaş.</p>
+        <div class="cert-card-tag">● Sertifikan hazır · İndir & Paylaş</div>
+      </div>
+      <div class="cert-card-arrow">↗</div>
+    </div>
+  </div>
+
+  <!-- CERTIFICATE POPUP -->
+  <div id="cert-overlay" onclick="closeCert()"></div>
+  <div id="cert-popup">
+    <div class="cert-popup-wrap">
+      <canvas id="cert-canvas"></canvas>
+    </div>
+    <div class="cert-popup-actions">
+      <button class="cert-dl-btn" onclick="certDownload()">⬇ Sertifikayı İndir</button>
+      <button class="cert-close-btn" onclick="closeCert()">✕ Kapat</button>
     </div>
   </div>
 
@@ -1529,6 +1595,7 @@ function render(){
   if(cnt>0)fill.classList.add('active');else fill.classList.remove('active');
   document.getElementById('prog-count').textContent=cnt+' / '+TOTAL;
   updateLevelBadge();
+  updateCertSection();
 }
 
 // ── UTILS ─────────────────────────────────────────────────────
@@ -1762,6 +1829,291 @@ function updateNameUI(){
   // uname in header
   var un = document.getElementById('uname');
   if(un) un.textContent = name;
+}
+
+
+// ── CERTIFICATE ───────────────────────────────────────────────
+function updateCertSection(){
+  var total=0;
+  for(var wi=0;wi<WEEKS.length;wi++) total+=WEEKS[wi].days.length;
+  var completed = done.length >= total;
+  var locked   = document.getElementById('cert-locked');
+  var unlocked = document.getElementById('cert-unlocked');
+  if(!locked||!unlocked) return;
+  if(completed){
+    locked.style.display   = 'none';
+    unlocked.style.display = 'flex';
+  } else {
+    locked.style.display   = 'flex';
+    unlocked.style.display = 'none';
+  }
+}
+function openCert(){
+  document.getElementById('cert-overlay').classList.add('show');
+  document.getElementById('cert-popup').classList.add('show');
+  setTimeout(certDraw, 80);
+}
+function closeCert(){
+  document.getElementById('cert-overlay').classList.remove('show');
+  document.getElementById('cert-popup').classList.remove('show');
+}
+function certDownload(){
+  try{
+    var c = document.getElementById('cert-canvas');
+    var a = document.createElement('a');
+    a.download = 'mlynr-eticaret-uzman-sertifikasi.png';
+    a.href = c.toDataURL('image/png');
+    a.click();
+  }catch(e){}
+}
+function certDraw(){
+  try{
+    var c = document.getElementById('cert-canvas');
+    if(!c) return;
+    // A4 landscape 2x
+    var W=2480, H=1754;
+    c.width=W; c.height=H;
+    var ctx = c.getContext('2d');
+
+    // ── BACKGROUND: deep dark ──────────────────────────────
+    ctx.fillStyle='#06080a';
+    ctx.fillRect(0,0,W,H);
+
+    // Subtle texture — diagonal lines
+    ctx.strokeStyle='rgba(255,255,255,0.018)';
+    ctx.lineWidth=1;
+    for(var i=-H;i<W+H;i+=40){
+      ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i+H,H); ctx.stroke();
+    }
+
+    // Top-left gold glow
+    var g1=ctx.createRadialGradient(0,0,0,0,0,900);
+    g1.addColorStop(0,'rgba(250,204,21,0.09)');
+    g1.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
+
+    // Bottom-right green glow
+    var g2=ctx.createRadialGradient(W,H,0,W,H,1000);
+    g2.addColorStop(0,'rgba(34,197,94,0.07)');
+    g2.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
+
+    // Center soft glow
+    var g3=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,700);
+    g3.addColorStop(0,'rgba(250,204,21,0.03)');
+    g3.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g3; ctx.fillRect(0,0,W,H);
+
+    // ── OUTER BORDER ──────────────────────────────────────
+    var bm=48;
+    // Gold outer line
+    ctx.strokeStyle='rgba(250,204,21,0.35)';
+    ctx.lineWidth=1.5;
+    ctx.strokeRect(bm,bm,W-bm*2,H-bm*2);
+
+    // Inner line slightly inset
+    ctx.strokeStyle='rgba(250,204,21,0.12)';
+    ctx.lineWidth=1;
+    ctx.strokeRect(bm+12,bm+12,W-bm*2-24,H-bm*2-24);
+
+    // Corner ornaments
+    function corner(x,y,sx,sy){
+      var L=60, G=14;
+      ctx.strokeStyle='rgba(250,204,21,0.6)';
+      ctx.lineWidth=2;
+      ctx.beginPath();
+      ctx.moveTo(x+sx*(L),y);
+      ctx.lineTo(x,y);
+      ctx.lineTo(x,y+sy*L);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x+sx*(L-G),y+sy*G);
+      ctx.lineTo(x+sx*G,y+sy*G);
+      ctx.lineTo(x+sx*G,y+sy*(L-G));
+      ctx.stroke();
+    }
+    var cm=bm+4;
+    corner(cm,cm,1,1);
+    corner(W-cm,cm,-1,1);
+    corner(cm,H-cm,1,-1);
+    corner(W-cm,H-cm,-1,-1);
+
+    // ── TOP BAR ───────────────────────────────────────────
+    var topY=bm+80;
+
+    // MLYNR. wordmark left
+    ctx.fillStyle='#ffffff';
+    ctx.font='900 38px Arial, sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText('MLYNR.',bm+70,topY);
+
+    // Green dot
+    ctx.beginPath(); ctx.arc(bm+70+178,topY-10,5,0,Math.PI*2);
+    ctx.fillStyle='#22c55e'; ctx.fill();
+
+    // Right: seri no / yıl
+    var now=new Date();
+    ctx.fillStyle='rgba(255,255,255,0.2)';
+    ctx.font='500 22px monospace';
+    ctx.textAlign='right';
+    ctx.fillText('NO: MLYNR-'+now.getFullYear()+'-'+String(Math.floor(Math.random()*9000)+1000),W-bm-70,topY);
+
+    // Horizontal rule under top bar
+    var hrY=topY+30;
+    var hrg=ctx.createLinearGradient(bm+70,0,W-bm-70,0);
+    hrg.addColorStop(0,'rgba(250,204,21,0)');
+    hrg.addColorStop(0.2,'rgba(250,204,21,0.4)');
+    hrg.addColorStop(0.8,'rgba(250,204,21,0.4)');
+    hrg.addColorStop(1,'rgba(250,204,21,0)');
+    ctx.strokeStyle=hrg; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(bm+70,hrY); ctx.lineTo(W-bm-70,hrY); ctx.stroke();
+
+    // ── CERTIFICATE LABEL ─────────────────────────────────
+    var cLabelY = hrY+100;
+    ctx.fillStyle='rgba(250,204,21,0.55)';
+    ctx.font='600 24px monospace';
+    ctx.textAlign='center';
+    ctx.letterSpacing='8px';
+    ctx.fillText('S E R T İ F İ K A', W/2, cLabelY);
+
+    // Small ornament dots around label
+    [-340,-180,180,340].forEach(function(dx){
+      ctx.beginPath(); ctx.arc(W/2+dx, cLabelY-10, 2.5, 0, Math.PI*2);
+      ctx.fillStyle='rgba(250,204,21,0.3)'; ctx.fill();
+    });
+
+    // ── MAIN TITLE ────────────────────────────────────────
+    ctx.shadowColor='rgba(250,204,21,0.3)';
+    ctx.shadowBlur=60;
+    ctx.fillStyle='#facc15';
+    ctx.font='900 102px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('E-TİCARET UZMANI', W/2, cLabelY+140);
+    ctx.shadowBlur=0; ctx.shadowColor='transparent';
+
+    // Underline gradient
+    var ulg2=ctx.createLinearGradient(W/2-380,0,W/2+380,0);
+    ulg2.addColorStop(0,'rgba(250,204,21,0)');
+    ulg2.addColorStop(0.5,'rgba(250,204,21,0.6)');
+    ulg2.addColorStop(1,'rgba(250,204,21,0)');
+    ctx.fillStyle=ulg2;
+    ctx.fillRect(W/2-380, cLabelY+160, 760, 3);
+
+    // ── AWARDED TO ────────────────────────────────────────
+    var awardY = cLabelY + 248;
+    ctx.fillStyle='rgba(255,255,255,0.3)';
+    ctx.font='400 26px monospace';
+    ctx.textAlign='center';
+    ctx.fillText('Bu sertifika,', W/2, awardY);
+
+    // Recipient name — big and white
+    var recipientName = getUserName() || email.split('@')[0];
+    ctx.fillStyle='#ffffff';
+    ctx.font='800 88px Arial, sans-serif';
+    ctx.textAlign='center';
+    // Name shadow/glow
+    ctx.shadowColor='rgba(255,255,255,0.15)';
+    ctx.shadowBlur=30;
+    ctx.fillText(recipientName, W/2, awardY+116);
+    ctx.shadowBlur=0; ctx.shadowColor='transparent';
+
+    // Name underline — thin green
+    var nuw=ctx.measureText(recipientName).width * 0.7;
+    var nug=ctx.createLinearGradient(W/2-nuw/2,0,W/2+nuw/2,0);
+    nug.addColorStop(0,'rgba(34,197,94,0)');
+    nug.addColorStop(0.5,'rgba(34,197,94,0.7)');
+    nug.addColorStop(1,'rgba(34,197,94,0)');
+    ctx.fillStyle=nug;
+    ctx.fillRect(W/2-nuw/2, awardY+130, nuw, 2);
+
+    // awarded to text
+    ctx.fillStyle='rgba(255,255,255,0.28)';
+    ctx.font='400 26px monospace';
+    ctx.textAlign='center';
+    ctx.fillText("adına verilmiştir.", W/2, awardY+175);
+
+    // ── DESCRIPTION ───────────────────────────────────────
+    var descY = awardY + 240;
+    ctx.fillStyle='rgba(255,255,255,0.42)';
+    ctx.font='400 28px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('Start & Scale Dropshipping programını eksiksiz tamamlayarak', W/2, descY);
+    ctx.fillText('eBay ve Shopify e-ticaret alanında uzman seviyeye ulaşmıştır.', W/2, descY+42);
+
+    // ── DIVIDER ───────────────────────────────────────────
+    var divY = descY + 100;
+    var divg=ctx.createLinearGradient(bm+70,0,W-bm-70,0);
+    divg.addColorStop(0,'rgba(255,255,255,0)');
+    divg.addColorStop(0.5,'rgba(255,255,255,0.08)');
+    divg.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.strokeStyle=divg; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(bm+70,divY); ctx.lineTo(W-bm-70,divY); ctx.stroke();
+
+    // ── SIGNATURE AREA ────────────────────────────────────
+    var sigY = divY + 80;
+    var sigX1 = W/2 - 320;
+    var sigX2 = W/2 + 320;
+
+    // Left — Issuer
+    // Signature line
+    ctx.strokeStyle='rgba(255,255,255,0.15)';
+    ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(sigX1-160,sigY+60); ctx.lineTo(sigX1+160,sigY+60); ctx.stroke();
+
+    // "Canberk Öztürk" in italic style
+    ctx.fillStyle='rgba(255,255,255,0.85)';
+    ctx.font='700 italic 34px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('Canberk Öztürk', sigX1, sigY+50);
+
+    ctx.fillStyle='rgba(255,255,255,0.3)';
+    ctx.font='400 22px monospace';
+    ctx.textAlign='center';
+    ctx.fillText('KURUCU · MLYNR.', sigX1, sigY+90);
+
+    // Right — Date
+    var months2=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+    var ds2=now.getDate()+' '+months2[now.getMonth()]+' '+now.getFullYear();
+
+    ctx.strokeStyle='rgba(255,255,255,0.15)';
+    ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(sigX2-160,sigY+60); ctx.lineTo(sigX2+160,sigY+60); ctx.stroke();
+
+    ctx.fillStyle='rgba(255,255,255,0.85)';
+    ctx.font='700 34px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(ds2, sigX2, sigY+50);
+
+    ctx.fillStyle='rgba(255,255,255,0.3)';
+    ctx.font='400 22px monospace';
+    ctx.textAlign='center';
+    ctx.fillText('TAMAMLANMA TARİHİ', sigX2, sigY+90);
+
+    // Center seal
+    var sealX=W/2, sealY=sigY+28;
+    // Outer ring
+    ctx.beginPath(); ctx.arc(sealX,sealY,54,0,Math.PI*2);
+    ctx.strokeStyle='rgba(250,204,21,0.5)'; ctx.lineWidth=1.5; ctx.stroke();
+    // Inner ring
+    ctx.beginPath(); ctx.arc(sealX,sealY,44,0,Math.PI*2);
+    ctx.strokeStyle='rgba(250,204,21,0.25)'; ctx.lineWidth=1; ctx.stroke();
+    // Fill
+    ctx.beginPath(); ctx.arc(sealX,sealY,42,0,Math.PI*2);
+    ctx.fillStyle='rgba(250,204,21,0.06)'; ctx.fill();
+    // Seal text
+    ctx.fillStyle='#facc15';
+    ctx.font='900 28px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('✓', sealX, sealY+10);
+
+    // ── BOTTOM FOOTER ──────────────────────────────────────
+    var ftY=H-bm-55;
+    ctx.fillStyle='rgba(255,255,255,0.12)';
+    ctx.font='400 20px monospace';
+    ctx.textAlign='center';
+    ctx.fillText('mlynr.com  ·  okul.mlynr.com  ·  Start & Scale Dropshipping', W/2, ftY);
+
+  }catch(e){ console.error('certDraw error',e); }
 }
 
 function openMentorPopup(){
