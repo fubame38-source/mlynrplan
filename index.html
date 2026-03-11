@@ -625,42 +625,25 @@ body.light .footer-btn:hover {
 .fs2-btn-insta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(253,29,29,.35)}
 
 /* ── MENTORSHIP SECTION ─────────────────────────────── */
-.mentor-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:32px}
+.mentor-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:16px}
 .mentor-card{
-  position:relative;overflow:hidden;
+  border:1px solid var(--green-ln);
   border-radius:var(--r);
-  border:1px solid rgba(34,197,94,.35);
-  background:linear-gradient(135deg,rgba(34,197,94,.06) 0%,rgba(0,0,0,0) 60%),var(--surface);
-  padding:28px 28px 24px;
+  padding:22px 26px;
+  background:var(--green-dim);
+  display:flex;gap:16px;align-items:center;
   cursor:pointer;
-  transition:all .3s cubic-bezier(.34,1.2,.64,1);
+  transition:all .25s cubic-bezier(.34,1.2,.64,1);
+  text-decoration:none;
 }
-.mentor-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,#22c55e,transparent);
-}
-.mentor-card::after{
-  content:'';position:absolute;top:-60px;right:-60px;
-  width:160px;height:160px;border-radius:50%;
-  background:radial-gradient(circle,rgba(34,197,94,.12) 0%,transparent 70%);
-  pointer-events:none;
-}
-.mentor-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(34,197,94,.12),0 8px 32px rgba(0,0,0,.4);border-color:rgba(34,197,94,.6);}
-.mentor-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.mentor-eyebrow::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.4s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.mentor-title{font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px;letter-spacing:-.4px;line-height:1.2}
-.mentor-subtitle{font-size:12px;color:var(--text2);margin-bottom:20px;line-height:1.6}
-.mentor-features{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px}
-.mentor-feature{display:flex;align-items:flex-start;gap:8px;font-size:11.5px;color:var(--text2);line-height:1.4}
-.mentor-feature .mf-check{color:var(--green);font-size:13px;flex-shrink:0;margin-top:1px}
-.mentor-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.mentor-capital{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--text3);display:flex;align-items:center;gap:6px}
-.mentor-capital strong{color:var(--green);font-size:13px}
-.mentor-cta{display:flex;align-items:center;gap:8px;background:var(--green);color:#000;font-weight:700;font-size:12px;padding:10px 20px;border-radius:8px;border:none;cursor:pointer;transition:all .2s;letter-spacing:.3px;font-family:var(--mono);text-transform:uppercase}
-.mentor-cta:hover{background:#16a34a;transform:scale(1.03)}
-.mentor-cta-arrow{font-size:16px;transition:transform .2s}
-.mentor-card:hover .mentor-cta-arrow{transform:translate(3px,-3px)}
+.mentor-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.5);border-color:rgba(34,197,94,.5)}
+.mentor-icon{width:38px;height:38px;border-radius:10px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.mentor-body{flex:1}
+.mentor-body h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.mentor-body p{font-size:11px;color:var(--text2)}
+.mentor-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-top:6px}
+.mentor-arrow{font-size:16px;color:var(--text3);flex-shrink:0;margin-left:auto;transition:all .2s}
+.mentor-card:hover .mentor-arrow{color:var(--green);transform:translate(2px,-2px)}
 
 /* ── MENTOR POPUP ────────────────────────────────────── */
 #mentor-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9998;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(6px)}
@@ -701,13 +684,10 @@ body.light .footer-btn:hover {
 .mp-btn-secondary{display:flex;align-items:center;justify-content:center;gap:10px;background:transparent;color:var(--text2);font-size:12px;padding:11px 24px;border-radius:10px;text-decoration:none;border:1px solid var(--border);transition:all .2s}
 .mp-btn-secondary:hover{border-color:var(--border2);color:var(--text);transform:translateY(-1px)}
 .mp-note{font-size:10px;color:var(--text3);text-align:center;margin-top:14px;line-height:1.6;font-family:var(--mono);letter-spacing:.5px}
-body.light .mentor-card{background:linear-gradient(135deg,rgba(34,197,94,.04) 0%,rgba(255,255,255,0) 60%),#fff}
-body.light .mp-header{background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(255,255,255,0))}
+body.light .mentor-card{background:rgba(34,197,94,.03);border-color:rgba(34,197,94,.25)}
+body.light .mp-header{background:rgba(34,197,94,.04)}
 body.light #mentor-popup{background:#fff}
 @media(max-width:540px){
-  .mentor-features{grid-template-columns:1fr}
-  .mentor-bottom{flex-direction:column;align-items:flex-start}
-  .mentor-cta{width:100%;justify-content:center}
   .mp-title{font-size:20px}
   .mp-header,.mp-body{padding-left:20px;padding-right:20px}
 }
@@ -970,23 +950,13 @@ body.light #mentor-popup{background:#fff}
   <!-- MENTORSHIP -->
   <div class="mentor-section">
     <div class="mentor-card" onclick="openMentorPopup()">
-      <div class="mentor-eyebrow">Özel Program · Sınırlı Kontenjan</div>
-      <div class="mentor-title">1-1 Birebir Mentörlük</div>
-      <div class="mentor-subtitle">Shopify Dropshipping'te hızlı ilerlemenin en kısa yolu — doğrudan danışmanınla çalış.</div>
-      <div class="mentor-features">
-        <div class="mentor-feature"><span class="mf-check">✓</span><span>Eğitim videolarına tam erişim</span></div>
-        <div class="mentor-feature"><span class="mf-check">✓</span><span>6 haftalık birebir süreç (42 gün)</span></div>
-        <div class="mentor-feature"><span class="mf-check">✓</span><span>Danışmanla özel WhatsApp grubu</span></div>
-        <div class="mentor-feature"><span class="mf-check">✓</span><span>Haftada 1 saat özel video görüşme</span></div>
-        <div class="mentor-feature"><span class="mf-check">✓</span><span>Her aşama için yönlendirici ödevler</span></div>
-        <div class="mentor-feature"><span class="mf-check">✓</span><span>Öğrenci topluluğuna özel erişim</span></div>
-        <div class="mentor-feature"><span class="mf-check">✓</span><span>Program sonu uzatılabilir danışmanlık</span></div>
-        <div class="mentor-feature"><span class="mf-check">✓</span><span>Mağaza kurulum & ürün seçim desteği</span></div>
+      <div class="mentor-icon">👨‍💼</div>
+      <div class="mentor-body">
+        <h3>1-1 Birebir Mentörlük</h3>
+        <p>Shopify Dropshipping'te doğrudan danışmanınla çalış, hızlı ilerle.</p>
+        <div class="mentor-tag">● Özel Program · min. $4.000 Sermaye · Sınırlı Kontenjan</div>
       </div>
-      <div class="mentor-bottom">
-        <div class="mentor-capital">Gerekli sermaye: <strong>min. $4.000</strong></div>
-        <button class="mentor-cta">Danışmanınla Görüş <span class="mentor-cta-arrow">↗</span></button>
-      </div>
+      <div class="mentor-arrow">↗</div>
     </div>
   </div>
 
