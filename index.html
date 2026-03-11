@@ -1359,23 +1359,32 @@ var TOTAL=28;
 var email='',done=[],mc={},CW={};
 function stK(){return 'mlynr6_'+email.replace(/[^a-z0-9]/gi,'_');}
 function saveState(){
-  if(!email)return;
-  // localStorage backup
-  try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
-  // Supabase — upsert garantisi (insert + update, row yoksa da yazar)
+  if(!email) return;
+  // 1. localStorage backup
+  try{ LS.setItem(stK(), JSON.stringify({done:done, mc:mc})); }catch(e){}
+  // 2. Supabase update (satır loadStateFromDB'de zaten oluşturuldu)
   if(_user){
-    var fsVal=false;try{fsVal=LS.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
-    var spVal={};try{var spRaw=LS.getItem('mlynr6_sp_'+email);if(spRaw)spVal=JSON.parse(spRaw);}catch(e){}
-    _sb.from('progress').upsert({
-      user_id:_user.id,
-      done:done,
-      mc:mc,
-      first_sale:fsVal,
-      spin:spVal,
-      updated_at:new Date().toISOString()
-    },{onConflict:'user_id'}).then(function(r){
-      if(r.error){console.warn('DB save error:',r.error);}
-    });
+    var fsVal=false; try{fsVal=LS.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
+    var spVal={}; try{var sr=LS.getItem('mlynr6_sp_'+email);if(sr)spVal=JSON.parse(sr);}catch(e){}
+    _sb.from('progress')
+      .update({
+        done: done,
+        mc: mc,
+        first_sale: fsVal,
+        spin: spVal,
+        updated_at: new Date().toISOString()
+      })
+      .eq('user_id', _user.id)
+      .then(function(r){
+        if(r.error){
+          // update başarısız olduysa upsert dene
+          _sb.from('progress').upsert({
+            user_id:_user.id, done:done, mc:mc,
+            first_sale:fsVal, spin:spVal,
+            updated_at:new Date().toISOString()
+          }).then(function(){});
+        }
+      });
   }
   showSaved();
 }
@@ -1386,7 +1395,6 @@ function loadState(){
 
 function loadStateFromDB(){
   if(!_user){
-    // DB yok, localStorage'dan yükle
     loadState();
     showApp();
     return;
@@ -1394,39 +1402,48 @@ function loadStateFromDB(){
   _sb.from('progress')
     .select('done,mc,spin,first_sale,earn_opened')
     .eq('user_id',_user.id)
-    .single()
+    .maybeSingle()
     .then(function(r){
-      if(r.error || !r.data){
-        // DB'de kayıt yok — localStorage'dan al, sonra DB'ye yaz
-        loadState();
-        _sb.from('progress').upsert({
-          user_id:_user.id,
-          done:done,
-          mc:mc,
-          spin:{},
-          first_sale:false,
+      if(r.error){ console.warn('DB load error:',r.error); loadState(); showApp(); return; }
+
+      if(!r.data){
+        // İlk giriş — yeni satır oluştur, done boş başlasın
+        done=[]; mc={};
+        _sb.from('progress').insert({
+          user_id:_user.id, done:[], mc:{}, spin:{},
+          first_sale:false, earn_opened:false,
           updated_at:new Date().toISOString()
-        },{onConflict:'user_id'}).then(function(){});
+        }).then(function(){});
       } else {
-        // DB verisi localStorage'dan her zaman önceliklidir
-        var dbDone = r.data.done||[];
-        var lsDone = [];
-        try{var ls=LS.getItem(stK());if(ls){var p=JSON.parse(ls);lsDone=p.done||[];}}catch(e){}
-        // İki kaynaktan en güncelini al (daha fazla ilerleme = daha güncel)
-        done = dbDone.length >= lsDone.length ? dbDone : lsDone;
-        mc   = r.data.mc||{};
+        // DB'den gelen done kesinlikle array olmalı
+        var raw = r.data.done;
+        if(Array.isArray(raw)){
+          done = raw;
+        } else if(typeof raw === 'string'){
+          try{ done = JSON.parse(raw); }catch(e){ done=[]; }
+        } else {
+          done = [];
+        }
+        // mc de aynı şekilde
+        var rawMc = r.data.mc;
+        if(rawMc && typeof rawMc === 'object' && !Array.isArray(rawMc)){
+          mc = rawMc;
+        } else if(typeof rawMc === 'string'){
+          try{ mc = JSON.parse(rawMc); }catch(e){ mc={}; }
+        } else {
+          mc = {};
+        }
         if(r.data.first_sale){ try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){} }
-        if(r.data.spin){
+        if(r.data.spin && typeof r.data.spin==='object'){
           try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(r.data.spin));}catch(e){}
         }
-        // localStorage'ı DB ile senkronize et
+        // localStorage'ı güncel tut
         try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
       }
       showApp();
     })
     .catch(function(err){
-      // Network hatası — localStorage fallback
-      console.warn('DB load failed, using localStorage:', err);
+      console.warn('DB load failed, localStorage fallback:', err);
       loadState();
       showApp();
     });
@@ -1520,18 +1537,20 @@ function doAuth(){
         er.style.color='#4ade80';
         er.textContent='Hoş geldin! Yükleniyor...';
         // Create progress row silently
-        // Yeni kullanıcı için sadece row oluştur, mevcut veri varsa üzerine yazma
-        _sb.from('progress').upsert({
-          user_id:_user.id,
-          done:[],
-          mc:{},
-          spin:{},
-          first_sale:false,
-          earn_opened:false,
-          updated_at:new Date().toISOString()
-        },{onConflict:'user_id',ignoreDuplicates:true}).then(function(){
-          loadStateFromDB();
-        });
+        // Yeni kullanıcı — satır yoksa oluştur, varsa dokunma
+        _sb.from('progress')
+          .select('user_id').eq('user_id',_user.id).maybeSingle()
+          .then(function(chk){
+            if(!chk.data){
+              _sb.from('progress').insert({
+                user_id:_user.id, done:[], mc:{}, spin:{},
+                first_sale:false, earn_opened:false,
+                updated_at:new Date().toISOString()
+              }).then(function(){ loadStateFromDB(); });
+            } else {
+              loadStateFromDB();
+            }
+          });
       });
     });
   } else {
