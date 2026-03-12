@@ -1360,16 +1360,23 @@ function saveState(){
     var fsVal=false; try{fsVal=LS.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
     var spVal={}; try{var sr=LS.getItem('mlynr6_sp_'+email);if(sr)spVal=JSON.parse(sr);}catch(e){}
     _sb.from('progress')
-      .upsert({
-        user_id: _user.id,
+      .update({
         done: done,
         mc: mc,
         first_sale: fsVal,
         spin: spVal,
         updated_at: new Date().toISOString()
-      }, {onConflict: 'user_id'})
+      })
+      .eq('user_id', _user.id)
       .then(function(r){
-        if(r.error){ console.warn('DB save error:', r.error); }
+        if(r.error){
+          // update başarısız olduysa upsert dene
+          _sb.from('progress').upsert({
+            user_id:_user.id, done:done, mc:mc,
+            first_sale:fsVal, spin:spVal,
+            updated_at:new Date().toISOString()
+          }).then(function(){});
+        }
       });
   }
   showSaved();
@@ -1389,9 +1396,11 @@ function loadStateFromDB(){
   _sb.from('progress')
     .select('done,mc,spin,first_sale,earn_opened,full_name')
     .eq('user_id',_user.id)
-    .maybeSingle()
+    .limit(1)
     .then(function(r){
       if(r.error){ console.warn('DB load error:',r.error); loadState(); showApp(); return; }
+      // limit(1) array döner, maybeSingle gibi davran
+      if(r.data && r.data.length > 0){ r.data = r.data[0]; } else { r.data = null; }
 
       if(!r.data){
         // İlk giriş — yeni satır oluştur, done boş başlasın
