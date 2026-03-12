@@ -1360,23 +1360,16 @@ function saveState(){
     var fsVal=false; try{fsVal=LS.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
     var spVal={}; try{var sr=LS.getItem('mlynr6_sp_'+email);if(sr)spVal=JSON.parse(sr);}catch(e){}
     _sb.from('progress')
-      .update({
+      .upsert({
+        user_id: _user.id,
         done: done,
         mc: mc,
         first_sale: fsVal,
         spin: spVal,
         updated_at: new Date().toISOString()
-      })
-      .eq('user_id', _user.id)
+      }, {onConflict: 'user_id'})
       .then(function(r){
-        if(r.error){
-          // update başarısız olduysa upsert dene
-          _sb.from('progress').upsert({
-            user_id:_user.id, done:done, mc:mc,
-            first_sale:fsVal, spin:spVal,
-            updated_at:new Date().toISOString()
-          }).then(function(){});
-        }
+        if(r.error){ console.warn('DB save error:', r.error); }
       });
   }
   showSaved();
