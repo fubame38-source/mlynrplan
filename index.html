@@ -1512,6 +1512,7 @@ function loadState(){
 
 function loadStateFromDB(){
   // Admin ise DB sorgusu yapma, direkt paneli aç
+  if(isAdmin()){ showAdminPanel(); return; }
   if(!_user){
     loadState();
     showApp();
@@ -1697,6 +1698,7 @@ function doLogout(){
   closeMenu();
 }
 function showApp(){
+  if(isAdmin()){ showAdminPanel(); return; }
   document.getElementById('login-screen').classList.add('hidden');
   document.getElementById('app').style.display='block';
   var d=email.split('@')[0];
