@@ -1542,9 +1542,9 @@ function doAuth(){
         // Create progress row silently
         // Yeni kullanıcı — satır yoksa oluştur, varsa dokunma
         _sb.from('progress')
-          .select('user_id').eq('user_id',_user.id).maybeSingle()
+          .select('user_id').eq('user_id',_user.id).limit(1)
           .then(function(chk){
-            if(!chk.data){
+            if(!chk.data || chk.data.length === 0){
               _sb.from('progress').insert({
                 user_id:_user.id, done:[], mc:{}, spin:{},
                 first_sale:false, earn_opened:false,
