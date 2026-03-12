@@ -45,7 +45,7 @@ body.light{
 body.light .bg-grid{background-image:linear-gradient(rgba(0,0,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px);background-size:48px 48px}
 body.light .bg-glow{background:radial-gradient(ellipse,rgba(0,0,0,.04),transparent 70%)}
 body.light .hero-title{color:#111}
-body.light .hero-title .dim{color:#111}
+body.light .hero-title .dim{color:#ddd}
 body.light .week-num{color:#e8e8e8}
 body.light .login-card{box-shadow:0 8px 40px rgba(0,0,0,.1)}
 body.light .topbar{background:rgba(245,245,245,.9)}
@@ -106,7 +106,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:24px}
 .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.5s ease-in-out infinite}
 .hero-title{font-size:clamp(60px,14vw,136px);font-weight:900;letter-spacing:-5px;line-height:.85;color:var(--white);margin-bottom:20px}
-.hero-title .dim{color:#ffffff}
+.hero-title .dim{color:#2a2a2a}
 .hero-subtitle{font-size:clamp(14px,2.5vw,19px);font-weight:400;color:var(--text2);margin-bottom:20px}
 .hero-desc{font-size:13px;color:var(--text2);line-height:1.85;max-width:460px;margin-bottom:32px}
 .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
@@ -517,7 +517,7 @@ body.light .cb-text,
 body.light .cb-name {
   color:#111 !important;
 }
-body.light .hero-title .dim{color:#111 !important}
+body.light .hero-title .dim { color:#777 !important; }
 body.light .week-num { color:#999 !important; }
 body.light .week-done-badge { background:#dcfce7; color:#16a34a !important; }
 body.light .day { background:#fff; border-color:rgba(0,0,0,.1); }
@@ -693,60 +693,67 @@ body.light #mentor-popup{background:#fff}
 }
 
 /* ── NAME POPUP ────────────────────────────────────────────── */
-#name-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(24px);z-index:9000;opacity:0;pointer-events:none;transition:opacity .4s}
+#name-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(16px);z-index:9000;opacity:0;pointer-events:none;transition:opacity .4s}
 #name-overlay.show{opacity:1;pointer-events:all}
 #name-popup{
   position:fixed;top:50%;left:50%;
-  transform:translate(-50%,-56%) scale(.95);
+  transform:translate(-50%,-56%) scale(.93);
   z-index:9001;
-  background:#0a0a0a;
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:16px;
+  background:linear-gradient(160deg,#0e1410 0%,#080b09 100%);
+  border:1px solid rgba(34,197,94,.2);
+  border-radius:20px;
   padding:0;
   width:min(400px,92vw);
   text-align:center;
   opacity:0;pointer-events:none;
   transition:all .4s cubic-bezier(.34,1.2,.64,1);
   overflow:hidden;
-  box-shadow:0 60px 120px rgba(0,0,0,.9);
+  box-shadow:0 40px 80px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04);
 }
 #name-popup.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1)}
 #name-popup .np-top-bar{
-  border-bottom:1px solid rgba(255,255,255,.07);
-  padding:32px 28px 24px;
-  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(90deg,rgba(34,197,94,.12),rgba(34,197,94,.06),rgba(34,197,94,.12));
+  border-bottom:1px solid rgba(34,197,94,.12);
+  padding:14px 28px;
+  display:flex;align-items:center;justify-content:space-between;
 }
-#name-popup .np-logo{font-size:32px;font-weight:900;letter-spacing:-2px;color:#fff;font-family:var(--font)}
-#name-popup .np-dot{display:none}
-#name-popup .np-body{padding:28px 28px 32px}
-#name-popup .np-icon-wrap{display:none}
-#name-popup .np-title{font-size:20px;font-weight:800;color:#fff;margin-bottom:8px;letter-spacing:-.4px}
-#name-popup .np-sub{font-size:9px;color:rgba(255,255,255,.3);margin-bottom:28px;line-height:1.6;font-family:var(--mono);letter-spacing:3px;text-transform:uppercase}
+#name-popup .np-logo{font-size:11px;font-weight:900;letter-spacing:3px;color:#fff;font-family:var(--mono)}
+#name-popup .np-dot{width:6px;height:6px;border-radius:50%;background:#22c55e}
+#name-popup .np-body{padding:32px 28px 28px}
+#name-popup .np-icon-wrap{
+  width:56px;height:56px;border-radius:16px;
+  background:rgba(34,197,94,.08);
+  border:1px solid rgba(34,197,94,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;margin:0 auto 18px;
+}
+#name-popup .np-title{font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;letter-spacing:-.3px}
+#name-popup .np-sub{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:24px;line-height:1.6;font-family:var(--mono);letter-spacing:.3px}
 #name-popup .np-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 #name-popup .np-field{display:flex;flex-direction:column;gap:5px;text-align:left}
-#name-popup .np-label{font-size:8px;font-weight:700;color:rgba(255,255,255,.3);font-family:var(--mono);letter-spacing:3px;text-transform:uppercase;padding-left:2px}
+#name-popup .np-label{font-size:9px;font-weight:600;color:rgba(255,255,255,.25);font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;padding-left:2px}
 #name-popup .np-input{
-  width:100%;background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:8px;padding:13px 14px;
-  font-size:14px;font-weight:500;color:#fff;font-family:var(--font);
+  width:100%;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:12px 14px;
+  font-size:14px;color:#fff;font-family:var(--font);
   outline:none;box-sizing:border-box;
   transition:border-color .2s,background .2s;
 }
-#name-popup .np-input::placeholder{color:rgba(255,255,255,.2)}
-#name-popup .np-input:focus{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.08)}
+#name-popup .np-input::placeholder{color:rgba(255,255,255,.18)}
+#name-popup .np-input:focus{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.04)}
 #name-popup .np-btn{
-  width:100%;background:#fff;color:#000;
-  font-weight:800;font-size:10px;padding:15px;
-  border-radius:8px;border:none;cursor:pointer;
-  font-family:var(--mono);letter-spacing:3px;
+  width:100%;background:#22c55e;color:#000;
+  font-weight:800;font-size:12px;padding:14px;
+  border-radius:10px;border:none;cursor:pointer;
+  font-family:var(--mono);letter-spacing:2px;
   text-transform:uppercase;transition:all .2s;
   margin-top:4px;
 }
-#name-popup .np-btn:hover{background:#e8e8e8;transform:translateY(-1px)}
+#name-popup .np-btn:hover{background:#16a34a;transform:translateY(-1px)}
 #name-popup .np-skip{
-  margin-top:14px;font-size:8px;color:rgba(255,255,255,.2);
-  font-family:var(--mono);letter-spacing:2px;cursor:pointer;
+  margin-top:12px;font-size:10px;color:rgba(255,255,255,.18);
+  font-family:var(--mono);letter-spacing:1px;cursor:pointer;
   transition:color .2s;text-transform:uppercase;
 }
 #name-popup .np-skip:hover{color:rgba(255,255,255,.4)}
@@ -787,7 +794,7 @@ body.light #mentor-popup{background:#fff}
 .cert-close-btn:hover{background:rgba(255,255,255,.1)}
 
 </style>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 </head>
 <body>
 
@@ -1168,18 +1175,127 @@ body.light #mentor-popup{background:#fff}
 <div class="toast" id="toast"></div>
 
 <script>
+
+// ═══════════════════════════════════════════════════════════════
+// ADMIN FONKSİYONLARI
+// ═══════════════════════════════════════════════════════════════
+var _adminData = [];
+
+
+// Admin olarak eklemek istersen: ADMIN_EMAILS.push('yeni@mail.com')
+
+// ═══════════════════════════════════════════════════════════════
+// ADMIN FONKSİYONLARI
+// ═══════════════════════════════════════════════════════════════
+var _adminData = [];
+
+function showAdminPanel(){
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('admin-panel').style.display = 'block';
+  loadAdminData();
+}
+
+function loadAdminData(){
+  document.getElementById('adm-empty').style.display = 'block';
+  document.getElementById('adm-tbody').innerHTML = '';
+  document.getElementById('adm-stats-row').innerHTML = '<div style="color:var(--text2);font-family:var(--mono);font-size:12px;padding:8px;">Yükleniyor...</div>';
+  _sb.from('progress')
+    .select('user_id, done, mc, first_sale, earn_opened, updated_at')
+    .order('updated_at', {ascending: false})
+    .then(function(r){
+      if(r.error){ console.error(r.error); return; }
+      _adminData = r.data || [];
+      renderAdminStats(_adminData);
+      renderAdminTable(_adminData);
+      var now = new Date();
+      document.getElementById('adm-last-refresh').textContent =
+        'Son güncelleme: ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+    });
+}
+
+function renderAdminStats(data){
+  var total = data.length;
+  var active7 = 0, finished = 0, firstSale = 0, avg = 0;
+  var now = new Date();
+  data.forEach(function(u){
+    var d = Array.isArray(u.done) ? u.done.length : 0;
+    avg += d;
+    if(d >= 28) finished++;
+    if(u.first_sale) firstSale++;
+    if(u.updated_at){
+      var diff = (now - new Date(u.updated_at)) / (1000*60*60*24);
+      if(diff <= 7) active7++;
+    }
+  });
+  avg = total ? Math.round(avg/total) : 0;
+  var cards = [
+    {icon:'👥', label:'Toplam Kursiyer', val: total, color:'#ffffff'},
+    {icon:'🔥', label:'Son 7 Gün Aktif', val: active7, color:'#22c55e'},
+    {icon:'📊', label:'Ort. Tamamlanan Gün', val: avg + ' / 28', color:'#facc15'},
+    {icon:'🏆', label:'İlk Satış Yapan', val: firstSale, color:'#a78bfa'},
+    {icon:'🎓', label:'Programı Bitiren', val: finished, color:'#38bdf8'},
+  ];
+  var html = '';
+  cards.forEach(function(c){
+    html += '<div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:20px 24px;">' +
+      '<div style="font-size:24px;margin-bottom:8px;">' + c.icon + '</div>' +
+      '<div style="font-size:22px;font-weight:900;color:' + c.color + ';margin-bottom:4px;">' + c.val + '</div>' +
+      '<div style="font-size:10px;font-family:var(--mono);color:var(--text2);letter-spacing:1px;font-weight:600;">' + c.label + '</div>' +
+    '</div>';
+  });
+  document.getElementById('adm-stats-row').innerHTML = html;
+}
+
+function renderAdminTable(data){
+  var tbody = document.getElementById('adm-tbody');
+  tbody.innerHTML = '';
+  document.getElementById('adm-empty').style.display = data.length ? 'none' : 'block';
+  var now = new Date();
+  data.forEach(function(u){
+    var doneCnt = Array.isArray(u.done) ? u.done.length : 0;
+    var pct = Math.round(doneCnt / 28 * 100);
+    var lastLogin = u.updated_at ? new Date(u.updated_at) : null;
+    var daysSince = lastLogin ? Math.floor((now - lastLogin) / (1000*60*60*24)) : 999;
+    var status, statusColor;
+    if(daysSince <= 1){ status = '● AKTİF'; statusColor = '#22c55e'; }
+    else if(daysSince <= 7){ status = '● BU HAFTA'; statusColor = '#facc15'; }
+    else { status = '● PASİF'; statusColor = '#ef4444'; }
+    var lastStr = lastLogin
+      ? lastLogin.getDate() + ' ' + ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'][lastLogin.getMonth()] + ' ' + lastLogin.getFullYear()
+      : '—';
+    var barColor = pct >= 80 ? '#22c55e' : pct >= 40 ? '#facc15' : '#ef4444';
+    var tr = document.createElement('tr');
+    tr.style.cssText = 'border-bottom:1px solid rgba(255,255,255,0.04);transition:background .15s;';
+    tr.onmouseover = function(){ this.style.background='rgba(255,255,255,0.02)'; };
+    tr.onmouseout  = function(){ this.style.background=''; };
+    tr.innerHTML =
+      '<td style="padding:14px 16px;font-family:var(--mono);font-size:11px;color:var(--text2);">' + u.user_id.slice(0,8) + '…</td>' +
+      '<td style="text-align:center;padding:14px 16px;font-weight:700;font-size:13px;">' + doneCnt + ' <span style="color:var(--text2);font-size:10px;font-weight:400;">/ 28</span></td>' +
+      '<td style="padding:14px 24px;"><div style="display:flex;align-items:center;gap:8px;"><div style="flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;"><div style="height:100%;width:' + pct + '%;background:' + barColor + ';border-radius:3px;"></div></div><span style="font-size:11px;font-family:var(--mono);color:var(--text2);min-width:32px;">' + pct + '%</span></div></td>' +
+      '<td style="text-align:center;padding:14px 16px;">' + (u.first_sale ? '🏆' : '<span style="color:var(--text2);">—</span>') + '</td>' +
+      '<td style="text-align:center;padding:14px 16px;">' + (doneCnt >= 28 ? '🎓' : '<span style="color:var(--text2);">—</span>') + '</td>' +
+      '<td style="text-align:center;padding:14px 16px;font-family:var(--mono);font-size:11px;color:var(--text2);">' + lastStr + '</td>' +
+      '<td style="text-align:center;padding:14px 16px;font-family:var(--mono);font-size:10px;font-weight:700;color:' + statusColor + ';">' + status + '</td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function adminFilter(){
+  var q = document.getElementById('adm-search').value.toLowerCase();
+  var filtered = _adminData.filter(function(u){ return u.user_id.toLowerCase().indexOf(q) > -1; });
+  renderAdminTable(filtered);
+}
+
+
 var LS; try{ LS=localStorage; }catch(e){ LS={getItem:function(){return null;},setItem:function(){},removeItem:function(){}}; }
 
 // ── SUPABASE ─────────────────────────────────────────────
-var _sb = supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co', 'sb_publishable_fBqoPGz-1qHl1HU1PpbBTA_gBVZoodL', {
-  auth: {
-    persistSession: true,
-    storageKey: 'mlynr_auth',
-    storage: window.localStorage,
-    autoRefreshToken: true,
-    detectSessionInUrl: true
-  }
-});
+// ── ADMIN ─────────────────────────────────────────────────────
+var ADMIN_EMAILS = ['fege.glc@gmail.com'];
+function isAdmin(){ return ADMIN_EMAILS.indexOf(email.toLowerCase()) > -1; }
+
+var _sb = supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co', 'sb_publishable_fBqoPGz-1qHl1HU1PpbBTA_gBVZoodL');
 
 // ── AUTH STATE CHANGE ──────────────────────────────────
 _sb.auth.onAuthStateChange(function(event, session){
@@ -1395,14 +1511,15 @@ function loadState(){
 }
 
 function loadStateFromDB(){
+  // Admin ise DB sorgusu yapma, direkt paneli aç
+  if(isAdmin()){ showAdminPanel(); return; }
   if(!_user){
     loadState();
     showApp();
-    setTimeout(function(){var nm=getUserName();if(!nm){openNamePopup();}else{showWelcomeToast(nm.split(' ')[0]);}},400);
     return;
   }
   _sb.from('progress')
-    .select('done,mc,spin,first_sale,earn_opened,full_name')
+    .select('done,mc,spin,first_sale,earn_opened')
     .eq('user_id',_user.id)
     .maybeSingle()
     .then(function(r){
@@ -1415,11 +1532,7 @@ function loadStateFromDB(){
           user_id:_user.id, done:[], mc:{}, spin:{},
           first_sale:false, earn_opened:false,
           updated_at:new Date().toISOString()
-        }).then(function(){
-          showApp();
-          setTimeout(function(){openNamePopup();},400);
-        });
-        return;
+        }).then(function(){});
       } else {
         // DB'den gelen done kesinlikle array olmalı
         var raw = r.data.done;
@@ -1445,16 +1558,13 @@ function loadStateFromDB(){
         }
         // localStorage'ı güncel tut
         try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
-        if(r.data.full_name){try{LS.setItem('mlynr6_name_'+email,r.data.full_name);}catch(e){}}
       }
       showApp();
-      setTimeout(function(){var nm=getUserName();if(!nm){openNamePopup();}else{showWelcomeToast(nm.split(' ')[0]);}},400);
     })
     .catch(function(err){
       console.warn('DB load failed, localStorage fallback:', err);
       loadState();
       showApp();
-      setTimeout(function(){var nm=getUserName();if(!nm){openNamePopup();}else{showWelcomeToast(nm.split(' ')[0]);}},400);
     });
 }
 
@@ -1588,6 +1698,7 @@ function doLogout(){
   closeMenu();
 }
 function showApp(){
+  if(isAdmin()){ showAdminPanel(); return; }
   document.getElementById('login-screen').classList.add('hidden');
   document.getElementById('app').style.display='block';
   var d=email.split('@')[0];
@@ -1600,7 +1711,16 @@ function showApp(){
   renderSpin();
   checkVersion();
   setTimeout(initScrollAnim, 50);
-  // Popup kararı loadStateFromDB'den sonra verilir
+  // First time? Ask for name. Returning user? Show welcome toast.
+  setTimeout(function(){
+    var sn2 = getUserName();
+    if(!sn2){
+      openNamePopup();
+    } else {
+      var firstName2 = sn2.split(' ')[0];
+      showWelcomeToast(firstName2);
+    }
+  }, 700);
 }
 
 // ── RENDER HELPERS ────────────────────────────────────────────
@@ -1919,11 +2039,6 @@ function getUserName(){
 function setUserName(name){
   _userName = name.trim();
   try{ LS.setItem('mlynr6_name_'+email, _userName); }catch(e){}
-  if(_user){
-    _sb.from('progress')
-      .upsert({user_id:_user.id,full_name:_userName,updated_at:new Date().toISOString()},{onConflict:'user_id'})
-      .then(function(r){if(r.error)console.warn('isim hatasi:',r.error);});
-  }
 }
 function openNamePopup(){
   document.getElementById('name-overlay').classList.add('show');
@@ -2769,5 +2884,52 @@ function showPasswordResetUI(session){
       </div>
     </div>
   </div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- ADMIN PANEL                                                  -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="admin-panel" style="display:none;min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--font);">
+
+  <!-- Header -->
+  <div style="border-bottom:1px solid var(--border);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:100;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:18px;font-weight:900;letter-spacing:-0.5px;">MLYNR.</span>
+      <span style="font-size:10px;font-weight:700;color:var(--green);font-family:var(--mono);letter-spacing:2px;background:rgba(34,197,94,0.1);padding:3px 10px;border-radius:20px;border:1px solid rgba(34,197,94,0.2);">ADMIN</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <span style="font-size:12px;color:var(--text2);font-family:var(--mono);" id="adm-last-refresh"></span>
+      <button onclick="loadAdminData()" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:var(--green);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:8px;cursor:pointer;">↻ YENİLE</button>
+      <button onclick="doLogout()" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text2);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:8px;cursor:pointer;">ÇIKIŞ</button>
+    </div>
+  </div>
+
+  <!-- Stat Cards -->
+  <div style="padding:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;" id="adm-stats-row"></div>
+
+  <!-- Tablo -->
+  <div style="padding:0 28px 28px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <span style="font-size:13px;font-weight:700;letter-spacing:0.5px;">KURSİYERLER</span>
+      <input id="adm-search" oninput="adminFilter()" placeholder="Mail ara..." style="background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px;padding:8px 14px;border-radius:8px;outline:none;width:220px;">
+    </div>
+    <div style="overflow-x:auto;border-radius:12px;border:1px solid var(--border);">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;" id="adm-table">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02);">
+            <th style="text-align:left;padding:12px 16px;font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:1.5px;font-weight:600;">MAİL</th>
+            <th style="text-align:center;padding:12px 16px;font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:1.5px;font-weight:600;">GÜN</th>
+            <th style="text-align:center;padding:12px 16px;font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:1.5px;font-weight:600;">İLERLEME</th>
+            <th style="text-align:center;padding:12px 16px;font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:1.5px;font-weight:600;">İLK SATIŞ</th>
+            <th style="text-align:center;padding:12px 16px;font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:1.5px;font-weight:600;">SERTİFİKA</th>
+            <th style="text-align:center;padding:12px 16px;font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:1.5px;font-weight:600;">SON GİRİŞ</th>
+            <th style="text-align:center;padding:12px 16px;font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:1.5px;font-weight:600;">DURUM</th>
+          </tr>
+        </thead>
+        <tbody id="adm-tbody"></tbody>
+      </table>
+    </div>
+    <div id="adm-empty" style="display:none;text-align:center;padding:48px;color:var(--text2);font-family:var(--mono);font-size:12px;">Veri yükleniyor...</div>
+  </div>
+</div>
 </body>
 </html>
