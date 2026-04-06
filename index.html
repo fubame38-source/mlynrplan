@@ -1426,12 +1426,9 @@ function openAiTool(tool){
   document.getElementById('aitool-sub').textContent = isL ? 'eBay basligi + aciklama AI yazar' : 'MLYNR · eBay Ürün Analizi';
   document.getElementById('aitool-go').textContent = isL ? 'Yaz' : 'Analiz Et';
   document.getElementById('aitool-input').value = '';
-  document.getElementById('aitool-input').placeholder = isL ? 'Urun adi yaz... veya sadece Amazon linki yeterli' : 'Urun adi yaz...';
-  var amWrap = document.getElementById('amazon-link-wrap');
-  if(amWrap) amWrap.style.display = isL ? 'block' : 'none';
-  var amInp = document.getElementById('aitool-amazon');
-  if(amInp) amInp.value = '';
-  document.getElementById('aitool-body').textContent = isL ? 'Urun adi yaz veya Amazon linki yapistir.' : 'Urun adi yazıp butona bas.';
+  document.getElementById('aitool-input').placeholder = isL ? 'Urun adi yaz... (ornek: Foam Roller Set)' : 'Urun adi yaz...';
+
+  document.getElementById('aitool-body').textContent = 'Urun adi yazıp butona bas.';
   document.getElementById('aitool-body').style.cssText = 'min-height:100px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px';
   document.getElementById('aitool-actions').style.display = 'none';
   lastAiText = '';
@@ -1447,24 +1444,8 @@ function closeAiTool(){
 
 function runAiTool(){
   var urun = document.getElementById('aitool-input').value.trim();
-  var amazonUrl = '';
-  if(currentAiTool === 'listing'){
-    var amInp = document.getElementById('aitool-amazon');
-    if(amInp) amazonUrl = amInp.value.trim();
-  }
-  if(!urun && amazonUrl) {
-    // URL'den ürün adını çıkar: amazon.com/URUN-ADI/dp/...
-    var urlParts = amazonUrl.split('/');
-    for(var pi=0;pi<urlParts.length;pi++){
-      if(urlParts[pi].length>5 && urlParts[pi]!=='www.amazon.com' && !urlParts[pi].startsWith('dp') && urlParts[pi].indexOf('.')<0){
-        urun = urlParts[pi].replace(/-/g,' ');
-        break;
-      }
-    }
-    if(!urun) urun = 'product';
-  }
-  if(!urun && !amazonUrl) {
-    document.getElementById('aitool-body').textContent = 'Urun adi yaz veya Amazon linki yapistir.';
+  if(!urun) {
+    document.getElementById('aitool-body').textContent = 'Urun adi yaziniz.';
     return;
   }
   var bodyEl = document.getElementById('aitool-body');
@@ -1476,7 +1457,7 @@ function runAiTool(){
   fetch(AI_EP, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({tool: currentAiTool, urun: urun, amazonUrl: amazonUrl})
+    body: JSON.stringify({tool: currentAiTool, urun: urun})
   }).then(function(r){ return r.json(); }).then(function(data){
     if(data.error) throw new Error(data.error);
     lastAiText = data.sonuc || '';
@@ -2958,10 +2939,7 @@ function showPasswordResetUI(session){
         <input id="aitool-input" style="flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:13px 16px;outline:none" placeholder="Urun adi yaz..." />
         <button id="aitool-go" onclick="runAiTool()" style="background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-weight:700;font-size:13px;padding:13px 20px;cursor:pointer;white-space:nowrap">Analiz Et</button>
       </div>
-      <div id="amazon-link-wrap" style="display:none;margin-bottom:8px">
-        <input id="aitool-amazon" style="width:100%;background:var(--surface2);border:1px solid rgba(255,165,0,.3);border-radius:10px;color:var(--text);font-family:var(--font);font-size:13px;padding:11px 16px;outline:none;box-sizing:border-box" placeholder="Amazon linki yapistir (opsiyonel)..." />
-        <div style="font-size:11px;color:var(--text3);margin-top:5px;padding-left:2px">&#128279; Opsiyonel: Amazon linki ekle, AI ek bilgi okur</div>
-      </div>
+
     </div>
     <div id="aitool-body" style="min-height:100px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px">Urun adi yazıp butona bas.</div>
     <div id="aitool-actions" style="display:none;gap:8px;margin-top:12px">
