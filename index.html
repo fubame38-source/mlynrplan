@@ -1430,7 +1430,9 @@ function renderAiCards(txt){
   var secs = isL
     ? [{k:'BASLIK',i:'🏷️'},{k:'ACIKLAMA',i:'📄'},{k:'ANAHTAR KELIMELER',i:'🔍'},{k:'KATEGORI ONERISI',i:'📁'}]
     : [{k:'SATIS POTANSIYELI',i:'📈'},{k:'HEDEF KITLE',i:'🎯'},{k:'FIYAT ARALIGI',i:'💰'},{k:'REKABET',i:'⚔️'},{k:'RISKLER',i:'⚠️'},{k:'TAVSIYE',i:'🏁'}];
+
   var html = '<div style="display:flex;flex-direction:column;gap:8px">';
+
   for(var i=0;i<secs.length;i++){
     var s=secs[i];
     var nk=i<secs.length-1?secs[i+1].k:'~~~';
@@ -1440,33 +1442,57 @@ function renderAiCards(txt){
     var ei=txt.indexOf(nk+':');
     if(ei<0)ei=txt.length;
     var bTxt=txt.slice(si,ei).trim();
+
+    var isTavsiye = s.k==='TAVSIYE';
+
+    // Badge
     var badge='';
-    if(s.k==='TAVSIYE'){
-      badge=bTxt.toUpperCase().indexOf('SATMA')>-1
-        ?'<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">SATMA</span>'
-        :'<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">SAT</span>';
+    if(isTavsiye){
+      var up=bTxt.toUpperCase();
+      if(up.indexOf('GUCLU')>-1||up.indexOf('GÜÇLÜ')>-1||up.indexOf('YUKSEK')>-1){
+        badge='<span style="background:#15803d;color:#fff;border-radius:6px;font-size:10px;padding:4px 12px;font-weight:700;letter-spacing:.5px">✓ GÜÇLÜ</span>';
+      } else if(up.indexOf('KACIN')>-1||up.indexOf('KAÇIN')>-1||up.indexOf('SATMA')>-1){
+        badge='<span style="background:#dc2626;color:#fff;border-radius:6px;font-size:10px;padding:4px 12px;font-weight:700;letter-spacing:.5px">✗ KAÇIN</span>';
+      } else {
+        badge='<span style="background:#b45309;color:#fff;border-radius:6px;font-size:10px;padding:4px 12px;font-weight:700;letter-spacing:.5px">⚠ RİSKLİ</span>';
+      }
     }
     if(s.k==='SATIS POTANSIYELI'){
-      var up=bTxt.toUpperCase();
-      if(up.indexOf('YUKSEK')>-1)badge='<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">YUKSEK</span>';
-      else if(up.indexOf('DUSUK')>-1)badge='<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">DUSUK</span>';
+      var up2=bTxt.toUpperCase();
+      if(up2.indexOf('YUKSEK')>-1)badge='<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">YÜKSEK</span>';
+      else if(up2.indexOf('DUSUK')>-1)badge='<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">DÜŞÜK</span>';
       else badge='<span style="background:rgba(250,204,21,.12);color:#ca8a04;border:1px solid rgba(250,204,21,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">ORTA</span>';
     }
-    var cardId='aicard'+i;
-    var cpBtn=isL?'<button onclick="copyCardEl(this,\''+cardId+'\')" style="background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);font-size:11px;padding:3px 10px;cursor:pointer">📋</button>':'';
-    html+='<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;overflow:hidden">';
-    html+='<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border)">';
-    html+='<span style="font-size:14px">'+s.i+'</span>';
-    html+='<span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;flex:1">'+s.k+'</span>';
-    html+=badge+cpBtn+'</div>';
-    var bodyColor = s.k==='TAVSIYE' ? 'color:var(--text)' : 'color:var(--text2)';
-    html+='<div id="'+cardId+'" style="padding:12px 14px;font-size:12px;'+bodyColor+';line-height:1.8;font-weight:'+(s.k==='TAVSIYE'?'600':'400')+'">'+bTxt+'</div>';
-    html+='</div>';
+
+    var cpBtn = (isL) ? '<button onclick="copyCardEl(this,\'aicard'+i+'\')" style="background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);font-size:11px;padding:3px 10px;cursor:pointer">📋</button>' : '';
+
+    // TAVSİYE kartı özel stil
+    if(isTavsiye){
+      html+='<div style="background:var(--white);border:2px solid var(--border2);border-radius:12px;overflow:hidden;margin-top:4px">';
+      html+='<div style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border)">';
+      html+='<span style="font-size:16px">'+s.i+'</span>';
+      html+='<span style="font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--bg);text-transform:uppercase;flex:1;font-weight:700">'+s.k+'</span>';
+      html+=badge;
+      html+='</div>';
+      html+='<div id="aicard'+i+'" style="padding:14px 16px;font-size:13px;color:var(--bg);line-height:1.8;font-weight:600">'+bTxt+'</div>';
+      html+='</div>';
+    } else {
+      html+='<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;overflow:hidden">';
+      html+='<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border)">';
+      html+='<span style="font-size:14px">'+s.i+'</span>';
+      html+='<span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;flex:1">'+s.k+'</span>';
+      html+=badge+cpBtn;
+      html+='</div>';
+      html+='<div id="aicard'+i+'" style="padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.8">'+bTxt+'</div>';
+      html+='</div>';
+    }
   }
+
   html+='</div>';
   bodyEl.innerHTML=html;
   document.getElementById('aitool-actions').style.display='flex';
 }
+
 
 function copyCardEl(btn,id){
   var el=document.getElementById(id);
