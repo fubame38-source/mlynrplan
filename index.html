@@ -1428,39 +1428,56 @@ function runAiTool(){
 
 function renderAiResult(txt){
   var body = document.getElementById('aitool-body');
-  body.style.cssText = 'font-size:13px;color:#ccc;line-height:1.75';
-  var sections = currentAiTool === 'listing'
+  body.style.cssText = '';
+  var isListing = currentAiTool === 'listing';
+
+  var sections = isListing
     ? [{k:'BASLIK',i:'🏷️'},{k:'ACIKLAMA',i:'📄'},{k:'ANAHTAR KELIMELER',i:'🔍'},{k:'KATEGORI ONERISI',i:'📁'}]
     : [{k:'SATIS POTANSIYELI',i:'📈'},{k:'HEDEF KITLE',i:'🎯'},{k:'FIYAT ARALIGI',i:'💰'},{k:'REKABET',i:'⚔️'},{k:'RISKLER',i:'⚠️'},{k:'TAVSIYE',i:'🏁'}];
-  var html = '';
+
+  var html = '<div style="display:flex;flex-direction:column;gap:8px">';
+
   for(var i=0;i<sections.length;i++){
     var s = sections[i];
-    var next = i < sections.length-1 ? sections[i+1].k : '~~~';
+    var nextKey = i < sections.length-1 ? sections[i+1].k : '~~~';
     var si = txt.indexOf(s.k+':');
     if(si < 0) continue;
-    si += s.k.length+1;
-    var ei = txt.indexOf(next+':');
+    si += s.k.length + 1;
+    var ei = txt.indexOf(nextKey+':');
     if(ei < 0) ei = txt.length;
-    var bodyTxt = txt.slice(si,ei).trim();
+    var bodyTxt = txt.slice(si, ei).trim();
+
+    // Badge
     var badge = '';
-    if(s.k==='TAVSIYE'){badge = bodyTxt.toUpperCase().indexOf('SATMA')>-1 ? '<span style="background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.2);border-radius:4px;font-size:9px;padding:2px 7px;font-weight:700">SATMA</span>' : '<span style="background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.2);border-radius:4px;font-size:9px;padding:2px 7px;font-weight:700">SAT</span>';}
-    if(s.k==='SATIS POTANSIYELI'){
-      if(bodyTxt.toUpperCase().indexOf('YUKSEK')>-1||bodyTxt.toUpperCase().indexOf('HIGH')>-1) badge='<span style="background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.2);border-radius:4px;font-size:9px;padding:2px 7px;font-weight:700">YÜKSEK</span>';
-      else if(bodyTxt.toUpperCase().indexOf('DUSUK')>-1||bodyTxt.toUpperCase().indexOf('LOW')>-1) badge='<span style="background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.2);border-radius:4px;font-size:9px;padding:2px 7px;font-weight:700">DÜŞÜK</span>';
-      else badge='<span style="background:rgba(250,204,21,.12);color:#facc15;border:1px solid rgba(250,204,21,.2);border-radius:4px;font-size:9px;padding:2px 7px;font-weight:700">ORTA</span>';
+    if(s.k==='TAVSIYE'){
+      badge = bodyTxt.toUpperCase().indexOf('SATMA')>-1
+        ? '<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.2);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700;letter-spacing:.5px">SATMA</span>'
+        : '<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.2);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700;letter-spacing:.5px">SAT</span>';
     }
-    var cardIdx = 'aicard-'+i;
-    html += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-bottom:8px">';
-    html += '<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.06)">';
+    if(s.k==='SATIS POTANSIYELI'){
+      var up = bodyTxt.toUpperCase();
+      if(up.indexOf('YUKSEK')>-1) badge='<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.2);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">YÜKSEK</span>';
+      else if(up.indexOf('DUSUK')>-1) badge='<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.2);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">DÜŞÜK</span>';
+      else badge='<span style="background:rgba(250,204,21,.12);color:#ca8a04;border:1px solid rgba(250,204,21,.2);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">ORTA</span>';
+    }
+
+    // Copy button only for listing
+    var copyBtn = isListing ? '<button onclick="copyCardById(this,'aicard-'+i+'')" style="background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);font-size:11px;padding:3px 10px;cursor:pointer;transition:all .2s;flex-shrink:0">📋</button>' : '';
+
+    html += '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;overflow:hidden">';
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border)">';
     html += '<span style="font-size:14px">'+s.i+'</span>';
-    html += '<span style="font-family:monospace;font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;flex:1">'+s.k+'</span>';
+    html += '<span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;flex:1">'+s.k+'</span>';
     html += badge;
-    html += '<button onclick="copyCardById(this,\'' +cardIdx+ '\')" style="background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#555;font-size:10px;padding:3px 9px;cursor:pointer;transition:all .2s;white-space:nowrap">📋</button>';
+    html += copyBtn;
     html += '</div>';
-    html += '<div id="'+cardIdx+'" style="padding:12px 14px;font-size:12px;color:#aaa;line-height:1.8">'+bodyTxt+'</div>';
+    html += '<div id="aicard-'+i+'" style="padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.8">'+bodyTxt+'</div>';
     html += '</div>';
   }
-  body.innerHTML = html || txt;
+
+  html += '</div>';
+  body.innerHTML = html || '<div style="color:var(--text3);padding:16px">Sonuç işlenemedi.</div>';
+
   var actions = document.getElementById('aitool-actions');
   actions.style.display = 'flex';
   var translateBtn = document.getElementById('aitool-translate');
