@@ -1459,7 +1459,8 @@ function renderAiCards(txt){
     html+='<span style="font-size:14px">'+s.i+'</span>';
     html+='<span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;flex:1">'+s.k+'</span>';
     html+=badge+cpBtn+'</div>';
-    html+='<div id="'+cardId+'" style="padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.8">'+bTxt+'</div>';
+    var bodyColor = s.k==='TAVSIYE' ? 'color:var(--text)' : 'color:var(--text2)';
+    html+='<div id="'+cardId+'" style="padding:12px 14px;font-size:12px;'+bodyColor+';line-height:1.8;font-weight:'+(s.k==='TAVSIYE'?'600':'400')+'">'+bTxt+'</div>';
     html+='</div>';
   }
   html+='</div>';
