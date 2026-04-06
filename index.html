@@ -1339,7 +1339,7 @@ function doSpin(){
   if(!s.hist)s.hist=[];
   s.used++;saveSpinSt(s);
   var ra=document.getElementById('sp-result');
-  if(ra){ra.innerHTML='<div class="sp-spin-emoji">💵</div><div style="margin-top:8px;font-size:12px;color:#666">Yapay zeka düşünüyor...</div>';}
+  if(ra){ra.innerHTML='<div class="sp-spin-emoji">💵</div><div style="margin-top:8px;font-size:12px;color:var(--text3)">AI düşünüyor...</div>';}
   var btn=document.getElementById('sp-btn');
   if(btn){btn.disabled=true;btn.textContent='Yükleniyor...';}
   var excluded=s.aiHist||[];
@@ -1356,24 +1356,20 @@ function doSpin(){
     if(ra2){ra2.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.emoji+'</span><span class="sp-cat-name">'+cat.kategori+'</span></div><div class="sp-cat-hint">'+cat.aciklama+'</div><span class="sp-cat-tip">💡 '+cat.ipucu+'</span></div>';}
     var hak=MAX_SPIN-s.used;
     if(btn){btn.disabled=(hak<=0);btn.innerHTML=hak>0?'💵 Kategori Çek · '+hak+' hak kaldı':'Bugün tamamlandı ✓';}
-    var dotsEl=document.getElementById('sp-dots');
-    if(dotsEl){dotsEl.innerHTML='';for(var i=0;i<MAX_SPIN;i++){var d=document.createElement('div');d.className='sp-dot'+(i<s.used?'':' active');dotsEl.appendChild(d);}}
-    var prev=document.getElementById('spin-trigger-preview');
-    if(prev){prev.textContent=hak>0?'Tıkla ve Seç → Keşfet':'Yarın yeni kategoriler';}
-    var ping=document.getElementById('spin-ping');
-    if(ping){if(hak<=0)ping.classList.add('spin-ping-off');else ping.classList.remove('spin-ping-off');}
+    var de=document.getElementById('sp-dots');
+    if(de){de.innerHTML='';for(var i=0;i<MAX_SPIN;i++){var d=document.createElement('div');d.className='sp-dot'+(i<s.used?'':' active');de.appendChild(d);}}
+    var pv=document.getElementById('spin-trigger-preview');if(pv){pv.textContent=hak>0?'Tıkla ve Seç → Keşfet':'Yarın yeni kategoriler';}
+    var pg=document.getElementById('spin-ping');if(pg){if(hak<=0)pg.classList.add('spin-ping-off');else pg.classList.remove('spin-ping-off');}
   }).catch(function(){
-    var fi=Math.floor(Math.random()*CATS.length);
-    var cat=CATS[fi];s.last=fi;saveSpinSt(s);
+    var fi=Math.floor(Math.random()*CATS.length);var cat=CATS[fi];s.last=fi;saveSpinSt(s);
     var ra2=document.getElementById('sp-result');
     if(ra2){ra2.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span></div>';}
     var hak=MAX_SPIN-s.used;
     if(btn){btn.disabled=(hak<=0);btn.innerHTML=hak>0?'💵 Kategori Çek · '+hak+' hak kaldı':'Bugün tamamlandı ✓';}
-    var dotsEl=document.getElementById('sp-dots');
-    if(dotsEl){dotsEl.innerHTML='';for(var i=0;i<MAX_SPIN;i++){var d=document.createElement('div');d.className='sp-dot'+(i<s.used?'':' active');dotsEl.appendChild(d);}}
+    var de=document.getElementById('sp-dots');
+    if(de){de.innerHTML='';for(var i=0;i<MAX_SPIN;i++){var d=document.createElement('div');d.className='sp-dot'+(i<s.used?'':' active');de.appendChild(d);}}
   });
 }
-
 
 // ── AI ARACLARI ───────────────────────────────────────────────
 var currentAiTool = 'analyze';
@@ -1382,19 +1378,19 @@ var lastAiText = '';
 
 function openAiTool(tool){
   currentAiTool = tool;
-  var isListing = tool === 'listing';
-  document.getElementById('aitool-avatar').textContent = isListing ? '📝' : '🔍';
-  document.getElementById('aitool-title').textContent = isListing ? 'Listing Yazıcı' : 'Ürün Analizi';
-  document.getElementById('aitool-sub').textContent = isListing ? 'eBay başlığı + açıklama AI yazar' : 'AutoDS ile Amerika satış öncesi AI analizi';
-  document.getElementById('aitool-go').textContent = isListing ? 'Yaz' : 'Analiz Et';
+  var isL = tool === 'listing';
+  document.getElementById('aitool-avatar').textContent = isL ? '📝' : '🔍';
+  document.getElementById('aitool-title').textContent = isL ? 'Listing Yazici' : 'Urun Analizi';
+  document.getElementById('aitool-sub').textContent = isL ? 'eBay basligi + aciklama AI yazar' : 'AutoDS Amerika analizi';
+  document.getElementById('aitool-go').textContent = isL ? 'Yaz' : 'Analiz Et';
   document.getElementById('aitool-input').value = '';
-  document.getElementById('aitool-input').placeholder = isListing ? 'Ürün adı yaz... (örn: foam roller set)' : 'Ürün adı yaz... (örn: foam roller, led strip)';
-  document.getElementById('aitool-body').innerHTML = 'Ürün adı yazıp butona bas.';
-  document.getElementById('aitool-body').style.cssText = 'min-height:120px;display:flex;align-items:center;justify-content:center;color:#444;font-size:13px';
+  document.getElementById('aitool-body').textContent = 'Urun adi yazip butona bas.';
+  document.getElementById('aitool-body').style.cssText = 'min-height:100px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px';
   document.getElementById('aitool-actions').style.display = 'none';
+  lastAiText = '';
   document.getElementById('aitool-overlay').classList.add('show');
   document.getElementById('aitool-popup').classList.add('show');
-  setTimeout(function(){document.getElementById('aitool-input').focus();},300);
+  setTimeout(function(){document.getElementById('aitool-input').focus();}, 300);
 }
 
 function closeAiTool(){
@@ -1405,124 +1401,90 @@ function closeAiTool(){
 function runAiTool(){
   var urun = document.getElementById('aitool-input').value.trim();
   if(!urun) return;
-  var body = document.getElementById('aitool-body');
-  var go = document.getElementById('aitool-go');
-  body.style.cssText = 'min-height:120px;display:flex;align-items:center;justify-content:center;color:#555;font-size:12px;font-family:monospace;letter-spacing:1px';
-  body.textContent = 'Yapay zeka çalışıyor...';
+  var bodyEl = document.getElementById('aitool-body');
+  var goBtn = document.getElementById('aitool-go');
+  bodyEl.style.cssText = 'min-height:100px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:11px;letter-spacing:1px';
+  bodyEl.textContent = 'Yapay zeka calisiyor...';
   document.getElementById('aitool-actions').style.display = 'none';
-  go.disabled = true;
+  goBtn.disabled = true;
   fetch(AI_EP, {
-    method:'POST', headers:{'Content-Type':'application/json'},
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
     body: JSON.stringify({tool: currentAiTool, urun: urun})
-  }).then(function(r){return r.json();}).then(function(data){
+  }).then(function(r){ return r.json(); }).then(function(data){
     if(data.error) throw new Error(data.error);
     lastAiText = data.sonuc || '';
-    renderAiResult(lastAiText);
-    go.disabled = false;
+    renderAiCards(lastAiText);
+    goBtn.disabled = false;
   }).catch(function(e){
-    body.style.cssText = 'min-height:80px;padding:16px;color:#f87171;font-size:13px';
-    body.textContent = 'Hata oluştu: ' + e.message;
-    go.disabled = false;
+    bodyEl.style.cssText = 'min-height:80px;padding:16px;color:#f87171;font-size:13px;display:flex;align-items:center;justify-content:center';
+    bodyEl.textContent = 'Hata: ' + e.message;
+    goBtn.disabled = false;
   });
 }
 
-function renderAiResult(txt){
-  var body = document.getElementById('aitool-body');
-  body.style.cssText = '';
-  var isListing = currentAiTool === 'listing';
-
-  var sections = isListing
+function renderAiCards(txt){
+  var bodyEl = document.getElementById('aitool-body');
+  bodyEl.style.cssText = '';
+  var isL = currentAiTool === 'listing';
+  var secs = isL
     ? [{k:'BASLIK',i:'🏷️'},{k:'ACIKLAMA',i:'📄'},{k:'ANAHTAR KELIMELER',i:'🔍'},{k:'KATEGORI ONERISI',i:'📁'}]
     : [{k:'SATIS POTANSIYELI',i:'📈'},{k:'HEDEF KITLE',i:'🎯'},{k:'FIYAT ARALIGI',i:'💰'},{k:'REKABET',i:'⚔️'},{k:'RISKLER',i:'⚠️'},{k:'TAVSIYE',i:'🏁'}];
-
   var html = '<div style="display:flex;flex-direction:column;gap:8px">';
-
-  for(var i=0;i<sections.length;i++){
-    var s = sections[i];
-    var nextKey = i < sections.length-1 ? sections[i+1].k : '~~~';
-    var si = txt.indexOf(s.k+':');
-    if(si < 0) continue;
-    si += s.k.length + 1;
-    var ei = txt.indexOf(nextKey+':');
-    if(ei < 0) ei = txt.length;
-    var bodyTxt = txt.slice(si, ei).trim();
-
-    // Badge
-    var badge = '';
+  for(var i=0;i<secs.length;i++){
+    var s=secs[i];
+    var nk=i<secs.length-1?secs[i+1].k:'~~~';
+    var si=txt.indexOf(s.k+':');
+    if(si<0)continue;
+    si+=s.k.length+1;
+    var ei=txt.indexOf(nk+':');
+    if(ei<0)ei=txt.length;
+    var bTxt=txt.slice(si,ei).trim();
+    var badge='';
     if(s.k==='TAVSIYE'){
-      badge = bodyTxt.toUpperCase().indexOf('SATMA')>-1
-        ? '<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.2);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700;letter-spacing:.5px">SATMA</span>'
-        : '<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.2);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700;letter-spacing:.5px">SAT</span>';
+      badge=bTxt.toUpperCase().indexOf('SATMA')>-1
+        ?'<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">SATMA</span>'
+        :'<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">SAT</span>';
     }
     if(s.k==='SATIS POTANSIYELI'){
-      var up = bodyTxt.toUpperCase();
-      if(up.indexOf('YUKSEK')>-1) badge='<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.2);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">YÜKSEK</span>';
-      else if(up.indexOf('DUSUK')>-1) badge='<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.2);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">DÜŞÜK</span>';
-      else badge='<span style="background:rgba(250,204,21,.12);color:#ca8a04;border:1px solid rgba(250,204,21,.2);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">ORTA</span>';
+      var up=bTxt.toUpperCase();
+      if(up.indexOf('YUKSEK')>-1)badge='<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">YUKSEK</span>';
+      else if(up.indexOf('DUSUK')>-1)badge='<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">DUSUK</span>';
+      else badge='<span style="background:rgba(250,204,21,.12);color:#ca8a04;border:1px solid rgba(250,204,21,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">ORTA</span>';
     }
-
-    // Copy button only for listing
-    var copyBtn = isListing ? '<button onclick="copyCardById(this,'aicard-'+i+'')" style="background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);font-size:11px;padding:3px 10px;cursor:pointer;transition:all .2s;flex-shrink:0">📋</button>' : '';
-
-    html += '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;overflow:hidden">';
-    html += '<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border)">';
-    html += '<span style="font-size:14px">'+s.i+'</span>';
-    html += '<span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;flex:1">'+s.k+'</span>';
-    html += badge;
-    html += copyBtn;
-    html += '</div>';
-    html += '<div id="aicard-'+i+'" style="padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.8">'+bodyTxt+'</div>';
-    html += '</div>';
+    var cardId='aicard'+i;
+    var cpBtn=isL?'<button onclick="copyCardEl(this,\''+cardId+'\')" style="background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);font-size:11px;padding:3px 10px;cursor:pointer">📋</button>':'';
+    html+='<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;overflow:hidden">';
+    html+='<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border)">';
+    html+='<span style="font-size:14px">'+s.i+'</span>';
+    html+='<span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;flex:1">'+s.k+'</span>';
+    html+=badge+cpBtn+'</div>';
+    html+='<div id="'+cardId+'" style="padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.8">'+bTxt+'</div>';
+    html+='</div>';
   }
-
-  html += '</div>';
-  body.innerHTML = html || '<div style="color:var(--text3);padding:16px">Sonuç işlenemedi.</div>';
-
-  var actions = document.getElementById('aitool-actions');
-  actions.style.display = 'flex';
-  var translateBtn = document.getElementById('aitool-translate');
-  if(translateBtn) translateBtn.style.display = 'none';
+  html+='</div>';
+  bodyEl.innerHTML=html;
+  document.getElementById('aitool-actions').style.display='flex';
 }
 
-function translateAiTool(){
-  var btn = document.getElementById('aitool-translate');
-  if(!btn || !lastAiText) return;
-  btn.disabled = true;
-  btn.textContent = 'Çevriliyor...';
-  fetch(AI_EP, {
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({tool:'translate', metin: lastAiText})
-  }).then(function(r){return r.json();}).then(function(data){
-    if(data.error) throw new Error(data.error);
-    lastAiText = data.sonuc || '';
-    renderAiResult(lastAiText);
-    btn.textContent = '✓ İngilizce';
-    btn.disabled = false;
-  }).catch(function(){
-    btn.textContent = 'Hata - Tekrar Dene';
-    btn.disabled = false;
+function copyCardEl(btn,id){
+  var el=document.getElementById(id);
+  if(!el)return;
+  navigator.clipboard.writeText(el.textContent).then(function(){
+    var o=btn.textContent;btn.textContent='✓';btn.style.color='#22c55e';
+    setTimeout(function(){btn.textContent=o;btn.style.color='';},2000);
   });
 }
 
-function copyCardById(btn, id){
-  var el = document.getElementById(id);
-  if(!el) return;
-  var txt = el.textContent || '';
-  navigator.clipboard.writeText(txt).then(function(){
-    var orig = btn.textContent;
-    btn.textContent = '✓';
-    btn.style.color = '#22c55e';
-    btn.style.borderColor = 'rgba(34,197,94,.3)';
-    setTimeout(function(){btn.textContent=orig;btn.style.color='';btn.style.borderColor='';},2000);
-  });
-}
 function copyAiTool(){
-  var btn = document.getElementById('aitool-copy');
+  var btn=document.getElementById('aitool-copy');
+  if(!lastAiText||!btn)return;
   navigator.clipboard.writeText(lastAiText).then(function(){
-    btn.textContent = '✓ Kopyalandı!';
+    btn.textContent='✓ Kopyalandi';
     setTimeout(function(){btn.textContent='📋 Kopyala';},2000);
   });
 }
+
 
 // ── STATE ─────────────────────────────────────────────────────
 var TOTAL=28;
@@ -2915,23 +2877,22 @@ function showPasswordResetUI(session){
 
   <div id="aitool-overlay" class="overlay" onclick="closeAiTool()"></div>
   <div id="aitool-popup" class="popup" style="width:min(520px,96vw);max-height:88vh;overflow-y:auto">
-    <button class="close-btn" onclick="closeAiTool()">✕</button>
+    <button class="close-btn" onclick="closeAiTool()">&#10005;</button>
     <div class="sp-header">
-      <div class="sp-avatar" id="aitool-avatar" style="font-size:20px">🔍</div>
+      <div class="sp-avatar" id="aitool-avatar" style="font-size:20px">&#128269;</div>
       <div>
-        <div class="sp-title" id="aitool-title">Ürün Analizi</div>
-        <div class="sp-sub" id="aitool-sub">AutoDS ile Amerika satış öncesi AI analizi</div>
+        <div class="sp-title" id="aitool-title">Urun Analizi</div>
+        <div class="sp-sub" id="aitool-sub">AutoDS Amerika analizi</div>
       </div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:16px">
-      <input id="aitool-input" style="flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#f0f0f0;font-family:inherit;font-size:14px;padding:13px 16px;outline:none" placeholder="Ürün adı yaz..." />
-      <button id="aitool-go" onclick="runAiTool()" style="background:#f0f0f0;color:#080808;border:none;border-radius:10px;font-weight:700;font-size:13px;padding:13px 20px;cursor:pointer;white-space:nowrap">Analiz Et</button>
+      <input id="aitool-input" style="flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:13px 16px;outline:none" placeholder="Urun adi yaz..." />
+      <button id="aitool-go" onclick="runAiTool()" style="background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-weight:700;font-size:13px;padding:13px 20px;cursor:pointer;white-space:nowrap">Analiz Et</button>
     </div>
-    <div id="aitool-body" style="min-height:120px;display:flex;align-items:center;justify-content:center;color:#444;font-size:13px">Ürün adı yazıp butona bas.</div>
+    <div id="aitool-body" style="min-height:100px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px">Urun adi yazıp butona bas.</div>
     <div id="aitool-actions" style="display:none;gap:8px;margin-top:12px">
-      <button onclick="translateAiTool()" id="aitool-translate" style="display:none;flex:1;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);border-radius:10px;color:#38bdf8;font-size:11px;font-weight:600;padding:11px;cursor:pointer">🌐 İngilizceye Çevir</button>
-      <button onclick="copyAiTool()" style="flex:1;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#888;font-size:11px;font-weight:600;padding:11px;cursor:pointer" id="aitool-copy">📋 Kopyala</button>
-      <button onclick="openAiTool(currentAiTool)" style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#888;font-size:11px;font-weight:600;padding:11px;cursor:pointer">↺ Yeni</button>
+      <button onclick="copyAiTool()" id="aitool-copy" style="flex:1;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--text2);font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:11px;cursor:pointer">&#128203; Kopyala</button>
+      <button onclick="openAiTool(currentAiTool)" style="flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:10px;color:var(--text2);font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:11px;cursor:pointer">&#8635; Yeni</button>
     </div>
   </div>
 
