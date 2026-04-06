@@ -1519,20 +1519,22 @@ function renderSpinCard(cat, s){
   var ra=document.getElementById('sp-result');
   if(!ra)return;
   var hist=s.aiHistory||[];
-  var idx=s.aiHistIdx||0;
+  var idx=typeof s.aiHistIdx==='number'?s.aiHistIdx:hist.length-1;
   var hasPrev=idx>0;
   var hasNext=idx<hist.length-1;
+
   var navHtml='';
   if(hist.length>1){
-    navHtml='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
-    navHtml+='<button onclick="spinNav(-1)" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:'+(hasPrev?'var(--text2)':'var(--text3)');
-    navHtml+=';font-size:12px;padding:5px 12px;cursor:'+(hasPrev?'pointer':'default')+';transition:all .2s">← Önceki</button>';
-    navHtml+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px">'+(idx+1)+' / '+hist.length+'</span>';
-    navHtml+='<button onclick="spinNav(1)" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:'+(hasNext?'var(--text2)':'var(--text3)');
-    navHtml+=';font-size:12px;padding:5px 12px;cursor:'+(hasNext?'pointer':'default')+';transition:all .2s">Sonraki →</button>';
+    navHtml+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px">';
+    navHtml+='<button onclick="spinNav(-1)" '+(hasPrev?'':'disabled')+' style="display:flex;align-items:center;gap:4px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:'+(hasPrev?'var(--text2)':'var(--text3)')+';font-size:11px;font-weight:600;padding:6px 12px;cursor:'+(hasPrev?'pointer':'default')+';opacity:'+(hasPrev?'1':'.4')+'">← Önceki</button>';
+    navHtml+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px;white-space:nowrap">'+(idx+1)+' / '+hist.length+'</span>';
+    navHtml+='<button onclick="spinNav(1)" '+(hasNext?'':'disabled')+' style="display:flex;align-items:center;gap:4px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:'+(hasNext?'var(--text2)':'var(--text3)')+';font-size:11px;font-weight:600;padding:6px 12px;cursor:'+(hasNext?'pointer':'default')+';opacity:'+(hasNext?'1':'.4')+'">Sonraki →</button>';
     navHtml+='</div>';
   }
-  ra.innerHTML=navHtml+'<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span></div>';
+
+  var analyzeBtn='<button onclick="quickAnalyze(''+cat.n+'')" style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);border-radius:8px;color:#818cf8;font-size:11px;font-weight:600;padding:7px 14px;cursor:pointer;transition:all .2s">🔍 Analiz Et</button>';
+
+  ra.innerHTML=navHtml+'<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span>'+analyzeBtn+'</div>';
 }
 
 function spinNav(dir){
@@ -1544,6 +1546,17 @@ function spinNav(dir){
   s.aiLast=s.aiHistory[idx];
   saveSpinSt(s);
   renderSpinCard(s.aiLast,s);
+}
+
+function quickAnalyze(urunAdi){
+  closeSpin();
+  setTimeout(function(){
+    openAiTool('analyze');
+    setTimeout(function(){
+      document.getElementById('aitool-input').value = urunAdi;
+      runAiTool();
+    }, 350);
+  }, 200);
 }
 
 // ── STATE ─────────────────────────────────────────────────────
