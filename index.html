@@ -1706,33 +1706,32 @@ function doAuth(){
       er.style.color=''; er.textContent='Geçersiz kursiyer kodu. Lütfen kontrol et.';
       btn.disabled=false; return;
     }
+    if(!res.access_token){
+      er.style.color=''; er.textContent='Giriş hatası. Tekrar dene.';
+      btn.disabled=false; return;
+    }
     er.textContent='Giriş yapılıyor...';
-    // Otomatik şifre = kodun hash'i - kullanıcı bilmez
-    var pw = 'MLYNR_' + code.toUpperCase() + '_2025';
-    _sb.auth.signInWithPassword({email:em, password:pw}).then(function(r){
-      if(r.error){
-        // Hesap yok - oluştur
-        _sb.auth.signUp({email:em, password:pw}).then(function(r2){
-          if(r2.error){
-            er.style.color=''; er.textContent='Hata: '+r2.error.message;
-            btn.disabled=false; return;
-          }
-          _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r3){
-            if(r3.error){er.style.color='';er.textContent='Giriş hatası.';btn.disabled=false;return;}
-            _user=r3.data.user; email=_user.email;
-            er.style.color='#4ade80'; er.textContent='Hoş geldin! Yükleniyor...';
-            _sb.from('progress').select('user_id').eq('user_id',_user.id).limit(1).then(function(chk){
-              if(!chk.data||chk.data.length===0){
-                _sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,earn_opened:false,updated_at:new Date().toISOString()}).then(function(){loadStateFromDB();});
-              } else {loadStateFromDB();}
-            });
-          });
-        });
-      } else {
-        _user=r.data.user; email=_user.email;
-        btn.disabled=false;
-        loadStateFromDB();
+    _sb.auth.setSession({
+      access_token: res.access_token,
+      refresh_token: res.refresh_token
+    }).then(function(s){
+      if(s.error){
+        er.style.color=''; er.textContent='Oturum hatası: '+s.error.message;
+        btn.disabled=false; return;
       }
+      _user = s.data.user || res.user;
+      email = _user.email;
+      er.style.color='#4ade80'; er.textContent='Hoş geldin! Yükleniyor...';
+      btn.disabled=false;
+      _sb.from('progress').select('user_id').eq('user_id',_user.id).limit(1).then(function(chk){
+        if(!chk.data||chk.data.length===0){
+          _sb.from('progress').insert({
+            user_id:_user.id,done:[],mc:{},spin:{},
+            first_sale:false,earn_opened:false,
+            updated_at:new Date().toISOString()
+          }).then(function(){loadStateFromDB();});
+        } else {loadStateFromDB();}
+      });
     });
   }).catch(function(){
     er.style.color=''; er.textContent='Bağlantı hatası. Tekrar dene.';
