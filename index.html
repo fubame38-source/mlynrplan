@@ -1383,15 +1383,16 @@ function renderSpinCard(cat,s){
   var hasNext=idx<hist.length-1;
   var nav='';
   if(hist.length>1){
-    nav='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">';
-    nav+='<button onclick="spinNav(-1)" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;font-weight:600;padding:6px 14px;cursor:pointer;opacity:'+(hasPrev?'1':'.35')+';" '+(hasPrev?'':'disabled')+'>← Önceki</button>';
-    nav+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px">'+(idx+1)+' / '+hist.length+'</span>';
-    nav+='<button onclick="spinNav(1)" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;font-weight:600;padding:6px 14px;cursor:pointer;opacity:'+(hasNext?'1':'.35')+';" '+(hasNext?'':'disabled')+'>Sonraki →</button>';
+    nav+='<div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px">';
+    nav+='<button onclick="spinNav(-1)" '+(hasPrev?'':'disabled')+' style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;font-weight:600;padding:5px 12px;cursor:'+(hasPrev?'pointer':'default')+';opacity:'+(hasPrev?'1':'.3')+';transition:all .2s">←</button>';
+    nav+='<span style="font-family:var(--mono);font-size:10px;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;letter-spacing:.5px">'+(idx+1)+' / '+hist.length+'</span>';
+    nav+='<button onclick="spinNav(1)" '+(hasNext?'':'disabled')+' style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;font-weight:600;padding:5px 12px;cursor:'+(hasNext?'pointer':'default')+';opacity:'+(hasNext?'1':'.3')+';transition:all .2s">→</button>';
     nav+='</div>';
   }
-  var analyzeBtn='<button onclick="quickAnalyze(\'' +cat.n+ '\')" style="margin-top:12px;display:inline-flex;align-items:center;gap:5px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);border-radius:8px;color:#818cf8;font-size:11px;font-weight:600;padding:7px 14px;cursor:pointer">🔍 Analiz Et</button>';
+  var analyzeBtn='<button onclick="quickAnalyze(\'' +cat.n+ '\')" style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);border-radius:8px;color:#818cf8;font-size:11px;font-weight:600;padding:7px 14px;cursor:pointer;transition:all .2s">🔍 Analiz Et</button>';
   ra.innerHTML=nav+'<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span>'+analyzeBtn+'</div>';
 }
+
 function spinNav(dir){
   var s=getSpinSt();
   if(!s.aiHistory||s.aiHistory.length===0)return;
@@ -1443,8 +1444,8 @@ function runAiTool(){
   if(!urun) return;
   var bodyEl = document.getElementById('aitool-body');
   var goBtn = document.getElementById('aitool-go');
-  bodyEl.style.cssText = 'min-height:100px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:11px;letter-spacing:1px';
-  bodyEl.textContent = 'Yapay zeka calisiyor...';
+  bodyEl.style.cssText = 'min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px';
+  bodyEl.innerHTML = '<div style="width:36px;height:36px;border:2px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite"></div><div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase">🤖 AI analiz ediyor...</div>';
   document.getElementById('aitool-actions').style.display = 'none';
   goBtn.disabled = true;
   fetch(AI_EP, {
