@@ -1319,6 +1319,7 @@ function renderSpin(){
       var cat=CATS[s.last];
       ra.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span></div>';
     } else if(hak===0){
+    } else if(hak===0){
       ra.innerHTML='<div class="sp-empty-emoji">😴</div><div class="sp-empty-txt">Bugünkü 5 hakkını kullandın.<br>Yarın yeni kategoriler seni bekliyor!</div>';
     } else {
       ra.innerHTML='<div class="sp-idle-emoji">💵</div><div class="sp-idle-txt">Butona bas, bugünkü kategorini öğren</div>';
@@ -1345,7 +1346,7 @@ function doSpin(){
   var excluded=s.aiHist||[];
   fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
     method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({tool:'category',excluded:excluded})
+    body:JSON.stringify({tool:"category",excluded:excluded})
   }).then(function(r){return r.json();}).then(function(cat){
     if(cat.error)throw new Error(cat.error);
     if(!s.aiHist)s.aiHist=[];
@@ -1371,6 +1372,43 @@ function doSpin(){
     var de=document.getElementById('sp-dots');
     if(de){de.innerHTML='';for(var i=0;i<MAX_SPIN;i++){var d=document.createElement('div');d.className='sp-dot'+(i<s.used?'':' active');de.appendChild(d);}}
   });
+}
+
+function renderSpinCard(cat,s){
+  var ra=document.getElementById('sp-result');
+  if(!ra)return;
+  var hist=s.aiHistory||[];
+  var idx=typeof s.aiHistIdx==='number'?s.aiHistIdx:hist.length-1;
+  var hasPrev=idx>0;
+  var hasNext=idx<hist.length-1;
+  var nav='';
+  if(hist.length>1){
+    nav='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">';
+    nav+='<button onclick="spinNav(-1)" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;font-weight:600;padding:6px 14px;cursor:pointer;opacity:'+(hasPrev?'1':'.35')+';" '+(hasPrev?'':'disabled')+'>← Önceki</button>';
+    nav+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px">'+(idx+1)+' / '+hist.length+'</span>';
+    nav+='<button onclick="spinNav(1)" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;font-weight:600;padding:6px 14px;cursor:pointer;opacity:'+(hasNext?'1':'.35')+';" '+(hasNext?'':'disabled')+'>Sonraki →</button>';
+    nav+='</div>';
+  }
+  var analyzeBtn='<button onclick="quickAnalyze(\'' +cat.n+ '\')" style="margin-top:12px;display:inline-flex;align-items:center;gap:5px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);border-radius:8px;color:#818cf8;font-size:11px;font-weight:600;padding:7px 14px;cursor:pointer">🔍 Analiz Et</button>';
+  ra.innerHTML=nav+'<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span>'+analyzeBtn+'</div>';
+}
+function spinNav(dir){
+  var s=getSpinSt();
+  if(!s.aiHistory||s.aiHistory.length===0)return;
+  var idx=(typeof s.aiHistIdx==='number'?s.aiHistIdx:s.aiHistory.length-1)+dir;
+  if(idx<0||idx>=s.aiHistory.length)return;
+  s.aiHistIdx=idx;s.aiLast=s.aiHistory[idx];saveSpinSt(s);
+  renderSpinCard(s.aiLast,s);
+}
+function quickAnalyze(urunAdi){
+  closeSpin();
+  setTimeout(function(){
+    openAiTool('analyze');
+    setTimeout(function(){
+      document.getElementById('aitool-input').value=urunAdi;
+      runAiTool();
+    },350);
+  },200);
 }
 
 // ── AI ARACLARI ───────────────────────────────────────────────
@@ -1432,9 +1470,7 @@ function renderAiCards(txt){
   var secs = isL
     ? [{k:'BASLIK',i:'🏷️'},{k:'ACIKLAMA',i:'📄'},{k:'ANAHTAR KELIMELER',i:'🔍'},{k:'KATEGORI ONERISI',i:'📁'}]
     : [{k:'SATIS POTANSIYELI',i:'📈'},{k:'HEDEF KITLE',i:'🎯'},{k:'FIYAT ARALIGI',i:'💰'},{k:'REKABET',i:'⚔️'},{k:'RISKLER',i:'⚠️'},{k:'TAVSIYE',i:'🏁'}];
-
   var html = '<div style="display:flex;flex-direction:column;gap:8px">';
-
   for(var i=0;i<secs.length;i++){
     var s=secs[i];
     var nk=i<secs.length-1?secs[i+1].k:'~~~';
@@ -1444,57 +1480,32 @@ function renderAiCards(txt){
     var ei=txt.indexOf(nk+':');
     if(ei<0)ei=txt.length;
     var bTxt=txt.slice(si,ei).trim();
-
-    var isTavsiye = s.k==='TAVSIYE';
-
-    // Badge
     var badge='';
-    if(isTavsiye){
-      var up=bTxt.toUpperCase();
-      if(up.indexOf('GUCLU')>-1||up.indexOf('GÜÇLÜ')>-1||up.indexOf('YUKSEK')>-1){
-        badge='<span style="background:#15803d;color:#fff;border-radius:6px;font-size:10px;padding:4px 12px;font-weight:700;letter-spacing:.5px">✓ GÜÇLÜ</span>';
-      } else if(up.indexOf('KACIN')>-1||up.indexOf('KAÇIN')>-1||up.indexOf('SATMA')>-1){
-        badge='<span style="background:#dc2626;color:#fff;border-radius:6px;font-size:10px;padding:4px 12px;font-weight:700;letter-spacing:.5px">✗ KAÇIN</span>';
-      } else {
-        badge='<span style="background:#b45309;color:#fff;border-radius:6px;font-size:10px;padding:4px 12px;font-weight:700;letter-spacing:.5px">⚠ RİSKLİ</span>';
-      }
+    if(s.k==='TAVSIYE'){
+      badge=bTxt.toUpperCase().indexOf('SATMA')>-1
+        ?'<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">SATMA</span>'
+        :'<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">SAT</span>';
     }
     if(s.k==='SATIS POTANSIYELI'){
-      var up2=bTxt.toUpperCase();
-      if(up2.indexOf('YUKSEK')>-1)badge='<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">YÜKSEK</span>';
-      else if(up2.indexOf('DUSUK')>-1)badge='<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">DÜŞÜK</span>';
+      var up=bTxt.toUpperCase();
+      if(up.indexOf('YUKSEK')>-1)badge='<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">YUKSEK</span>';
+      else if(up.indexOf('DUSUK')>-1)badge='<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">DUSUK</span>';
       else badge='<span style="background:rgba(250,204,21,.12);color:#ca8a04;border:1px solid rgba(250,204,21,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">ORTA</span>';
     }
-
-    var cpBtn = (isL) ? '<button onclick="copyCardEl(this,\'aicard'+i+'\')" style="background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);font-size:11px;padding:3px 10px;cursor:pointer">📋</button>' : '';
-
-    // TAVSİYE kartı özel stil
-    if(isTavsiye){
-      html+='<div style="background:var(--white);border:2px solid var(--border2);border-radius:12px;overflow:hidden;margin-top:4px">';
-      html+='<div style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border)">';
-      html+='<span style="font-size:16px">'+s.i+'</span>';
-      html+='<span style="font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--bg);text-transform:uppercase;flex:1;font-weight:700">'+s.k+'</span>';
-      html+=badge;
-      html+='</div>';
-      html+='<div id="aicard'+i+'" style="padding:14px 16px;font-size:13px;color:var(--bg);line-height:1.8;font-weight:600">'+bTxt+'</div>';
-      html+='</div>';
-    } else {
-      html+='<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;overflow:hidden">';
-      html+='<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border)">';
-      html+='<span style="font-size:14px">'+s.i+'</span>';
-      html+='<span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;flex:1">'+s.k+'</span>';
-      html+=badge+cpBtn;
-      html+='</div>';
-      html+='<div id="aicard'+i+'" style="padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.8">'+bTxt+'</div>';
-      html+='</div>';
-    }
+    var cardId='aicard'+i;
+    var cpBtn=isL?'<button onclick="copyCardEl(this,\''+cardId+'\')" style="background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);font-size:11px;padding:3px 10px;cursor:pointer">📋</button>':'';
+    html+='<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;overflow:hidden">';
+    html+='<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border)">';
+    html+='<span style="font-size:14px">'+s.i+'</span>';
+    html+='<span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;flex:1">'+s.k+'</span>';
+    html+=badge+cpBtn+'</div>';
+    html+='<div id="'+cardId+'" style="padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.8">'+bTxt+'</div>';
+    html+='</div>';
   }
-
   html+='</div>';
   bodyEl.innerHTML=html;
   document.getElementById('aitool-actions').style.display='flex';
 }
-
 
 function copyCardEl(btn,id){
   var el=document.getElementById(id);
@@ -1514,50 +1525,6 @@ function copyAiTool(){
   });
 }
 
-
-function renderSpinCard(cat, s){
-  var ra=document.getElementById('sp-result');
-  if(!ra)return;
-  var hist=s.aiHistory||[];
-  var idx=typeof s.aiHistIdx==='number'?s.aiHistIdx:hist.length-1;
-  var hasPrev=idx>0;
-  var hasNext=idx<hist.length-1;
-
-  var navHtml='';
-  if(hist.length>1){
-    navHtml+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px">';
-    navHtml+='<button onclick="spinNav(-1)" '+(hasPrev?'':'disabled')+' style="display:flex;align-items:center;gap:4px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:'+(hasPrev?'var(--text2)':'var(--text3)')+';font-size:11px;font-weight:600;padding:6px 12px;cursor:'+(hasPrev?'pointer':'default')+';opacity:'+(hasPrev?'1':'.4')+'">← Önceki</button>';
-    navHtml+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px;white-space:nowrap">'+(idx+1)+' / '+hist.length+'</span>';
-    navHtml+='<button onclick="spinNav(1)" '+(hasNext?'':'disabled')+' style="display:flex;align-items:center;gap:4px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:'+(hasNext?'var(--text2)':'var(--text3)')+';font-size:11px;font-weight:600;padding:6px 12px;cursor:'+(hasNext?'pointer':'default')+';opacity:'+(hasNext?'1':'.4')+'">Sonraki →</button>';
-    navHtml+='</div>';
-  }
-
-  var analyzeBtn='<button onclick="quickAnalyze(''+cat.n+'')" style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);border-radius:8px;color:#818cf8;font-size:11px;font-weight:600;padding:7px 14px;cursor:pointer;transition:all .2s">🔍 Analiz Et</button>';
-
-  ra.innerHTML=navHtml+'<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span>'+analyzeBtn+'</div>';
-}
-
-function spinNav(dir){
-  var s=getSpinSt();
-  if(!s.aiHistory||s.aiHistory.length===0)return;
-  var idx=(s.aiHistIdx||0)+dir;
-  if(idx<0||idx>=s.aiHistory.length)return;
-  s.aiHistIdx=idx;
-  s.aiLast=s.aiHistory[idx];
-  saveSpinSt(s);
-  renderSpinCard(s.aiLast,s);
-}
-
-function quickAnalyze(urunAdi){
-  closeSpin();
-  setTimeout(function(){
-    openAiTool('analyze');
-    setTimeout(function(){
-      document.getElementById('aitool-input').value = urunAdi;
-      runAiTool();
-    }, 350);
-  }, 200);
-}
 
 // ── STATE ─────────────────────────────────────────────────────
 var TOTAL=28;
@@ -2968,7 +2935,6 @@ function showPasswordResetUI(session){
       <button onclick="openAiTool(currentAiTool)" style="flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:10px;color:var(--text2);font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:11px;cursor:pointer">&#8635; Yeni</button>
     </div>
   </div>
-
 <div id="ver-banner">
   <div class="vb-emoji">🎉</div>
   <div class="vb-text">
