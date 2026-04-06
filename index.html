@@ -1310,8 +1310,10 @@ function renderSpin(){
   // result - always show last category if exists, even if hak=0
   var ra=document.getElementById('sp-result');
   if(ra){
-    if(s.last!==null&&CATS[s.last]){
-      var cat=CATS[s.last];
+    var cat=null;
+    if(s.last==='ai'&&s.aiLast){cat=s.aiLast;}
+    else if(s.last!==null&&s.last!=='ai'&&CATS[s.last]){var c=CATS[s.last];cat={e:c.e,n:c.n,h:c.h,tip:c.tip};}
+    if(cat){
       ra.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span></div>';
     } else if(hak===0){
       ra.innerHTML='<div class="sp-empty-emoji">😴</div><div class="sp-empty-txt">Bugünkü 5 hakkını kullandın.<br>Yarın yeni kategoriler seni bekliyor!</div>';
@@ -1332,19 +1334,50 @@ function renderSpin(){
 function doSpin(){
   var s=getSpinSt();if(s.used>=MAX_SPIN)return;
   if(!s.hist)s.hist=[];
-  var todayCats=getTodayCats();
-  // Pick next unused cat from todays 5
-  var idx=-1;
-  for(var i=0;i<todayCats.length;i++){
-    if(s.hist.indexOf(todayCats[i])<0){idx=todayCats[i];break;}
-  }
-  if(idx<0)return; // all used
-  s.used++;s.last=idx;s.hist.push(idx);saveSpinSt(s);
+  s.used++;
+  saveSpinSt(s);
+
   var ra=document.getElementById('sp-result');
-  if(ra){ra.innerHTML='<div class="sp-spin-emoji">💵</div>';}
+  if(ra){ra.innerHTML='<div class="sp-spin-emoji" style="animation:spinpop .5s cubic-bezier(.34,1.56,.64,1)">💵</div><div class="sp-idle-txt" style="margin-top:8px;font-size:12px;color:var(--text3)">Yapay zeka düşünüyor...</div>';}
   var btn=document.getElementById('sp-btn');
-  if(btn){btn.disabled=true;btn.textContent='Çekiliyor...';}
-  setTimeout(renderSpin,700);
+  if(btn){btn.disabled=true;btn.textContent='Yükleniyor...';}
+
+  var excluded=s.aiHist||[];
+
+  fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({excluded:excluded})
+  }).then(function(res){return res.json();}).then(function(cat){
+    if(cat.error)throw new Error(cat.error);
+    if(!s.aiHist)s.aiHist=[];
+    s.aiHist.push(cat.kategori);
+    s.aiLast={e:cat.emoji,n:cat.kategori,h:cat.aciklama,tip:cat.ipucu};
+    s.last='ai';
+    saveSpinSt(s);
+    if(ra){
+      ra.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.emoji+'</span><span class="sp-cat-name">'+cat.kategori+'</span></div><div class="sp-cat-hint">'+cat.aciklama+'</div><span class="sp-cat-tip">💡 '+cat.ipucu+'</span></div>';
+    }
+    var hak=MAX_SPIN-s.used;
+    if(btn){btn.disabled=(hak<=0);btn.innerHTML=hak>0?'💵 Kategori Çek · '+hak+' hak kaldı':'Bugün tamamlandı ✓';}
+    var dotsEl=document.getElementById('sp-dots');
+    if(dotsEl){dotsEl.innerHTML='';for(var i=0;i<MAX_SPIN;i++){var d=document.createElement('div');d.className='sp-dot'+(i<s.used?'':' active');dotsEl.appendChild(d);}}
+    var prev=document.getElementById('spin-trigger-preview');
+    if(prev){prev.textContent=hak>0?'Tıkla ve Seç → Keşfet':'Yarın yeni kategoriler';}
+    var ping=document.getElementById('spin-ping');
+    if(ping){if(hak<=0)ping.classList.add('spin-ping-off');else ping.classList.remove('spin-ping-off');}
+  }).catch(function(){
+    // Fallback: CATS listesinden rastgele
+    var fi=Math.floor(Math.random()*CATS.length);
+    var cat=CATS[fi];
+    s.last=fi;
+    saveSpinSt(s);
+    if(ra){ra.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span></div>';}
+    var hak=MAX_SPIN-s.used;
+    if(btn){btn.disabled=(hak<=0);btn.innerHTML=hak>0?'💵 Kategori Çek · '+hak+' hak kaldı':'Bugün tamamlandı ✓';}
+    var dotsEl=document.getElementById('sp-dots');
+    if(dotsEl){dotsEl.innerHTML='';for(var i=0;i<MAX_SPIN;i++){var d=document.createElement('div');d.className='sp-dot'+(i<s.used?'':' active');dotsEl.appendChild(d);}}
+  });
 }
 
 // ── STATE ─────────────────────────────────────────────────────
