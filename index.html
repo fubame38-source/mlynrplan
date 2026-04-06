@@ -1426,7 +1426,7 @@ function openAiTool(tool){
   document.getElementById('aitool-sub').textContent = isL ? 'eBay basligi + aciklama AI yazar' : 'MLYNR · eBay Ürün Analizi';
   document.getElementById('aitool-go').textContent = isL ? 'Yaz' : 'Analiz Et';
   document.getElementById('aitool-input').value = '';
-  document.getElementById('aitool-input').placeholder = isL ? 'Urun adi yaz... (ornek: Foam Roller Set)' : 'Urun adi yaz...';
+  document.getElementById('aitool-input').placeholder = isL ? 'Urun adi yaz... (opsiyonel, link varsa bosalt)' : 'Urun adi yaz...';
   var amWrap = document.getElementById('amazon-link-wrap');
   if(amWrap) amWrap.style.display = isL ? 'block' : 'none';
   var amInp = document.getElementById('aitool-amazon');
@@ -1447,18 +1447,22 @@ function closeAiTool(){
 
 function runAiTool(){
   var urun = document.getElementById('aitool-input').value.trim();
-  if(!urun) return;
+  var amazonUrl = '';
+  if(currentAiTool === 'listing'){
+    var amInp = document.getElementById('aitool-amazon');
+    if(amInp) amazonUrl = amInp.value.trim();
+  }
+  if(!urun && !amazonUrl) {
+    document.getElementById('aitool-body').textContent = 'Urun adi yaz veya Amazon linki yapistir.';
+    return;
+  }
+  if(!urun && amazonUrl) urun = 'Amazon urunu';
   var bodyEl = document.getElementById('aitool-body');
   var goBtn = document.getElementById('aitool-go');
   bodyEl.style.cssText = 'min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px';
   bodyEl.innerHTML = '<div class="ai-spinner"></div><div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:12px">🤖 AI analiz ediyor...</div>';
   document.getElementById('aitool-actions').style.display = 'none';
   goBtn.disabled = true;
-  var amazonUrl = '';
-  if(currentAiTool === 'listing'){
-    var amInp = document.getElementById('aitool-amazon');
-    if(amInp) amazonUrl = amInp.value.trim();
-  }
   fetch(AI_EP, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
