@@ -1703,48 +1703,48 @@ function doAuth(){
   var code = document.getElementById('inp-invite').value.trim();
   var er = document.getElementById('login-err');
   er.textContent=''; er.style.color='';
-  if(!em||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){er.textContent='Geçerli bir e-posta adresi gir.';return;}
+  if(!em||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){er.textContent='Gecerli bir e-posta adresi gir.';return;}
   if(!code){er.textContent='Kursiyer kodunu gir.';return;}
   var btn = document.getElementById('login-btn');
   btn.disabled=true;
-  er.textContent='Doğrulanıyor...';
+  er.textContent='Dogrulanıyor...';
   fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({tool:'verify-invite', code:code, email:em})
   }).then(function(r){return r.json();}).then(function(res){
     if(!res.valid){
-      er.style.color=''; er.textContent='Geçersiz kursiyer kodu. Lütfen kontrol et.';
+      er.style.color=''; er.textContent='Gecersiz kursiyer kodu.';
       btn.disabled=false; return;
     }
-    if(!res.access_token){
-      er.style.color=''; er.textContent='Giriş hatası. Tekrar dene.';
-      btn.disabled=false; return;
-    }
-    er.textContent='Giriş yapılıyor...';
-    _sb.auth.setSession({
-      access_token: res.access_token,
-      refresh_token: res.refresh_token
-    }).then(function(s){
-      if(s.error){
-        er.style.color=''; er.textContent='Oturum hatası: '+s.error.message;
-        btn.disabled=false; return;
+    er.textContent='Giris yapiliyor...';
+    var pw = 'MLYNRsec_' + code.toUpperCase();
+    _sb.auth.signInWithPassword({email:em, password:pw}).then(function(r){
+      if(r.error){
+        _sb.auth.signUp({email:em, password:pw}).then(function(r2){
+          if(r2.error && r2.error.message.toLowerCase().indexOf('already') < 0 && r2.error.status !== 400){
+            er.style.color=''; er.textContent='Hata: '+r2.error.message;
+            btn.disabled=false; return;
+          }
+          _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r3){
+            if(r3.error){er.style.color='';er.textContent='Giris hatasi.';btn.disabled=false;return;}
+            _user=r3.data.user; email=_user.email;
+            er.style.color='#4ade80'; er.textContent='Hos geldin!';
+            btn.disabled=false;
+            _sb.from('progress').select('user_id').eq('user_id',_user.id).limit(1).then(function(chk){
+              if(!chk.data||chk.data.length===0){
+                _sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,earn_opened:false,updated_at:new Date().toISOString()}).then(function(){loadStateFromDB();});
+              } else {loadStateFromDB();}
+            });
+          });
+        });
+      } else {
+        _user=r.data.user; email=_user.email;
+        btn.disabled=false;
+        loadStateFromDB();
       }
-      _user = s.data.user || res.user;
-      email = _user.email;
-      er.style.color='#4ade80'; er.textContent='Hoş geldin! Yükleniyor...';
-      btn.disabled=false;
-      _sb.from('progress').select('user_id').eq('user_id',_user.id).limit(1).then(function(chk){
-        if(!chk.data||chk.data.length===0){
-          _sb.from('progress').insert({
-            user_id:_user.id,done:[],mc:{},spin:{},
-            first_sale:false,earn_opened:false,
-            updated_at:new Date().toISOString()
-          }).then(function(){loadStateFromDB();});
-        } else {loadStateFromDB();}
-      });
     });
   }).catch(function(){
-    er.style.color=''; er.textContent='Bağlantı hatası. Tekrar dene.';
+    er.style.color=''; er.textContent='Baglanti hatasi. Tekrar dene.';
     btn.disabled=false;
   });
 }
