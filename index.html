@@ -1314,7 +1314,7 @@ function renderSpin(){
   if(ra){
     var aiL=s.aiLast;
     if(s.last==='ai'&&aiL){
-      ra.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+aiL.e+'</span><span class="sp-cat-name">'+aiL.n+'</span></div><div class="sp-cat-hint">'+aiL.h+'</div><span class="sp-cat-tip">💡 '+aiL.tip+'</span></div>';
+      renderSpinCard(aiL,s);
     } else if(s.last!==null&&s.last!=='ai'&&CATS[s.last]){
       var cat=CATS[s.last];
       ra.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span></div>';
@@ -1350,10 +1350,12 @@ function doSpin(){
     if(cat.error)throw new Error(cat.error);
     if(!s.aiHist)s.aiHist=[];
     s.aiHist.push(cat.kategori);
+    if(!s.aiHistory)s.aiHistory=[];
+    s.aiHistory.push({e:cat.emoji,n:cat.kategori,h:cat.aciklama,tip:cat.ipucu});
+    s.aiHistIdx=s.aiHistory.length-1;
     s.aiLast={e:cat.emoji,n:cat.kategori,h:cat.aciklama,tip:cat.ipucu};
     s.last='ai';saveSpinSt(s);
-    var ra2=document.getElementById('sp-result');
-    if(ra2){ra2.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.emoji+'</span><span class="sp-cat-name">'+cat.kategori+'</span></div><div class="sp-cat-hint">'+cat.aciklama+'</div><span class="sp-cat-tip">💡 '+cat.ipucu+'</span></div>';}
+    renderSpinCard(s.aiLast,s);
     var hak=MAX_SPIN-s.used;
     if(btn){btn.disabled=(hak<=0);btn.innerHTML=hak>0?'💵 Kategori Çek · '+hak+' hak kaldı':'Bugün tamamlandı ✓';}
     var de=document.getElementById('sp-dots');
@@ -1512,6 +1514,37 @@ function copyAiTool(){
   });
 }
 
+
+function renderSpinCard(cat, s){
+  var ra=document.getElementById('sp-result');
+  if(!ra)return;
+  var hist=s.aiHistory||[];
+  var idx=s.aiHistIdx||0;
+  var hasPrev=idx>0;
+  var hasNext=idx<hist.length-1;
+  var navHtml='';
+  if(hist.length>1){
+    navHtml='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
+    navHtml+='<button onclick="spinNav(-1)" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:'+(hasPrev?'var(--text2)':'var(--text3)');
+    navHtml+=';font-size:12px;padding:5px 12px;cursor:'+(hasPrev?'pointer':'default')+';transition:all .2s">← Önceki</button>';
+    navHtml+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px">'+(idx+1)+' / '+hist.length+'</span>';
+    navHtml+='<button onclick="spinNav(1)" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:'+(hasNext?'var(--text2)':'var(--text3)');
+    navHtml+=';font-size:12px;padding:5px 12px;cursor:'+(hasNext?'pointer':'default')+';transition:all .2s">Sonraki →</button>';
+    navHtml+='</div>';
+  }
+  ra.innerHTML=navHtml+'<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span></div>';
+}
+
+function spinNav(dir){
+  var s=getSpinSt();
+  if(!s.aiHistory||s.aiHistory.length===0)return;
+  var idx=(s.aiHistIdx||0)+dir;
+  if(idx<0||idx>=s.aiHistory.length)return;
+  s.aiHistIdx=idx;
+  s.aiLast=s.aiHistory[idx];
+  saveSpinSt(s);
+  renderSpinCard(s.aiLast,s);
+}
 
 // ── STATE ─────────────────────────────────────────────────────
 var TOTAL=28;
