@@ -1413,7 +1413,7 @@ function openAiTool(tool){
   var isL = tool === 'listing';
   document.getElementById('aitool-avatar').textContent = isL ? '📝' : '🔍';
   document.getElementById('aitool-title').textContent = isL ? 'Listing Yazici' : 'Urun Analizi';
-  document.getElementById('aitool-sub').textContent = isL ? 'eBay basligi + aciklama AI yazar' : 'AutoDS Amerika analizi';
+  document.getElementById('aitool-sub').textContent = isL ? 'eBay basligi + aciklama AI yazar' : 'MLYNR · eBay Ürün Analizi';
   document.getElementById('aitool-go').textContent = isL ? 'Yaz' : 'Analiz Et';
   document.getElementById('aitool-input').value = '';
   document.getElementById('aitool-body').textContent = 'Urun adi yazip butona bas.';
@@ -1435,8 +1435,8 @@ function runAiTool(){
   if(!urun) return;
   var bodyEl = document.getElementById('aitool-body');
   var goBtn = document.getElementById('aitool-go');
-  bodyEl.style.cssText = 'min-height:100px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:11px;letter-spacing:1px';
-  bodyEl.textContent = 'Yapay zeka calisiyor...';
+  bodyEl.style.cssText = 'min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px';
+  bodyEl.innerHTML = '<div class="ai-spinner"></div><div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:12px">🤖 AI analiz ediyor...</div>';
   document.getElementById('aitool-actions').style.display = 'none';
   goBtn.disabled = true;
   fetch(AI_EP, {
@@ -2916,7 +2916,7 @@ function showPasswordResetUI(session){
       <div class="sp-avatar" id="aitool-avatar" style="font-size:20px">&#128269;</div>
       <div>
         <div class="sp-title" id="aitool-title">Urun Analizi</div>
-        <div class="sp-sub" id="aitool-sub">MLYNR · eBay Urun Analizi</div>
+        <div class="sp-sub" id="aitool-sub">MLYNR · eBay Ürün Analizi</div>
       </div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:16px">
