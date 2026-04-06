@@ -1443,7 +1443,7 @@ function doAnalyze(){
   fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'analyze',urun:urun})})
   .then(function(r){return r.json();}).then(function(data){
     if(data.error)throw new Error(data.error);
-    body.innerHTML=buildAnalyzeCards(data.sonuc, urun)+buildActions('analyze',data.sonuc);
+    body.innerHTML=buildAnalyzeCards(data.sonuc, urun)+buildActions('analyze');
     btn.disabled=false;
   }).catch(function(e){
     body.innerHTML='<div class="ai-idle"><div class="ai-idle-icon">&#9888;&#65039;</div><div class="ai-idle-txt">Hata: '+e.message+'</div></div>';
@@ -1507,7 +1507,7 @@ function doListing(){
   fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'listing',urun:urun})})
   .then(function(r){return r.json();}).then(function(data){
     if(data.error)throw new Error(data.error);
-    body.innerHTML=buildListingCards(data.sonuc)+buildActions('listing',data.sonuc);
+    body.innerHTML=buildListingCards(data.sonuc)+buildActions('listing');
     btn.disabled=false;
   }).catch(function(e){
     body.innerHTML='<div class="ai-idle"><div class="ai-idle-icon">&#9888;&#65039;</div><div class="ai-idle-txt">Hata: '+e.message+'</div></div>';
@@ -1537,30 +1537,33 @@ function buildListingCards(txt){
   return html;
 }
 
-function buildActions(tool, txt){
+function buildActions(tool){
   var translateBtn = tool==='listing' ? '<button class="ai-translate-btn" id="'+tool+'-translate" onclick="translateListing()">&#127760; Ingilizceye Cevir</button>' : '';
-  return '<div class="ai-actions">'+translateBtn+'<button class="ai-copy-btn" id="'+tool+'-copy" onclick="copyAI(''+tool+'',''+tool+'-copy')">&#128203; Kopyala</button><button class="ai-new-btn" onclick="resetAI(''+tool+'')">&#8635; Yeni</button></div>';
+  var html = '<div class="ai-actions">';
+  html += translateBtn;
+  html += '<button class="ai-copy-btn" id="'+tool+'-copy-btn" onclick="copyAI(this,\"'+tool+'\")">&#128203; Kopyala</button>';
+  html += '<button class="ai-new-btn" onclick="resetAI(\"'+tool+'\")">&#8635; Yeni</button>';
+  html += '</div>';
+  return html;
 }
-function copyAI(tool,btnId){
+
+function copyAI(btnEl, tool){
   var bodyEl=document.getElementById(tool+'-body');
-  var btn=document.getElementById(btnId);
-  if(!bodyEl||!btn)return;
+  if(!bodyEl||!btnEl)return;
   var cards=bodyEl.querySelectorAll('.ai-card');
   var lines=[];
   cards.forEach(function(c){
     var lbl=c.querySelector('.ai-card-label');
     var bod=c.querySelector('.ai-card-body');
-    if(lbl&&bod)lines.push(lbl.textContent+':
-'+bod.textContent);
+    if(lbl&&bod)lines.push(lbl.textContent+':\n'+bod.textContent);
   });
-  var txt=lines.join('
-
-');
+  var txt=lines.join('\n\n');
   navigator.clipboard.writeText(txt).then(function(){
-    btn.textContent='Kopyalandı!';btn.classList.add('copied');
-    setTimeout(function(){btn.innerHTML='&#128203; Kopyala';btn.classList.remove('copied');},2000);
+    btnEl.textContent='Kopyalandi!';btnEl.classList.add('copied');
+    setTimeout(function(){btnEl.innerHTML='&#128203; Kopyala';btnEl.classList.remove('copied');},2000);
   });
 }
+
 function resetAI(tool){
   if(tool==='analyze'){openAnalyze();}else{openListing();}
 }
