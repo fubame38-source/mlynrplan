@@ -799,22 +799,13 @@ body.light #mentor-popup{background:#fff}
   <div class="login-card">
     <div class="login-logo">MLYNR.</div>
     <div class="login-logo-sub">Kursiyer Portalı</div>
-    <div id="login-tabs" style="display:flex;gap:8px;margin-bottom:20px">
-      <button class="login-tab active" id="tab-login" onclick="switchTab('login')">Giriş Yap</button>
-      <button class="login-tab" id="tab-register" onclick="switchTab('register')">Kayıt Ol</button>
-    </div>
     <label class="login-label" for="inp-email">E-Posta Adresi</label>
     <input id="inp-email" class="login-input" type="email" placeholder="ornek@gmail.com" autocomplete="email">
-    <label class="login-label" for="inp-pass" style="margin-top:12px">Şifre</label>
-    <input id="inp-pass" class="login-input" type="password" placeholder="••••••••" autocomplete="current-password">
-    <div id="inp-pass2-wrap" style="display:none">
-      <label class="login-label" for="inp-pass2" style="margin-top:12px">Şifre Tekrar</label>
-      <input id="inp-pass2" class="login-input" type="password" placeholder="••••••••" autocomplete="new-password">
-    </div>
-    <button id="login-btn" class="login-btn" onclick="handleLoginBtn()">GİRİŞ YAP →</button>
+    <label class="login-label" for="inp-invite" style="margin-top:12px">Kursiyer Kodu</label>
+    <input id="inp-invite" class="login-input" type="text" placeholder="Özel kodunu gir" autocomplete="off" style="text-transform:uppercase;letter-spacing:3px;font-weight:600">
+    <button id="login-btn" class="login-btn" onclick="doAuth()">GİRİŞ YAP →</button>
     <div id="login-err" class="login-err"></div>
-  <div style="text-align:right;margin-top:6px"><button onclick="doReset()" style="background:none;border:none;color:rgba(255,255,255,0.35);font-size:11px;font-family:var(--mono);letter-spacing:1px;cursor:pointer;text-transform:uppercase;padding:0;transition:color .2s" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Şifremi Unuttum →</button></div>
-    <div class="login-hint" id="login-hint-text">Hesabınla giriş yap. Şifreni unuttuysan <span style="color:var(--text2);cursor:pointer;text-decoration:underline" onclick="doReset()">sıfırla</span>.</div>
+    <div class="login-hint" id="login-hint-text">E-posta adresin ve sana verilen özel kursiyer kodunla giriş yap.</div>
     <div class="login-device-note"><span class="login-device-note-icon">☁️</span><div class="login-device-note-text"><strong>Bulut senkronizasyonu:</strong> İlerlemen hesabına kaydedilir. Her cihazdan aynı noktadan devam edersin.</div></div>
   </div>
 </div>
@@ -1321,7 +1312,6 @@ function renderSpin(){
       var cat=CATS[s.last];
       ra.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span></div>';
     } else if(hak===0){
-    } else if(hak===0){
       ra.innerHTML='<div class="sp-empty-emoji">😴</div><div class="sp-empty-txt">Bugünkü 5 hakkını kullandın.<br>Yarın yeni kategoriler seni bekliyor!</div>';
     } else {
       ra.innerHTML='<div class="sp-idle-emoji">💵</div><div class="sp-idle-txt">Butona bas, bugünkü kategorini öğren</div>';
@@ -1348,7 +1338,7 @@ function doSpin(){
   var excluded=s.aiHist||[];
   fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
     method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({tool:"category",excluded:excluded})
+    body:JSON.stringify({tool:'category',excluded:excluded})
   }).then(function(r){return r.json();}).then(function(cat){
     if(cat.error)throw new Error(cat.error);
     if(!s.aiHist)s.aiHist=[];
@@ -1385,16 +1375,15 @@ function renderSpinCard(cat,s){
   var hasNext=idx<hist.length-1;
   var nav='';
   if(hist.length>1){
-    nav+='<div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px">';
-    nav+='<button onclick="spinNav(-1)" '+(hasPrev?'':'disabled')+' style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;font-weight:600;padding:5px 12px;cursor:'+(hasPrev?'pointer':'default')+';opacity:'+(hasPrev?'1':'.3')+';transition:all .2s">←</button>';
-    nav+='<span style="font-family:var(--mono);font-size:10px;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;letter-spacing:.5px">'+(idx+1)+' / '+hist.length+'</span>';
-    nav+='<button onclick="spinNav(1)" '+(hasNext?'':'disabled')+' style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;font-weight:600;padding:5px 12px;cursor:'+(hasNext?'pointer':'default')+';opacity:'+(hasNext?'1':'.3')+';transition:all .2s">→</button>';
+    nav='<div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px">';
+    nav+='<button onclick="spinNav(-1)" '+(hasPrev?'':'disabled')+' style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;font-weight:600;padding:5px 12px;cursor:'+(hasPrev?'pointer':'default')+';opacity:'+(hasPrev?'1':'.3')+'">&#8592;</button>';
+    nav+='<span style="font-family:var(--mono);font-size:10px;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px">'+(idx+1)+' / '+hist.length+'</span>';
+    nav+='<button onclick="spinNav(1)" '+(hasNext?'':'disabled')+' style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;font-weight:600;padding:5px 12px;cursor:'+(hasNext?'pointer':'default')+';opacity:'+(hasNext?'1':'.3')+'">&#8594;</button>';
     nav+='</div>';
   }
-  var analyzeBtn='<button onclick="quickAnalyze(\'' +cat.n+ '\')" style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);border-radius:8px;color:#818cf8;font-size:11px;font-weight:600;padding:7px 14px;cursor:pointer;transition:all .2s">🔍 Analiz Et</button>';
-  ra.innerHTML=nav+'<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span>'+analyzeBtn+'</div>';
+  var analyzeBtn='<button onclick="quickAnalyze(\'' +cat.n+ '\')" style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);border-radius:8px;color:#818cf8;font-size:11px;font-weight:600;padding:7px 14px;cursor:pointer">&#128269; Analiz Et</button>';
+  ra.innerHTML=nav+'<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">&#128161; '+cat.tip+'</span>'+analyzeBtn+'</div>';
 }
-
 function spinNav(dir){
   var s=getSpinSt();
   if(!s.aiHistory||s.aiHistory.length===0)return;
@@ -1424,7 +1413,7 @@ function openAiTool(tool){
   var isL = tool === 'listing';
   document.getElementById('aitool-avatar').textContent = isL ? '📝' : '🔍';
   document.getElementById('aitool-title').textContent = isL ? 'Listing Yazici' : 'Urun Analizi';
-  document.getElementById('aitool-sub').textContent = isL ? 'eBay basligi + aciklama AI yazar' : 'MLYNR · eBay Urun Analizi';
+  document.getElementById('aitool-sub').textContent = isL ? 'eBay basligi + aciklama AI yazar' : 'AutoDS Amerika analizi';
   document.getElementById('aitool-go').textContent = isL ? 'Yaz' : 'Analiz Et';
   document.getElementById('aitool-input').value = '';
   document.getElementById('aitool-body').textContent = 'Urun adi yazip butona bas.';
@@ -1446,8 +1435,8 @@ function runAiTool(){
   if(!urun) return;
   var bodyEl = document.getElementById('aitool-body');
   var goBtn = document.getElementById('aitool-go');
-  bodyEl.style.cssText = 'min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px';
-  bodyEl.innerHTML = '<div class="ai-spinner"></div><div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase">🤖 AI analiz ediyor...</div>';
+  bodyEl.style.cssText = 'min-height:100px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:11px;letter-spacing:1px';
+  bodyEl.textContent = 'Yapay zeka calisiyor...';
   document.getElementById('aitool-actions').style.display = 'none';
   goBtn.disabled = true;
   fetch(AI_EP, {
@@ -1700,53 +1689,55 @@ function doPasswordReset(){
 }
 
 function doAuth(){
-  var em=document.getElementById('inp-email').value.trim().toLowerCase();
-  var pw=document.getElementById('inp-pass').value;
-  var er=document.getElementById('login-err');er.textContent='';er.style.color='';
-  if(!em||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){er.textContent='Geçerli bir e-posta gir.';return;}
-  if(pw.length<6){er.textContent='Şifre en az 6 karakter olmalı.';return;}
-  if(_authMode==='register'){
-    var pw2=document.getElementById('inp-pass2').value;
-    if(pw!==pw2){er.textContent='Şifreler eşleşmiyor.';return;}
-    er.textContent='Kayıt olunuyor...';
-    er.textContent='Kayıt olunuyor...';
-    _sb.auth.signUp({email:em,password:pw}).then(function(r){
-      if(r.error && r.error.message && r.error.message.toLowerCase().indexOf('already')>=0){
-        er.style.color='';er.textContent='Bu e-posta zaten kayıtlı. Giriş yap.';return;
-      }
-      // Ignore other signup errors, try to sign in anyway
-      _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r2){
-        if(r2.error){er.style.color='';er.textContent='Giriş hatası: '+r2.error.message;return;}
-        _user=r2.data.user;
-        email=_user.email;
-        er.style.color='#4ade80';
-        er.textContent='Hoş geldin! Yükleniyor...';
-        // Create progress row silently
-        // Yeni kullanıcı — satır yoksa oluştur, varsa dokunma
-        _sb.from('progress')
-          .select('user_id').eq('user_id',_user.id).limit(1)
-          .then(function(chk){
-            if(!chk.data || chk.data.length === 0){
-              _sb.from('progress').insert({
-                user_id:_user.id, done:[], mc:{}, spin:{},
-                first_sale:false, earn_opened:false,
-                updated_at:new Date().toISOString()
-              }).then(function(){ loadStateFromDB(); });
-            } else {
-              loadStateFromDB();
-            }
-          });
-      });
-    });
-  } else {
+  var em = document.getElementById('inp-email').value.trim().toLowerCase();
+  var code = document.getElementById('inp-invite').value.trim();
+  var er = document.getElementById('login-err');
+  er.textContent=''; er.style.color='';
+  if(!em||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){er.textContent='Geçerli bir e-posta adresi gir.';return;}
+  if(!code){er.textContent='Kursiyer kodunu gir.';return;}
+  var btn = document.getElementById('login-btn');
+  btn.disabled=true;
+  er.textContent='Doğrulanıyor...';
+  fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({tool:'verify-invite', code:code, email:em})
+  }).then(function(r){return r.json();}).then(function(res){
+    if(!res.valid){
+      er.style.color=''; er.textContent='Geçersiz kursiyer kodu. Lütfen kontrol et.';
+      btn.disabled=false; return;
+    }
     er.textContent='Giriş yapılıyor...';
-    _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r){
-      if(r.error){er.textContent='Hatalı e-posta veya şifre.';return;}
-      _user=r.data.user;
-      email=_user.email;
-      loadStateFromDB();
+    // Otomatik şifre = kodun hash'i - kullanıcı bilmez
+    var pw = 'MLYNR_' + code.toUpperCase() + '_2025';
+    _sb.auth.signInWithPassword({email:em, password:pw}).then(function(r){
+      if(r.error){
+        // Hesap yok - oluştur
+        _sb.auth.signUp({email:em, password:pw}).then(function(r2){
+          if(r2.error){
+            er.style.color=''; er.textContent='Hata: '+r2.error.message;
+            btn.disabled=false; return;
+          }
+          _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r3){
+            if(r3.error){er.style.color='';er.textContent='Giriş hatası.';btn.disabled=false;return;}
+            _user=r3.data.user; email=_user.email;
+            er.style.color='#4ade80'; er.textContent='Hoş geldin! Yükleniyor...';
+            _sb.from('progress').select('user_id').eq('user_id',_user.id).limit(1).then(function(chk){
+              if(!chk.data||chk.data.length===0){
+                _sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,earn_opened:false,updated_at:new Date().toISOString()}).then(function(){loadStateFromDB();});
+              } else {loadStateFromDB();}
+            });
+          });
+        });
+      } else {
+        _user=r.data.user; email=_user.email;
+        btn.disabled=false;
+        loadStateFromDB();
+      }
     });
-  }
+  }).catch(function(){
+    er.style.color=''; er.textContent='Bağlantı hatası. Tekrar dene.';
+    btn.disabled=false;
+  });
 }
 
 function doLogin(){
@@ -2828,7 +2819,8 @@ function initScrollAnim(){
 
 // ── INIT ──────────────────────────────────────────────────────
 document.getElementById('login-btn').addEventListener('click',doLogin);
-document.getElementById('inp-email').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+document.getElementById('inp-email').addEventListener('keydown',function(e){if(e.key==='Enter')doAuth();});
+document.getElementById('inp-invite').addEventListener('keydown',function(e){if(e.key==='Enter')doAuth();});
 document.getElementById('logout-btn').addEventListener('click',doLogout);
 
 initTheme();
@@ -2925,7 +2917,7 @@ function showPasswordResetUI(session){
       <div class="sp-avatar" id="aitool-avatar" style="font-size:20px">&#128269;</div>
       <div>
         <div class="sp-title" id="aitool-title">Urun Analizi</div>
-        <div class="sp-sub" id="aitool-sub">MLYNR · eBay Ürün Analizi</div>
+        <div class="sp-sub" id="aitool-sub">MLYNR · eBay Urun Analizi</div>
       </div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:16px">
@@ -2938,6 +2930,7 @@ function showPasswordResetUI(session){
       <button onclick="openAiTool(currentAiTool)" style="flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:10px;color:var(--text2);font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:11px;cursor:pointer">&#8635; Yeni</button>
     </div>
   </div>
+
 <div id="ver-banner">
   <div class="vb-emoji">🎉</div>
   <div class="vb-text">
