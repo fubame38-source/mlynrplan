@@ -342,6 +342,25 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .earn-btn:hover{transform:translateY(-2px);background:rgba(250,204,21,.14);box-shadow:0 8px 24px rgba(250,204,21,.1)}
 .sale-btn{background:var(--green-dim);border-color:var(--green-ln);color:var(--green)}
 .sale-btn:hover{transform:translateY(-2px);background:rgba(34,197,94,.1);box-shadow:0 8px 24px rgba(34,197,94,.15)}
+.analyze-btn{background:rgba(99,102,241,.08);border-color:rgba(99,102,241,.25);color:#818cf8}
+.analyze-btn:hover{transform:translateY(-2px);background:rgba(99,102,241,.14);box-shadow:0 8px 24px rgba(99,102,241,.1)}
+.listing-btn{background:rgba(244,114,182,.08);border-color:rgba(244,114,182,.25);color:#f472b6}
+.listing-btn:hover{transform:translateY(-2px);background:rgba(244,114,182,.14);box-shadow:0 8px 24px rgba(244,114,182,.1)}
+
+/* ── AI TOOLS POPUP ── */
+.ai-tool-input-wrap{display:flex;gap:8px;margin-bottom:16px}
+.ai-tool-input{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:13px 16px;outline:none;transition:border-color .2s}
+.ai-tool-input:focus{border-color:rgba(255,255,255,.3)}
+.ai-tool-input::placeholder{color:var(--text3)}
+.ai-tool-go{background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:13px 20px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);white-space:nowrap;flex-shrink:0}
+.ai-tool-go:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
+.ai-tool-go:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.ai-tool-result{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px;min-height:120px;font-size:13px;color:var(--text2);line-height:1.75;white-space:pre-wrap;word-break:break-word}
+.ai-tool-result.loading{display:flex;align-items:center;justify-content:center;color:var(--text3);font-family:var(--mono);font-size:11px;letter-spacing:2px}
+.ai-tool-result.has-content{color:var(--text)}
+.ai-tool-copy{margin-top:10px;width:100%;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--text2);font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:10px;cursor:pointer;transition:all .2s}
+.ai-tool-copy:hover{border-color:var(--border2);color:var(--text);background:rgba(255,255,255,.04)}
+.ai-tool-copy.copied{color:var(--green);border-color:var(--green-ln)}
 
 /* ── EARNINGS CALCULATOR ── */
 .earn-inputs{margin-bottom:20px}
@@ -891,6 +910,8 @@ body.light #mentor-popup{background:#fff}
         <div class="hero-action-row">
           <button class="hero-action-btn earn-btn" onclick="openEarn()">💰 Ne Kadar Kazanırım?</button>
           <button class="hero-action-btn sale-btn" id="first-sale-btn" onclick="openFirstSale()">🏆 İlk Satışımı Yaptım!</button>
+          <button class="hero-action-btn analyze-btn" onclick="openAnalyze()">🔍 Ürün Analizi</button>
+          <button class="hero-action-btn listing-btn" onclick="openListing()">📝 Listing Yazıcı</button>
         </div>
       </div>
     </div>
@@ -1377,6 +1398,102 @@ function doSpin(){
     if(btn){btn.disabled=(hak<=0);btn.innerHTML=hak>0?'💵 Kategori Çek · '+hak+' hak kaldı':'Bugün tamamlandı ✓';}
     var dotsEl=document.getElementById('sp-dots');
     if(dotsEl){dotsEl.innerHTML='';for(var i=0;i<MAX_SPIN;i++){var d=document.createElement('div');d.className='sp-dot'+(i<s.used?'':' active');dotsEl.appendChild(d);}}
+  });
+}
+
+
+// ── URUN ANALIZI ──────────────────────────────────────────────
+function openAnalyze(){
+  document.getElementById('analyze-input').value='';
+  document.getElementById('analyze-result').className='ai-tool-result';
+  document.getElementById('analyze-result').textContent='Bir urun adi yazip Analiz Et butonuna bas.';
+  document.getElementById('analyze-copy').classList.add('hidden');
+  document.getElementById('analyze-overlay').classList.add('show');
+  document.getElementById('analyze-popup').classList.add('show');
+  setTimeout(function(){document.getElementById('analyze-input').focus();},300);
+}
+function closeAnalyze(){
+  document.getElementById('analyze-overlay').classList.remove('show');
+  document.getElementById('analyze-popup').classList.remove('show');
+}
+function doAnalyze(){
+  var urun=document.getElementById('analyze-input').value.trim();
+  if(!urun)return;
+  var res=document.getElementById('analyze-result');
+  var btn=document.getElementById('analyze-go');
+  res.className='ai-tool-result loading';
+  res.textContent='Analiz ediliyor...';
+  document.getElementById('analyze-copy').classList.add('hidden');
+  btn.disabled=true;
+  fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      tool:'analyze',
+      urun:urun
+    })
+  }).then(function(r){return r.json();}).then(function(data){
+    res.className='ai-tool-result has-content';
+    res.textContent=data.sonuc||data.error||'Bir hata olustu.';
+    document.getElementById('analyze-copy').classList.remove('hidden');
+    btn.disabled=false;
+  }).catch(function(){
+    res.className='ai-tool-result';
+    res.textContent='Baglanti hatasi. Tekrar dene.';
+    btn.disabled=false;
+  });
+}
+
+// ── LISTING YAZICI ─────────────────────────────────────────────
+function openListing(){
+  document.getElementById('listing-input').value='';
+  document.getElementById('listing-result').className='ai-tool-result';
+  document.getElementById('listing-result').textContent='Bir urun adi yazip Yaz butonuna bas.';
+  document.getElementById('listing-copy').classList.add('hidden');
+  document.getElementById('listing-overlay').classList.add('show');
+  document.getElementById('listing-popup').classList.add('show');
+  setTimeout(function(){document.getElementById('listing-input').focus();},300);
+}
+function closeListing(){
+  document.getElementById('listing-overlay').classList.remove('show');
+  document.getElementById('listing-popup').classList.remove('show');
+}
+function doListing(){
+  var urun=document.getElementById('listing-input').value.trim();
+  if(!urun)return;
+  var res=document.getElementById('listing-result');
+  var btn=document.getElementById('listing-go');
+  res.className='ai-tool-result loading';
+  res.textContent='Listing yaziliyor...';
+  document.getElementById('listing-copy').classList.add('hidden');
+  btn.disabled=true;
+  fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      tool:'listing',
+      urun:urun
+    })
+  }).then(function(r){return r.json();}).then(function(data){
+    res.className='ai-tool-result has-content';
+    res.textContent=data.sonuc||data.error||'Bir hata olustu.';
+    document.getElementById('listing-copy').classList.remove('hidden');
+    btn.disabled=false;
+  }).catch(function(){
+    res.className='ai-tool-result';
+    res.textContent='Baglanti hatasi. Tekrar dene.';
+    btn.disabled=false;
+  });
+}
+
+function copyResult(tool){
+  var el=document.getElementById(tool+'-result');
+  var btn=document.getElementById(tool+'-copy');
+  if(!el||!btn)return;
+  navigator.clipboard.writeText(el.textContent).then(function(){
+    btn.textContent='Kopyalandi!';
+    btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='Kopyala';btn.classList.remove('copied');},2000);
   });
 }
 
@@ -2767,6 +2884,45 @@ function showPasswordResetUI(session){
   };
 }
 </script>
+
+
+  <!-- URUN ANALIZI POPUP -->
+  <div id="analyze-overlay" class="overlay" onclick="closeAnalyze()"></div>
+  <div id="analyze-popup" class="popup" style="width:min(520px,96vw)">
+    <button class="close-btn" onclick="closeAnalyze()">x</button>
+    <div class="sp-header">
+      <div class="sp-avatar" style="background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(99,102,241,.05));border-color:rgba(99,102,241,.3)">&#128269;</div>
+      <div>
+        <div class="sp-title">Urun Analizi</div>
+        <div class="sp-sub">eBay de satilir mi? AI analiz eder</div>
+      </div>
+    </div>
+    <div class="ai-tool-input-wrap">
+      <input class="ai-tool-input" id="analyze-input" placeholder="Urun adi yaz... (ornek: foam roller, LED strip)" />
+      <button class="ai-tool-go" id="analyze-go" onclick="doAnalyze()">Analiz Et</button>
+    </div>
+    <div class="ai-tool-result" id="analyze-result">Bir urun adi yazip Analiz Et butonuna bas.</div>
+    <button class="ai-tool-copy hidden" id="analyze-copy" onclick="copyResult('analyze')">Kopyala</button>
+  </div>
+
+  <!-- LISTING YAZICI POPUP -->
+  <div id="listing-overlay" class="overlay" onclick="closeListing()"></div>
+  <div id="listing-popup" class="popup" style="width:min(520px,96vw)">
+    <button class="close-btn" onclick="closeListing()">x</button>
+    <div class="sp-header">
+      <div class="sp-avatar" style="background:linear-gradient(135deg,rgba(244,114,182,.15),rgba(244,114,182,.05));border-color:rgba(244,114,182,.3)">&#128221;</div>
+      <div>
+        <div class="sp-title">Listing Yazici</div>
+        <div class="sp-sub">eBay basligi + aciklama AI yazar</div>
+      </div>
+    </div>
+    <div class="ai-tool-input-wrap">
+      <input class="ai-tool-input" id="listing-input" placeholder="Urun adi yaz... (ornek: foam roller set, led strip 5m)" />
+      <button class="ai-tool-go" id="listing-go" onclick="doListing()">Yaz</button>
+    </div>
+    <div class="ai-tool-result" id="listing-result">Bir urun adi yazip Yaz butonuna bas.</div>
+    <button class="ai-tool-copy hidden" id="listing-copy" onclick="copyResult('listing')">Kopyala</button>
+  </div>
 
 <div id="ver-banner">
   <div class="vb-emoji">🎉</div>
