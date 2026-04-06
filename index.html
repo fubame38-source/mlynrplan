@@ -1426,7 +1426,7 @@ function openAiTool(tool){
   document.getElementById('aitool-sub').textContent = isL ? 'eBay basligi + aciklama AI yazar' : 'MLYNR · eBay Ürün Analizi';
   document.getElementById('aitool-go').textContent = isL ? 'Yaz' : 'Analiz Et';
   document.getElementById('aitool-input').value = '';
-  document.getElementById('aitool-input').placeholder = isL ? 'Urun adi yaz... (opsiyonel, link varsa bosalt)' : 'Urun adi yaz...';
+  document.getElementById('aitool-input').placeholder = isL ? 'Urun adi yaz... veya sadece Amazon linki yeterli' : 'Urun adi yaz...';
   var amWrap = document.getElementById('amazon-link-wrap');
   if(amWrap) amWrap.style.display = isL ? 'block' : 'none';
   var amInp = document.getElementById('aitool-amazon');
@@ -1452,11 +1452,21 @@ function runAiTool(){
     var amInp = document.getElementById('aitool-amazon');
     if(amInp) amazonUrl = amInp.value.trim();
   }
+  if(!urun && amazonUrl) {
+    // URL'den ürün adını çıkar: amazon.com/URUN-ADI/dp/...
+    var urlParts = amazonUrl.split('/');
+    for(var pi=0;pi<urlParts.length;pi++){
+      if(urlParts[pi].length>5 && urlParts[pi]!=='www.amazon.com' && !urlParts[pi].startsWith('dp') && urlParts[pi].indexOf('.')<0){
+        urun = urlParts[pi].replace(/-/g,' ');
+        break;
+      }
+    }
+    if(!urun) urun = 'product';
+  }
   if(!urun && !amazonUrl) {
     document.getElementById('aitool-body').textContent = 'Urun adi yaz veya Amazon linki yapistir.';
     return;
   }
-  if(!urun && amazonUrl) urun = 'Amazon urunu';
   var bodyEl = document.getElementById('aitool-body');
   var goBtn = document.getElementById('aitool-go');
   bodyEl.style.cssText = 'min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px';
@@ -2950,7 +2960,7 @@ function showPasswordResetUI(session){
       </div>
       <div id="amazon-link-wrap" style="display:none;margin-bottom:8px">
         <input id="aitool-amazon" style="width:100%;background:var(--surface2);border:1px solid rgba(255,165,0,.3);border-radius:10px;color:var(--text);font-family:var(--font);font-size:13px;padding:11px 16px;outline:none;box-sizing:border-box" placeholder="Amazon linki yapistir (opsiyonel)..." />
-        <div style="font-size:11px;color:var(--text3);margin-top:5px;padding-left:2px">&#128279; Amazon linki yapistirirsan AI urun bilgilerini otomatik okur</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:5px;padding-left:2px">&#128279; Opsiyonel: Amazon linki ekle, AI ek bilgi okur</div>
       </div>
     </div>
     <div id="aitool-body" style="min-height:100px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px">Urun adi yazıp butona bas.</div>
