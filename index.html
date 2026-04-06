@@ -1449,16 +1449,15 @@ function renderAiResult(txt){
       else if(bodyTxt.toUpperCase().indexOf('DUSUK')>-1||bodyTxt.toUpperCase().indexOf('LOW')>-1) badge='<span style="background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.2);border-radius:4px;font-size:9px;padding:2px 7px;font-weight:700">DÜŞÜK</span>';
       else badge='<span style="background:rgba(250,204,21,.12);color:#facc15;border:1px solid rgba(250,204,21,.2);border-radius:4px;font-size:9px;padding:2px 7px;font-weight:700">ORTA</span>';
     }
-    var cardId = 'aicard-'+i;
+    var cardIdx = 'aicard-'+i;
     html += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-bottom:8px">';
     html += '<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.06)">';
     html += '<span style="font-size:14px">'+s.i+'</span>';
     html += '<span style="font-family:monospace;font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;flex:1">'+s.k+'</span>';
     html += badge;
-    html += '<button onclick="copyCard(this)" data-txt="'+bodyTxt.replace(/"/g,'&quot;').replace(/
-/g,'\n')+'" style="background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#555;font-size:10px;padding:3px 9px;cursor:pointer;transition:all .2s;white-space:nowrap">📋</button>';
+    html += '<button onclick="copyCardById(this,\'' +cardIdx+ '\')" style="background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#555;font-size:10px;padding:3px 9px;cursor:pointer;transition:all .2s;white-space:nowrap">📋</button>';
     html += '</div>';
-    html += '<div style="padding:12px 14px;font-size:12px;color:#aaa;line-height:1.8">'+bodyTxt+'</div>';
+    html += '<div id="'+cardIdx+'" style="padding:12px 14px;font-size:12px;color:#aaa;line-height:1.8">'+bodyTxt+'</div>';
     html += '</div>';
   }
   body.innerHTML = html || txt;
@@ -1488,8 +1487,10 @@ function translateAiTool(){
   });
 }
 
-function copyCard(btn){
-  var txt = btn.getAttribute('data-txt').replace(/\\n/g,'\n');
+function copyCardById(btn, id){
+  var el = document.getElementById(id);
+  if(!el) return;
+  var txt = el.textContent || '';
   navigator.clipboard.writeText(txt).then(function(){
     var orig = btn.textContent;
     btn.textContent = '✓';
