@@ -444,7 +444,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .hmenu-item.logout:hover{color:#f87171}
 
 /* ── VERSION BANNER ── */
-#ver-banner{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(200px);z-index:9000;background:linear-gradient(135deg,#111,#1a1a1a);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 16px 48px rgba(0,0,0,.7);transition:transform .5s cubic-bezier(.34,1.2,.64,1);width:calc(100% - 32px);max-width:400px;box-sizing:border-box}
+#video-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+#video-overlay.show{opacity:1;pointer-events:all}
+#video-popup{background:#111;border:1px solid rgba(255,255,255,.12);border-radius:20px;width:90%;max-width:480px;padding:28px 24px;position:relative;transform:scale(.95);transition:transform .3s;backdrop-filter:blur(20px)}
+#video-overlay.show #video-popup{transform:scale(1)}
+.vp-title{font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px}
+.vp-desc{font-size:12px;color:var(--text2);margin-bottom:20px;line-height:1.5}
+.vp-btn-watch{display:block;width:100%;background:var(--white);color:var(--bg);border:none;border-radius:12px;padding:14px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-align:center;text-decoration:none;margin-bottom:10px;transition:opacity .2s}
+.vp-btn-watch:hover{opacity:.85}
+.vp-btn-done{display:block;width:100%;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:12px;padding:12px;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;text-align:center;transition:all .2s;box-sizing:border-box}
+.vp-btn-done:hover{background:rgba(255,255,255,.06);color:var(--white)}
+.vp-btn-done.done-active{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#4ade80}
+.vp-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.08);border:none;color:var(--text2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.vp-close:hover{background:rgba(255,255,255,.15)}
+#video-overlay #ver-banner{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(200px);z-index:9000;background:linear-gradient(135deg,#111,#1a1a1a);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 16px 48px rgba(0,0,0,.7);transition:transform .5s cubic-bezier(.34,1.2,.64,1);width:calc(100% - 32px);max-width:400px;box-sizing:border-box}
 #ver-banner.show{transform:translateX(-50%) translateY(0)}
 .vb-emoji{font-size:22px;flex-shrink:0}
 .vb-text{}
@@ -1437,6 +1450,32 @@ function openAiTool(tool){
   setTimeout(function(){document.getElementById('aitool-input').focus();}, 300);
 }
 
+var _vpCurrentId='', _vpIsS=false, _vpWi=0;
+function openVideoPopup(title, desc, videoUrl, id, isS, wi){
+  _vpCurrentId=id; _vpIsS=isS; _vpWi=wi;
+  document.getElementById('vp-title').textContent=title;
+  document.getElementById('vp-desc').textContent=desc;
+  document.getElementById('vp-watch-btn').href=videoUrl;
+  var isDone=done.indexOf(id)>-1;
+  var doneBtn=document.getElementById('vp-done-btn');
+  doneBtn.textContent=isDone?'✓ Tamamlandı':'✓ Tamamlandı Olarak İşaretle';
+  doneBtn.className=isDone?'vp-btn-done done-active':'vp-btn-done';
+  document.getElementById('video-overlay').classList.add('show');
+}
+function closeVideoPopup(){
+  document.getElementById('video-overlay').classList.remove('show');
+}
+function toggleVideoDone(){
+  var id=_vpCurrentId,isS=_vpIsS,wi=_vpWi;
+  var pos=done.indexOf(id);
+  if(pos>-1){done.splice(pos,1);}
+  else{done.push(id);showToast('\u2713 Tamamlandı!',isS);}
+  var isDone=done.indexOf(id)>-1;
+  var doneBtn=document.getElementById('vp-done-btn');
+  doneBtn.textContent=isDone?'\u2713 Tamamland\u0131':'\u2713 Tamamland\u0131 Olarak \u0130\u015faretle';
+  doneBtn.className=isDone?'vp-btn-done done-active':'vp-btn-done';
+  saveState();render();checkWk(wi);
+}
 function closeAiTool(){
   document.getElementById('aitool-overlay').classList.remove('show');
   document.getElementById('aitool-popup').classList.remove('show');
@@ -1805,7 +1844,7 @@ function checkWk(wi){var w=WEEKS[wi],ok=true;for(var d2=0;d2<w.days.length;d2++)
 var WEEKS=[
   {n:1,t:'e',lbl:'Hafta 01',name:'Hesap Kurulumu & Sistemi Anlamak',desc:'eBay hesabı aç, platformu tanı, yol haritasını kavra ve ilk ürünleri listele.',
     days:[
-      {t:'eBay Hesap Açılışı',d:'Hesabı doğru kur: adres, vergi, panel ayarları — baştan hata yapma.',tag:'Kurulum'},
+      {t:'eBay Hesap Açılışı',d:'Hesabı doğru kur: adres, vergi, panel ayarları — baştan hata yapma.',tag:'Kurulum',video:'https://okul.mlynr.com/products/start-scale-e-ticaret/categories/2157346777/posts/2186324402'},
       {t:'Yol Haritasını Anlamak',d:'Sistem tanıtımı, neden Amazon tedarik, ilk 90 gün planı.',tag:'Temel'},
       {t:'Ürün Araştırma: Temel',d:'Sıfırdan ürün bulma, fiyat analizi, rakip mağaza incelemesi.',tag:'Araştırma'},
       {t:'Ürün Araştırma: İleri',d:'Yapay zeka ile ürün bulma, pratik araştırma teknikleri.',tag:'Araştırma'},
@@ -1873,9 +1912,13 @@ function render(){
         ch+='<div class="dtitle">'+day.t+'</div><div class="dbody">'+day.d+'</div><span class="dtag">'+day.tag+'</span>';
         card.innerHTML=ch;
         card.addEventListener('click',function(){
-          var pos=done.indexOf(id);
-          if(pos>-1)done.splice(pos,1);else{done.push(id);showToast('✓ '+day.t,isS);}
-          saveState();render();checkWk(wi2);
+          if(day.video){
+            openVideoPopup(day.t, day.d, day.video, id, isS, wi2);
+          } else {
+            var pos=done.indexOf(id);
+            if(pos>-1)done.splice(pos,1);else{done.push(id);showToast('\u2713 '+day.t,isS);}
+            saveState();render();checkWk(wi2);
+          }
         });
         grid.appendChild(card);
       })(wi,di,w.days[di]);
@@ -2924,7 +2967,16 @@ function showPasswordResetUI(session){
 </script>
 
 
-  <div id="aitool-overlay" class="overlay" onclick="closeAiTool()"></div>
+  <div id="video-overlay">
+  <div id="video-popup">
+    <button class="vp-close" onclick="closeVideoPopup()">×</button>
+    <div class="vp-title" id="vp-title"></div>
+    <div class="vp-desc" id="vp-desc"></div>
+    <a id="vp-watch-btn" class="vp-btn-watch" href="#" target="_blank">▶ Dersi İzle</a>
+    <button id="vp-done-btn" class="vp-btn-done" onclick="toggleVideoDone()">✓ Tamamlandı Olarak İşaretle</button>
+  </div>
+</div>
+<div id="aitool-overlay" class="overlay" onclick="closeAiTool()"></div>
   <div id="aitool-popup" class="popup" style="width:min(520px,96vw);max-height:88vh;overflow-y:auto">
     <button class="close-btn" onclick="closeAiTool()">&#10005;</button>
     <div class="sp-header">
