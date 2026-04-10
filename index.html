@@ -336,8 +336,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .st-sub{font-size:12px;color:var(--text2)}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;color:var(--text);z-index:6000;opacity:0;transform:translateY(8px);transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
-.toast.show{opacity:1;transform:translateY(0)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;color:var(--text);z-index:9100;opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.green{border-color:var(--green-ln);color:var(--green)}
 
 /* ── SAVED DOT ── */
@@ -490,7 +490,7 @@ body.light .sp-quick-btn{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1);
 body.light .sp-quick-btn:hover{background:rgba(0,0,0,.08);color:#111}
 
 /* Floating AI Buton */
-#ai-fab{position:fixed;bottom:28px;right:24px;z-index:6000;cursor:pointer;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1c1c1c,#111);border:1px solid rgba(255,255,255,.18);border-radius:50px;padding:14px 22px 14px 16px;box-shadow:0 8px 40px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06),inset 0 1px 0 rgba(255,255,255,.1);transition:all .35s cubic-bezier(.34,1.2,.64,1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+#ai-fab{position:fixed;bottom:24px;right:24px;z-index:6000;cursor:pointer;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1c1c1c,#111);border:1px solid rgba(255,255,255,.18);border-radius:50px;padding:14px 22px 14px 16px;box-shadow:0 8px 40px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06),inset 0 1px 0 rgba(255,255,255,.1);transition:all .35s cubic-bezier(.34,1.2,.64,1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 #ai-fab:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 48px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.1),inset 0 1px 0 rgba(255,255,255,.12)}
 #ai-fab.hidden{transform:translateY(100px);opacity:0;pointer-events:none}
 .fab-icon{width:32px;height:32px;background:linear-gradient(135deg,rgba(74,222,128,.2),rgba(74,222,128,.08));border:1px solid rgba(74,222,128,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
@@ -1920,6 +1920,7 @@ function doPasswordReset(){
   });
 }
 
+var _failCount=0,_failLock=0;
 function doAuth(){
   var em = document.getElementById('inp-email').value.trim().toLowerCase();
   var code = document.getElementById('inp-invite').value.trim();
@@ -1927,6 +1928,11 @@ function doAuth(){
   er.textContent=''; er.style.color='';
   if(!em||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){er.textContent='Gecerli bir e-posta adresi gir.';return;}
   if(!code){er.textContent='Kursiyer kodunu gir.';return;}
+  // Brute force koruması
+  if(_failLock>Date.now()){
+    var sn=Math.ceil((_failLock-Date.now())/1000);
+    er.textContent=sn+' saniye bekle.';return;
+  }
   var btn = document.getElementById('login-btn');
   btn.disabled=true;
   er.textContent='Dogrulanıyor...';
@@ -1935,7 +1941,9 @@ function doAuth(){
     body: JSON.stringify({tool:'verify-invite', code:code, email:em})
   }).then(function(r){return r.json();}).then(function(res){
     if(!res.valid){
-      er.style.color=''; er.textContent='Gecersiz kursiyer kodu.';
+      _failCount++;
+      if(_failCount>=5){_failLock=Date.now()+30000;_failCount=0;er.textContent='Cok fazla hatali deneme. 30 saniye bekle.';btn.disabled=false;return;}
+      er.style.color=''; er.textContent='Gecersiz kursiyer kodu. ('+_failCount+'/5)';
       btn.disabled=false; return;
     }
     er.textContent='Giris yapiliyor...';
