@@ -474,6 +474,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sp-send{background:var(--white);color:var(--bg);border:none;border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .2s}
 .sp-send:hover{opacity:.8}
 .sp-send:disabled{opacity:.4;cursor:not-allowed}
+.sp-quick-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--text2);font-family:var(--font);font-size:11px;padding:8px 12px;cursor:pointer;text-align:left;transition:all .2s;width:100%}
+.sp-quick-btn:hover{background:rgba(255,255,255,.1);color:var(--white);border-color:rgba(255,255,255,.2)}
+body.light .sp-quick-btn{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1);color:#444}
+body.light .sp-quick-btn:hover{background:rgba(0,0,0,.08);color:#111}
 #video-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
 #video-overlay.show{opacity:1;pointer-events:all}
 #video-popup{background:#111;border:1px solid rgba(255,255,255,.12);border-radius:20px;width:90%;max-width:480px;padding:28px 24px;position:relative;transform:scale(.95);transition:transform .3s;backdrop-filter:blur(20px)}
@@ -1481,6 +1485,12 @@ function openAiTool(tool){
 }
 
 // ── SUPPORT BOT ──────────────────────────────────────────────
+function askQuick(btn){
+  var soru = btn.textContent.trim();
+  var inp = document.getElementById('sp-input');
+  if(inp) inp.value = soru;
+  sendSupportMsg();
+}
 function openSupportBot(){
   var msgs = document.getElementById('sp-messages');
   if(msgs && msgs.children.length === 0){
@@ -1497,7 +1507,8 @@ function addBotMsg(txt){
   if(!msgs)return;
   var div=document.createElement('div');
   div.className='sp-msg bot';
-  div.textContent=txt.replace(/\*\*/g,'');
+  var cleaned = txt.replace(/\*\*/g,'').replace(/t\.me\/mlynr_bot/g,'👉 Canlı Destek Ekibi');
+  div.textContent=cleaned;
   msgs.appendChild(div);
   msgs.scrollTop=msgs.scrollHeight;
 }
@@ -3092,6 +3103,16 @@ function showPasswordResetUI(session){
       <button class="sp-close-btn" onclick="closeSupportBot()">×</button>
     </div>
     <div class="sp-messages" id="sp-messages"></div>
+    <div style="padding:12px 16px 0;flex-shrink:0;border-top:1px solid rgba(255,255,255,.06)">
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:8px">Sık Sorulan Sorular</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <button onclick="askQuick(this)" class="sp-quick-btn">eBay hesabım suspend oldu, ne yapmalıyım?</button>
+        <button onclick="askQuick(this)" class="sp-quick-btn">Ürünler AutoDS'de görünmüyor</button>
+        <button onclick="askQuick(this)" class="sp-quick-btn">Ship from address ne olmalı?</button>
+        <button onclick="askQuick(this)" class="sp-quick-btn">İade süreci nasıl işliyor?</button>
+        <button onclick="askQuick(this)" class="sp-quick-btn">Payoneer doğrulama istegi gelmiyor</button>
+      </div>
+    </div>
     <div class="sp-input-area">
       <textarea class="sp-input" id="sp-input" rows="1" placeholder="Sorunuzu yazın..."></textarea>
       <button class="sp-send" id="sp-send-btn" onclick="sendSupportMsg()">➤</button>
