@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MLYNR Admin</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080808;--surface:#111;--surface2:#161616;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
+  --text:#f0f0f0;--text2:#888;--text3:#444;
+  --green:#22c55e;--red:#f87171;--yellow:#facc15;--blue:#60a5fa;
+  --font:'Geist','Inter',system-ui,sans-serif;
+  --mono:'Geist Mono','Fira Code',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
+
+/* ── LOGIN ── */
+#login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.login-box{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:40px;width:100%;max-width:380px}
+.login-logo{font-size:22px;font-weight:900;letter-spacing:-1px;margin-bottom:3px}
+.login-sub{font-size:10px;color:var(--text2);letter-spacing:3px;text-transform:uppercase;margin-bottom:32px}
+.login-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:8px;display:block}
+.login-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 16px;outline:none;margin-bottom:14px;transition:border-color .2s}
+.login-input:focus{border-color:rgba(255,255,255,.3)}
+.login-btn{width:100%;background:#fff;color:#000;border:none;border-radius:10px;padding:13px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase;transition:opacity .2s;margin-top:4px}
+.login-btn:hover{opacity:.88}
+.login-err{color:var(--red);font-size:12px;margin-top:10px;text-align:center;min-height:18px}
+
+/* ── APP ── */
+#app{display:none;max-width:1200px;margin:0 auto;padding:28px 24px}
+
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.header-left{display:flex;align-items:center;gap:12px}
+.header-logo{font-size:18px;font-weight:900;letter-spacing:-1px}
+.header-badge{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:6px;padding:4px 10px}
+.header-right{display:flex;align-items:center;gap:10px}
+.refresh-btn{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer;transition:all .2s}
+.refresh-btn:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.logout-btn{background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer;transition:all .2s}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
+.last-updated{font-size:10px;color:var(--text3);font-family:var(--mono)}
+
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:28px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
+.stat-val{font-size:30px;font-weight:800;line-height:1;margin-bottom:6px}
+.stat-lbl{font-size:10px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase}
+.stat-card.s-green .stat-val{color:var(--green)}
+.stat-card.s-yellow .stat-val{color:var(--yellow)}
+.stat-card.s-red .stat-val{color:var(--red)}
+.stat-card.s-blue .stat-val{color:var(--blue)}
+
+/* Filters */
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.search-input{background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:12px;padding:8px 14px;outline:none;width:200px}
+.search-input:focus{border-color:rgba(255,255,255,.25)}
+.filter-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:rgba(255,255,255,.1);color:var(--text);border-color:rgba(255,255,255,.2)}
+.filter-btn.active{border-color:var(--green);color:var(--green)}
+.count-badge{font-size:10px;color:var(--text3);margin-left:auto}
+
+/* Table */
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.table-head{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;gap:0;border-bottom:1px solid var(--border);padding:12px 20px;background:rgba(255,255,255,.02)}
+.th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.table-body{max-height:600px;overflow-y:auto}
+.row{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;gap:0;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;transition:background .15s;cursor:default}
+.row:hover{background:rgba(255,255,255,.02)}
+.row:last-child{border-bottom:none}
+.row.warning{background:rgba(248,113,113,.03)}
+.row.warning:hover{background:rgba(248,113,113,.06)}
+
+/* Row cells */
+.cell-name{display:flex;flex-direction:column;gap:2px}
+.name-main{font-size:13px;font-weight:600;color:var(--text)}
+.name-email{font-size:10px;color:var(--text3);font-family:var(--mono)}
+.cell-progress{display:flex;flex-direction:column;gap:5px}
+.progress-bar{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;width:100%}
+.progress-fill{height:100%;background:var(--green);border-radius:2px;transition:width .5s}
+.progress-pct{font-size:11px;font-weight:700;color:var(--text2)}
+.cell-week{font-size:12px;font-weight:600;color:var(--text2)}
+.cell-days{font-size:11px;color:var(--text2);font-family:var(--mono)}
+.cell-time{font-size:11px;color:var(--text2)}
+.cell-time.danger{color:var(--red)}
+.cell-time.warning-color{color:var(--yellow)}
+.cell-badges{display:flex;gap:5px;flex-wrap:wrap}
+.badge{font-size:9px;letter-spacing:1px;text-transform:uppercase;border-radius:5px;padding:3px 7px;font-weight:600}
+.badge-sale{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.badge-active{background:rgba(96,165,250,.1);color:var(--blue);border:1px solid rgba(96,165,250,.2)}
+.badge-new{background:rgba(250,204,21,.1);color:var(--yellow);border:1px solid rgba(250,204,21,.2)}
+
+/* Empty/loading */
+.loading-row{padding:40px;text-align:center;color:var(--text3);font-size:13px}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Mobile */
+@media(max-width:768px){
+  .table-head,.row{grid-template-columns:2fr 1fr 1fr;gap:0}
+  .th:nth-child(3),.th:nth-child(4),.row .cell-week,.row .cell-days{display:none}
+  #app{padding:16px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-box">
+    <div class="login-logo">MLYNR.</div>
+    <div class="login-sub">Admin Paneli</div>
+    <label class="login-label">Admin Şifresi</label>
+    <input class="login-input" id="admin-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">GİRİŞ YAP →</button>
+    <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="header">
+    <div class="header-left">
+      <div class="header-logo">MLYNR.</div>
+      <div class="header-badge">Admin Panel</div>
+    </div>
+    <div class="header-right">
+      <div class="last-updated" id="last-updated"></div>
+      <button class="refresh-btn" onclick="loadData()">↻ Yenile</button>
+      <button class="logout-btn" onclick="doLogout()">Çıkış</button>
+    </div>
+  </div>
+
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-card"><div class="spinner"></div></div>
+  </div>
+
+  <div class="toolbar">
+    <input class="search-input" id="search" placeholder="İsim veya email ara..." oninput="filterRows()">
+    <button class="filter-btn active" id="f-all" onclick="setFilter('all')">Tümü</button>
+    <button class="filter-btn" id="f-active" onclick="setFilter('active')">Bugün Aktif</button>
+    <button class="filter-btn" id="f-warning" onclick="setFilter('warning')">3+ Gün Yok ⚠️</button>
+    <button class="filter-btn" id="f-sale" onclick="setFilter('sale')">İlk Satış ✅</button>
+    <span class="count-badge" id="count-badge"></span>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-head">
+      <div class="th">Kursiyer</div>
+      <div class="th">İlerleme</div>
+      <div class="th">Hafta</div>
+      <div class="th">Gün</div>
+      <div class="th">Son Giriş</div>
+      <div class="th">Durum</div>
+    </div>
+    <div class="table-body" id="table-body">
+      <div class="loading-row"><div class="spinner"></div><br>Yükleniyor...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SB_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
+const ADMIN_PASS = 'MLYNR2025ADMIN';
+const TOTAL_DAYS = 28;
+
+// Hafta hesapla
+const WEEKS_DAYS = [7,7,7,7]; // her hafta kaç gün
+function getDoneWeek(doneCount){
+  var cumulative = 0;
+  for(var i=0;i<WEEKS_DAYS.length;i++){
+    cumulative += WEEKS_DAYS[i];
+    if(doneCount <= cumulative) return i+1;
+  }
+  return 4;
+}
+
+var allUsers = [];
+var currentFilter = 'all';
+
+function doLogin(){
+  var pass = document.getElementById('admin-pass').value;
+  var err = document.getElementById('login-err');
+  if(pass === ADMIN_PASS){
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadData();
+  } else {
+    err.textContent = 'Şifre yanlış.';
+    document.getElementById('admin-pass').value = '';
+  }
+}
+
+function doLogout(){
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login').style.display = 'flex';
+  document.getElementById('admin-pass').value = '';
+  document.getElementById('login-err').textContent = '';
+}
+
+async function loadData(){
+  document.getElementById('table-body').innerHTML = '<div class="loading-row"><div class="spinner"></div><br>Yükleniyor...</div>';
+  
+  try {
+    // Auth users + progress birleştir
+    const res = await fetch(`${SB_URL}/rest/v1/progress?select=*&order=updated_at.desc&limit=500`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    });
+    const data = await res.json();
+    
+    allUsers = data.map(function(u){
+      var done = Array.isArray(u.done) ? u.done.length : 0;
+      var pct = Math.round(done / TOTAL_DAYS * 100);
+      var week = getDoneWeek(done);
+      var lastSeen = u.updated_at ? new Date(u.updated_at) : null;
+      var daysSince = lastSeen ? Math.floor((Date.now() - lastSeen.getTime()) / 86400000) : 999;
+      return {
+        id: u.user_id,
+        name: u.full_name || '—',
+        email: u.user_id ? u.user_id.substring(0,8)+'...' : '—',
+        done: done,
+        pct: pct,
+        week: week,
+        firstSale: u.first_sale || false,
+        lastSeen: lastSeen,
+        daysSince: daysSince,
+        isNew: done <= 3,
+        isActive: daysSince === 0,
+        isWarning: daysSince >= 3
+      };
+    });
+
+    renderStats();
+    renderTable();
+    document.getElementById('last-updated').textContent = 'Güncellendi: ' + new Date().toLocaleTimeString('tr-TR');
+  } catch(e){
+    document.getElementById('table-body').innerHTML = '<div class="loading-row" style="color:#f87171">Veri yüklenemedi: ' + e.message + '</div>';
+  }
+}
+
+function renderStats(){
+  var total = allUsers.length;
+  var active = allUsers.filter(function(u){return u.daysSince === 0;}).length;
+  var warning = allUsers.filter(function(u){return u.isWarning;}).length;
+  var sales = allUsers.filter(function(u){return u.firstSale;}).length;
+  var avgPct = total > 0 ? Math.round(allUsers.reduce(function(a,u){return a+u.pct;},0)/total) : 0;
+
+  document.getElementById('stats-grid').innerHTML = 
+    '<div class="stat-card"><div class="stat-val">'+total+'</div><div class="stat-lbl">Toplam Kursiyer</div></div>'+
+    '<div class="stat-card s-green"><div class="stat-val">'+active+'</div><div class="stat-lbl">Bugün Aktif</div></div>'+
+    '<div class="stat-card s-red"><div class="stat-val">'+warning+'</div><div class="stat-lbl">3+ Gün Yok</div></div>'+
+    '<div class="stat-card s-yellow"><div class="stat-val">'+sales+'</div><div class="stat-lbl">İlk Satış Yaptı</div></div>'+
+    '<div class="stat-card s-blue"><div class="stat-val">%'+avgPct+'</div><div class="stat-lbl">Ort. İlerleme</div></div>';
+}
+
+function setFilter(f){
+  currentFilter = f;
+  ['all','active','warning','sale'].forEach(function(id){
+    var el = document.getElementById('f-'+id);
+    if(el) el.classList.toggle('active', id===f);
+  });
+  renderTable();
+}
+
+function filterRows(){
+  renderTable();
+}
+
+function renderTable(){
+  var search = (document.getElementById('search').value||'').toLowerCase();
+  var users = allUsers.filter(function(u){
+    if(search && !u.name.toLowerCase().includes(search)) return false;
+    if(currentFilter === 'active') return u.isActive;
+    if(currentFilter === 'warning') return u.isWarning;
+    if(currentFilter === 'sale') return u.firstSale;
+    return true;
+  });
+
+  document.getElementById('count-badge').textContent = users.length + ' kursiyer';
+
+  if(users.length === 0){
+    document.getElementById('table-body').innerHTML = '<div class="loading-row">Kursiyer bulunamadı.</div>';
+    return;
+  }
+
+  var html = '';
+  users.forEach(function(u){
+    var timeStr = '';
+    var timeClass = '';
+    if(!u.lastSeen){ timeStr = 'Bilinmiyor'; }
+    else if(u.daysSince === 0){ timeStr = 'Bugün'; timeClass = ''; }
+    else if(u.daysSince === 1){ timeStr = 'Dün'; }
+    else if(u.daysSince >= 7){ timeStr = u.daysSince + ' gün önce'; timeClass = 'danger'; }
+    else if(u.daysSince >= 3){ timeStr = u.daysSince + ' gün önce'; timeClass = 'warning-color'; }
+    else { timeStr = u.daysSince + ' gün önce'; }
+
+    var badges = '';
+    if(u.firstSale) badges += '<span class="badge badge-sale">✓ Satış</span>';
+    if(u.isActive) badges += '<span class="badge badge-active">● Aktif</span>';
+    if(u.isNew) badges += '<span class="badge badge-new">Yeni</span>';
+
+    html += '<div class="row'+(u.isWarning && !u.isActive?' warning':'')+'">'+
+      '<div class="cell-name"><div class="name-main">'+escHtml(u.name)+'</div></div>'+
+      '<div class="cell-progress">'+
+        '<div class="progress-bar"><div class="progress-fill" style="width:'+u.pct+'%"></div></div>'+
+        '<div class="progress-pct">'+u.pct+'% · '+u.done+'/'+TOTAL_DAYS+' gün</div>'+
+      '</div>'+
+      '<div class="cell-week">H.'+u.week+'</div>'+
+      '<div class="cell-days">'+u.done+' gün</div>'+
+      '<div class="cell-time '+timeClass+'">'+timeStr+'</div>'+
+      '<div class="cell-badges">'+badges+'</div>'+
+    '</div>';
+  });
+  document.getElementById('table-body').innerHTML = html;
+}
+
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+document.addEventListener('keydown', function(e){
+  if(e.key==='Enter' && document.getElementById('login').style.display!=='none') doLogin();
+});
+</script>
+</body>
+</html>
