@@ -6,78 +6,63 @@
 <title>MLYNR Admin</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#080808;--surface:#111;--surface2:#161616;
-  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
-  --text:#f0f0f0;--text2:#888;--text3:#444;
-  --green:#22c55e;--red:#f87171;--yellow:#facc15;--blue:#60a5fa;
-  --font:'Geist','Inter',system-ui,sans-serif;
-  --mono:'Geist Mono','Fira Code',monospace;
-}
+:root{--bg:#080808;--surface:#111;--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);--text:#f0f0f0;--text2:#888;--text3:#444;--green:#22c55e;--red:#f87171;--yellow:#facc15;--blue:#60a5fa;--font:'Geist','Inter',system-ui,sans-serif;--mono:'Geist Mono',monospace}
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
 #login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
 .login-box{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:40px;width:100%;max-width:380px}
 .login-logo{font-size:22px;font-weight:900;letter-spacing:-1px;margin-bottom:3px}
 .login-sub{font-size:10px;color:var(--text2);letter-spacing:3px;text-transform:uppercase;margin-bottom:32px}
-.login-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:8px;display:block}
-.login-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 16px;outline:none;margin-bottom:14px;transition:border-color .2s}
-.login-input:focus{border-color:rgba(255,255,255,.3)}
-.login-btn{width:100%;background:#fff;color:#000;border:none;border-radius:10px;padding:13px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase}
-.login-btn:hover{opacity:.88}
-.login-err{color:var(--red);font-size:12px;margin-top:10px;text-align:center;min-height:18px}
+.lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:8px;display:block}
+.linput{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 16px;outline:none;margin-bottom:14px}
+.linput:focus{border-color:rgba(255,255,255,.3)}
+.lbtn{width:100%;background:#fff;color:#000;border:none;border-radius:10px;padding:13px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase}
+.lbtn:hover{opacity:.88}
+.lerr{color:var(--red);font-size:12px;margin-top:10px;text-align:center;min-height:18px}
 #app{display:none;max-width:1200px;margin:0 auto;padding:28px 24px}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
-.header-left{display:flex;align-items:center;gap:12px}
-.header-logo{font-size:18px;font-weight:900;letter-spacing:-1px}
-.header-badge{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:6px;padding:4px 10px}
-.header-right{display:flex;align-items:center;gap:10px}
-.refresh-btn{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer;transition:all .2s}
-.refresh-btn:hover{background:rgba(255,255,255,.1);color:var(--text)}
-.logout-btn{background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer}
-.logout-btn:hover{border-color:var(--red);color:var(--red)}
-.last-updated{font-size:10px;color:var(--text3);font-family:var(--mono)}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:28px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
-.stat-val{font-size:30px;font-weight:800;line-height:1;margin-bottom:6px}
-.stat-lbl{font-size:10px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase}
-.stat-card.s-green .stat-val{color:var(--green)}
-.stat-card.s-yellow .stat-val{color:var(--yellow)}
-.stat-card.s-red .stat-val{color:var(--red)}
-.stat-card.s-blue .stat-val{color:var(--blue)}
+.hlogo{font-size:18px;font-weight:900;letter-spacing:-1px}
+.hbadge{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:6px;padding:4px 10px;margin-left:10px}
+.hright{display:flex;align-items:center;gap:10px}
+.lupd{font-size:10px;color:var(--text3);font-family:var(--mono)}
+.rbtn{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer}
+.rbtn:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.obtn{background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer}
+.obtn:hover{border-color:var(--red);color:var(--red)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:28px}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
+.sv{font-size:28px;font-weight:800;line-height:1;margin-bottom:6px}
+.sl{font-size:10px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase}
+.sc.sg .sv{color:var(--green)}.sc.sr .sv{color:var(--red)}.sc.sy .sv{color:var(--yellow)}.sc.sb .sv{color:var(--blue)}
 .toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.search-input{background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:12px;padding:8px 14px;outline:none;width:200px}
-.search-input:focus{border-color:rgba(255,255,255,.25)}
-.filter-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer;transition:all .2s}
-.filter-btn:hover,.filter-btn.active{background:rgba(255,255,255,.1);color:var(--text);border-color:rgba(255,255,255,.2)}
-.filter-btn.active{border-color:var(--green);color:var(--green)}
-.count-badge{font-size:10px;color:var(--text3);margin-left:auto}
-.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.table-head{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;padding:12px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}
+.sinput{background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:12px;padding:8px 14px;outline:none;width:200px}
+.fbtn{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer;transition:all .2s}
+.fbtn:hover,.fbtn.act{background:rgba(255,255,255,.1);color:var(--text);border-color:rgba(255,255,255,.2)}
+.fbtn.act{border-color:var(--green);color:var(--green)}
+.cbadge{font-size:10px;color:var(--text3);margin-left:auto}
+.tw{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.thead{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;padding:12px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}
 .th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
-.table-body{max-height:600px;overflow-y:auto}
-.row{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;transition:background .15s}
+.tbody{max-height:580px;overflow-y:auto}
+.row{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center}
 .row:hover{background:rgba(255,255,255,.02)}
 .row:last-child{border-bottom:none}
-.row.warn-row{background:rgba(248,113,113,.03)}
-.name-main{font-size:13px;font-weight:600}
-.cell-progress{display:flex;flex-direction:column;gap:5px}
-.progress-bar{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
-.progress-fill{height:100%;background:var(--green);border-radius:2px}
-.progress-pct{font-size:11px;font-weight:700;color:var(--text2)}
-.cell-week{font-size:12px;font-weight:600;color:var(--text2)}
-.cell-days{font-size:11px;color:var(--text2);font-family:var(--mono)}
-.t-normal{font-size:11px;color:var(--text2)}
-.t-warn{font-size:11px;color:var(--yellow)}
-.t-danger{font-size:11px;color:var(--red)}
-.badges{display:flex;gap:5px;flex-wrap:wrap}
-.badge{font-size:9px;letter-spacing:1px;text-transform:uppercase;border-radius:5px;padding:3px 7px;font-weight:600}
-.b-sale{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
-.b-active{background:rgba(96,165,250,.1);color:var(--blue);border:1px solid rgba(96,165,250,.2)}
-.b-new{background:rgba(250,204,21,.1);color:var(--yellow);border:1px solid rgba(250,204,21,.2)}
-.empty-row{padding:40px;text-align:center;color:var(--text3);font-size:13px}
-.spin{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:sp .8s linear infinite;vertical-align:middle;margin-right:8px}
+.row.wr{background:rgba(248,113,113,.03)}
+.nm{font-size:13px;font-weight:600}
+.cp{display:flex;flex-direction:column;gap:5px}
+.pb{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.pf{height:100%;background:var(--green);border-radius:2px}
+.pp{font-size:11px;font-weight:700;color:var(--text2)}
+.cw{font-size:12px;font-weight:600;color:var(--text2)}
+.cd{font-size:11px;color:var(--text2);font-family:var(--mono)}
+.tn{font-size:11px;color:var(--text2)}.tw2{font-size:11px;color:var(--yellow)}.td{font-size:11px;color:var(--red)}
+.bgs{display:flex;gap:5px;flex-wrap:wrap}
+.bg{font-size:9px;letter-spacing:1px;text-transform:uppercase;border-radius:5px;padding:3px 7px;font-weight:600}
+.bs{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.ba{background:rgba(96,165,250,.1);color:var(--blue);border:1px solid rgba(96,165,250,.2)}
+.bn{background:rgba(250,204,21,.1);color:var(--yellow);border:1px solid rgba(250,204,21,.2)}
+.erow{padding:40px;text-align:center;color:var(--text3);font-size:13px}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:sp .8s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes sp{to{transform:rotate(360deg)}}
-.debug-box{background:rgba(255,0,0,.05);border:1px solid rgba(255,0,0,.2);border-radius:8px;padding:12px;margin-bottom:16px;font-size:11px;color:var(--red);font-family:var(--mono);display:none}
 </style>
 </head>
 <body>
@@ -86,43 +71,39 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   <div class="login-box">
     <div class="login-logo">MLYNR.</div>
     <div class="login-sub">Admin Paneli</div>
-    <label class="login-label">Admin Şifresi</label>
-    <input class="login-input" id="admin-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="login-btn" onclick="doLogin()">GİRİŞ YAP →</button>
-    <div class="login-err" id="login-err"></div>
+    <label class="lbl">Admin Şifresi</label>
+    <input class="linput" id="ap" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="lbtn" onclick="doLogin()">GİRİŞ YAP →</button>
+    <div class="lerr" id="lerr"></div>
   </div>
 </div>
 
 <div id="app">
   <div class="header">
-    <div class="header-left">
-      <div class="header-logo">MLYNR.</div>
-      <div class="header-badge">Admin Panel</div>
+    <div style="display:flex;align-items:center">
+      <div class="hlogo">MLYNR.</div>
+      <div class="hbadge">Admin Panel</div>
     </div>
-    <div class="header-right">
-      <div class="last-updated" id="last-updated"></div>
-      <button class="refresh-btn" onclick="loadData()">↻ Yenile</button>
-      <button class="logout-btn" onclick="doLogout()">Çıkış</button>
+    <div class="hright">
+      <div class="lupd" id="lupd"></div>
+      <button class="rbtn" onclick="loadData()">↻ Yenile</button>
+      <button class="obtn" onclick="doLogout()">Çıkış</button>
     </div>
   </div>
 
-  <div class="debug-box" id="debug-box"></div>
-
-  <div class="stats-grid" id="stats-grid">
-    <div class="stat-card"><span class="spin"></span> Yükleniyor...</div>
-  </div>
+  <div class="sgrid" id="sgrid"><div class="sc"><span class="spin"></span>Yükleniyor...</div></div>
 
   <div class="toolbar">
-    <input class="search-input" id="search" placeholder="İsim ara..." oninput="renderTable()">
-    <button class="filter-btn active" id="f-all" onclick="setFilter('all')">Tümü</button>
-    <button class="filter-btn" id="f-active" onclick="setFilter('active')">Bugün Aktif</button>
-    <button class="filter-btn" id="f-warning" onclick="setFilter('warning')">3+ Gün Yok ⚠️</button>
-    <button class="filter-btn" id="f-sale" onclick="setFilter('sale')">İlk Satış ✅</button>
-    <span class="count-badge" id="count-badge"></span>
+    <input class="sinput" id="srch" placeholder="İsim ara..." oninput="renderTable()">
+    <button class="fbtn act" id="f-all" onclick="sf('all')">Tümü</button>
+    <button class="fbtn" id="f-active" onclick="sf('active')">Bugün Aktif</button>
+    <button class="fbtn" id="f-warn" onclick="sf('warn')">3+ Gün Yok ⚠️</button>
+    <button class="fbtn" id="f-sale" onclick="sf('sale')">İlk Satış ✅</button>
+    <span class="cbadge" id="cbadge"></span>
   </div>
 
-  <div class="table-wrap">
-    <div class="table-head">
+  <div class="tw">
+    <div class="thead">
       <div class="th">Kursiyer</div>
       <div class="th">İlerleme</div>
       <div class="th">Hafta</div>
@@ -130,179 +111,113 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <div class="th">Son Giriş</div>
       <div class="th">Durum</div>
     </div>
-    <div class="table-body" id="table-body">
-      <div class="empty-row"><span class="spin"></span>Yükleniyor...</div>
-    </div>
+    <div class="tbody" id="tbody"><div class="erow"><span class="spin"></span>Yükleniyor...</div></div>
   </div>
 </div>
 
 <script>
-const SB_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
-const ADMIN_PASS = 'MLYNR2025ADMIN';
+const EP = 'https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint';
+const PASS = 'MLYNR2025ADMIN';
 const TOTAL = 28;
-
-var allUsers = [];
-var currentFilter = 'all';
+var users = [], flt = 'all';
 
 function doLogin(){
-  var p = document.getElementById('admin-pass').value;
-  if(p === ADMIN_PASS){
-    document.getElementById('login').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
+  var p = document.getElementById('ap').value;
+  if(p === PASS){
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').style.display='block';
     loadData();
   } else {
-    document.getElementById('login-err').textContent = 'Sifre yanlis.';
-    document.getElementById('admin-pass').value = '';
+    document.getElementById('lerr').textContent='Şifre yanlış.';
+    document.getElementById('ap').value='';
   }
 }
-
 function doLogout(){
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login').style.display = 'flex';
-  document.getElementById('admin-pass').value = '';
-}
-
-function showDebug(msg){
-  var el = document.getElementById('debug-box');
-  el.style.display = 'block';
-  el.textContent = msg;
+  document.getElementById('app').style.display='none';
+  document.getElementById('login').style.display='flex';
+  document.getElementById('ap').value='';
 }
 
 async function loadData(){
-  document.getElementById('table-body').innerHTML = '<div class="empty-row"><span class="spin"></span>Yukleniyor...</div>';
-  document.getElementById('debug-box').style.display = 'none';
-
+  document.getElementById('tbody').innerHTML='<div class="erow"><span class="spin"></span>Yükleniyor...</div>';
   try {
-    var url = SB_URL + '/rest/v1/progress?select=user_id,done,first_sale,updated_at,full_name&order=updated_at.desc&limit=500';
-    var res = await fetch(url, {
-      headers: {
-        'apikey': SB_KEY,
-        'Authorization': 'Bearer ' + SB_KEY,
-        'Content-Type': 'application/json'
-      }
+    var res = await fetch(EP, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({tool:'admin-data', adminKey: PASS})
     });
-
-    var raw = await res.text();
-
-    var data;
-    try {
-      data = JSON.parse(raw);
-    } catch(e) {
-      showDebug('JSON parse error: ' + raw.substring(0,200));
-      return;
-    }
-
-    if (!Array.isArray(data)) {
-      showDebug('API response: ' + JSON.stringify(data).substring(0,300));
-      // RLS engeli - service role gerekli
-      if(data && data.message) {
-        document.getElementById('table-body').innerHTML = '<div class="empty-row" style="color:var(--red)">Erisim reddedildi. Supabase RLS ayari gerekli.<br><br>SQL Editor\'da su komutu calistir:<br><code style="font-family:monospace;font-size:10px">CREATE POLICY "admin_all" ON progress FOR SELECT USING (true);</code></div>';
-      }
-      return;
-    }
-
-    allUsers = data.map(function(u){
-      var done = Array.isArray(u.done) ? u.done.length : 0;
-      var pct = Math.round(done / TOTAL * 100);
-      var week = Math.min(4, Math.ceil((done+1) / 7)) || 1;
-      var lastSeen = u.updated_at ? new Date(u.updated_at) : null;
-      var daysSince = lastSeen ? Math.floor((Date.now() - lastSeen.getTime()) / 86400000) : 999;
-      return {
-        name: u.full_name || 'İsimsiz',
-        done: done, pct: pct, week: week,
-        firstSale: !!u.first_sale,
-        lastSeen: lastSeen, daysSince: daysSince,
-        isNew: done <= 2,
-        isActive: daysSince === 0,
-        isWarning: daysSince >= 3
-      };
+    var d = await res.json();
+    if(d.error){ throw new Error(d.error); }
+    users = (d.users||[]).map(function(u){
+      var done = u.done||0;
+      var pct = Math.round(done/TOTAL*100);
+      var week = Math.min(4,Math.ceil((done+1)/7))||1;
+      var last = u.updated_at ? new Date(u.updated_at) : null;
+      var days = last ? Math.floor((Date.now()-last.getTime())/86400000) : 999;
+      return {name:u.full_name||'İsimsiz',done:done,pct:pct,week:week,
+        sale:!!u.first_sale,last:last,days:days,
+        isNew:done<=2,isActive:days===0,isWarn:days>=3};
     });
-
     renderStats();
     renderTable();
-    document.getElementById('last-updated').textContent = new Date().toLocaleTimeString('tr-TR');
-
-  } catch(e) {
-    showDebug('Hata: ' + e.message);
-    document.getElementById('table-body').innerHTML = '<div class="empty-row" style="color:var(--red)">Baglanti hatasi: ' + e.message + '</div>';
+    document.getElementById('lupd').textContent=new Date().toLocaleTimeString('tr-TR');
+  } catch(e){
+    document.getElementById('tbody').innerHTML='<div class="erow" style="color:var(--red)">Hata: '+e.message+'</div>';
   }
 }
 
 function renderStats(){
-  var t = allUsers.length;
-  var active = allUsers.filter(function(u){return u.isActive;}).length;
-  var warn = allUsers.filter(function(u){return u.isWarning;}).length;
-  var sale = allUsers.filter(function(u){return u.firstSale;}).length;
-  var avg = t>0 ? Math.round(allUsers.reduce(function(a,u){return a+u.pct;},0)/t) : 0;
-
-  document.getElementById('stats-grid').innerHTML =
-    sc('','Toplam Kursiyer',t) +
-    sc('s-green','Bugün Aktif',active) +
-    sc('s-red','3+ Gün Yok',warn) +
-    sc('s-yellow','İlk Satış',sale) +
-    sc('s-blue','Ort. İlerleme','%'+avg);
+  var t=users.length,a=0,w=0,s=0,pts=0;
+  users.forEach(function(u){if(u.isActive)a++;if(u.isWarn)w++;if(u.sale)s++;pts+=u.pct;});
+  var avg=t>0?Math.round(pts/t):0;
+  document.getElementById('sgrid').innerHTML=
+    sc('','Toplam',t)+sc('sg','Bugün Aktif',a)+sc('sr','3+ Gün Yok',w)+sc('sy','İlk Satış',s)+sc('sb','Ort. İlerleme','%'+avg);
 }
+function sc(cls,l,v){return'<div class="sc '+cls+'"><div class="sv">'+v+'</div><div class="sl">'+l+'</div></div>';}
 
-function sc(cls, lbl, val){
-  return '<div class="stat-card '+cls+'"><div class="stat-val">'+val+'</div><div class="stat-lbl">'+lbl+'</div></div>';
-}
-
-function setFilter(f){
-  currentFilter = f;
-  ['all','active','warning','sale'].forEach(function(id){
-    var el = document.getElementById('f-'+id);
-    if(el) el.classList.toggle('active', id===f);
+function sf(f){
+  flt=f;
+  ['all','active','warn','sale'].forEach(function(id){
+    var el=document.getElementById('f-'+id);
+    if(el)el.classList.toggle('act',id===f);
   });
   renderTable();
 }
 
 function renderTable(){
-  var search = (document.getElementById('search').value||'').toLowerCase();
-  var list = allUsers.filter(function(u){
-    if(search && u.name.toLowerCase().indexOf(search)<0) return false;
-    if(currentFilter==='active') return u.isActive;
-    if(currentFilter==='warning') return u.isWarning;
-    if(currentFilter==='sale') return u.firstSale;
+  var s=(document.getElementById('srch').value||'').toLowerCase();
+  var list=users.filter(function(u){
+    if(s&&u.name.toLowerCase().indexOf(s)<0)return false;
+    if(flt==='active')return u.isActive;
+    if(flt==='warn')return u.isWarn;
+    if(flt==='sale')return u.sale;
     return true;
   });
-
-  document.getElementById('count-badge').textContent = list.length + ' kursiyer';
-
-  if(list.length===0){
-    document.getElementById('table-body').innerHTML = '<div class="empty-row">Sonuc bulunamadi.</div>';
-    return;
-  }
-
-  var html = '';
+  document.getElementById('cbadge').textContent=list.length+' kursiyer';
+  if(!list.length){document.getElementById('tbody').innerHTML='<div class="erow">Bulunamadı.</div>';return;}
+  var html='';
   list.forEach(function(u){
-    var tc='t-normal', ts='';
-    if(u.daysSince===0){ts='Bugun';}
-    else if(u.daysSince===1){ts='Dun';}
-    else if(u.daysSince>=7){ts=u.daysSince+' gun once';tc='t-danger';}
-    else if(u.daysSince>=3){ts=u.daysSince+' gun once';tc='t-warn';}
-    else{ts=u.daysSince+' gun once';}
-
-    var badges='';
-    if(u.firstSale) badges+='<span class="badge b-sale">Satis</span>';
-    if(u.isActive) badges+='<span class="badge b-active">Aktif</span>';
-    if(u.isNew) badges+='<span class="badge b-new">Yeni</span>';
-
-    html+='<div class="row'+(u.isWarning&&!u.isActive?' warn-row':'')+'">'+
-      '<div class="name-main">'+esc(u.name)+'</div>'+
-      '<div class="cell-progress">'+
-        '<div class="progress-bar"><div class="progress-fill" style="width:'+u.pct+'%"></div></div>'+
-        '<div class="progress-pct">%'+u.pct+' · '+u.done+'/'+TOTAL+'</div>'+
-      '</div>'+
-      '<div class="cell-week">H.'+u.week+'</div>'+
-      '<div class="cell-days">'+u.done+'</div>'+
+    var tc='tn',ts='';
+    if(u.days===0){ts='Bugün';}
+    else if(u.days===1){ts='Dün';}
+    else if(u.days>=7){ts=u.days+' gün önce';tc='td';}
+    else if(u.days>=3){ts=u.days+' gün önce';tc='tw2';}
+    else{ts=u.days+' gün önce';}
+    var bgs='';
+    if(u.sale)bgs+='<span class="bg bs">Satış</span>';
+    if(u.isActive)bgs+='<span class="bg ba">Aktif</span>';
+    if(u.isNew)bgs+='<span class="bg bn">Yeni</span>';
+    html+='<div class="row'+(u.isWarn&&!u.isActive?' wr':'')+'">'+
+      '<div class="nm">'+esc(u.name)+'</div>'+
+      '<div class="cp"><div class="pb"><div class="pf" style="width:'+u.pct+'%"></div></div><div class="pp">%'+u.pct+' · '+u.done+'/'+TOTAL+'</div></div>'+
+      '<div class="cw">H.'+u.week+'</div>'+
+      '<div class="cd">'+u.done+'</div>'+
       '<div class="'+tc+'">'+ts+'</div>'+
-      '<div class="badges">'+badges+'</div>'+
+      '<div class="bgs">'+bgs+'</div>'+
     '</div>';
   });
-  document.getElementById('table-body').innerHTML = html;
+  document.getElementById('tbody').innerHTML=html;
 }
-
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 </script>
 </body>
