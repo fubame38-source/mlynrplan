@@ -54,6 +54,16 @@ body.light .day.done{background:#f0faf0;border-color:rgba(22,163,74,.2)}
 body.light .hero-action-btn{background:rgba(255,255,255,.7);border:1px solid rgba(0,0,0,.1);color:#111;box-shadow:0 2px 8px rgba(0,0,0,.06),inset 0 1px 0 rgba(255,255,255,.9)}
 body.light .hero-action-btn:hover{background:rgba(255,255,255,.9);border-color:rgba(0,0,0,.18);box-shadow:0 8px 24px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,1);transform:translateY(-2px)}
 body.light .earn-btn{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.1);color:#111;box-shadow:0 2px 8px rgba(0,0,0,.06),inset 0 1px 0 rgba(255,255,255,.9)}
+body.light .earn-input-wrap{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.12)}
+body.light .earn-input{color:#111}
+body.light .earn-unit{color:#666}
+body.light .earn-result{background:rgba(250,204,21,.06);border-color:rgba(250,204,21,.25)}
+body.light .earn-stat-val{color:#111}
+body.light .earn-stat-lbl{color:#666}
+body.light .earn-sc-item{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.08)}
+body.light .earn-sc-left{color:#333}
+body.light .earn-sc-right{color:#111}
+body.light .earn-sc-label{color:#666}
 body.light .sale-btn{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.1);color:#111;box-shadow:0 2px 8px rgba(0,0,0,.06),inset 0 1px 0 rgba(255,255,255,.9)}
 body.light .cb-trigger{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.1);box-shadow:0 2px 8px rgba(0,0,0,.05),inset 0 1px 0 rgba(255,255,255,.9)}
 body.light .cb-trigger:hover{background:rgba(255,255,255,.9);border-color:rgba(0,0,0,.18);box-shadow:0 8px 24px rgba(0,0,0,.1)}
@@ -985,8 +995,19 @@ body.light #mentor-popup{background:#fff}
           <div class="earn-input-wrap"><span class="earn-unit">$</span><input id="earn-profit" class="earn-input" type="number" min="1" max="999" value="5" oninput="calcEarn()"></div>
         </div>
       </div>
+      <div class="earn-row" style="margin-top:12px">
+        <div class="earn-field">
+          <label class="earn-label">Günlük Ayırdığın Süre</label>
+          <div class="earn-input-wrap"><span class="earn-unit">⏱</span><input id="earn-hours" class="earn-input" type="number" min="0.5" max="24" step="0.5" value="2" oninput="calcEarn()"></div>
+        </div>
+        <div class="earn-field">
+          <label class="earn-label">Aylık Hedef ($)</label>
+          <div class="earn-input-wrap"><span class="earn-unit">🎯</span><input id="earn-goal" class="earn-input" type="number" min="100" max="99999" value="1000" oninput="calcEarn()"></div>
+        </div>
+      </div>
     </div>
     <div id="earn-result" class="earn-result"></div>
+    <div id="earn-plan" style="margin-top:12px"></div>
     <div id="earn-scenarios" class="earn-scenarios"></div>
   </div>
 
@@ -2243,6 +2264,8 @@ function closeEarn(){document.getElementById('earn-overlay').classList.remove('s
 function calcEarn(){
   var sales=Math.max(1,parseInt(document.getElementById('earn-sales').value)||3);
   var profit=Math.max(1,parseFloat(document.getElementById('earn-profit').value)||5);
+  var hours=Math.max(0.5,parseFloat(document.getElementById('earn-hours').value)||2);
+  var goal=Math.max(100,parseInt(document.getElementById('earn-goal').value)||1000);
   var daily=sales*profit;
   var monthly=daily*30;
   var yearly=daily*365;
@@ -2255,20 +2278,40 @@ function calcEarn(){
       '<div class="earn-stat"><div class="earn-stat-val">$'+yearly.toFixed(0)+'</div><div class="earn-stat-lbl">Yıllık</div></div>'+
     '</div>';
 
-  var scenarios=[
-    {mult:2,label:'2x büyüme'},
-    {mult:5,label:'5x büyüme'},
-    {mult:10,label:'10x büyüme'}
-  ];
+  // Hedefe ulaşma planı
+  var neededSales = Math.ceil(goal / profit / 30);
+  var neededProducts = Math.ceil(neededSales * 10);
+  var daysToGoal = Math.ceil(neededProducts / Math.max(1, hours * 2));
+  var monthsToGoal = Math.ceil(daysToGoal / 30);
+  var planEl = document.getElementById('earn-plan');
+  if(planEl){
+    var goalStatus = monthly >= goal ? '✅ Hedefe ulaştın!' : '🎯 Hedefe ulaşmak için plan:';
+    var planHtml = '<div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.15);border-radius:12px;padding:14px 16px">';
+    planHtml += '<div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:#4ade80;text-transform:uppercase;margin-bottom:10px">'+goalStatus+'</div>';
+    if(monthly < goal){
+      planHtml += '<div style="font-size:12px;color:var(--text);line-height:1.8">';
+      planHtml += '📦 Aylık <strong>$'+goal+'</strong> için günde <strong>'+neededSales+' satış</strong> gerekli<br>';
+      planHtml += '🗂 Bunun için portföyünde <strong>~'+neededProducts+' ürün</strong> olmalı<br>';
+      planHtml += '⏱ Günde <strong>'+hours+' saat</strong> çalışırsan ~<strong>'+monthsToGoal+' ayda</strong> bu hedefe ulaşırsın<br>';
+      planHtml += '🚀 Her gün <strong>'+(hours<=1?'3-5':'5-10')+' yeni ürün</strong> ekle, portföyünü büyüt';
+      planHtml += '</div>';
+    } else {
+      planHtml += '<div style="font-size:12px;color:var(--text)">Mevcut hızınla aylık <strong>$'+monthly.toFixed(0)+'</strong> kazanıyorsun. Hedefini yükselt! 💪</div>';
+    }
+    planHtml += '</div>';
+    planEl.innerHTML = planHtml;
+  }
+
   var msgs=[
-    'Günde '+Math.round(sales*2)+' satışla aylık <strong>$'+Math.round(monthly*2).toLocaleString()+'</strong> — küçük optimizasyonla ulaşılabilir hedef.',
-    'Günde '+Math.round(sales*5)+' satışla aylık <strong>$'+Math.round(monthly*5).toLocaleString()+'</strong> — portföyünü 5x genişletmek yeterli.',
-    'Günde '+Math.round(sales*10)+' satışla aylık <strong>$'+Math.round(monthly*10).toLocaleString()+'</strong> — otomasyon ve ölçekleme ile mümkün.'
+    'Gunde '+Math.round(sales*2)+' satisla aylik <strong>$'+Math.round(monthly*2).toLocaleString()+'</strong> — kucuk optimizasyonla ulasilabilir hedef.',
+    'Gunde '+Math.round(sales*5)+' satisla aylik <strong>$'+Math.round(monthly*5).toLocaleString()+'</strong> — portfoyunu 5x genisletmek yeterli.',
+    'Gunde '+Math.round(sales*10)+' satisla aylik <strong>$'+Math.round(monthly*10).toLocaleString()+'</strong> — otomasyon ve olcekleme ile mumkun.'
   ];
-  var html='<div class="earn-sc-label">Büyüme Senaryoları</div>';
-  scenarios.forEach(function(s,i){
-    html+='<div class="earn-sc-item"><div class="earn-sc-left">'+msgs[i]+'</div><div class="earn-sc-right">$'+Math.round(monthly*s.mult).toLocaleString()+'/ay</div></div>';
-  });
+  var html='<div class="earn-sc-label">Buyume Senaryolari</div>';
+  for(var i=0;i<3;i++){
+    var mult=[2,5,10][i];
+    html+='<div class="earn-sc-item"><div class="earn-sc-left">'+msgs[i]+'</div><div class="earn-sc-right">$'+Math.round(monthly*mult).toLocaleString()+'/ay</div></div>';
+  }
   document.getElementById('earn-scenarios').innerHTML=html;
 }
 
