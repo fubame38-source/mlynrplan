@@ -15,8 +15,6 @@
   --mono:'Geist Mono','Fira Code',monospace;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
-
-/* ── LOGIN ── */
 #login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
 .login-box{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:40px;width:100%;max-width:380px}
 .login-logo{font-size:22px;font-weight:900;letter-spacing:-1px;margin-bottom:3px}
@@ -24,14 +22,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .login-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:8px;display:block}
 .login-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 16px;outline:none;margin-bottom:14px;transition:border-color .2s}
 .login-input:focus{border-color:rgba(255,255,255,.3)}
-.login-btn{width:100%;background:#fff;color:#000;border:none;border-radius:10px;padding:13px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase;transition:opacity .2s;margin-top:4px}
+.login-btn{width:100%;background:#fff;color:#000;border:none;border-radius:10px;padding:13px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase}
 .login-btn:hover{opacity:.88}
 .login-err{color:var(--red);font-size:12px;margin-top:10px;text-align:center;min-height:18px}
-
-/* ── APP ── */
 #app{display:none;max-width:1200px;margin:0 auto;padding:28px 24px}
-
-/* Header */
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
 .header-left{display:flex;align-items:center;gap:12px}
 .header-logo{font-size:18px;font-weight:900;letter-spacing:-1px}
@@ -39,11 +33,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .header-right{display:flex;align-items:center;gap:10px}
 .refresh-btn{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer;transition:all .2s}
 .refresh-btn:hover{background:rgba(255,255,255,.1);color:var(--text)}
-.logout-btn{background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer;transition:all .2s}
+.logout-btn{background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 14px;font-size:11px;cursor:pointer}
 .logout-btn:hover{border-color:var(--red);color:var(--red)}
 .last-updated{font-size:10px;color:var(--text3);font-family:var(--mono)}
-
-/* Stats */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:28px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
 .stat-val{font-size:30px;font-weight:800;line-height:1;margin-bottom:6px}
@@ -52,8 +44,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .stat-card.s-yellow .stat-val{color:var(--yellow)}
 .stat-card.s-red .stat-val{color:var(--red)}
 .stat-card.s-blue .stat-val{color:var(--blue)}
-
-/* Filters */
 .toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .search-input{background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:12px;padding:8px 14px;outline:none;width:200px}
 .search-input:focus{border-color:rgba(255,255,255,.25)}
@@ -61,54 +51,37 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .filter-btn:hover,.filter-btn.active{background:rgba(255,255,255,.1);color:var(--text);border-color:rgba(255,255,255,.2)}
 .filter-btn.active{border-color:var(--green);color:var(--green)}
 .count-badge{font-size:10px;color:var(--text3);margin-left:auto}
-
-/* Table */
 .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.table-head{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;gap:0;border-bottom:1px solid var(--border);padding:12px 20px;background:rgba(255,255,255,.02)}
+.table-head{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;padding:12px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}
 .th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
 .table-body{max-height:600px;overflow-y:auto}
-.row{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;gap:0;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;transition:background .15s;cursor:default}
+.row{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;transition:background .15s}
 .row:hover{background:rgba(255,255,255,.02)}
 .row:last-child{border-bottom:none}
-.row.warning{background:rgba(248,113,113,.03)}
-.row.warning:hover{background:rgba(248,113,113,.06)}
-
-/* Row cells */
-.cell-name{display:flex;flex-direction:column;gap:2px}
-.name-main{font-size:13px;font-weight:600;color:var(--text)}
-.name-email{font-size:10px;color:var(--text3);font-family:var(--mono)}
+.row.warn-row{background:rgba(248,113,113,.03)}
+.name-main{font-size:13px;font-weight:600}
 .cell-progress{display:flex;flex-direction:column;gap:5px}
-.progress-bar{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;width:100%}
-.progress-fill{height:100%;background:var(--green);border-radius:2px;transition:width .5s}
+.progress-bar{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--green);border-radius:2px}
 .progress-pct{font-size:11px;font-weight:700;color:var(--text2)}
 .cell-week{font-size:12px;font-weight:600;color:var(--text2)}
 .cell-days{font-size:11px;color:var(--text2);font-family:var(--mono)}
-.cell-time{font-size:11px;color:var(--text2)}
-.cell-time.danger{color:var(--red)}
-.cell-time.warning-color{color:var(--yellow)}
-.cell-badges{display:flex;gap:5px;flex-wrap:wrap}
+.t-normal{font-size:11px;color:var(--text2)}
+.t-warn{font-size:11px;color:var(--yellow)}
+.t-danger{font-size:11px;color:var(--red)}
+.badges{display:flex;gap:5px;flex-wrap:wrap}
 .badge{font-size:9px;letter-spacing:1px;text-transform:uppercase;border-radius:5px;padding:3px 7px;font-weight:600}
-.badge-sale{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
-.badge-active{background:rgba(96,165,250,.1);color:var(--blue);border:1px solid rgba(96,165,250,.2)}
-.badge-new{background:rgba(250,204,21,.1);color:var(--yellow);border:1px solid rgba(250,204,21,.2)}
-
-/* Empty/loading */
-.loading-row{padding:40px;text-align:center;color:var(--text3);font-size:13px}
-.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* Mobile */
-@media(max-width:768px){
-  .table-head,.row{grid-template-columns:2fr 1fr 1fr;gap:0}
-  .th:nth-child(3),.th:nth-child(4),.row .cell-week,.row .cell-days{display:none}
-  #app{padding:16px}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-}
+.b-sale{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.b-active{background:rgba(96,165,250,.1);color:var(--blue);border:1px solid rgba(96,165,250,.2)}
+.b-new{background:rgba(250,204,21,.1);color:var(--yellow);border:1px solid rgba(250,204,21,.2)}
+.empty-row{padding:40px;text-align:center;color:var(--text3);font-size:13px}
+.spin{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:sp .8s linear infinite;vertical-align:middle;margin-right:8px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.debug-box{background:rgba(255,0,0,.05);border:1px solid rgba(255,0,0,.2);border-radius:8px;padding:12px;margin-bottom:16px;font-size:11px;color:var(--red);font-family:var(--mono);display:none}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login">
   <div class="login-box">
     <div class="login-logo">MLYNR.</div>
@@ -120,7 +93,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
   <div class="header">
     <div class="header-left">
@@ -134,12 +106,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
     </div>
   </div>
 
+  <div class="debug-box" id="debug-box"></div>
+
   <div class="stats-grid" id="stats-grid">
-    <div class="stat-card"><div class="spinner"></div></div>
+    <div class="stat-card"><span class="spin"></span> Yükleniyor...</div>
   </div>
 
   <div class="toolbar">
-    <input class="search-input" id="search" placeholder="İsim veya email ara..." oninput="filterRows()">
+    <input class="search-input" id="search" placeholder="İsim ara..." oninput="renderTable()">
     <button class="filter-btn active" id="f-all" onclick="setFilter('all')">Tümü</button>
     <button class="filter-btn" id="f-active" onclick="setFilter('active')">Bugün Aktif</button>
     <button class="filter-btn" id="f-warning" onclick="setFilter('warning')">3+ Gün Yok ⚠️</button>
@@ -157,7 +131,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <div class="th">Durum</div>
     </div>
     <div class="table-body" id="table-body">
-      <div class="loading-row"><div class="spinner"></div><br>Yükleniyor...</div>
+      <div class="empty-row"><span class="spin"></span>Yükleniyor...</div>
     </div>
   </div>
 </div>
@@ -166,31 +140,19 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 const SB_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
 const ADMIN_PASS = 'MLYNR2025ADMIN';
-const TOTAL_DAYS = 28;
-
-// Hafta hesapla
-const WEEKS_DAYS = [7,7,7,7]; // her hafta kaç gün
-function getDoneWeek(doneCount){
-  var cumulative = 0;
-  for(var i=0;i<WEEKS_DAYS.length;i++){
-    cumulative += WEEKS_DAYS[i];
-    if(doneCount <= cumulative) return i+1;
-  }
-  return 4;
-}
+const TOTAL = 28;
 
 var allUsers = [];
 var currentFilter = 'all';
 
 function doLogin(){
-  var pass = document.getElementById('admin-pass').value;
-  var err = document.getElementById('login-err');
-  if(pass === ADMIN_PASS){
+  var p = document.getElementById('admin-pass').value;
+  if(p === ADMIN_PASS){
     document.getElementById('login').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     loadData();
   } else {
-    err.textContent = 'Şifre yanlış.';
+    document.getElementById('login-err').textContent = 'Sifre yanlis.';
     document.getElementById('admin-pass').value = '';
   }
 }
@@ -199,36 +161,59 @@ function doLogout(){
   document.getElementById('app').style.display = 'none';
   document.getElementById('login').style.display = 'flex';
   document.getElementById('admin-pass').value = '';
-  document.getElementById('login-err').textContent = '';
+}
+
+function showDebug(msg){
+  var el = document.getElementById('debug-box');
+  el.style.display = 'block';
+  el.textContent = msg;
 }
 
 async function loadData(){
-  document.getElementById('table-body').innerHTML = '<div class="loading-row"><div class="spinner"></div><br>Yükleniyor...</div>';
-  
+  document.getElementById('table-body').innerHTML = '<div class="empty-row"><span class="spin"></span>Yukleniyor...</div>';
+  document.getElementById('debug-box').style.display = 'none';
+
   try {
-    // Auth users + progress birleştir
-    const res = await fetch(`${SB_URL}/rest/v1/progress?select=*&order=updated_at.desc&limit=500`, {
-      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    var url = SB_URL + '/rest/v1/progress?select=user_id,done,first_sale,updated_at,full_name&order=updated_at.desc&limit=500';
+    var res = await fetch(url, {
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Content-Type': 'application/json'
+      }
     });
-    const data = await res.json();
-    
+
+    var raw = await res.text();
+
+    var data;
+    try {
+      data = JSON.parse(raw);
+    } catch(e) {
+      showDebug('JSON parse error: ' + raw.substring(0,200));
+      return;
+    }
+
+    if (!Array.isArray(data)) {
+      showDebug('API response: ' + JSON.stringify(data).substring(0,300));
+      // RLS engeli - service role gerekli
+      if(data && data.message) {
+        document.getElementById('table-body').innerHTML = '<div class="empty-row" style="color:var(--red)">Erisim reddedildi. Supabase RLS ayari gerekli.<br><br>SQL Editor\'da su komutu calistir:<br><code style="font-family:monospace;font-size:10px">CREATE POLICY "admin_all" ON progress FOR SELECT USING (true);</code></div>';
+      }
+      return;
+    }
+
     allUsers = data.map(function(u){
       var done = Array.isArray(u.done) ? u.done.length : 0;
-      var pct = Math.round(done / TOTAL_DAYS * 100);
-      var week = getDoneWeek(done);
+      var pct = Math.round(done / TOTAL * 100);
+      var week = Math.min(4, Math.ceil((done+1) / 7)) || 1;
       var lastSeen = u.updated_at ? new Date(u.updated_at) : null;
       var daysSince = lastSeen ? Math.floor((Date.now() - lastSeen.getTime()) / 86400000) : 999;
       return {
-        id: u.user_id,
-        name: u.full_name || '—',
-        email: u.user_id ? u.user_id.substring(0,8)+'...' : '—',
-        done: done,
-        pct: pct,
-        week: week,
-        firstSale: u.first_sale || false,
-        lastSeen: lastSeen,
-        daysSince: daysSince,
-        isNew: done <= 3,
+        name: u.full_name || 'İsimsiz',
+        done: done, pct: pct, week: week,
+        firstSale: !!u.first_sale,
+        lastSeen: lastSeen, daysSince: daysSince,
+        isNew: done <= 2,
         isActive: daysSince === 0,
         isWarning: daysSince >= 3
       };
@@ -236,25 +221,31 @@ async function loadData(){
 
     renderStats();
     renderTable();
-    document.getElementById('last-updated').textContent = 'Güncellendi: ' + new Date().toLocaleTimeString('tr-TR');
-  } catch(e){
-    document.getElementById('table-body').innerHTML = '<div class="loading-row" style="color:#f87171">Veri yüklenemedi: ' + e.message + '</div>';
+    document.getElementById('last-updated').textContent = new Date().toLocaleTimeString('tr-TR');
+
+  } catch(e) {
+    showDebug('Hata: ' + e.message);
+    document.getElementById('table-body').innerHTML = '<div class="empty-row" style="color:var(--red)">Baglanti hatasi: ' + e.message + '</div>';
   }
 }
 
 function renderStats(){
-  var total = allUsers.length;
-  var active = allUsers.filter(function(u){return u.daysSince === 0;}).length;
-  var warning = allUsers.filter(function(u){return u.isWarning;}).length;
-  var sales = allUsers.filter(function(u){return u.firstSale;}).length;
-  var avgPct = total > 0 ? Math.round(allUsers.reduce(function(a,u){return a+u.pct;},0)/total) : 0;
+  var t = allUsers.length;
+  var active = allUsers.filter(function(u){return u.isActive;}).length;
+  var warn = allUsers.filter(function(u){return u.isWarning;}).length;
+  var sale = allUsers.filter(function(u){return u.firstSale;}).length;
+  var avg = t>0 ? Math.round(allUsers.reduce(function(a,u){return a+u.pct;},0)/t) : 0;
 
-  document.getElementById('stats-grid').innerHTML = 
-    '<div class="stat-card"><div class="stat-val">'+total+'</div><div class="stat-lbl">Toplam Kursiyer</div></div>'+
-    '<div class="stat-card s-green"><div class="stat-val">'+active+'</div><div class="stat-lbl">Bugün Aktif</div></div>'+
-    '<div class="stat-card s-red"><div class="stat-val">'+warning+'</div><div class="stat-lbl">3+ Gün Yok</div></div>'+
-    '<div class="stat-card s-yellow"><div class="stat-val">'+sales+'</div><div class="stat-lbl">İlk Satış Yaptı</div></div>'+
-    '<div class="stat-card s-blue"><div class="stat-val">%'+avgPct+'</div><div class="stat-lbl">Ort. İlerleme</div></div>';
+  document.getElementById('stats-grid').innerHTML =
+    sc('','Toplam Kursiyer',t) +
+    sc('s-green','Bugün Aktif',active) +
+    sc('s-red','3+ Gün Yok',warn) +
+    sc('s-yellow','İlk Satış',sale) +
+    sc('s-blue','Ort. İlerleme','%'+avg);
+}
+
+function sc(cls, lbl, val){
+  return '<div class="stat-card '+cls+'"><div class="stat-val">'+val+'</div><div class="stat-lbl">'+lbl+'</div></div>';
 }
 
 function setFilter(f){
@@ -266,65 +257,53 @@ function setFilter(f){
   renderTable();
 }
 
-function filterRows(){
-  renderTable();
-}
-
 function renderTable(){
   var search = (document.getElementById('search').value||'').toLowerCase();
-  var users = allUsers.filter(function(u){
-    if(search && !u.name.toLowerCase().includes(search)) return false;
-    if(currentFilter === 'active') return u.isActive;
-    if(currentFilter === 'warning') return u.isWarning;
-    if(currentFilter === 'sale') return u.firstSale;
+  var list = allUsers.filter(function(u){
+    if(search && u.name.toLowerCase().indexOf(search)<0) return false;
+    if(currentFilter==='active') return u.isActive;
+    if(currentFilter==='warning') return u.isWarning;
+    if(currentFilter==='sale') return u.firstSale;
     return true;
   });
 
-  document.getElementById('count-badge').textContent = users.length + ' kursiyer';
+  document.getElementById('count-badge').textContent = list.length + ' kursiyer';
 
-  if(users.length === 0){
-    document.getElementById('table-body').innerHTML = '<div class="loading-row">Kursiyer bulunamadı.</div>';
+  if(list.length===0){
+    document.getElementById('table-body').innerHTML = '<div class="empty-row">Sonuc bulunamadi.</div>';
     return;
   }
 
   var html = '';
-  users.forEach(function(u){
-    var timeStr = '';
-    var timeClass = '';
-    if(!u.lastSeen){ timeStr = 'Bilinmiyor'; }
-    else if(u.daysSince === 0){ timeStr = 'Bugün'; timeClass = ''; }
-    else if(u.daysSince === 1){ timeStr = 'Dün'; }
-    else if(u.daysSince >= 7){ timeStr = u.daysSince + ' gün önce'; timeClass = 'danger'; }
-    else if(u.daysSince >= 3){ timeStr = u.daysSince + ' gün önce'; timeClass = 'warning-color'; }
-    else { timeStr = u.daysSince + ' gün önce'; }
+  list.forEach(function(u){
+    var tc='t-normal', ts='';
+    if(u.daysSince===0){ts='Bugun';}
+    else if(u.daysSince===1){ts='Dun';}
+    else if(u.daysSince>=7){ts=u.daysSince+' gun once';tc='t-danger';}
+    else if(u.daysSince>=3){ts=u.daysSince+' gun once';tc='t-warn';}
+    else{ts=u.daysSince+' gun once';}
 
-    var badges = '';
-    if(u.firstSale) badges += '<span class="badge badge-sale">✓ Satış</span>';
-    if(u.isActive) badges += '<span class="badge badge-active">● Aktif</span>';
-    if(u.isNew) badges += '<span class="badge badge-new">Yeni</span>';
+    var badges='';
+    if(u.firstSale) badges+='<span class="badge b-sale">Satis</span>';
+    if(u.isActive) badges+='<span class="badge b-active">Aktif</span>';
+    if(u.isNew) badges+='<span class="badge b-new">Yeni</span>';
 
-    html += '<div class="row'+(u.isWarning && !u.isActive?' warning':'')+'">'+
-      '<div class="cell-name"><div class="name-main">'+escHtml(u.name)+'</div></div>'+
+    html+='<div class="row'+(u.isWarning&&!u.isActive?' warn-row':'')+'">'+
+      '<div class="name-main">'+esc(u.name)+'</div>'+
       '<div class="cell-progress">'+
         '<div class="progress-bar"><div class="progress-fill" style="width:'+u.pct+'%"></div></div>'+
-        '<div class="progress-pct">'+u.pct+'% · '+u.done+'/'+TOTAL_DAYS+' gün</div>'+
+        '<div class="progress-pct">%'+u.pct+' · '+u.done+'/'+TOTAL+'</div>'+
       '</div>'+
       '<div class="cell-week">H.'+u.week+'</div>'+
-      '<div class="cell-days">'+u.done+' gün</div>'+
-      '<div class="cell-time '+timeClass+'">'+timeStr+'</div>'+
-      '<div class="cell-badges">'+badges+'</div>'+
+      '<div class="cell-days">'+u.done+'</div>'+
+      '<div class="'+tc+'">'+ts+'</div>'+
+      '<div class="badges">'+badges+'</div>'+
     '</div>';
   });
   document.getElementById('table-body').innerHTML = html;
 }
 
-function escHtml(s){
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-document.addEventListener('keydown', function(e){
-  if(e.key==='Enter' && document.getElementById('login').style.display!=='none') doLogin();
-});
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 </script>
 </body>
 </html>
