@@ -444,7 +444,29 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .hmenu-item.logout:hover{color:#f87171}
 
 /* ── VERSION BANNER ── */
-#video-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+#support-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+#support-overlay.show{opacity:1;pointer-events:all}
+#support-popup{background:#111;border:1px solid rgba(255,255,255,.12);border-radius:20px;width:90%;max-width:460px;max-height:85vh;display:flex;flex-direction:column;position:relative;transform:scale(.95);transition:transform .3s;backdrop-filter:blur(20px)}
+#support-overlay.show #support-popup{transform:scale(1)}
+.sp-header{padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px;flex-shrink:0}
+.sp-avatar{width:36px;height:36px;background:rgba(74,222,128,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.sp-header-txt{flex:1}
+.sp-header-title{font-size:14px;font-weight:700;color:var(--white)}
+.sp-header-sub{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:#4ade80;text-transform:uppercase;margin-top:2px}
+.sp-close-btn{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.08);border:none;color:var(--text2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sp-close-btn:hover{background:rgba(255,255,255,.15)}
+.sp-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;min-height:200px;max-height:340px}
+.sp-msg{max-width:85%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5}
+.sp-msg.bot{background:rgba(255,255,255,.06);color:var(--text);border-bottom-left-radius:4px;align-self:flex-start}
+.sp-msg.user{background:rgba(74,222,128,.15);color:var(--white);border-bottom-right-radius:4px;align-self:flex-end;text-align:right}
+.sp-msg.loading{color:var(--text3);font-family:var(--mono);font-size:11px;letter-spacing:1px}
+.sp-input-area{padding:14px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:8px;flex-shrink:0}
+.sp-input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:var(--white);font-family:var(--font);font-size:13px;padding:10px 14px;outline:none;resize:none}
+.sp-input::placeholder{color:var(--text3)}
+.sp-send{background:var(--white);color:var(--bg);border:none;border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .2s}
+.sp-send:hover{opacity:.8}
+.sp-send:disabled{opacity:.4;cursor:not-allowed}
+#support-overlay #video-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
 #video-overlay.show{opacity:1;pointer-events:all}
 #video-popup{background:#111;border:1px solid rgba(255,255,255,.12);border-radius:20px;width:90%;max-width:480px;padding:28px 24px;position:relative;transform:scale(.95);transition:transform .3s;backdrop-filter:blur(20px)}
 #video-overlay.show #video-popup{transform:scale(1)}
@@ -1361,7 +1383,7 @@ function doSpin(){
   var excluded=s.aiHist||[];
   fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
     method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({tool:'category',excluded:excluded})
+    body:JSON.stringify({tool:'category',excluded:excluded,seed:(email||'').length+dayIndex()})
   }).then(function(r){return r.json();}).then(function(cat){
     if(cat.error)throw new Error(cat.error);
     if(!s.aiHist)s.aiHist=[];
@@ -1450,6 +1472,82 @@ function openAiTool(tool){
   setTimeout(function(){document.getElementById('aitool-input').focus();}, 300);
 }
 
+// ── SUPPORT BOT ──────────────────────────────────────────────
+function openSupportBot(){
+  var msgs = document.getElementById('sp-messages');
+  if(msgs && msgs.children.length === 0){
+    addBotMsg('Merhaba! Ben MLYNR AI Destek asistaniyim. eBay dropshipping ile ilgili sorularini yanıtlamak icin buradayim. Ne sormak istersin?');
+  }
+  document.getElementById('support-overlay').classList.add('show');
+  setTimeout(function(){var inp=document.getElementById('sp-input');if(inp)inp.focus();},300);
+}
+function closeSupportBot(){
+  document.getElementById('support-overlay').classList.remove('show');
+}
+function addBotMsg(txt){
+  var msgs=document.getElementById('sp-messages');
+  if(!msgs)return;
+  var div=document.createElement('div');
+  div.className='sp-msg bot';
+  div.textContent=txt;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function addUserMsg(txt){
+  var msgs=document.getElementById('sp-messages');
+  if(!msgs)return;
+  var div=document.createElement('div');
+  div.className='sp-msg user';
+  div.textContent=txt;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function addLoadingMsg(){
+  var msgs=document.getElementById('sp-messages');
+  if(!msgs)return;
+  var div=document.createElement('div');
+  div.className='sp-msg bot loading';
+  div.id='sp-loading';
+  div.textContent='AI yaziyor...';
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function removeLoadingMsg(){
+  var el=document.getElementById('sp-loading');
+  if(el)el.remove();
+}
+function sendSupportMsg(){
+  var inp=document.getElementById('sp-input');
+  var btn=document.getElementById('sp-send-btn');
+  if(!inp)return;
+  var soru=inp.value.trim();
+  if(!soru)return;
+  inp.value='';
+  btn.disabled=true;
+  addUserMsg(soru);
+  addLoadingMsg();
+  fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({tool:'support',soru:soru})
+  }).then(function(r){return r.json();}).then(function(data){
+    removeLoadingMsg();
+    addBotMsg(data.sonuc||'Bir hata olustu, tekrar dene.');
+    btn.disabled=false;
+  }).catch(function(){
+    removeLoadingMsg();
+    addBotMsg('Baglanti hatasi. Lutfen tekrar dene.');
+    btn.disabled=false;
+  });
+}
+// Enter ile gonder
+document.addEventListener('DOMContentLoaded',function(){
+  var inp=document.getElementById('sp-input');
+  if(inp){
+    inp.addEventListener('keydown',function(e){
+      if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendSupportMsg();}
+    });
+  }
+});
 var _vpCurrentId='', _vpIsS=false, _vpWi=0;
 function openVideoPopup(title, desc, videoUrl, id, isS, wi){
   _vpCurrentId=id; _vpIsS=isS; _vpWi=wi;
@@ -1928,8 +2026,9 @@ function render(){
     var cols=3,rem=w.days.length%cols;
     if(rem!==0){
       var fill2=cols-rem;
-      var s2=document.createElement('a');s2.href='https://t.me/mlynr_bot';s2.target='_blank';s2.className='day-link-card support';
-      s2.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow">● Canlı Destek · 10:00–23:00</div><div class="dlc-title">Takıldığında direkt yaz, ekip cevap verir</div></div><div class="dlc-arrow">↗</div>';
+      var s2=document.createElement('div');s2.className='day-link-card support';s2.style.cursor='pointer';
+      s2.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow" style="color:#4ade80">● MLYNR · AI Destek</div><div class="dlc-title">Sorun mu var? AI\'ye sor, anında cevap al</div></div><div class="dlc-arrow">✦</div>';
+      s2.addEventListener('click',function(){openSupportBot();});
       grid.appendChild(s2);
       if(fill2===2){
         var p2=document.createElement('a');p2.href='https://okul.mlynr.com/products/start-scale-e-ticaret';p2.target='_blank';p2.className='day-link-card';
@@ -2967,7 +3066,24 @@ function showPasswordResetUI(session){
 </script>
 
 
-  <div id="video-overlay">
+  <div id="support-overlay">
+  <div id="support-popup">
+    <div class="sp-header">
+      <div class="sp-avatar">🤖</div>
+      <div class="sp-header-txt">
+        <div class="sp-header-title">MLYNR AI Destek</div>
+        <div class="sp-header-sub">● Anında Yanıt</div>
+      </div>
+      <button class="sp-close-btn" onclick="closeSupportBot()">×</button>
+    </div>
+    <div class="sp-messages" id="sp-messages"></div>
+    <div class="sp-input-area">
+      <textarea class="sp-input" id="sp-input" rows="1" placeholder="Sorunuzu yazın..."></textarea>
+      <button class="sp-send" id="sp-send-btn" onclick="sendSupportMsg()">➤</button>
+    </div>
+  </div>
+</div>
+<div id="video-overlay">
   <div id="video-popup">
     <button class="vp-close" onclick="closeVideoPopup()">×</button>
     <div class="vp-title" id="vp-title"></div>
