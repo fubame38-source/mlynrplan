@@ -466,7 +466,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sp-send{background:var(--white);color:var(--bg);border:none;border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .2s}
 .sp-send:hover{opacity:.8}
 .sp-send:disabled{opacity:.4;cursor:not-allowed}
-#support-overlay #video-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+#video-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
 #video-overlay.show{opacity:1;pointer-events:all}
 #video-popup{background:#111;border:1px solid rgba(255,255,255,.12);border-radius:20px;width:90%;max-width:480px;padding:28px 24px;position:relative;transform:scale(.95);transition:transform .3s;backdrop-filter:blur(20px)}
 #video-overlay.show #video-popup{transform:scale(1)}
@@ -479,7 +479,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .vp-btn-done.done-active{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#4ade80}
 .vp-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.08);border:none;color:var(--text2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .vp-close:hover{background:rgba(255,255,255,.15)}
-#video-overlay #ver-banner{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(200px);z-index:9000;background:linear-gradient(135deg,#111,#1a1a1a);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 16px 48px rgba(0,0,0,.7);transition:transform .5s cubic-bezier(.34,1.2,.64,1);width:calc(100% - 32px);max-width:400px;box-sizing:border-box}
+#ver-banner{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(200px);z-index:9000;background:linear-gradient(135deg,#111,#1a1a1a);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 16px 48px rgba(0,0,0,.7);transition:transform .5s cubic-bezier(.34,1.2,.64,1);width:calc(100% - 32px);max-width:400px;box-sizing:border-box}
 #ver-banner.show{transform:translateX(-50%) translateY(0)}
 .vb-emoji{font-size:22px;flex-shrink:0}
 .vb-text{}
@@ -2022,19 +2022,25 @@ function render(){
       })(wi,di,w.days[di]);
     }
 
-    // fill empty cells
+    // fill empty cells + AI destek kartı her hafta sabit
     var cols=3,rem=w.days.length%cols;
-    if(rem!==0){
-      var fill2=cols-rem;
-      var s2=document.createElement('div');s2.className='day-link-card support';s2.style.cursor='pointer';
-      s2.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow" style="color:#4ade80">● MLYNR · AI Destek</div><div class="dlc-title">Sorun mu var? AI\'ye sor, anında cevap al</div></div><div class="dlc-arrow">✦</div>';
-      s2.addEventListener('click',function(){openSupportBot();});
-      grid.appendChild(s2);
-      if(fill2===2){
-        var p2=document.createElement('a');p2.href='https://okul.mlynr.com/products/start-scale-e-ticaret';p2.target='_blank';p2.className='day-link-card';
-        p2.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow">Eğitim Paneli</div><div class="dlc-title">Tüm modüllere erişmek için paneli aç</div></div><div class="dlc-arrow">↗</div>';
-        grid.appendChild(p2);
-      }
+    var extraCards=[];
+    var aiCard=document.createElement('div');aiCard.className='day-link-card support';aiCard.style.cursor='pointer';
+    aiCard.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow" style="color:#4ade80">● MLYNR · AI Destek</div><div class="dlc-title">Sorun mu var? AI\'ye sor, anında cevap al</div></div><div class="dlc-arrow">✦</div>';
+    aiCard.addEventListener('click',function(){openSupportBot();});
+    var eduCard=document.createElement('a');eduCard.href='https://okul.mlynr.com/products/start-scale-e-ticaret';eduCard.target='_blank';eduCard.className='day-link-card';
+    eduCard.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow">Eğitim Paneli</div><div class="dlc-title">Tüm modüllere erişmek için paneli aç</div></div><div class="dlc-arrow">↗</div>';
+    if(rem===0){
+      // Tam satır dolmuş - AI kartı + Eğitim kartı yeni satır
+      grid.appendChild(aiCard);
+      grid.appendChild(eduCard);
+    } else if(rem===1){
+      // 1 boşluk - AI kartı + Eğitim kartı
+      grid.appendChild(aiCard);
+      grid.appendChild(eduCard);
+    } else if(rem===2){
+      // 1 boşluk - sadece AI kartı
+      grid.appendChild(aiCard);
     }
     if(w.chk)document.getElementById('mc'+wi).appendChild(mkMC(w.chk,wi));
   }
