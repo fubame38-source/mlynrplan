@@ -541,40 +541,43 @@ body.light .sp-input:focus{border-color:rgba(0,0,0,.3)}
 body.light .sp-send{background:#000;color:#fff}
 
 
-/* ── BRIEFING KARTI ── */
-.briefing-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:16px}
-.briefing-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all .3s}
-.briefing-card.loading{opacity:.6}
-.briefing-header{display:flex;align-items:center;gap:12px;padding:18px 22px 14px;border-bottom:1px solid var(--border)}
-.briefing-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#2a2a2a);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;font-family:Arial,sans-serif;flex-shrink:0}
-body.light .briefing-avatar{background:linear-gradient(135deg,#000,#222);border-color:rgba(0,0,0,.1)}
-.briefing-meta{flex:1}
-.briefing-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:1px}
-.briefing-date{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase}
-.briefing-badge{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:20px;padding:4px 10px}
-.briefing-body{padding:20px 22px}
-.briefing-selamlama{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:18px;font-style:italic;border-left:2px solid var(--border2);padding-left:14px}
-.briefing-tasks{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
-.briefing-task{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;user-select:none}
-.briefing-task:hover{border-color:var(--border2)}
-.briefing-task.done{background:rgba(34,197,94,.05);border-color:rgba(34,197,94,.2)}
-.briefing-task-check{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .25s cubic-bezier(.34,1.56,.64,1)}
-.briefing-task.done .briefing-task-check{background:var(--green);border-color:var(--green)}
-.briefing-task-check svg{width:9px;height:9px;opacity:0;transition:opacity .15s}
-.briefing-task.done .briefing-task-check svg{opacity:1}
-.briefing-task-text{font-size:13px;color:var(--text2);line-height:1.45;transition:color .15s}
-.briefing-task.done .briefing-task-text{color:var(--text3);text-decoration:line-through}
-.briefing-footer{border-top:1px solid var(--border);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.briefing-ipucu{font-size:11px;color:var(--text2);line-height:1.55;flex:1}
-.briefing-ipucu strong{color:var(--green);font-weight:600}
-.briefing-progress{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.briefing-streak{font-family:var(--mono);font-size:10px;color:var(--text2);white-space:nowrap}
-.briefing-dots{display:flex;gap:4px}
-.briefing-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:background .2s}
-.briefing-dot.done{background:var(--green)}
-.briefing-motivasyon{font-size:12px;color:var(--text3);font-style:italic;padding:12px 22px 16px;border-top:1px solid var(--border);line-height:1.6}
-.briefing-skeleton{padding:20px 22px;display:flex;flex-direction:column;gap:10px}
-.briefing-skel-line{height:14px;background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200% 100%;border-radius:6px;animation:skelShimmer 1.5s infinite}
+
+/* ── ORBITAL BRİEFİNG ── */
+.orbital-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:16px}
+.orbital-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;padding:28px 24px 24px}
+.orbital-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.orbital-meta{display:flex;align-items:center;gap:12px}
+.orbital-avatar{width:36px;height:36px;border-radius:50%;background:#000;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;font-family:Arial,sans-serif;flex-shrink:0}
+body.light .orbital-avatar{background:#000;border-color:rgba(0,0,0,.1)}
+.orbital-info{display:flex;flex-direction:column;gap:2px}
+.orbital-name{font-size:13px;font-weight:700;color:var(--text)}
+.orbital-date{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase}
+.orbital-badge{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:20px;padding:4px 10px}
+.orbital-selamlama{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:24px;font-style:italic;border-left:2px solid var(--border2);padding-left:14px}
+/* Orbital canvas alanı */
+.orbital-canvas-wrap{position:relative;width:100%;height:320px;margin-bottom:20px}
+@media(max-width:480px){.orbital-canvas-wrap{height:280px}}
+#orbital-canvas{display:block;width:100%;height:100%;cursor:pointer}
+/* Görev detay popup */
+.orbital-detail{background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:16px 18px;margin-bottom:16px;display:none;animation:orbDetailIn .25s cubic-bezier(.34,1.2,.64,1)}
+.orbital-detail.show{display:block}
+@keyframes orbDetailIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.orbital-detail-num{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
+.orbital-detail-text{font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px;line-height:1.45}
+.orbital-detail-btn{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:9px;font-family:var(--font);font-size:12px;font-weight:700;padding:12px;cursor:pointer;transition:all .2s}
+.orbital-detail-btn:hover{opacity:.85}
+.orbital-detail-btn.done{background:var(--green);color:#000}
+/* Footer */
+.orbital-footer{border-top:1px solid var(--border);padding-top:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.orbital-ipucu{font-size:11px;color:var(--text2);line-height:1.55;flex:1}
+.orbital-ipucu strong{color:var(--green)}
+.orbital-progress-wrap{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.orbital-prog-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:background .3s}
+.orbital-prog-dot.done{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.4)}
+.orbital-motivasyon{font-size:11px;color:var(--text3);font-style:italic;margin-top:12px;line-height:1.6;text-align:center}
+/* Skeleton */
+.orbital-skeleton{padding:20px;display:flex;flex-direction:column;gap:10px;min-height:200px;justify-content:center}
+.orb-skel{height:14px;background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200%;border-radius:6px;animation:skelShimmer 1.5s infinite}
 @keyframes skelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 </style>
@@ -794,16 +797,15 @@ body.light .briefing-avatar{background:linear-gradient(135deg,#000,#222);border-
   </div>
 
 
-  <div class="briefing-section" id="briefing-section">
-    <div class="briefing-card" id="briefing-card">
-      <div class="briefing-skeleton">
-        <div class="briefing-skel-line" style="width:60%"></div>
-        <div class="briefing-skel-line" style="width:90%"></div>
-        <div class="briefing-skel-line" style="width:75%"></div>
+    <div class="orbital-section" id="orbital-section">
+    <div class="orbital-wrap" id="orbital-wrap">
+      <div class="orbital-skeleton" id="orbital-skeleton">
+        <div class="orb-skel" style="width:50%"></div>
+        <div class="orb-skel" style="width:80%"></div>
+        <div class="orb-skel" style="width:65%"></div>
       </div>
     </div>
   </div>
-
   <div class="tg-section">
     <a href="https://t.me/mlynr_bot" target="_blank" class="tg-btn">
       <div class="tg-icon">✈️</div>
@@ -1701,24 +1703,19 @@ function initScrollAnim(){
 }
 
 
-// ── GÜNLÜK BRİEFİNG ──────────────────────────────────────────
-var _briefingData=null;
-function briefingKey(){return 'mlynr6_brief_'+email.replace(/[^a-z0-9]/gi,'_')+'_'+new Date().toISOString().slice(0,10);}
-function loadBriefing(){
-  try{var r=localStorage.getItem(briefingKey());if(r)return JSON.parse(r);}catch(e){}return null;
-}
-function saveBriefing(data){try{localStorage.setItem(briefingKey(),JSON.stringify(data));}catch(e){}}
-function briefingTaskKey(){return briefingKey()+'_tasks';}
-function loadBriefingTasks(){try{var r=localStorage.getItem(briefingTaskKey());if(r)return JSON.parse(r);}catch(e){}return [];}
-function saveBriefingTasks(t){try{localStorage.setItem(briefingTaskKey(),JSON.stringify(t));}catch(e){}}
+// ── ORBITAL BRİEFİNG ──────────────────────────────────────
+var _orbData=null,_orbTasks=[],_orbActive=-1,_orbAngle=0,_orbRAF=null,_orbNodes=[];
+
+function orbKey(){return 'mlynr6_orb_'+email.replace(/[^a-z0-9]/gi,'_')+'_'+new Date().toISOString().slice(0,10);}
+function orbTaskKey(){return orbKey()+'_t';}
+function loadOrbCache(){try{var r=localStorage.getItem(orbKey());if(r)return JSON.parse(r);}catch(e){}return null;}
+function saveOrbCache(d){try{localStorage.setItem(orbKey(),JSON.stringify(d));}catch(e){}}
+function loadOrbTasks(){try{var r=localStorage.getItem(orbTaskKey());if(r)return JSON.parse(r);}catch(e){}return [];}
+function saveOrbTasks(t){try{localStorage.setItem(orbTaskKey(),JSON.stringify(t));}catch(e){}}
 
 function initBriefing(){
-  var cached=loadBriefing();
-  if(cached){renderBriefing(cached);return;}
-  fetchBriefing();
-}
-
-function fetchBriefing(){
+  var cached=loadOrbCache();
+  if(cached){_orbData=cached;_orbTasks=loadOrbTasks();renderOrbital();return;}
   var ad=getUserName()||'',gunSayisi=done.length,hafta=Math.min(4,Math.ceil((gunSayisi+1)/7))||1;
   var fsVal=false;try{fsVal=localStorage.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
   fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
@@ -1726,54 +1723,200 @@ function fetchBriefing(){
     body:JSON.stringify({tool:'briefing',ad:ad.split(' ')[0],gunSayisi:gunSayisi,hafta:hafta,ilkSatis:fsVal})
   }).then(function(r){return r.json();}).then(function(data){
     if(data.error)throw new Error(data.error);
-    saveBriefing(data);renderBriefing(data);
+    _orbData=data;_orbTasks=loadOrbTasks();saveOrbCache(data);renderOrbital();
   }).catch(function(){
-    document.getElementById('briefing-section').style.display='none';
+    document.getElementById('orbital-section').style.display='none';
   });
 }
 
-function renderBriefing(data){
-  var tasks=loadBriefingTasks();
+function renderOrbital(){
+  if(!_orbData)return;
+  var wrap=document.getElementById('orbital-wrap');if(!wrap)return;
   var now=new Date();
   var gunler=['Pazar','Pazartesi','Sali','Carsamba','Persembe','Cuma','Cumartesi'];
   var aylar=['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
   var tarih=gunler[now.getDay()]+', '+now.getDate()+' '+aylar[now.getMonth()];
-  var taskItems=[data.gorev1,data.gorev2,data.gorev3];
-  var tamamlanan=tasks.length;
+  var tasks=[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3];
+  var tamamlanan=_orbTasks.length;
+
   var dotsHtml='';
-  for(var i=0;i<3;i++)dotsHtml+='<div class="briefing-dot'+(i<tamamlanan?' done':'')+'"></div>';
-  var tasksHtml='';
-  taskItems.forEach(function(t,i){
-    var isDone=tasks.indexOf(i)>-1;
-    var ck='<svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
-    tasksHtml+='<div class="briefing-task'+(isDone?' done':'')+'" onclick="toggleBriefingTask('+i+')" data-idx="'+i+'"><div class="briefing-task-check">'+ck+'</div><div class="briefing-task-text">'+t+'</div></div>';
-  });
-  var streakHtml=tamamlanan>0?'<span class="briefing-streak">'+tamamlanan+'/3 tamamlandi</span>':'<span class="briefing-streak">0/3</span>';
-  var html='<div class="briefing-header">'
-    +'<div class="briefing-avatar">C</div>'
-    +'<div class="briefing-meta"><div class="briefing-name">Canberk Ozturk</div><div class="briefing-date">'+tarih+'</div></div>'
-    +'<div class="briefing-badge">Gunun Briefingi</div>'
+  for(var i=0;i<3;i++)dotsHtml+='<div class="orbital-prog-dot'+(i<tamamlanan?' done':'')+'"></div>';
+
+  wrap.innerHTML=
+    '<div class="orbital-top">'
+      +'<div class="orbital-meta">'
+        +'<div class="orbital-avatar">C</div>'
+        +'<div class="orbital-info"><div class="orbital-name">Canberk Ozturk</div><div class="orbital-date">'+tarih+'</div></div>'
+      +'</div>'
+      +'<div class="orbital-badge">Gunun Gorevleri</div>'
     +'</div>'
-    +'<div class="briefing-body">'
-    +'<div class="briefing-selamlama">'+data.selamlama+'</div>'
-    +'<div class="briefing-tasks" id="briefing-tasks">'+tasksHtml+'</div>'
+    +'<div class="orbital-selamlama" id="orb-selamlama">'+_orbData.selamlama+'</div>'
+    +'<div class="orbital-canvas-wrap"><canvas id="orbital-canvas"></canvas></div>'
+    +'<div class="orbital-detail" id="orbital-detail"></div>'
+    +'<div class="orbital-footer">'
+      +'<div class="orbital-ipucu"><strong>Ipucu:</strong> '+_orbData.pazar_ipucu+'</div>'
+      +'<div class="orbital-progress-wrap" id="orb-dots">'+dotsHtml+'</div>'
     +'</div>'
-    +'<div class="briefing-footer">'
-    +'<div class="briefing-ipucu"><strong>Pazar:</strong> '+data.pazar_ipucu+'</div>'
-    +'<div class="briefing-progress">'+streakHtml+'<div class="briefing-dots">'+dotsHtml+'</div></div>'
-    +'</div>'
-    +'<div class="briefing-motivasyon">"'+data.motivasyon+'"</div>';
-  var card=document.getElementById('briefing-card');
-  if(card){card.innerHTML=html;card.classList.remove('loading');}
-  _briefingData=data;
+    +'<div class="orbital-motivasyon" id="orb-motiv">"'+_orbData.motivasyon+'"</div>';
+
+  setTimeout(function(){startOrbital(tasks);},50);
 }
 
-function toggleBriefingTask(idx){
-  var tasks=loadBriefingTasks();
-  var pos=tasks.indexOf(idx);
-  if(pos>-1)tasks.splice(pos,1);else tasks.push(idx);
-  saveBriefingTasks(tasks);
-  if(_briefingData)renderBriefing(_briefingData);
+function startOrbital(tasks){
+  var canvas=document.getElementById('orbital-canvas');if(!canvas)return;
+  var wrap=canvas.parentNode;
+  canvas.width=wrap.offsetWidth;canvas.height=wrap.offsetHeight;
+  var W=canvas.width,H=canvas.height;
+  var cx=W/2,cy=H/2;
+  var R=Math.min(W,H)*0.34;
+  _orbNodes=tasks.map(function(t,i){
+    var angle=(i/tasks.length)*Math.PI*2-(Math.PI/2);
+    return {idx:i,text:t,angle:angle,x:0,y:0,r:28,hovered:false};
+  });
+  _orbAngle=0;_orbActive=-1;
+
+  // Touch/click
+  function getClick(e){
+    var rect=canvas.getBoundingClientRect();
+    var scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;
+    var px,py;
+    if(e.touches){px=(e.touches[0].clientX-rect.left)*scaleX;py=(e.touches[0].clientY-rect.top)*scaleY;}
+    else{px=(e.clientX-rect.left)*scaleX;py=(e.clientY-rect.top)*scaleY;}
+    return{x:px,y:py};
+  }
+
+  function onCanvasClick(e){
+    var p=getClick(e);
+    for(var i=0;i<_orbNodes.length;i++){
+      var n=_orbNodes[i];
+      var dx=p.x-n.x,dy=p.y-n.y;
+      if(Math.sqrt(dx*dx+dy*dy)<n.r+10){
+        _orbActive=_orbActive===i?-1:i;
+        showOrbDetail(_orbActive,tasks);
+        return;
+      }
+    }
+    _orbActive=-1;showOrbDetail(-1,tasks);
+  }
+
+  canvas.addEventListener('click',onCanvasClick);
+  canvas.addEventListener('touchend',function(e){e.preventDefault();onCanvasClick(e);},{passive:false});
+
+  // Hover
+  canvas.addEventListener('mousemove',function(e){
+    var p=getClick(e);var hit=false;
+    for(var i=0;i<_orbNodes.length;i++){
+      var n=_orbNodes[i];
+      var dx=p.x-n.x,dy=p.y-n.y;
+      n.hovered=Math.sqrt(dx*dx+dy*dy)<n.r+10;
+      if(n.hovered)hit=true;
+    }
+    canvas.style.cursor=hit?'pointer':'default';
+  });
+
+  function draw(){
+    var ctx=canvas.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+    // Orbit çemberi
+    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;ctx.stroke();
+
+    // Merkez
+    var isDark=!document.body.classList.contains('light');
+    var centerColor=isDark?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.08)';
+    var centerBorder=isDark?'rgba(255,255,255,0.2)':'rgba(0,0,0,0.15)';
+    ctx.beginPath();ctx.arc(cx,cy,18,0,Math.PI*2);
+    ctx.fillStyle=centerColor;ctx.fill();
+    ctx.strokeStyle=centerBorder;ctx.lineWidth=1;ctx.stroke();
+    // C harfi
+    ctx.fillStyle=isDark?'rgba(255,255,255,0.7)':'rgba(0,0,0,0.6)';
+    ctx.font='900 11px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('C',cx,cy);
+
+    // Bağlantı çizgileri
+    _orbNodes.forEach(function(n){
+      var a=n.angle+_orbAngle;
+      n.x=cx+R*Math.cos(a);n.y=cy+R*Math.sin(a);
+      var isDone=_orbTasks.indexOf(n.idx)>-1;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(n.x,n.y);
+      ctx.strokeStyle=isDone?'rgba(34,197,94,0.2)':'rgba(255,255,255,0.06)';
+      ctx.lineWidth=1;ctx.stroke();
+    });
+
+    // Node'lar
+    _orbNodes.forEach(function(n){
+      var isDone=_orbTasks.indexOf(n.idx)>-1;
+      var isActive=_orbActive===n.idx;
+      var nr=n.hovered||isActive?n.r+4:n.r;
+
+      // Glow
+      if(isDone||isActive){
+        ctx.beginPath();ctx.arc(n.x,n.y,nr+8,0,Math.PI*2);
+        ctx.fillStyle=isDone?'rgba(34,197,94,0.12)':'rgba(255,255,255,0.06)';
+        ctx.fill();
+      }
+
+      // Daire
+      ctx.beginPath();ctx.arc(n.x,n.y,nr,0,Math.PI*2);
+      if(isDone){
+        ctx.fillStyle='rgba(34,197,94,0.9)';
+      } else if(isActive){
+        ctx.fillStyle=isDark?'rgba(255,255,255,0.15)':'rgba(0,0,0,0.08)';
+      } else {
+        ctx.fillStyle=isDark?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.05)';
+      }
+      ctx.fill();
+      ctx.strokeStyle=isDone?'rgba(34,197,94,0.8)':isActive?(isDark?'rgba(255,255,255,0.6)':'rgba(0,0,0,0.4)'):(isDark?'rgba(255,255,255,0.18)':'rgba(0,0,0,0.15)');
+      ctx.lineWidth=isActive?2:1.5;ctx.stroke();
+
+      // Numara
+      ctx.fillStyle=isDone?'#000':isActive?(isDark?'#fff':'#000'):(isDark?'rgba(255,255,255,0.7)':'rgba(0,0,0,0.5)');
+      ctx.font=(isActive?'700':'500')+' 13px Arial,sans-serif';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(isDone?'✓':(n.idx+1)+'',n.x,n.y);
+
+      // Etiket - düğümün altında/yanında
+      var labelAngle=n.angle+_orbAngle;
+      var lx=n.x+Math.cos(labelAngle)*14;
+      var ly=n.y+Math.sin(labelAngle)*14;
+      var labelText='Gorev '+(n.idx+1);
+      ctx.fillStyle=isDone?'rgba(34,197,94,0.8)':isDark?'rgba(255,255,255,0.35)':'rgba(0,0,0,0.3)';
+      ctx.font='500 10px Arial,sans-serif';
+      ctx.textAlign='center';ctx.textBaseline=ly>cy?'top':'bottom';
+      var offsetY=ly>cy?nr+6:-(nr+6);
+      ctx.fillText(labelText,n.x,n.y+offsetY);
+    });
+
+    // Yavaş dönüş (aktif yoksa)
+    if(_orbActive===-1)_orbAngle+=0.004;
+    _orbRAF=requestAnimationFrame(draw);
+  }
+  if(_orbRAF)cancelAnimationFrame(_orbRAF);
+  draw();
+}
+
+function showOrbDetail(idx,tasks){
+  var el=document.getElementById('orbital-detail');if(!el)return;
+  if(idx===-1){el.classList.remove('show');return;}
+  var isDone=_orbTasks.indexOf(idx)>-1;
+  var t=tasks[idx]||(_orbData&&[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3][idx])||'';
+  el.innerHTML=
+    '<div class="orbital-detail-num">Gorev '+(idx+1)+' / 3</div>'
+    +'<div class="orbital-detail-text">'+t+'</div>'
+    +'<button class="orbital-detail-btn'+(isDone?' done':'')+'" onclick="toggleOrbTask('+idx+')">'
+    +(isDone?'✓ Tamamlandi':'Tamamla →')+'</button>';
+  el.classList.add('show');
+}
+
+function toggleOrbTask(idx){
+  var pos=_orbTasks.indexOf(idx);
+  if(pos>-1)_orbTasks.splice(pos,1);else _orbTasks.push(idx);
+  saveOrbTasks(_orbTasks);
+  var tasks=_orbData?[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3]:[];
+  showOrbDetail(idx,tasks);
+  // dots güncelle
+  var dots=document.getElementById('orb-dots');
+  if(dots){var d='';for(var i=0;i<3;i++)d+='<div class="orbital-prog-dot'+(_orbTasks.indexOf(i)>-1?' done':'')+'"></div>';dots.innerHTML=d;}
 }
 
 // ── INIT ──────────────────────────────────────────────────────
