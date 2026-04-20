@@ -31,30 +31,9 @@ body.light .hero-tools-card{background:rgba(255,255,255,.6);border-color:rgba(0,
 body.light .htc-divider{background:rgba(0,0,0,.07)}
 body.light .level-badge{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.12)}
 body.light .level-name{color:#111}
-body.light #support-popup{background:#fff;border-left:1px solid rgba(0,0,0,.08)}
-body.light .sp-header{background:#fff;border-bottom-color:rgba(0,0,0,.08)}
-body.light .sp-header-title{color:#000}
-body.light .sp-header-sub{color:rgba(0,0,0,.35)}
-body.light .sp-msg.bot{background:#f5f5f5;color:#111;border-color:rgba(0,0,0,.08)}
-body.light .sp-msg.user{background:#000;color:#fff}
-body.light .sp-msg.loading{background:#f5f5f5;color:#888;border-color:rgba(0,0,0,.08)}
-body.light .sp-input{background:#f5f5f5;border-color:rgba(0,0,0,.12);color:#111}
-body.light .sp-input::placeholder{color:#aaa}
-body.light .sp-send{background:#000;color:#fff}
-body.light .sp-input-area{background:#fff;border-top-color:rgba(0,0,0,.08)}
-body.light .sp-quick-btn{border-color:rgba(0,0,0,.1);color:rgba(0,0,0,.5)}
-body.light .sp-quick-btn:hover{background:#f5f5f5;color:#000;border-color:rgba(0,0,0,.2)}
-body.light .sp-close-btn{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.1);color:rgba(0,0,0,.5)}
-body.light .sp-close-btn:hover{background:rgba(0,0,0,.1);color:#000}
-body.light .sp-msg.bot{background:rgba(0,0,0,.05);color:#111}
-body.light .sp-msg.user{background:rgba(34,197,94,.15);color:#111}
-body.light .sp-input{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:#111}
-body.light .sp-send{background:#111;color:#fff}
-body.light .sp-close-btn{background:rgba(0,0,0,.08);color:#444}
 body.light .prog-fill{background:linear-gradient(90deg,#999,#111)}
 body.light .mc-bar-fill{background:linear-gradient(90deg,#999,#111)}
-body.light .cb-pop-close-btn,body.light .sp-btn,body.light .close-btn,body.light .login-btn,body.light .footer-btn{color:#fff !important;background:#111 !important}
-body.light .login-input{background:#f9f9f9 !important;border-color:rgba(0,0,0,.15) !important;color:#111 !important}
+body.light .cb-pop-close-btn,body.light .login-input{background:#f9f9f9 !important;border-color:rgba(0,0,0,.15) !important;color:#111 !important}
 body.light .login-input::placeholder{color:#aaa !important}
 body.light .login-label{color:#555 !important}
 body.light .login-logo{color:#111 !important}
@@ -64,6 +43,29 @@ body.light .day{background:#fff;border-color:rgba(0,0,0,.1)}
 body.light .day:hover{background:#f8f8f8}
 
 body.light #ai-fab{background:linear-gradient(135deg,#fff,#f8f8f8);border-color:rgba(0,0,0,.12)}
+body.light #support-overlay{pointer-events:none}
+body.light #support-overlay.show{pointer-events:all}
+body.light #support-popup{background:#fafafa;border-left:1px solid rgba(0,0,0,.08)}
+body.light .sp-header{background:#fafafa;border-bottom:1px solid rgba(0,0,0,.06)}
+body.light .sp-header-title{color:#000}
+body.light .sp-header-sub{color:rgba(0,0,0,.3)}
+body.light .sp-avatar{background:#000}
+body.light .sp-avatar span{color:#fff !important}
+body.light .sp-close-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:rgba(0,0,0,.5)}
+body.light .sp-close-btn:hover{background:rgba(0,0,0,.1);color:#000}
+body.light .sp-messages{background:#fafafa}
+body.light .sp-msg.bot{background:#fff;color:#111;border-color:rgba(0,0,0,.1)}
+body.light .sp-msg.user{background:#000;color:#fff}
+body.light .sp-msg.loading{background:#fff;color:#888;border-color:rgba(0,0,0,.1)}
+body.light .sp-input-area{background:#fafafa;border-top-color:rgba(0,0,0,.06)}
+body.light .sp-input{background:#fff;border-color:rgba(0,0,0,.15);color:#111}
+body.light .sp-input::placeholder{color:#aaa}
+body.light .sp-input:focus{border-color:rgba(0,0,0,.4)}
+body.light .sp-send{background:#000;color:#fff}
+body.light .sp-quick-btn{background:transparent;border-color:rgba(0,0,0,.1);color:rgba(0,0,0,.5)}
+body.light .sp-quick-btn:hover{background:#f0f0f0;color:#000;border-color:rgba(0,0,0,.25)}
+body.light .sp-quick-section{background:#fafafa;border-top-color:rgba(0,0,0,.06)}
+body.light .sp-quick-label{color:rgba(0,0,0,.2)}
 body.light .fab-title{color:#111}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:hidden}
@@ -370,9 +372,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .hmenu-item:hover{color:var(--text)}
 .hmenu-item.logout{color:var(--text3);margin-top:4px}
 .hmenu-item.logout:hover{color:#f87171}
-#support-overlay{position:fixed;top:0;right:-400px;width:380px;height:100vh;z-index:8500;display:flex;flex-direction:column;transition:right .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
+#support-overlay{position:fixed;top:0;right:-400px;width:380px;height:100%;max-height:100vh;z-index:8500;display:flex;flex-direction:column;transition:right .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none;overflow:hidden}
 #support-overlay.show{right:0;pointer-events:all}
-#support-popup{background:#0a0a0a;border-left:1px solid rgba(255,255,255,.06);height:100%;width:100%;display:flex;flex-direction:column}
+#support-popup{background:#0a0a0a;border-left:1px solid rgba(255,255,255,.06);height:100%;width:100%;display:flex;flex-direction:column;overflow:hidden}
 .sp-header{padding:22px 24px 18px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:14px;flex-shrink:0;background:#0a0a0a}
 .sp-avatar{width:40px;height:40px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .sp-header-txt{flex:1}
@@ -623,8 +625,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="hero-action-row">
           <button class="hero-action-btn earn-btn" onclick="openEarn()">💰 Ne Kadar Kazanırım?</button>
           <button class="hero-action-btn sale-btn" onclick="openFirstSale()">🏆 İlk Satışımı Yaptım!</button>
-          <button class="hero-action-btn" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.15);color:var(--white)" onclick="openAiTool('analyze')">🔍 Ürün Analizi</button>
-          <button class="hero-action-btn" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.15);color:var(--white)" onclick="openAiTool('listing')">📝 Listing Yazıcı</button>
+          <button class="hero-action-btn" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.15);color:var(--white);backdrop-filter:blur(10px)" onclick="openAiTool('analyze')">🔍 Ürün Analizi</button>
+          <button class="hero-action-btn" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.15);color:var(--white);backdrop-filter:blur(10px)" onclick="openAiTool('listing')">📝 Listing Yazıcı</button>
         </div>
       </div>
     </div>
@@ -877,8 +879,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <button class="sp-close-btn" onclick="closeSupportBot()">×</button>
     </div>
     <div class="sp-messages" id="sp-messages"></div>
-    <div style="padding:16px 16px 0;flex-shrink:0;border-top:1px solid rgba(255,255,255,.06);background:#0a0a0a">
-      <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.2);text-transform:uppercase;margin-bottom:10px">Sık sorulan</div>
+    <div class="sp-quick-section" style="padding:12px 14px 0;flex-shrink:0;border-top:1px solid rgba(255,255,255,.06);background:#0a0a0a;overflow-y:auto;max-height:260px">
+      <div class="sp-quick-label" style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.2);text-transform:uppercase;margin-bottom:8px">Sık sorulan</div>
       <div style="display:flex;flex-direction:column;gap:4px">
         <button onclick="askQuick(this)" class="sp-quick-btn">Ship from address ne olmalı?</button>
         <button onclick="askQuick(this)" class="sp-quick-btn">Ürünler AutoDS'de görünmüyor</button>
