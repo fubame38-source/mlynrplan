@@ -31,7 +31,21 @@ body.light .hero-tools-card{background:rgba(255,255,255,.6);border-color:rgba(0,
 body.light .htc-divider{background:rgba(0,0,0,.07)}
 body.light .level-badge{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.12)}
 body.light .level-name{color:#111}
-body.light #support-popup{background:#f5f5f5;border-left:1px solid rgba(0,0,0,.1)}
+body.light #support-popup{background:#fff;border-left:1px solid rgba(0,0,0,.08)}
+body.light .sp-header{background:#fff;border-bottom-color:rgba(0,0,0,.08)}
+body.light .sp-header-title{color:#000}
+body.light .sp-header-sub{color:rgba(0,0,0,.35)}
+body.light .sp-msg.bot{background:#f5f5f5;color:#111;border-color:rgba(0,0,0,.08)}
+body.light .sp-msg.user{background:#000;color:#fff}
+body.light .sp-msg.loading{background:#f5f5f5;color:#888;border-color:rgba(0,0,0,.08)}
+body.light .sp-input{background:#f5f5f5;border-color:rgba(0,0,0,.12);color:#111}
+body.light .sp-input::placeholder{color:#aaa}
+body.light .sp-send{background:#000;color:#fff}
+body.light .sp-input-area{background:#fff;border-top-color:rgba(0,0,0,.08)}
+body.light .sp-quick-btn{border-color:rgba(0,0,0,.1);color:rgba(0,0,0,.5)}
+body.light .sp-quick-btn:hover{background:#f5f5f5;color:#000;border-color:rgba(0,0,0,.2)}
+body.light .sp-close-btn{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.1);color:rgba(0,0,0,.5)}
+body.light .sp-close-btn:hover{background:rgba(0,0,0,.1);color:#000}
 body.light .sp-msg.bot{background:rgba(0,0,0,.05);color:#111}
 body.light .sp-msg.user{background:rgba(34,197,94,.15);color:#111}
 body.light .sp-input{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:#111}
@@ -48,8 +62,7 @@ body.light .login-logo-sub{color:#888 !important}
 body.light .week-num{color:#999 !important}
 body.light .day{background:#fff;border-color:rgba(0,0,0,.1)}
 body.light .day:hover{background:#f8f8f8}
-body.light .sp-quick-btn{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1);color:#444}
-body.light .sp-quick-btn:hover{background:rgba(0,0,0,.08);color:#111}
+
 body.light #ai-fab{background:linear-gradient(135deg,#fff,#f8f8f8);border-color:rgba(0,0,0,.12)}
 body.light .fab-title{color:#111}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -853,14 +866,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div id="support-overlay">
   <div id="support-popup">
     <div class="sp-header">
-      <div class="sp-avatar" style="background:#fff;border-radius:10px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <span style="font-size:13px;font-weight:900;color:#000;letter-spacing:-1px;font-family:Arial,sans-serif">ML</span>
+      <div class="sp-avatar" style="background:#fff;border-radius:12px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span style="font-size:11px;font-weight:900;color:#000;letter-spacing:-0.5px;font-family:Arial,sans-serif">MLYNR.</span>
       </div>
       <div class="sp-header-txt">
-        <div class="sp-header-title">AI Koç</div>
+        <div class="sp-header-title">Al Koç</div>
         <div class="sp-header-sub">MLYNR · Sana özel cevap</div>
       </div>
-      <a href="https://t.me/mlynr_bot" target="_blank" style="background:transparent;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.45);border-radius:8px;padding:6px 12px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-decoration:none;white-space:nowrap;margin-right:8px;transition:all .2s;text-transform:uppercase">Telegram</a>
+      <a href="https://t.me/mlynr_bot" target="_blank" style="background:transparent;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.45);border-radius:8px;padding:6px 12px;font-family:var(--mono);font-size:9px;letter-spacing:1px;text-decoration:none;white-space:nowrap;margin-right:8px;transition:all .2s;text-transform:uppercase">Destek Ekibi</a>
       <button class="sp-close-btn" onclick="closeSupportBot()">×</button>
     </div>
     <div class="sp-messages" id="sp-messages"></div>
@@ -1536,7 +1549,7 @@ function fsDrawCard(){
     ctx.fillStyle='#000';
     ctx.font='900 300px Arial Black, Arial, sans-serif';
     ctx.textAlign='left';
-    ctx.fillText('ILK',60,460);
+    ctx.fillText('İLK',60,460);
 
     // ORTA GECIS ALANI - siyah zemin
     // SATIS! - buyuk, beyaz, outline
@@ -1545,11 +1558,11 @@ function fsDrawCard(){
     ctx.lineJoin='round';
     ctx.font='900 280px Arial Black, Arial, sans-serif';
     ctx.textAlign='left';
-    ctx.strokeText('SATIS!',60,820);
+    ctx.strokeText('SATIŞ!',60,820);
 
     // SATIS icerine cok hafif dolu
     ctx.fillStyle='rgba(255,255,255,0.08)';
-    ctx.fillText('SATIS!',60,820);
+    ctx.fillText('SATIŞ!',60,820);
 
     // KALIN YATAY CIZGI SEPARATOR
     ctx.strokeStyle='#fff';
