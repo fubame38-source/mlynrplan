@@ -1972,14 +1972,15 @@ function showOrbCard(idx,taskText,stage,nx,ny){
   var isDone=_orbTasks.indexOf(idx)>-1;
   var card=document.createElement('div');
   card.className='orb-card';card.id='orb-card-'+idx;
-  card.innerHTML='<div class="orb-card-inner"><div class="orb-card-status '+(isDone?'done':'pending')+'">'+(isDone?'✓ Tamamlandı':'Bekliyor')+'</div><div class="orb-card-title">'+taskText+'</div><button class="orb-card-btn'+(isDone?' done':'')+'" onclick="toggleOrbTask('+idx+')">'+(isDone?'✓ Tamamlandı':'Tamamla →')+'</button></div>';
-  var stageW=stage.offsetWidth||460;
-  card.style.cssText='position:absolute;z-index:100;left:'+(nx)+'px;top:'+(ny+26)+'px;transform:translateX(-50%)';
-  // Taşma kontrolü
+  card.innerHTML='<div class="orb-card-inner"><div class="orb-card-status '+(isDone?'done':'pending')+'">'+(isDone?'✓ Tamamlandi':'Bekliyor')+'</div><div class="orb-card-title">'+taskText+'</div><button class="orb-card-btn'+(isDone?' done':'')+'" onclick="toggleOrbTask('+idx+')">'+(isDone?'✓ Tamamlandi':'Tamamla →')+'</button></div>';
+  card.style.cssText='position:absolute;z-index:100;left:'+nx+'px;top:'+(ny+30)+'px;transform:translateX(-50%)';
   stage.appendChild(card);
-  var rect=card.getBoundingClientRect(),stRect=stage.getBoundingClientRect();
-  if(rect.right>stRect.right){card.style.left=(nx-(rect.right-stRect.right)-8)+'px';}
-  if(rect.left<stRect.left){card.style.left=(nx+(stRect.left-rect.left)+8)+'px';}
+  // Taşma kontrolü
+  requestAnimationFrame(function(){
+    var rect=card.getBoundingClientRect(),stRect=stage.getBoundingClientRect();
+    if(rect.right>stRect.right-8)card.style.left=(nx-(rect.right-stRect.right)-8)+'px';
+    if(rect.left<stRect.left+8)card.style.left=(nx+(stRect.left-rect.left)+8)+'px';
+  });
 }
 
 function removeOrbCard(){
@@ -1993,18 +1994,11 @@ function toggleOrbTask(idx){
   saveOrbTasks(_orbTasks);updateOrbBadge();updateOrbDots();
   var tasks=getOrbTasks();
   updateOrbNodes(tasks);
-  // Kartı güncelle
-  var card=document.getElementById('orb-card-'+idx);
-  if(card){
-    var isDone=_orbTasks.indexOf(idx)>-1;
-    var status=card.querySelector('.orb-card-status');
-    var btn=card.querySelector('.orb-card-btn');
-    if(status){status.className='orb-card-status '+(isDone?'done':'pending');status.textContent=isDone?'✓ Tamamlandı':'Bekliyor';}
-    if(btn){btn.className='orb-card-btn'+(isDone?' done':'');btn.textContent=isDone?'✓ Tamamlandı':'Tamamla →';}
-  }
   // SVG çizgileri güncelle
   var line=document.getElementById('orb-line-'+idx);
   if(line)line.setAttribute('stroke',_orbTasks.indexOf(idx)>-1?'rgba(34,197,94,0.3)':'rgba(255,255,255,0.08)');
+  // Kartı kapat
+  _orbActive=-1;removeOrbCard();
 }
 
 // ── INIT ──────────────────────────────────────────────────────
