@@ -559,7 +559,7 @@ body.light .sp-send{background:#000;color:#fff}
 #orbital-fab:hover .orb-fab-tooltip{opacity:1}
 
 /* Orbital Panel */
-#orbital-panel{position:fixed;left:84px;top:50%;transform:translateY(-50%);z-index:5500;width:min(420px,calc(100vw - 108px));background:var(--surface);border:1px solid var(--border2);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.6);display:none;flex-direction:column;overflow:hidden;animation:orbPanelIn .3s cubic-bezier(.34,1.2,.64,1)}
+#orbital-panel{position:fixed;left:90px;top:50%;transform:translateY(-50%);z-index:5500;width:min(460px,calc(100vw - 120px));background:var(--surface);border:1px solid var(--border2);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.6);display:none;flex-direction:column;overflow:hidden;animation:orbPanelIn .3s cubic-bezier(.34,1.2,.64,1)}
 #orbital-panel.show{display:flex}
 @keyframes orbPanelIn{from{opacity:0;transform:translateY(-50%) translateX(-20px) scale(.95)}to{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}}
 @media(max-width:600px){
@@ -577,7 +577,7 @@ body.light .orb-panel-avatar{background:#000}
 .orb-panel-close:hover{background:rgba(255,255,255,.12);color:var(--text)}
 body.light .orb-panel-close{background:rgba(0,0,0,.04)}
 .orb-panel-msg{padding:14px 20px;font-size:13px;color:var(--text2);line-height:1.65;font-style:italic;border-left:2px solid var(--border2);margin:14px 20px 0;border-radius:0 8px 8px 0}
-.orb-canvas-wrap{position:relative;width:100%;height:260px;flex-shrink:0}
+.orb-canvas-wrap{position:relative;width:100%;height:300px;flex-shrink:0}
 #orbital-canvas{display:block;width:100%;height:100%;cursor:pointer}
 .orb-detail{margin:0 16px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;display:none;animation:orbDetailIn .25s cubic-bezier(.34,1.2,.64,1)}
 .orb-detail.show{display:block}
@@ -1850,7 +1850,7 @@ function startOrbital(){
   canvas.style.width=W+'px';canvas.style.height=H+'px';
   var ctx=canvas.getContext('2d');ctx.scale(DPR,DPR);
   var cx=W/2,cy=H/2;
-  var R=Math.min(W,H)*0.33;
+  var R=Math.min(W,H)*0.38;
   var tasks=[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3,_orbData.gorev4||"",_orbData.gorev5||""].filter(function(t){return t&&t.length>0;});
   var nodes=tasks.map(function(t,i){
     return{idx:i,text:t,angle:(i/3)*Math.PI*2-(Math.PI/2),x:0,y:0,hovered:false,scale:1};
@@ -1931,7 +1931,7 @@ function startOrbital(){
     nodes.forEach(function(n){
       var isDone=_orbTasks.indexOf(n.idx)>-1;
       var isAct=_orbActive===n.idx;
-      var nr=isAct||n.hovered?32:26;
+      var nr=isAct||n.hovered?28:22;
 
       // Glow
       if(isDone){
@@ -1953,14 +1953,14 @@ function startOrbital(){
 
       // İçerik
       ctx.fillStyle=isDone?'#000':isDark?'rgba(255,255,255,0.75)':'rgba(0,0,0,0.55)';
-      ctx.font=(isAct?'700':'500')+' '+(isDone?16:14)+'px Arial,sans-serif';
+      ctx.font=(isAct?'700':'500')+' '+(isDone?13:11)+'px Arial,sans-serif';
       ctx.textAlign='center';ctx.textBaseline='middle';
       ctx.fillText(isDone?'✓':(n.idx+1)+'',n.x,n.y);
 
       // Alt etiket
       ctx.fillStyle=isDone?'rgba(34,197,94,0.7)':isDark?'rgba(255,255,255,0.25)':'rgba(0,0,0,0.22)';
       ctx.font='500 9px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
-      ctx.fillText('Görev '+(n.idx+1),n.x,n.y+nr+6);
+      ctx.fillText('Görev '+(n.idx+1),n.x,n.y+nr+5);
     });
 
     _orbRAF=requestAnimationFrame(draw);
