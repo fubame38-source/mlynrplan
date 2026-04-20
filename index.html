@@ -553,109 +553,95 @@ body.light .sp-send{background:#000;color:#fff}
 @keyframes skelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 
-/* ── ORBITAL FAB & PANEL ── */
-#orbital-fab{position:fixed;left:20px;top:50%;transform:translateY(-50%);z-index:5500;cursor:pointer;display:none;flex-direction:column;align-items:center;gap:6px}
-#orbital-fab.show{display:flex}
-.orb-fab-ring{width:52px;height:52px;border-radius:50%;background:var(--surface);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,.5);position:relative;transition:transform .25s}
-#orbital-fab:hover .orb-fab-ring{transform:scale(1.08)}
-.orb-fab-ring::before{content:'';position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(34,197,94,.25);animation:orbPulse 2.5s ease-in-out infinite}
-.orb-fab-ring::after{content:'';position:absolute;inset:-10px;border-radius:50%;border:1px solid rgba(34,197,94,.1);animation:orbPulse 2.5s ease-in-out infinite .5s}
-@keyframes orbPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.7;transform:scale(1.05)}}
-.orb-fab-icon{font-size:20px;line-height:1}
-.orb-fab-badge{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;background:var(--green);border-radius:8px;border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:#000;padding:0 3px}
-.orb-fab-label{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);text-align:center;white-space:nowrap}
 
-/* Panel */
-#orbital-panel{position:fixed;left:82px;top:50%;transform:translateY(-50%);z-index:5500;width:min(480px,calc(100vw - 96px));background:#050505;border:1px solid rgba(255,255,255,.1);border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.8);display:none;flex-direction:column;overflow:hidden;max-height:90vh;overflow-y:auto}
-#orbital-panel.show{display:flex;animation:orbPanelIn .3s cubic-bezier(.34,1.2,.64,1)}
-@keyframes orbPanelIn{from{opacity:0;transform:translateY(-50%) translateX(-16px)}to{opacity:1;transform:translateY(-50%) translateX(0)}}
-body.light #orbital-panel{background:#fff;border-color:rgba(0,0,0,.1)}
 
-/* Panel header */
-.orb-ph{padding:20px 22px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px;flex-shrink:0}
-body.light .orb-ph{border-bottom-color:rgba(0,0,0,.07)}
-.orb-ph-av{width:38px;height:38px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#000;font-family:Arial,sans-serif;flex-shrink:0;position:relative}
-.orb-ph-av::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid rgba(34,197,94,.5);animation:orbPulse 2s ease-in-out infinite}
-body.light .orb-ph-av{background:#000;color:#fff}
-.orb-ph-info{flex:1}
-.orb-ph-name{font-size:13px;font-weight:700;color:#fff}
-body.light .orb-ph-name{color:#000}
-.orb-ph-date{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);text-transform:uppercase;margin-top:2px}
-body.light .orb-ph-date{color:rgba(0,0,0,.3)}
-.orb-ph-close{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.orb-ph-close:hover{background:rgba(255,255,255,.14);color:#fff}
-body.light .orb-ph-close{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:rgba(0,0,0,.4)}
+
+/* ── ORBITAL INLINE ── */
+#orbital-inline{margin-top:28px;margin-bottom:4px}
+.orb-card-wrap{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;backdrop-filter:blur(20px);position:relative}
+body.light .orb-card-wrap{background:rgba(255,255,255,0.7);border-color:rgba(0,0,0,0.08)}
+.orb-card-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);pointer-events:none}
+
+/* Header */
+.orb-header{display:flex;align-items:center;gap:14px;padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,0.06)}
+body.light .orb-header{border-bottom-color:rgba(0,0,0,0.06)}
+.orb-av{width:40px;height:40px;border-radius:50%;background:#000;border:2px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;font-family:Arial,sans-serif;flex-shrink:0;position:relative}
+.orb-av::before{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid rgba(34,197,94,0.4);animation:orbPulseRing 2s ease-in-out infinite}
+.orb-av::after{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(34,197,94,0.15);animation:orbPulseRing 2s ease-in-out infinite 0.4s}
+@keyframes orbPulseRing{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:0.8;transform:scale(1.05)}}
+body.light .orb-av{background:#000;border-color:rgba(0,0,0,0.2)}
+.orb-hinfo{flex:1}
+.orb-hname{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-0.2px}
+.orb-hdate{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-top:2px}
+.orb-hbadge{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:20px;padding:5px 12px;white-space:nowrap}
 
 /* Selamlama */
-.orb-msg{margin:16px 22px 0;padding:12px 16px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.65;font-style:italic;border-left:2px solid rgba(255,255,255,.15);border-radius:0 8px 8px 0}
-body.light .orb-msg{color:rgba(0,0,0,.6);border-left-color:rgba(0,0,0,.15)}
+.orb-selamlama{padding:18px 24px 0;font-size:14px;color:var(--text2);line-height:1.7;font-style:italic;border-left:2px solid rgba(255,255,255,0.1);margin:0 24px;margin-top:16px;border-radius:0 8px 8px 0}
+body.light .orb-selamlama{border-left-color:rgba(0,0,0,0.1)}
 
-/* Orbital alan - DIV bazlı */
-.orb-stage{position:relative;width:100%;height:280px;overflow:hidden;flex-shrink:0}
-.orb-orbit{position:absolute;top:50%;left:50%;width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;border:1px solid rgba(255,255,255,.08);animation:orbRotate 12s linear infinite}
-body.light .orb-orbit{border-color:rgba(0,0,0,.06)}
-.orb-orbit.paused{animation-play-state:paused}
-@keyframes orbRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+/* Orbital stage */
+.orb-stage-wrap{position:relative;width:100%;height:320px;overflow:hidden}
+.orb-stage-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.orb-center-glow{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,0.15),transparent 70%);animation:orbPulseRing 3s ease-in-out infinite}
+.orb-center-ring-outer{position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);animation:orbPing 2s cubic-bezier(0,0,0.2,1) infinite}
+.orb-center-ring-mid{position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);animation:orbPing 2s cubic-bezier(0,0,0.2,1) infinite 0.5s}
+@keyframes orbPing{75%,100%{transform:scale(1.4);opacity:0}}
+.orb-center-dot{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#3b82f6,#14b8a6);display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 0 32px rgba(99,102,241,0.5),0 0 64px rgba(59,130,246,0.2)}
+.orb-center-inner-dot{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.85);backdrop-filter:blur(8px)}
 
-/* Merkez */
-.orb-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10}
-.orb-center-ring1{position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(255,255,255,.15);animation:orbPulse 2s ease-in-out infinite}
-.orb-center-ring2{position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(255,255,255,.07);animation:orbPulse 2s ease-in-out infinite .4s}
-.orb-center-dot{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#3b82f6,#14b8a6);display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 0 24px rgba(99,102,241,.4)}
-.orb-center-inner{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.85);backdrop-filter:blur(8px)}
+/* Orbit çemberi */
+.orb-orbit-circle{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(255,255,255,0.07);transform:translate(-50%,-50%);pointer-events:none}
+body.light .orb-orbit-circle{border-color:rgba(0,0,0,0.06)}
 
 /* Node'lar */
-.orb-node{position:absolute;top:50%;left:50%;transform-origin:center;cursor:pointer;z-index:20}
-.orb-node-wrap{position:absolute;transform:translate(-50%,-50%);transition:all .3s cubic-bezier(.34,1.3,.64,1)}
-.orb-node-glow{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.15) 0%,transparent 70%);transition:all .3s;pointer-events:none}
-.orb-node-circle{width:40px;height:40px;border-radius:50%;background:#000;border:2px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;transition:all .3s cubic-bezier(.34,1.3,.64,1);position:relative;box-shadow:0 2px 12px rgba(0,0,0,.5)}
-body.light .orb-node-circle{background:#fff;border-color:rgba(0,0,0,.2)}
-.orb-node-circle:hover{transform:scale(1.15);border-color:rgba(255,255,255,.7);box-shadow:0 4px 20px rgba(255,255,255,.2)}
-.orb-node-circle.active{background:#fff;border-color:#fff;transform:scale(1.4);box-shadow:0 8px 32px rgba(255,255,255,.3)}
-body.light .orb-node-circle.active{background:#000;border-color:#000}
-.orb-node-circle.done{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.8)}
-.orb-node-circle.pulse-ring{animation:nodeRingPulse 1s ease-in-out infinite}
-@keyframes nodeRingPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.4)}50%{box-shadow:0 0 0 8px rgba(255,255,255,0)}}
-.orb-node-num{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);counter-reset:none;font-family:Arial,sans-serif;line-height:1}
-.orb-node-circle.active .orb-node-num{color:#000}
-body.light .orb-node-circle.active .orb-node-num{color:#fff}
-.orb-node-circle.done .orb-node-num{color:rgba(34,197,94,.9);font-size:16px}
-.orb-node-label{position:absolute;top:48px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:9px;font-weight:600;letter-spacing:.5px;color:rgba(255,255,255,.5);transition:all .3s;pointer-events:none;font-family:var(--mono);text-transform:uppercase}
-body.light .orb-node-label{color:rgba(0,0,0,.35)}
-.orb-node-circle.active~.orb-node-label{color:rgba(255,255,255,.9);transform:translateX(-50%) scale(1.1)}
+.orb-node-el{position:absolute;transform:translate(-50%,-50%);cursor:pointer;z-index:10}
+.orb-node-aura{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.12),transparent 70%);pointer-events:none;transition:all 0.3s}
+.orb-node-btn{width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,0.6);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;transition:all 0.3s cubic-bezier(0.34,1.3,0.64,1);position:relative;backdrop-filter:blur(8px)}
+body.light .orb-node-btn{background:rgba(255,255,255,0.8);border-color:rgba(0,0,0,0.2)}
+.orb-node-el:hover .orb-node-btn{transform:scale(1.15);border-color:rgba(255,255,255,0.6);box-shadow:0 0 20px rgba(255,255,255,0.15)}
+.orb-node-btn.active{background:rgba(255,255,255,0.95);border-color:#fff;transform:scale(1.35);box-shadow:0 0 30px rgba(255,255,255,0.3)}
+.orb-node-btn.active .orb-node-num{color:#000}
+.orb-node-btn.done-node{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.7);box-shadow:0 0 16px rgba(34,197,94,0.25)}
+.orb-node-btn.done-node .orb-node-num{color:rgba(34,197,94,0.9)}
+.orb-node-num{font-size:14px;font-weight:700;color:rgba(255,255,255,0.8);font-family:Arial,sans-serif;line-height:1;transition:all 0.2s}
+body.light .orb-node-num{color:rgba(0,0,0,0.7)}
+.orb-node-lbl{position:absolute;top:52px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;letter-spacing:1px;color:rgba(255,255,255,0.3);white-space:nowrap;text-transform:uppercase;pointer-events:none;transition:color 0.2s}
+body.light .orb-node-lbl{color:rgba(0,0,0,0.25)}
+.orb-node-el:hover .orb-node-lbl,.orb-node-btn.active~.orb-node-lbl{color:rgba(255,255,255,0.8)}
 
-/* Kart popup - node üstünde */
-.orb-card{position:absolute;top:52px;left:50%;transform:translateX(-50%);width:220px;background:rgba(0,0,0,.92);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:0;overflow:visible;box-shadow:0 20px 60px rgba(0,0,0,.8);z-index:100;animation:cardPop .3s cubic-bezier(.34,1.3,.64,1)}
-@keyframes cardPop{from{opacity:0;transform:translateX(-50%) scale(.85) translateY(8px)}to{opacity:1;transform:translateX(-50%) scale(1) translateY(0)}}
-.orb-card::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:1px;height:6px;background:rgba(255,255,255,.4)}
-.orb-card-inner{padding:14px 16px}
-.orb-card-status{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-bottom:8px}
-.orb-card-status.pending{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15)}
-.orb-card-status.done{background:rgba(34,197,94,.12);color:rgba(34,197,94,.9);border:1px solid rgba(34,197,94,.3)}
-.orb-card-title{font-size:12px;font-weight:600;color:#fff;line-height:1.4;margin-bottom:12px}
-.orb-card-btn{width:100%;background:#fff;color:#000;border:none;border-radius:8px;font-family:var(--font);font-size:11px;font-weight:700;padding:10px;cursor:pointer;transition:all .2s}
-.orb-card-btn:hover{opacity:.85;transform:translateY(-1px)}
-.orb-card-btn.done{background:var(--green);color:#000}
+/* Görev detay kart */
+.orb-task-card{position:absolute;z-index:50;width:220px;background:rgba(8,8,8,0.95);border:1px solid rgba(255,255,255,0.2);border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.8);animation:orbCardIn 0.25s cubic-bezier(0.34,1.3,0.64,1)}
+body.light .orb-task-card{background:rgba(255,255,255,0.97);border-color:rgba(0,0,0,0.15);box-shadow:0 24px 60px rgba(0,0,0,0.15)}
+@keyframes orbCardIn{from{opacity:0;transform:translateX(-50%) scale(0.85) translateY(8px)}to{opacity:1;transform:translateX(-50%) scale(1) translateY(0)}}
+.orb-task-card::before{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:1px;height:5px;background:rgba(255,255,255,0.3)}
+.orb-tc-inner{padding:16px}
+.orb-tc-status{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:10px}
+.orb-tc-status.pending{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.12)}
+body.light .orb-tc-status.pending{background:rgba(0,0,0,0.05);color:rgba(0,0,0,0.4);border-color:rgba(0,0,0,0.1)}
+.orb-tc-status.done{background:rgba(34,197,94,0.12);color:rgba(34,197,94,0.9);border:1px solid rgba(34,197,94,0.3)}
+.orb-tc-title{font-size:13px;font-weight:600;color:#fff;line-height:1.45;margin-bottom:14px}
+body.light .orb-tc-title{color:#000}
+.orb-tc-btn{width:100%;background:#fff;color:#000;border:none;border-radius:9px;font-family:var(--font);font-size:12px;font-weight:700;padding:11px;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px}
+.orb-tc-btn:hover{opacity:0.88;transform:translateY(-1px)}
+.orb-tc-btn.done{background:var(--green);color:#000}
 
 /* Footer */
-.orb-footer{padding:14px 22px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
-body.light .orb-footer{border-top-color:rgba(0,0,0,.07)}
-.orb-ipucu{font-size:11px;color:rgba(255,255,255,.45);line-height:1.55;flex:1}
-body.light .orb-ipucu{color:rgba(0,0,0,.45)}
-.orb-ipucu strong{color:var(--green)}
-.orb-dots{display:flex;gap:4px;flex-shrink:0}
-.orb-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .3s}
-body.light .orb-dot{background:rgba(0,0,0,.15)}
-.orb-dot.done{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.5)}
-.orb-motiv{padding:0 22px 16px;font-size:11px;color:rgba(255,255,255,.25);font-style:italic;line-height:1.6;text-align:center;border-top:1px solid rgba(255,255,255,.05);padding-top:10px}
-body.light .orb-motiv{color:rgba(0,0,0,.25);border-top-color:rgba(0,0,0,.05)}
+.orb-footer-bar{display:flex;align-items:center;gap:16px;padding:16px 24px;border-top:1px solid rgba(255,255,255,0.06)}
+body.light .orb-footer-bar{border-top-color:rgba(0,0,0,0.06)}
+.orb-footer-tip{font-size:11px;color:var(--text3);line-height:1.55;flex:1}
+.orb-footer-tip strong{color:var(--green)}
+.orb-footer-progress{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.orb-pdot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.12);transition:all 0.3s}
+body.light .orb-pdot{background:rgba(0,0,0,0.12)}
+.orb-pdot.done{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,0.5)}
+.orb-motiv-bar{padding:10px 24px 18px;font-size:11px;color:rgba(255,255,255,0.2);font-style:italic;text-align:center;line-height:1.6}
+body.light .orb-motiv-bar{color:rgba(0,0,0,0.2)}
 
 /* Skeleton */
-.orb-skel-wrap{padding:20px 22px;display:flex;flex-direction:column;gap:10px}
-.orb-skel{height:12px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.08) 50%,rgba(255,255,255,.04) 75%);background-size:200%;animation:skelShimmer 1.5s infinite}
-body.light .orb-skel{background:linear-gradient(90deg,rgba(0,0,0,.04) 25%,rgba(0,0,0,.08) 50%,rgba(0,0,0,.04) 75%);background-size:200%}
+.orb-skel-box{padding:24px;display:flex;flex-direction:column;gap:12px}
+.orb-sk{border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,0.03) 25%,rgba(255,255,255,0.07) 50%,rgba(255,255,255,0.03) 75%);background-size:200%;animation:skelShimmer 1.5s infinite}
+body.light .orb-sk{background:linear-gradient(90deg,rgba(0,0,0,0.03) 25%,rgba(0,0,0,0.07) 50%,rgba(0,0,0,0.03) 75%);background-size:200%}
 @keyframes skelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-@media(max-width:600px){#orbital-fab{left:12px}#orbital-panel{left:72px;width:calc(100vw - 84px)}}
 
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -724,6 +710,12 @@ body.light .orb-skel{background:linear-gradient(90deg,rgba(0,0,0,.04) 25%,rgba(0
       <div class="hero-title">MLYNR<span class="dim">.</span></div>
       <div class="hero-subtitle">4 Haftalık Yol Haritası</div>
       <p class="hero-desc">Eğitimimizin tam akışı önünde. Tamamladıklarını işaretle, nerede olduğunu her zaman bil.</p>
+
+      <!-- ORBITAL BRIEFING -->
+      <div id="orbital-inline" style="display:none">
+        <div id="orbital-inline-card"></div>
+      </div>
+
       <div class="hero-tags">
         <span class="htag w">eBay · 10 Modül · 90 Video</span>
         <span class="htag g">Shopify · Sonraki Aşama</span>
@@ -983,43 +975,6 @@ body.light .orb-skel{background:linear-gradient(90deg,rgba(0,0,0,.04) 25%,rgba(0
 <div class="saved-dot" id="saved-dot">✓ KAYDEDİLDİ</div>
 <div class="toast" id="toast"></div>
 
-
-<!-- ORBITAL FAB -->
-<div id="orbital-fab" onclick="toggleOrbitalPanel()">
-  <div class="orb-fab-ring">
-    <span class="orb-fab-icon">📋</span>
-    <div class="orb-fab-badge" id="orb-fab-badge">5</div>
-  </div>
-  <div class="orb-fab-label">Görevler</div>
-</div>
-
-<!-- ORBITAL PANEL -->
-<div id="orbital-panel">
-  <div class="orb-ph">
-    <div class="orb-ph-av">C</div>
-    <div class="orb-ph-info">
-      <div class="orb-ph-name">Canberk Ozturk</div>
-      <div class="orb-ph-date" id="orb-panel-date">Yükleniyor...</div>
-    </div>
-    <button class="orb-ph-close" onclick="toggleOrbitalPanel()">×</button>
-  </div>
-  <div id="orb-skeleton" class="orb-skel-wrap">
-    <div class="orb-skel" style="width:65%"></div>
-    <div class="orb-skel" style="width:88%"></div>
-    <div class="orb-skel" style="width:50%"></div>
-  </div>
-  <div id="orb-panel-content" style="display:none;flex-direction:column">
-    <div class="orb-msg" id="orb-msg"></div>
-    <div class="orb-stage" id="orb-stage">
-      <!-- JS ile doldurulacak -->
-    </div>
-    <div class="orb-footer">
-      <div class="orb-ipucu" id="orb-ipucu"></div>
-      <div class="orb-dots" id="orb-dots"></div>
-    </div>
-    <div class="orb-motiv" id="orb-motiv"></div>
-  </div>
-</div>
 
 
 <!-- AI KOÇ FAB -->
@@ -1813,190 +1768,203 @@ function initScrollAnim(){
 
 
 // ── ORBITAL BRİEFİNG ──────────────────────────────────────
-var _orbData=null,_orbTasks=[],_orbActive=-1,_orbPanelOpen=false,_orbRAF=null,_orbRotation=0,_orbAutoRotate=true;
+var _orbData=null,_orbTasks=[],_orbActive=-1,_orbRAF=null;
 
-function orbKey(){return 'mlynr6_orb3_'+email.replace(/[^a-z0-9]/gi,'_')+'_'+new Date().toISOString().slice(0,10);}
+function orbKey(){return 'mlynr6_orb4_'+email.replace(/[^a-z0-9]/gi,'_')+'_'+new Date().toISOString().slice(0,10);}
 function orbTaskKey(){return orbKey()+'_t';}
 function loadOrbCache(){try{var r=localStorage.getItem(orbKey());if(r)return JSON.parse(r);}catch(e){}return null;}
 function saveOrbCache(d){try{localStorage.setItem(orbKey(),JSON.stringify(d));}catch(e){}}
 function loadOrbTasks(){try{var r=localStorage.getItem(orbTaskKey());if(r)return JSON.parse(r);}catch(e){}return [];}
 function saveOrbTasks(t){try{localStorage.setItem(orbTaskKey(),JSON.stringify(t));}catch(e){}}
 
+function getOrbTasks(){
+  if(!_orbData)return[];
+  return[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3,_orbData.gorev4,_orbData.gorev5].filter(function(t){return t&&t.length>0;});
+}
+
 function initBriefing(){
-  var fab=document.getElementById('orbital-fab');if(fab)fab.classList.add('show');
+  var cached=loadOrbCache();
+  if(cached){_orbData=cached;_orbTasks=loadOrbTasks();renderOrbInline();}
+  else{
+    var wrap=document.getElementById('orbital-inline');
+    if(wrap){
+      wrap.style.display='block';
+      var card=document.getElementById('orbital-inline-card');
+      if(card)card.innerHTML='<div class="orb-card-wrap"><div class="orb-skel-box"><div class="orb-sk" style="height:14px;width:55%"></div><div class="orb-sk" style="height:12px;width:80%"></div><div class="orb-sk" style="height:220px;width:100%;border-radius:12px;margin-top:4px"></div></div></div>';
+    }
+    var ad=getUserName()||'',gs=done.length,hf=Math.min(4,Math.ceil((gs+1)/7))||1;
+    var fs=false;try{fs=localStorage.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
+    fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({tool:'briefing',ad:ad.split(' ')[0],gunSayisi:gs,hafta:hf,ilkSatis:fs})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.error)throw new Error(d.error);
+      _orbData=d;_orbTasks=loadOrbTasks();saveOrbCache(d);renderOrbInline();
+    }).catch(function(){
+      var w=document.getElementById('orbital-inline');if(w)w.style.display='none';
+    });
+  }
+}
+
+function renderOrbInline(){
+  var wrap=document.getElementById('orbital-inline');
+  var card=document.getElementById('orbital-inline-card');
+  if(!wrap||!card||!_orbData)return;
+  wrap.style.display='block';
   var now=new Date();
   var G=['Pazar','Pazartesi','Sali','Carsamba','Persembe','Cuma','Cumartesi'];
   var A=['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
-  var el=document.getElementById('orb-panel-date');
-  if(el)el.textContent=G[now.getDay()]+', '+now.getDate()+' '+A[now.getMonth()];
-  var cached=loadOrbCache();
-  if(cached){_orbData=cached;_orbTasks=loadOrbTasks();updateOrbBadge();return;}
-  var ad=getUserName()||'',gs=done.length,hf=Math.min(4,Math.ceil((gs+1)/7))||1;
-  var fs=false;try{fs=localStorage.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
-  fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({tool:'briefing',ad:ad.split(' ')[0],gunSayisi:gs,hafta:hf,ilkSatis:fs})
-  }).then(function(r){return r.json();}).then(function(d){
-    if(d.error)throw new Error(d.error);
-    _orbData=d;_orbTasks=loadOrbTasks();saveOrbCache(d);updateOrbBadge();
-    if(_orbPanelOpen)renderOrbPanel();
-  }).catch(function(){});
-}
-
-function getOrbTasks(){
-  if(!_orbData)return [];
-  return [_orbData.gorev1,_orbData.gorev2,_orbData.gorev3,_orbData.gorev4,_orbData.gorev5].filter(function(t){return t&&t.length>0;});
-}
-
-function updateOrbBadge(){
-  var b=document.getElementById('orb-fab-badge');if(!b)return;
-  var rem=getOrbTasks().length-_orbTasks.length;
-  b.textContent=rem;b.style.display=rem>0?'flex':'none';
-}
-
-function toggleOrbitalPanel(){
-  var panel=document.getElementById('orbital-panel');if(!panel)return;
-  _orbPanelOpen=!_orbPanelOpen;
-  if(_orbPanelOpen){
-    panel.classList.add('show');
-    if(_orbData)renderOrbPanel();
-  } else {
-    panel.classList.remove('show');
-    if(_orbRAF){cancelAnimationFrame(_orbRAF);_orbRAF=null;}
-  }
-}
-
-function renderOrbPanel(){
-  if(!_orbData)return;
-  document.getElementById('orb-skeleton').style.display='none';
-  var pc=document.getElementById('orb-panel-content');pc.style.display='flex';
-  document.getElementById('orb-msg').textContent=_orbData.selamlama;
-  document.getElementById('orb-ipucu').innerHTML='<strong>İpucu:</strong> '+_orbData.pazar_ipucu;
-  document.getElementById('orb-motiv').textContent='"'+_orbData.motivasyon+'"';
-  updateOrbDots();
-  buildOrbStage();
-}
-
-function updateOrbDots(){
-  var d=document.getElementById('orb-dots');if(!d)return;
-  var tasks=getOrbTasks(),h='';
-  tasks.forEach(function(_,i){h+='<div class="orb-dot'+(_orbTasks.indexOf(i)>-1?' done':'')+'"></div>';});
-  d.innerHTML=h;
-}
-
-function buildOrbStage(){
-  var stage=document.getElementById('orb-stage');if(!stage)return;
+  var tarih=G[now.getDay()]+', '+now.getDate()+' '+A[now.getMonth()];
   var tasks=getOrbTasks();
-  stage.innerHTML='';
+  var dotsHtml='';tasks.forEach(function(_,i){dotsHtml+='<div class="orb-pdot'+(_orbTasks.indexOf(i)>-1?' done':'')+'"></div>';});
+
+  card.innerHTML=
+    '<div class="orb-card-wrap">'
+    +'<div class="orb-header">'
+    +'<div class="orb-av">C</div>'
+    +'<div class="orb-hinfo"><div class="orb-hname">Canberk Ozturk</div><div class="orb-hdate">'+tarih+'</div></div>'
+    +'<div class="orb-hbadge">Gunun Gorevleri</div>'
+    +'</div>'
+    +'<div class="orb-selamlama">'+_orbData.selamlama+'</div>'
+    +'<div class="orb-stage-wrap" id="orb-stage-wrap"></div>'
+    +'<div class="orb-footer-bar">'
+    +'<div class="orb-footer-tip"><strong>Ipucu:</strong> '+_orbData.pazar_ipucu+'</div>'
+    +'<div class="orb-footer-progress" id="orb-prog-dots">'+dotsHtml+'</div>'
+    +'</div>'
+    +'<div class="orb-motiv-bar">"'+_orbData.motivasyon+'"</div>'
+    +'</div>';
+
+  setTimeout(function(){buildOrbStage(tasks);},60);
+}
+
+function buildOrbStage(tasks){
+  var wrap=document.getElementById('orb-stage-wrap');if(!wrap)return;
+  wrap.innerHTML='';
+  var W=wrap.offsetWidth||600,H=320,cx=W/2,cy=H/2;
+  var R=Math.min(W*0.32,H*0.36);
+
+  // SVG bağlantı çizgileri
+  var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1';
+  tasks.forEach(function(_,i){
+    var a=(i/tasks.length)*Math.PI*2-(Math.PI/2);
+    var nx=cx+R*Math.cos(a),ny=cy+R*Math.sin(a);
+    var isDone=_orbTasks.indexOf(i)>-1;
+    var line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',cx);line.setAttribute('y1',cy);
+    line.setAttribute('x2',nx);line.setAttribute('y2',ny);
+    line.setAttribute('stroke',isDone?'rgba(34,197,94,0.35)':'rgba(255,255,255,0.07)');
+    line.setAttribute('stroke-width','1');line.setAttribute('stroke-dasharray','4,6');
+    line.id='orb-svgline-'+i;
+    svg.appendChild(line);
+  });
+  wrap.appendChild(svg);
+
+  // Orbit çemberi
+  var oc=document.createElement('div');
+  oc.className='orb-orbit-circle';
+  oc.style.cssText='width:'+(R*2)+'px;height:'+(R*2)+'px';
+  wrap.appendChild(oc);
 
   // Merkez
-  var center=document.createElement('div');
-  center.className='orb-center';
-  center.innerHTML='<div class="orb-center-ring1"></div><div class="orb-center-ring2"></div><div class="orb-center-dot"><div class="orb-center-inner"></div></div>';
-  stage.appendChild(center);
+  var cent=document.createElement('div');
+  cent.style.cssText='position:absolute;top:'+cy+'px;left:'+cx+'px;transform:translate(-50%,-50%);z-index:5';
+  cent.innerHTML='<div class="orb-stage-center"><div class="orb-center-glow"></div><div class="orb-center-ring-outer"></div><div class="orb-center-ring-mid"></div><div class="orb-center-dot"><div class="orb-center-inner-dot"></div></div></div>';
+  wrap.appendChild(cent);
 
-  // Orbit çemberi - dönen
-  var orbit=document.createElement('div');
-  orbit.className='orb-orbit';
-  orbit.id='orb-orbit-ring';
-  stage.appendChild(orbit);
-
-  // Node'lar - orbit'in dışında, sabit koordinatlarda
-  var R=88; // orbit radius px - stage 280px yüksek, merkez 140
+  // Node'lar
   tasks.forEach(function(t,i){
-    var angle=(i/tasks.length)*Math.PI*2-(Math.PI/2);
-    var node=document.createElement('div');
-    node.className='orb-node';
-    node.id='orb-node-'+i;
+    var a=(i/tasks.length)*Math.PI*2-(Math.PI/2);
+    var nx=cx+R*Math.cos(a),ny=cy+R*Math.sin(a);
     var isDone=_orbTasks.indexOf(i)>-1;
-    var circleClass='orb-node-circle'+(isDone?' done':'')+(_orbActive===i?' active':'');
-    node.innerHTML='<div class="orb-node-wrap"><div class="'+circleClass+'" id="orb-nc-'+i+'"><span class="orb-node-num">'+(isDone?'✓':(i+1))+'</span></div><div class="orb-node-label">Görev '+(i+1)+'</div></div>';
-    // Pozisyon
-    var stageW=stage.offsetWidth||460;
-    var cx=stageW/2,cy=140;
-    var nx=cx+R*Math.cos(angle),ny=cy+R*Math.sin(angle);
-    node.style.left=nx+'px';node.style.top=ny+'px';
-    (function(idx,taskText){
+    var node=document.createElement('div');
+    node.className='orb-node-el';
+    node.id='orb-node-el-'+i;
+    node.style.cssText='left:'+nx+'px;top:'+ny+'px';
+    var auraSize=isDone?80:60;
+    node.innerHTML=
+      '<div class="orb-node-aura" style="width:'+auraSize+'px;height:'+auraSize+'px"></div>'
+      +'<div class="orb-node-btn'+(isDone?' done-node':'')+((_orbActive===i)?' active':'')+'" id="orb-nb-'+i+'">'
+      +'<span class="orb-node-num" id="orb-nn-'+i+'">'+(isDone?'✓':(i+1))+'</span>'
+      +'</div>'
+      +'<div class="orb-node-lbl">Gorev '+(i+1)+'</div>';
+    (function(idx,taskTxt){
       node.addEventListener('click',function(e){
         e.stopPropagation();
         if(_orbActive===idx){_orbActive=-1;removeOrbCard();}
-        else{_orbActive=idx;showOrbCard(idx,taskText,stage,nx,ny);}
-        updateOrbNodes(tasks);
+        else{_orbActive=idx;showOrbTaskCard(idx,taskTxt,nx,ny,W,wrap);}
+        updateOrbNodeStyles(tasks);
       });
     })(i,t);
-    stage.appendChild(node);
+    wrap.appendChild(node);
   });
 
-  // Bağlantı çizgileri SVG
-  var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-  svg.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1';
-  var stageW2=stage.offsetWidth||460,cy2=140,cx2=stageW2/2;
-  tasks.forEach(function(_,i){
-    var angle=(i/tasks.length)*Math.PI*2-(Math.PI/2);
-    var nx=cx2+R*Math.cos(angle),ny=cy2+R*Math.sin(angle);
-    var isDone=_orbTasks.indexOf(i)>-1;
-    var line=document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',cx2);line.setAttribute('y1',cy2);
-    line.setAttribute('x2',nx);line.setAttribute('y2',ny);
-    line.setAttribute('stroke',isDone?'rgba(34,197,94,0.3)':'rgba(255,255,255,0.08)');
-    line.setAttribute('stroke-width','1');
-    line.id='orb-line-'+i;
-    svg.appendChild(line);
-  });
-  stage.insertBefore(svg,stage.firstChild);
+  // Dışa tıklayınca kapat
+  wrap.addEventListener('click',function(){_orbActive=-1;removeOrbCard();updateOrbNodeStyles(tasks);});
 
-  // Orbit animasyonu
+  // Orbit dönüş animasyonu
   if(_orbRAF)cancelAnimationFrame(_orbRAF);
-  var ring=document.getElementById('orb-orbit-ring');
   var ang=0;
-  function rotateOrbit(){
-    if(!_orbPanelOpen){_orbRAF=null;return;}
-    if(_orbActive===-1){ang+=0.4;if(ring)ring.style.transform='rotate('+ang+'deg)';}
-    _orbRAF=requestAnimationFrame(rotateOrbit);
+  var oring=oc;
+  function spin(){
+    if(_orbActive===-1){ang+=0.25;oring.style.transform='translate(-50%,-50%) rotate('+ang+'deg)';}
+    _orbRAF=requestAnimationFrame(spin);
   }
-  _orbRAF=requestAnimationFrame(rotateOrbit);
+  _orbRAF=requestAnimationFrame(spin);
 }
 
-function updateOrbNodes(tasks){
+function updateOrbNodeStyles(tasks){
   tasks.forEach(function(_,i){
-    var nc=document.getElementById('orb-nc-'+i);if(!nc)return;
+    var nb=document.getElementById('orb-nb-'+i);
+    var nn=document.getElementById('orb-nn-'+i);
+    if(!nb)return;
     var isDone=_orbTasks.indexOf(i)>-1,isAct=_orbActive===i;
-    nc.className='orb-node-circle'+(isDone?' done':'')+(isAct?' active':'');
-    var num=nc.querySelector('.orb-node-num');
-    if(num)num.textContent=isDone?'✓':(i+1)+'';
+    nb.className='orb-node-btn'+(isDone?' done-node':'')+(isAct?' active':'');
+    if(nn)nn.textContent=isDone?'✓':(i+1)+'';
+    var line=document.getElementById('orb-svgline-'+i);
+    if(line)line.setAttribute('stroke',isDone?'rgba(34,197,94,0.35)':'rgba(255,255,255,0.07)');
   });
 }
 
-function showOrbCard(idx,taskText,stage,nx,ny){
+function showOrbTaskCard(idx,taskTxt,nx,ny,stageW,wrap){
   removeOrbCard();
   var isDone=_orbTasks.indexOf(idx)>-1;
   var card=document.createElement('div');
-  card.className='orb-card';card.id='orb-card-'+idx;
-  card.innerHTML='<div class="orb-card-inner"><div class="orb-card-status '+(isDone?'done':'pending')+'">'+(isDone?'✓ Tamamlandi':'Bekliyor')+'</div><div class="orb-card-title">'+taskText+'</div><button class="orb-card-btn'+(isDone?' done':'')+'" onclick="toggleOrbTask('+idx+')">'+(isDone?'✓ Tamamlandi':'Tamamla →')+'</button></div>';
-  card.style.cssText='position:absolute;z-index:100;left:'+nx+'px;top:'+(ny+30)+'px;transform:translateX(-50%)';
-  stage.appendChild(card);
+  card.className='orb-task-card';card.id='orb-tc-'+idx;
+  card.innerHTML='<div class="orb-tc-inner">'
+    +'<div class="orb-tc-status '+(isDone?'done':'pending')+'">'+(isDone?'✓ Tamamlandi':'Bekliyor')+'</div>'
+    +'<div class="orb-tc-title">'+taskTxt+'</div>'
+    +'<button class="orb-tc-btn'+(isDone?' done':'')+'" onclick="toggleOrbTask('+idx+')">'+(isDone?'✓ Tamamlandi':'Tamamla →')+'</button>'
+    +'</div>';
+  // Kart yukarıda mı aşağıda mı açılsın
+  var cardTop=ny>160?ny-170:ny+52;
+  card.style.cssText='position:absolute;left:'+nx+'px;top:'+cardTop+'px;transform:translateX(-50%)';
+  wrap.appendChild(card);
   // Taşma kontrolü
   requestAnimationFrame(function(){
-    var rect=card.getBoundingClientRect(),stRect=stage.getBoundingClientRect();
-    if(rect.right>stRect.right-8)card.style.left=(nx-(rect.right-stRect.right)-8)+'px';
-    if(rect.left<stRect.left+8)card.style.left=(nx+(stRect.left-rect.left)+8)+'px';
+    var cw=card.offsetWidth;
+    var lx=nx-cw/2;var rx=lx+cw;
+    if(rx>stageW-8)card.style.left=(stageW-cw-8)+'px';
+    if(lx<8)card.style.left='8px';
+    card.style.transform='none';
   });
 }
 
 function removeOrbCard(){
-  var existing=document.querySelectorAll('[id^="orb-card-"]');
-  existing.forEach(function(el){el.remove();});
+  var els=document.querySelectorAll('[id^="orb-tc-"]');
+  els.forEach(function(el){el.remove();});
 }
 
 function toggleOrbTask(idx){
   var pos=_orbTasks.indexOf(idx);
   if(pos>-1)_orbTasks.splice(pos,1);else _orbTasks.push(idx);
-  saveOrbTasks(_orbTasks);updateOrbBadge();updateOrbDots();
+  saveOrbTasks(_orbTasks);
+  // Progress dots güncelle
   var tasks=getOrbTasks();
-  updateOrbNodes(tasks);
-  // SVG çizgileri güncelle
-  var line=document.getElementById('orb-line-'+idx);
-  if(line)line.setAttribute('stroke',_orbTasks.indexOf(idx)>-1?'rgba(34,197,94,0.3)':'rgba(255,255,255,0.08)');
+  var pd=document.getElementById('orb-prog-dots');
+  if(pd){var h='';tasks.forEach(function(_,i){h+='<div class="orb-pdot'+(_orbTasks.indexOf(i)>-1?' done':'')+'"></div>';});pd.innerHTML=h;}
+  // Node güncelle
+  updateOrbNodeStyles(tasks);
   // Kartı kapat
   _orbActive=-1;removeOrbCard();
 }
