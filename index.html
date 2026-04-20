@@ -359,27 +359,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .hmenu-item.logout:hover{color:#f87171}
 #support-overlay{position:fixed;top:0;right:-400px;width:380px;height:100vh;z-index:8500;display:flex;flex-direction:column;transition:right .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
 #support-overlay.show{right:0;pointer-events:all}
-#support-popup{background:#161616;border-left:1px solid rgba(255,255,255,.1);height:100%;width:100%;display:flex;flex-direction:column;box-shadow:-8px 0 32px rgba(0,0,0,.6)}
-.sp-header{padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px;flex-shrink:0}
-.sp-avatar{width:36px;height:36px;background:rgba(74,222,128,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+#support-popup{background:#0a0a0a;border-left:1px solid rgba(255,255,255,.06);height:100%;width:100%;display:flex;flex-direction:column}
+.sp-header{padding:22px 24px 18px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:14px;flex-shrink:0;background:#0a0a0a}
+.sp-avatar{width:40px;height:40px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .sp-header-txt{flex:1}
-.sp-header-title{font-size:14px;font-weight:700;color:var(--white)}
-.sp-header-sub{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:#4ade80;text-transform:uppercase;margin-top:2px}
-.sp-close-btn{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.08);border:none;color:var(--text2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.sp-close-btn:hover{background:rgba(255,255,255,.15)}
-.sp-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;min-height:200px;max-height:340px}
-.sp-msg{max-width:85%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5}
-.sp-msg.bot{background:rgba(255,255,255,.06);color:var(--text);border-bottom-left-radius:4px;align-self:flex-start}
-.sp-msg.user{background:rgba(74,222,128,.15);color:var(--white);border-bottom-right-radius:4px;align-self:flex-end;text-align:right}
-.sp-msg.loading{color:var(--text3);font-family:var(--mono);font-size:11px;letter-spacing:1px}
-.sp-input-area{padding:14px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:8px;flex-shrink:0}
-.sp-input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:var(--white);font-family:var(--font);font-size:13px;padding:10px 14px;outline:none;resize:none}
-.sp-input::placeholder{color:var(--text3)}
-.sp-send{background:var(--white);color:var(--bg);border:none;border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .2s}
-.sp-send:hover{opacity:.8}
-.sp-send:disabled{opacity:.4;cursor:not-allowed}
-.sp-quick-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--text2);font-family:var(--font);font-size:11px;padding:8px 12px;cursor:pointer;text-align:left;transition:all .2s;width:100%}
-.sp-quick-btn:hover{background:rgba(255,255,255,.1);color:var(--white);border-color:rgba(255,255,255,.2)}
+.sp-header-title{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.sp-header-sub{font-family:var(--mono);font-size:9px;letter-spacing:2.5px;color:rgba(255,255,255,.35);text-transform:uppercase;margin-top:3px}
+.sp-close-btn{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.sp-close-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.sp-messages{flex:1;overflow-y:auto;padding:20px 20px 8px;display:flex;flex-direction:column;gap:10px;min-height:200px;max-height:320px}
+.sp-msg{max-width:82%;padding:12px 16px;font-size:13px;line-height:1.6}
+.sp-msg.bot{background:#1a1a1a;color:rgba(255,255,255,.85);border-radius:0 14px 14px 14px;align-self:flex-start;border:1px solid rgba(255,255,255,.06)}
+.sp-msg.user{background:#fff;color:#000;border-radius:14px 0 14px 14px;align-self:flex-end;text-align:right;font-weight:500}
+.sp-msg.loading{color:rgba(255,255,255,.3);font-family:var(--mono);font-size:11px;letter-spacing:1px;background:#1a1a1a;border:1px solid rgba(255,255,255,.06);border-radius:0 14px 14px 14px;align-self:flex-start}
+.sp-input-area{padding:12px 16px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:8px;flex-shrink:0;background:#0a0a0a}
+.sp-input{flex:1;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);border-radius:12px;color:#fff;font-family:var(--font);font-size:13px;padding:11px 14px;outline:none;resize:none;transition:border-color .2s}
+.sp-input:focus{border-color:rgba(255,255,255,.3)}
+.sp-input::placeholder{color:rgba(255,255,255,.25)}
+.sp-send{background:#fff;color:#000;border:none;border-radius:10px;width:40px;height:40px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .2s;font-weight:700}
+.sp-send:hover{opacity:.85}
+.sp-send:disabled{opacity:.3;cursor:not-allowed}
+.sp-quick-btn{background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:10px;color:rgba(255,255,255,.5);font-family:var(--font);font-size:12px;padding:10px 14px;cursor:pointer;text-align:left;transition:all .2s;width:100%}
+.sp-quick-btn:hover{background:#1a1a1a;color:rgba(255,255,255,.9);border-color:rgba(255,255,255,.2)}
 #ai-fab{position:fixed;bottom:24px;right:24px;z-index:6000;cursor:pointer;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1c1c1c,#111);border:1px solid rgba(255,255,255,.18);border-radius:50px;padding:14px 22px 14px 16px;box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1);transition:all .35s cubic-bezier(.34,1.2,.64,1);backdrop-filter:blur(20px)}
 #ai-fab:hover{transform:translateY(-3px) scale(1.03)}
 .fab-icon{width:32px;height:32px;background:linear-gradient(135deg,rgba(74,222,128,.2),rgba(74,222,128,.08));border:1px solid rgba(74,222,128,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
@@ -852,18 +853,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div id="support-overlay">
   <div id="support-popup">
     <div class="sp-header">
-      <div class="sp-avatar">🤖</div>
-      <div class="sp-header-txt">
-        <div class="sp-header-title">MLYNR AI Koç</div>
-        <div class="sp-header-sub">● Sana Özel Cevap</div>
+      <div class="sp-avatar" style="background:#fff;border-radius:10px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span style="font-size:13px;font-weight:900;color:#000;letter-spacing:-1px;font-family:Arial,sans-serif">ML</span>
       </div>
-      <a href="https://t.me/mlynr_bot" target="_blank" style="background:rgba(0,136,204,.15);border:1px solid rgba(0,136,204,.3);color:#29b6f6;border-radius:8px;padding:5px 10px;font-family:var(--mono);font-size:9px;letter-spacing:1px;text-decoration:none;white-space:nowrap;margin-right:6px">✈ Telegram</a>
+      <div class="sp-header-txt">
+        <div class="sp-header-title">AI Koç</div>
+        <div class="sp-header-sub">MLYNR · Sana özel cevap</div>
+      </div>
+      <a href="https://t.me/mlynr_bot" target="_blank" style="background:transparent;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.45);border-radius:8px;padding:6px 12px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-decoration:none;white-space:nowrap;margin-right:8px;transition:all .2s;text-transform:uppercase">Telegram</a>
       <button class="sp-close-btn" onclick="closeSupportBot()">×</button>
     </div>
     <div class="sp-messages" id="sp-messages"></div>
-    <div style="padding:12px 16px 0;flex-shrink:0;border-top:1px solid rgba(255,255,255,.06)">
-      <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:8px">Sık Sorulan Sorular</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="padding:16px 16px 0;flex-shrink:0;border-top:1px solid rgba(255,255,255,.06);background:#0a0a0a">
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.2);text-transform:uppercase;margin-bottom:10px">Sık sorulan</div>
+      <div style="display:flex;flex-direction:column;gap:4px">
         <button onclick="askQuick(this)" class="sp-quick-btn">Ship from address ne olmalı?</button>
         <button onclick="askQuick(this)" class="sp-quick-btn">Ürünler AutoDS'de görünmüyor</button>
         <button onclick="askQuick(this)" class="sp-quick-btn">Payoneer doğrulama isteği gelmiyor</button>
@@ -1499,145 +1502,118 @@ function fsDrawCard(){
     var months3=['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
     var dateStr=now2.getDate()+' '+months3[now2.getMonth()]+' '+now2.getFullYear();
 
-    // ── ARKAPLAN: saf siyah ──
-    ctx.fillStyle='#000000';
+    // ARKAPLAN - saf siyah
+    ctx.fillStyle='#000';
     ctx.fillRect(0,0,W,H);
 
-    // Subtle noise texture - ince beyaz noktalar
-    ctx.fillStyle='rgba(255,255,255,0.018)';
-    for(var nx=0;nx<W;nx+=3){for(var ny=0;ny<H;ny+=3){if(Math.random()>0.85){ctx.fillRect(nx,ny,1,1);}}}
+    // UST BLOK - beyaz dolgu, tam genislik
+    ctx.fillStyle='#fff';
+    ctx.fillRect(0,0,W,520);
 
-    // Üst köşe hafif ışık
-    var gTop=ctx.createRadialGradient(W/2,-100,0,W/2,-100,900);
-    gTop.addColorStop(0,'rgba(255,255,255,0.07)');
-    gTop.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=gTop;ctx.fillRect(0,0,W,H);
-
-    // ── ÇERÇEVE: ince beyaz border ──
-    ctx.strokeStyle='rgba(255,255,255,0.15)';
-    ctx.lineWidth=1.5;
-    ctx.strokeRect(40,40,W-80,H-80);
-
-    // İç çerçeve - daha soluk
-    ctx.strokeStyle='rgba(255,255,255,0.05)';
-    ctx.lineWidth=1;
-    ctx.strokeRect(54,54,W-108,H-108);
-
-    // ── LOGO ALANI ──
-    // Üst yatay çizgi
-    ctx.strokeStyle='rgba(255,255,255,0.2)';
-    ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(80,130);ctx.lineTo(W-80,130);ctx.stroke();
-
-    // MLYNR. logosu - sol
-    ctx.fillStyle='#ffffff';
-    ctx.font='900 38px Arial, sans-serif';
-    ctx.textAlign='left';
-    ctx.letterSpacing='2px';
-    ctx.fillText('MLYNR.',88,108);
-
-    // Sağda tarih
-    ctx.fillStyle='rgba(255,255,255,0.35)';
-    ctx.font='400 22px monospace';
-    ctx.textAlign='right';
-    ctx.fillText(dateStr,W-88,108);
-
-    // ── BÜYÜK NUMARA: 01 ──
-    // Arka planda dev transparan rakam
-    ctx.fillStyle='rgba(255,255,255,0.03)';
-    ctx.font='900 600px Arial, sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText('01',W/2,820);
-
-    // ── ANA BAŞLIK BLOĞU ──
-    // "ILK" - beyaz, serif ruhlu bold
-    ctx.fillStyle='#ffffff';
-    ctx.font='900 220px Arial Black, Arial, sans-serif';
-    ctx.textAlign='left';
-    ctx.fillText('ILK',88,560);
-
-    // Yatay ince çizgi başlıklar arası
-    ctx.strokeStyle='rgba(255,255,255,0.3)';
-    ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(88,590);ctx.lineTo(W-88,590);ctx.stroke();
-
-    // "SATIS" - outline/kontur efekti
-    ctx.strokeStyle='#ffffff';
+    // UST BLOK alt ince cizgi
+    ctx.strokeStyle='#000';
     ctx.lineWidth=3;
-    ctx.lineJoin='round';
-    ctx.strokeText('SATIS',88,800);
-    ctx.fillStyle='rgba(255,255,255,0.06)';
-    ctx.fillText('SATIS',88,800);
+    ctx.beginPath();ctx.moveTo(0,520);ctx.lineTo(W,520);ctx.stroke();
 
-    // Ünlem işareti - beyaz dolu
-    ctx.fillStyle='#ffffff';
-    ctx.font='900 220px Arial Black, Arial, sans-serif';
-    ctx.fillText('!',W-88,800);
+    // MLYNR. logosu - siyah ustunde
+    ctx.fillStyle='#000';
+    ctx.font='900 52px Arial, sans-serif';
     ctx.textAlign='left';
+    ctx.fillText('MLYNR.',72,108);
 
-    // ── AYIRICI ──
-    ctx.strokeStyle='rgba(255,255,255,0.12)';
+    // Tarih - sag ust
+    ctx.fillStyle='rgba(0,0,0,0.35)';
+    ctx.font='400 28px monospace';
+    ctx.textAlign='right';
+    ctx.fillText(dateStr,W-72,108);
+
+    // Ince yatay cizgi
+    ctx.strokeStyle='rgba(0,0,0,0.12)';
     ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(88,860);ctx.lineTo(W-88,860);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(72,136);ctx.lineTo(W-72,136);ctx.stroke();
 
-    // ── KİŞİSEL İSİM ALANI ──
+    // ILK kelimesi - cok buyuk, siyah ustunde
+    ctx.fillStyle='#000';
+    ctx.font='900 300px Arial Black, Arial, sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText('ILK',60,460);
+
+    // ORTA GECIS ALANI - siyah zemin
+    // SATIS! - buyuk, beyaz, outline
+    ctx.strokeStyle='#fff';
+    ctx.lineWidth=8;
+    ctx.lineJoin='round';
+    ctx.font='900 280px Arial Black, Arial, sans-serif';
+    ctx.textAlign='left';
+    ctx.strokeText('SATIS!',60,820);
+
+    // SATIS icerine cok hafif dolu
+    ctx.fillStyle='rgba(255,255,255,0.08)';
+    ctx.fillText('SATIS!',60,820);
+
+    // KALIN YATAY CIZGI SEPARATOR
+    ctx.strokeStyle='#fff';
+    ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(72,880);ctx.lineTo(W-72,880);ctx.stroke();
+
+    // KAZANAN ALANI
     if(fsName){
-      // İsim etiketi - küçük
       ctx.fillStyle='rgba(255,255,255,0.4)';
-      ctx.font='400 24px monospace';
+      ctx.font='500 26px monospace';
       ctx.textAlign='left';
-      ctx.fillText('KAZANAN',88,920);
+      ctx.fillText('KAZANAN',72,950);
 
-      // İsim - büyük, beyaz
-      ctx.fillStyle='#ffffff';
-      ctx.font='800 72px Arial, sans-serif';
-      ctx.textAlign='left';
-      var nameUpper=fsName.toUpperCase();
-      // İsim çok uzunsa küçült
-      var fontSize=72;
-      ctx.font='800 '+fontSize+'px Arial, sans-serif';
-      while(ctx.measureText(nameUpper).width>W-176&&fontSize>36){fontSize-=4;ctx.font='800 '+fontSize+'px Arial, sans-serif';}
-      ctx.fillText(nameUpper,88,1010);
+      ctx.fillStyle='#fff';
+      var fSize=96;
+      ctx.font='900 '+fSize+'px Arial, sans-serif';
+      while(ctx.measureText(fsName.toUpperCase()).width > W-144 && fSize > 48){
+        fSize -= 6;
+        ctx.font='900 '+fSize+'px Arial, sans-serif';
+      }
+      ctx.fillText(fsName.toUpperCase(),72,1060);
     }
 
-    // ── ALT BÜYÜK ALAN: quote bloğu ──
-    // Büyük tırnak işareti
-    ctx.fillStyle='rgba(255,255,255,0.06)';
-    ctx.font='900 300px Georgia, serif';
-    ctx.textAlign='left';
-    ctx.fillText('"',60,1380);
+    // INCE CIZGI
+    ctx.strokeStyle='rgba(255,255,255,0.12)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(72,1120);ctx.lineTo(W-72,1120);ctx.stroke();
 
-    // Quote metni
-    ctx.fillStyle='rgba(255,255,255,0.55)';
-    ctx.font='400 36px Arial, sans-serif';
+    // QUOTE ALANI
+    // Dev tırnak - dekoratif
+    ctx.fillStyle='rgba(255,255,255,0.05)';
+    ctx.font='900 400px Georgia, serif';
     ctx.textAlign='left';
-    var qlines=['Basari bir gunde gelmiyor.','Her gun, bu anlardaki','kararlarda gizlidir.'];
-    var qy=1250;
-    for(var qi=0;qi<qlines.length;qi++){ctx.fillText(qlines[qi],88,qy);qy+=52;}
+    ctx.fillText('"',40,1500);
+
+    // Quote satırları
+    ctx.fillStyle='rgba(255,255,255,0.6)';
+    ctx.font='400 42px Arial, sans-serif';
+    ctx.textAlign='left';
+    var lines=['Basari bir gunde gelmiyor.','Her gun, bu anlardaki','kararlarda gizlidir.'];
+    var ly=1240;
+    for(var i=0;i<lines.length;i++){ctx.fillText(lines[i],72,ly);ly+=62;}
 
     // Quote imza
-    ctx.fillStyle='rgba(255,255,255,0.25)';
-    ctx.font='700 28px monospace';
+    ctx.fillStyle='rgba(255,255,255,0.3)';
+    ctx.font='400 30px monospace';
     ctx.textAlign='left';
-    ctx.fillText('— Canberk Ozturk, MLYNR.',88,qy+20);
+    ctx.fillText('Canberk Ozturk / MLYNR.',72,ly+24);
 
-    // ── ALT BAR ──
-    // Alt yatay çizgi
+    // ALT BAR - beyaz cizgi
     ctx.strokeStyle='rgba(255,255,255,0.2)';
     ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(80,H-130);ctx.lineTo(W-80,H-130);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(72,H-140);ctx.lineTo(W-72,H-140);ctx.stroke();
 
-    // Sol - site
-    ctx.fillStyle='rgba(255,255,255,0.6)';
-    ctx.font='700 26px monospace';
+    // Alt branding
+    ctx.fillStyle='rgba(255,255,255,0.7)';
+    ctx.font='700 30px monospace';
     ctx.textAlign='left';
-    ctx.fillText('mlynr.com',88,H-88);
+    ctx.fillText('mlynr.com',72,H-90);
 
-    // Sağ - instagram
     ctx.fillStyle='rgba(255,255,255,0.3)';
-    ctx.font='400 26px monospace';
+    ctx.font='400 30px monospace';
     ctx.textAlign='right';
-    ctx.fillText('@canberkreels',W-88,H-88);
+    ctx.fillText('@canberkreels',W-72,H-90);
 
   }catch(e){console.error('fsDrawCard:',e);}
 }
