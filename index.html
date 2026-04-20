@@ -540,6 +540,43 @@ body.light .sp-input::placeholder{color:#bbb}
 body.light .sp-input:focus{border-color:rgba(0,0,0,.3)}
 body.light .sp-send{background:#000;color:#fff}
 
+
+/* ── BRIEFING KARTI ── */
+.briefing-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:16px}
+.briefing-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all .3s}
+.briefing-card.loading{opacity:.6}
+.briefing-header{display:flex;align-items:center;gap:12px;padding:18px 22px 14px;border-bottom:1px solid var(--border)}
+.briefing-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#2a2a2a);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;font-family:Arial,sans-serif;flex-shrink:0}
+body.light .briefing-avatar{background:linear-gradient(135deg,#000,#222);border-color:rgba(0,0,0,.1)}
+.briefing-meta{flex:1}
+.briefing-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:1px}
+.briefing-date{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase}
+.briefing-badge{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:20px;padding:4px 10px}
+.briefing-body{padding:20px 22px}
+.briefing-selamlama{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:18px;font-style:italic;border-left:2px solid var(--border2);padding-left:14px}
+.briefing-tasks{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.briefing-task{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;user-select:none}
+.briefing-task:hover{border-color:var(--border2)}
+.briefing-task.done{background:rgba(34,197,94,.05);border-color:rgba(34,197,94,.2)}
+.briefing-task-check{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+.briefing-task.done .briefing-task-check{background:var(--green);border-color:var(--green)}
+.briefing-task-check svg{width:9px;height:9px;opacity:0;transition:opacity .15s}
+.briefing-task.done .briefing-task-check svg{opacity:1}
+.briefing-task-text{font-size:13px;color:var(--text2);line-height:1.45;transition:color .15s}
+.briefing-task.done .briefing-task-text{color:var(--text3);text-decoration:line-through}
+.briefing-footer{border-top:1px solid var(--border);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.briefing-ipucu{font-size:11px;color:var(--text2);line-height:1.55;flex:1}
+.briefing-ipucu strong{color:var(--green);font-weight:600}
+.briefing-progress{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.briefing-streak{font-family:var(--mono);font-size:10px;color:var(--text2);white-space:nowrap}
+.briefing-dots{display:flex;gap:4px}
+.briefing-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:background .2s}
+.briefing-dot.done{background:var(--green)}
+.briefing-motivasyon{font-size:12px;color:var(--text3);font-style:italic;padding:12px 22px 16px;border-top:1px solid var(--border);line-height:1.6}
+.briefing-skeleton{padding:20px 22px;display:flex;flex-direction:column;gap:10px}
+.briefing-skel-line{height:14px;background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200% 100%;border-radius:6px;animation:skelShimmer 1.5s infinite}
+@keyframes skelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -752,6 +789,17 @@ body.light .sp-send{background:#000;color:#fff}
         <h3>eBay'de kazan, Shopify'a sonra geç</h3>
         <p>Önce eBay'de sistemi kur ve ilk kârını gör. Bu sırayı takip edenler çok daha sağlam ilerliyor.</p>
         <div class="btip">🎙 EBAY KÂRI GÖRMEDEN SHOPİFY'A GEÇME</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="briefing-section" id="briefing-section">
+    <div class="briefing-card" id="briefing-card">
+      <div class="briefing-skeleton">
+        <div class="briefing-skel-line" style="width:60%"></div>
+        <div class="briefing-skel-line" style="width:90%"></div>
+        <div class="briefing-skel-line" style="width:75%"></div>
       </div>
     </div>
   </div>
@@ -1299,6 +1347,7 @@ function showApp(){
   document.getElementById('uname').textContent=disp;
   render();renderSpin();checkVersion();
   initRealtimeSales();
+  initBriefing();
   setTimeout(initScrollAnim,50);
 }
 
@@ -1649,6 +1698,82 @@ function initScrollAnim(){
   var obs=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.remove('anim-ready');entry.target.classList.add('visible');obs.unobserve(entry.target);}});},{threshold:0.05});
   blocks.forEach(function(b){obs.observe(b);});
   setTimeout(function(){blocks.forEach(function(b){b.classList.remove('anim-ready');b.classList.add('visible');});},2000);
+}
+
+
+// ── GÜNLÜK BRİEFİNG ──────────────────────────────────────────
+var _briefingData=null;
+function briefingKey(){return 'mlynr6_brief_'+email.replace(/[^a-z0-9]/gi,'_')+'_'+new Date().toISOString().slice(0,10);}
+function loadBriefing(){
+  try{var r=localStorage.getItem(briefingKey());if(r)return JSON.parse(r);}catch(e){}return null;
+}
+function saveBriefing(data){try{localStorage.setItem(briefingKey(),JSON.stringify(data));}catch(e){}}
+function briefingTaskKey(){return briefingKey()+'_tasks';}
+function loadBriefingTasks(){try{var r=localStorage.getItem(briefingTaskKey());if(r)return JSON.parse(r);}catch(e){}return [];}
+function saveBriefingTasks(t){try{localStorage.setItem(briefingTaskKey(),JSON.stringify(t));}catch(e){}}
+
+function initBriefing(){
+  var cached=loadBriefing();
+  if(cached){renderBriefing(cached);return;}
+  fetchBriefing();
+}
+
+function fetchBriefing(){
+  var ad=getUserName()||'',gunSayisi=done.length,hafta=Math.min(4,Math.ceil((gunSayisi+1)/7))||1;
+  var fsVal=false;try{fsVal=localStorage.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
+  fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({tool:'briefing',ad:ad.split(' ')[0],gunSayisi:gunSayisi,hafta:hafta,ilkSatis:fsVal})
+  }).then(function(r){return r.json();}).then(function(data){
+    if(data.error)throw new Error(data.error);
+    saveBriefing(data);renderBriefing(data);
+  }).catch(function(){
+    document.getElementById('briefing-section').style.display='none';
+  });
+}
+
+function renderBriefing(data){
+  var tasks=loadBriefingTasks();
+  var now=new Date();
+  var gunler=['Pazar','Pazartesi','Sali','Carsamba','Persembe','Cuma','Cumartesi'];
+  var aylar=['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
+  var tarih=gunler[now.getDay()]+', '+now.getDate()+' '+aylar[now.getMonth()];
+  var taskItems=[data.gorev1,data.gorev2,data.gorev3];
+  var tamamlanan=tasks.length;
+  var dotsHtml='';
+  for(var i=0;i<3;i++)dotsHtml+='<div class="briefing-dot'+(i<tamamlanan?' done':'')+'"></div>';
+  var tasksHtml='';
+  taskItems.forEach(function(t,i){
+    var isDone=tasks.indexOf(i)>-1;
+    var ck='<svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+    tasksHtml+='<div class="briefing-task'+(isDone?' done':'')+'" onclick="toggleBriefingTask('+i+')" data-idx="'+i+'"><div class="briefing-task-check">'+ck+'</div><div class="briefing-task-text">'+t+'</div></div>';
+  });
+  var streakHtml=tamamlanan>0?'<span class="briefing-streak">'+tamamlanan+'/3 tamamlandi</span>':'<span class="briefing-streak">0/3</span>';
+  var html='<div class="briefing-header">'
+    +'<div class="briefing-avatar">C</div>'
+    +'<div class="briefing-meta"><div class="briefing-name">Canberk Ozturk</div><div class="briefing-date">'+tarih+'</div></div>'
+    +'<div class="briefing-badge">Gunun Briefingi</div>'
+    +'</div>'
+    +'<div class="briefing-body">'
+    +'<div class="briefing-selamlama">'+data.selamlama+'</div>'
+    +'<div class="briefing-tasks" id="briefing-tasks">'+tasksHtml+'</div>'
+    +'</div>'
+    +'<div class="briefing-footer">'
+    +'<div class="briefing-ipucu"><strong>Pazar:</strong> '+data.pazar_ipucu+'</div>'
+    +'<div class="briefing-progress">'+streakHtml+'<div class="briefing-dots">'+dotsHtml+'</div></div>'
+    +'</div>'
+    +'<div class="briefing-motivasyon">"'+data.motivasyon+'"</div>';
+  var card=document.getElementById('briefing-card');
+  if(card){card.innerHTML=html;card.classList.remove('loading');}
+  _briefingData=data;
+}
+
+function toggleBriefingTask(idx){
+  var tasks=loadBriefingTasks();
+  var pos=tasks.indexOf(idx);
+  if(pos>-1)tasks.splice(pos,1);else tasks.push(idx);
+  saveBriefingTasks(tasks);
+  if(_briefingData)renderBriefing(_briefingData);
 }
 
 // ── INIT ──────────────────────────────────────────────────────
