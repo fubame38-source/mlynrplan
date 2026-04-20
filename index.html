@@ -505,11 +505,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sp-msg.bot{background:#1c1c1c;color:rgba(255,255,255,.82);border-radius:4px 14px 14px 14px;align-self:flex-start;border:1px solid rgba(255,255,255,.07)}
 .sp-msg.user{background:#fff;color:#000;border-radius:14px 4px 14px 14px;align-self:flex-end;font-weight:500}
 .sp-msg.loading{background:#1c1c1c;color:rgba(255,255,255,.3);border-radius:4px 14px 14px 14px;align-self:flex-start;border:1px solid rgba(255,255,255,.07);font-family:var(--mono);font-size:11px;letter-spacing:1px}
-.sp-quick-section{flex-shrink:0;border-top:1px solid rgba(255,255,255,.07);background:#0d0d0d;padding:12px 14px;overflow-y:auto;max-height:220px}
+.sp-quick-section{flex-shrink:0;border-top:1px solid rgba(255,255,255,.07);background:#0d0d0d;padding:12px 14px 14px;overflow-y:auto;max-height:220px}
 .sp-quick-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.2);text-transform:uppercase;margin-bottom:8px}
 .sp-quick-btn{display:block;width:100%;background:transparent;border:1px solid rgba(255,255,255,.09);border-radius:9px;color:rgba(255,255,255,.5);font-family:var(--font);font-size:12px;padding:9px 12px;cursor:pointer;text-align:left;transition:all .2s;margin-bottom:4px}
 .sp-quick-btn:hover{background:#1c1c1c;color:rgba(255,255,255,.9);border-color:rgba(255,255,255,.2)}
-.sp-input-area{padding:10px 14px 14px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:8px;flex-shrink:0;background:#0d0d0d}
+.sp-input-area{padding:10px 14px 16px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:8px;flex-shrink:0;background:#0d0d0d;margin-bottom:env(safe-area-inset-bottom,0px)}
 .sp-input{flex:1;background:#1c1c1c;border:1px solid rgba(255,255,255,.1);border-radius:11px;color:#fff;font-family:var(--font);font-size:13px;padding:10px 13px;outline:none;resize:none;transition:border-color .2s}
 .sp-input:focus{border-color:rgba(255,255,255,.28)}
 .sp-input::placeholder{color:rgba(255,255,255,.22)}
@@ -878,7 +878,7 @@ body.light .sp-send{background:#000;color:#fff}
   <div id="support-popup">
     <div class="sp-header">
       <div class="sp-avatar">
-        <span style="font-size:11px;font-weight:900;color:#000;letter-spacing:-0.5px;font-family:Arial,sans-serif">ML</span>
+        <span style="font-size:9px;font-weight:900;color:#000;letter-spacing:-0.3px;font-family:Arial,sans-serif">MLYNR.</span>
       </div>
       <div class="sp-header-txt">
         <div class="sp-header-title">AI Koç</div>
@@ -1563,88 +1563,76 @@ function fsDrawCard(){
     ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(72,136);ctx.lineTo(W-72,136);ctx.stroke();
 
-    // ILK kelimesi - cok buyuk, siyah ustunde
+    // ── ILK (beyaz kutu) ──
     ctx.fillStyle='#000';
-    ctx.font='900 300px Arial Black, Arial, sans-serif';
+    ctx.font='900 210px Arial Black, Arial, sans-serif';
     ctx.textAlign='left';
-    ctx.fillText('İLK',60,460);
+    ctx.fillText('ILK',72,430);
 
-    // ORTA GECIS ALANI - siyah zemin
-    // SATIS! - buyuk, beyaz, outline
+    // ── SATIS! (siyah zemin, outline) ──
     ctx.strokeStyle='#fff';
-    ctx.lineWidth=8;
+    ctx.lineWidth=7;
     ctx.lineJoin='round';
-    ctx.font='900 280px Arial Black, Arial, sans-serif';
+    ctx.font='900 190px Arial Black, Arial, sans-serif';
     ctx.textAlign='left';
-    ctx.strokeText('SATIŞ!',60,820);
+    ctx.strokeText('SATIS!',60,660);
+    ctx.fillStyle='rgba(255,255,255,0.06)';
+    ctx.fillText('SATIS!',60,660);
 
-    // SATIS icerine cok hafif dolu
-    ctx.fillStyle='rgba(255,255,255,0.08)';
-    ctx.fillText('SATIŞ!',60,820);
+    // ── AYIRICI ──
+    ctx.strokeStyle='rgba(255,255,255,0.25)';
+    ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(72,720);ctx.lineTo(W-72,720);ctx.stroke();
 
-    // KALIN YATAY CIZGI SEPARATOR
-    ctx.strokeStyle='#fff';
-    ctx.lineWidth=3;
-    ctx.beginPath();ctx.moveTo(72,880);ctx.lineTo(W-72,880);ctx.stroke();
-
-    // KAZANAN ALANI
+    // ── KAZANAN ──
     if(fsName){
-      ctx.fillStyle='rgba(255,255,255,0.4)';
-      ctx.font='500 26px monospace';
+      ctx.fillStyle='rgba(255,255,255,0.35)';
+      ctx.font='500 24px monospace';
       ctx.textAlign='left';
-      ctx.fillText('KAZANAN',72,950);
-
+      ctx.fillText('KAZANAN',72,790);
       ctx.fillStyle='#fff';
-      var fSize=96;
+      var fSize=80;
       ctx.font='900 '+fSize+'px Arial, sans-serif';
-      while(ctx.measureText(fsName.toUpperCase()).width > W-144 && fSize > 48){
-        fSize -= 6;
+      while(ctx.measureText(fsName.toUpperCase()).width > W-144 && fSize > 36){
+        fSize-=4;
         ctx.font='900 '+fSize+'px Arial, sans-serif';
       }
-      ctx.fillText(fsName.toUpperCase(),72,1060);
+      ctx.fillText(fsName.toUpperCase(),72,880);
     }
 
-    // INCE CIZGI
-    ctx.strokeStyle='rgba(255,255,255,0.12)';
+    // ── AYIRICI 2 ──
+    ctx.strokeStyle='rgba(255,255,255,0.1)';
     ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(72,1120);ctx.lineTo(W-72,1120);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(72,930);ctx.lineTo(W-72,930);ctx.stroke();
 
-    // QUOTE ALANI
-    // Dev tırnak - dekoratif
-    ctx.fillStyle='rgba(255,255,255,0.05)';
-    ctx.font='900 400px Georgia, serif';
+    // ── QUOTE ──
+    ctx.fillStyle='rgba(255,255,255,0.04)';
+    ctx.font='900 320px Georgia, serif';
     ctx.textAlign='left';
-    ctx.fillText('"',40,1500);
+    ctx.fillText('"',48,1220);
 
-    // Quote satırları
-    ctx.fillStyle='rgba(255,255,255,0.6)';
-    ctx.font='400 42px Arial, sans-serif';
+    ctx.fillStyle='rgba(255,255,255,0.55)';
+    ctx.font='400 38px Arial, sans-serif';
     ctx.textAlign='left';
-    var lines=['Basari bir gunde gelmiyor.','Her gun, bu anlardaki','kararlarda gizlidir.'];
-    var ly=1240;
-    for(var i=0;i<lines.length;i++){ctx.fillText(lines[i],72,ly);ly+=62;}
+    var qlines=['Basari bir gunde gelmiyor.','Her gun, bu anlardaki','kararlarda gizlidir.'];
+    var qy=1040;
+    for(var qi=0;qi<qlines.length;qi++){ctx.fillText(qlines[qi],72,qy);qy+=52;}
+    ctx.fillStyle='rgba(255,255,255,0.25)';
+    ctx.font='400 26px monospace';
+    ctx.fillText('Canberk Ozturk / MLYNR.',72,qy+16);
 
-    // Quote imza
-    ctx.fillStyle='rgba(255,255,255,0.3)';
-    ctx.font='400 30px monospace';
-    ctx.textAlign='left';
-    ctx.fillText('Canberk Ozturk / MLYNR.',72,ly+24);
-
-    // ALT BAR - beyaz cizgi
-    ctx.strokeStyle='rgba(255,255,255,0.2)';
+    // ── ALT BAR ──
+    ctx.strokeStyle='rgba(255,255,255,0.15)';
     ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(72,H-140);ctx.lineTo(W-72,H-140);ctx.stroke();
-
-    // Alt branding
-    ctx.fillStyle='rgba(255,255,255,0.7)';
-    ctx.font='700 30px monospace';
+    ctx.fillStyle='rgba(255,255,255,0.65)';
+    ctx.font='700 28px monospace';
     ctx.textAlign='left';
-    ctx.fillText('mlynr.com',72,H-90);
-
-    ctx.fillStyle='rgba(255,255,255,0.3)';
-    ctx.font='400 30px monospace';
+    ctx.fillText('mlynr.com',72,H-92);
+    ctx.fillStyle='rgba(255,255,255,0.28)';
+    ctx.font='400 28px monospace';
     ctx.textAlign='right';
-    ctx.fillText('@canberkreels',W-72,H-90);
+    ctx.fillText('@canberkreels',W-72,H-92);
 
   }catch(e){console.error('fsDrawCard:',e);}
 }
