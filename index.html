@@ -1758,8 +1758,8 @@ function initScrollAnim(){
 // ── ORBITAL BRİEFİNG ──────────────────────────────────────
 var _orbData=null,_orbTasks=[],_orbActive=-1,_orbAngle=0,_orbRAF=null,_orbPanelOpen=false;
 
-function orbKey(){return 'mlynr6_orb_'+email.replace(/[^a-z0-9]/gi,'_')+'_'+new Date().toISOString().slice(0,10);}
-function orbTaskKey(){return orbKey()+'_t';}
+function orbKey(){return 'mlynr6_orb2_'+email.replace(/[^a-z0-9]/gi,'_')+'_'+new Date().toISOString().slice(0,10);}
+function orbTaskKey(){return orbKey()+'_t5';}
 function loadOrbCache(){try{var r=localStorage.getItem(orbKey());if(r)return JSON.parse(r);}catch(e){}return null;}
 function saveOrbCache(d){try{localStorage.setItem(orbKey(),JSON.stringify(d));}catch(e){}}
 function loadOrbTasks(){try{var r=localStorage.getItem(orbTaskKey());if(r)return JSON.parse(r);}catch(e){}return [];}
