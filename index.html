@@ -580,6 +580,22 @@ body.light .orbital-avatar{background:#000;border-color:rgba(0,0,0,.1)}
 .orb-skel{height:14px;background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200%;border-radius:6px;animation:skelShimmer 1.5s infinite}
 @keyframes skelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
+
+/* ── GRADIENT MENU (Desktop) ── */
+.grad-menu{display:none;align-items:center;gap:10px;margin-left:auto}
+@media(min-width:768px){.grad-menu{display:flex}.hamburger-btn{display:none!important}.hamburger-menu{display:none!important}.topbar-right .support-pill{display:none}}
+.grad-item{position:relative;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .45s cubic-bezier(.34,1.2,.64,1);overflow:hidden;background:var(--surface);border:1px solid var(--border);flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.grad-item:hover{width:140px;border-color:transparent;box-shadow:none}
+.grad-item::before{content:'';position:absolute;inset:0;border-radius:50px;opacity:0;transition:opacity .45s;background:var(--gi-grad)}
+.grad-item:hover::before{opacity:1}
+.grad-item::after{content:'';position:absolute;top:8px;inset-x:0;height:100%;border-radius:50px;opacity:0;transition:opacity .45s;background:var(--gi-grad);filter:blur(14px);z-index:-1}
+.grad-item:hover::after{opacity:.45}
+.grad-icon{position:relative;z-index:2;font-size:18px;transition:all .35s;flex-shrink:0;display:flex;align-items:center;justify-content:center;width:20px;height:20px}
+.grad-item:hover .grad-icon{transform:scale(0);opacity:0;width:0}
+.grad-label{position:absolute;z-index:2;color:#fff;font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;transform:scale(0);opacity:0;transition:all .35s .1s}
+.grad-item:hover .grad-label{transform:scale(1);opacity:1}
+.grad-logout{margin-left:4px}
+
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -614,8 +630,34 @@ body.light .orbital-avatar{background:#000;border-color:rgba(0,0,0,.1)}
           <span class="level-emoji" id="level-emoji">🌱</span>
           <span class="level-name" id="level-name">Çaylak</span>
         </div>
-        <a href="https://t.me/mlynr_bot" target="_blank" class="support-pill"><div class="dot"></div><span>Canlı Destek</span></a>
         <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Tema">🌙</button>
+
+        <!-- Desktop gradient menu -->
+        <nav class="grad-menu" id="grad-menu">
+          <div class="grad-item" style="--gi-grad:linear-gradient(45deg,#a955ff,#ea51ff)" onclick="scrollToTop()">
+            <span class="grad-icon">🏠</span><span class="grad-label">Ana Sayfa</span>
+          </div>
+          <div class="grad-item" style="--gi-grad:linear-gradient(45deg,#56CCF2,#2F80ED)" onclick="openDash()">
+            <span class="grad-icon">📊</span><span class="grad-label">Dashboard</span>
+          </div>
+          <div class="grad-item" style="--gi-grad:linear-gradient(45deg,#f7971e,#ffd200)" onclick="openEarn()">
+            <span class="grad-icon">💰</span><span class="grad-label">Kazanç</span>
+          </div>
+          <div class="grad-item" style="--gi-grad:linear-gradient(45deg,#11998e,#38ef7d)" onclick="openFirstSale()">
+            <span class="grad-icon">🏆</span><span class="grad-label">İlk Satış</span>
+          </div>
+          <div class="grad-item" style="--gi-grad:linear-gradient(45deg,#fc4a1a,#f7b733)" onclick="openCanberk()">
+            <span class="grad-icon">💬</span><span class="grad-label">Canberk</span>
+          </div>
+          <div class="grad-item" style="--gi-grad:linear-gradient(45deg,#80FF72,#7EE8FA)" onclick="openSupportBot()">
+            <span class="grad-icon">🤖</span><span class="grad-label">AI Koç</span>
+          </div>
+          <div class="grad-item grad-logout" style="--gi-grad:linear-gradient(45deg,#f953c6,#b91d73)" onclick="doLogout()">
+            <span class="grad-icon">⬅</span><span class="grad-label">Çıkış</span>
+          </div>
+        </nav>
+
+        <!-- Mobile hamburger -->
         <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMenu()" aria-label="Menü">
           <span></span><span></span><span></span>
         </button>
@@ -1469,6 +1511,7 @@ var _shopifyAudio=null;
 function playMoneySound(){try{if(!_shopifyAudio)_shopifyAudio=new Audio('data:audio/mp3;base64,SUQzAwAAAAA=');_shopifyAudio.currentTime=0;_shopifyAudio.volume=0.8;_shopifyAudio.play();}catch(e){}}
 
 // ── HAMBURGER ─────────────────────────────────────────────────
+function scrollToTop(){window.scrollTo({top:0,behavior:"smooth"});}
 function toggleMenu(){var btn=document.getElementById('hamburger-btn'),menu=document.getElementById('hamburger-menu');if(btn)btn.classList.toggle('open');if(menu)menu.classList.toggle('open');}
 function closeMenu(){var btn=document.getElementById('hamburger-btn'),menu=document.getElementById('hamburger-menu');if(btn)btn.classList.remove('open');if(menu)menu.classList.remove('open');}
 
