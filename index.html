@@ -1492,21 +1492,153 @@ function fsDownloadCard(){try{var c=document.getElementById('fs-canvas'),a=docum
 function fsDrawCard(){
   try{
     var c=document.getElementById('fs-canvas');if(!c)return;
-    var W=1080,H=1920;c.width=W;c.height=H;var ctx=c.getContext('2d');
-    ctx.fillStyle='#040904';ctx.fillRect(0,0,W,H);
-    var gt=ctx.createRadialGradient(W/2,0,0,W/2,0,700);gt.addColorStop(0,'rgba(34,197,94,0.10)');gt.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gt;ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='rgba(34,197,94,0.055)';for(var gx=60;gx<W;gx+=60)for(var gy=60;gy<H;gy+=60){ctx.beginPath();ctx.arc(gx,gy,1.3,0,Math.PI*2);ctx.fill();}
-    ctx.fillStyle='#ffffff';ctx.font='900 30px Arial, sans-serif';ctx.textAlign='left';ctx.fillText('MLYNR.',68,96);
-    ctx.strokeStyle='rgba(34,197,94,0.18)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(68,114);ctx.lineTo(W-68,114);ctx.stroke();
-    ctx.font='140px serif';ctx.textAlign='center';ctx.fillText('🏆',W/2,360);
-    ctx.fillStyle='#ffffff';ctx.font='900 260px Arial, sans-serif';ctx.textAlign='center';ctx.fillText('İLK',W/2,730);
-    ctx.shadowColor='rgba(34,197,94,0.6)';ctx.shadowBlur=60;ctx.fillStyle='#22c55e';ctx.font='900 230px Arial, sans-serif';ctx.textAlign='center';ctx.fillText('SATIŞ!',W/2,960);ctx.shadowBlur=0;ctx.shadowColor='transparent';
-    var fsName=getUserName();
-    if(fsName){ctx.fillStyle='rgba(34,197,94,0.9)';ctx.font='700 34px Arial, sans-serif';ctx.textAlign='center';ctx.fillText('Tebrikler '+fsName.toUpperCase()+'!',W/2,1038);}
-    var now2=new Date(),months3=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-    ctx.fillStyle='rgba(255,255,255,0.15)';ctx.font='400 14px monospace';ctx.textAlign='center';ctx.fillText(now2.getDate()+' '+months3[now2.getMonth()]+' '+now2.getFullYear(),W/2,1838);
-    ctx.fillStyle='rgba(255,255,255,0.55)';ctx.font='700 14px monospace';ctx.textAlign='left';ctx.fillText('mlynr.com',90,1880);
-    ctx.fillStyle='rgba(255,255,255,0.22)';ctx.font='400 14px monospace';ctx.textAlign='right';ctx.fillText('@canberkreels',W-68,1880);
+    var W=1080,H=1920;c.width=W;c.height=H;
+    var ctx=c.getContext('2d');
+    var fsName=getUserName()||'';
+    var now2=new Date();
+    var months3=['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
+    var dateStr=now2.getDate()+' '+months3[now2.getMonth()]+' '+now2.getFullYear();
+
+    // ── ARKAPLAN: saf siyah ──
+    ctx.fillStyle='#000000';
+    ctx.fillRect(0,0,W,H);
+
+    // Subtle noise texture - ince beyaz noktalar
+    ctx.fillStyle='rgba(255,255,255,0.018)';
+    for(var nx=0;nx<W;nx+=3){for(var ny=0;ny<H;ny+=3){if(Math.random()>0.85){ctx.fillRect(nx,ny,1,1);}}}
+
+    // Üst köşe hafif ışık
+    var gTop=ctx.createRadialGradient(W/2,-100,0,W/2,-100,900);
+    gTop.addColorStop(0,'rgba(255,255,255,0.07)');
+    gTop.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=gTop;ctx.fillRect(0,0,W,H);
+
+    // ── ÇERÇEVE: ince beyaz border ──
+    ctx.strokeStyle='rgba(255,255,255,0.15)';
+    ctx.lineWidth=1.5;
+    ctx.strokeRect(40,40,W-80,H-80);
+
+    // İç çerçeve - daha soluk
+    ctx.strokeStyle='rgba(255,255,255,0.05)';
+    ctx.lineWidth=1;
+    ctx.strokeRect(54,54,W-108,H-108);
+
+    // ── LOGO ALANI ──
+    // Üst yatay çizgi
+    ctx.strokeStyle='rgba(255,255,255,0.2)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(80,130);ctx.lineTo(W-80,130);ctx.stroke();
+
+    // MLYNR. logosu - sol
+    ctx.fillStyle='#ffffff';
+    ctx.font='900 38px Arial, sans-serif';
+    ctx.textAlign='left';
+    ctx.letterSpacing='2px';
+    ctx.fillText('MLYNR.',88,108);
+
+    // Sağda tarih
+    ctx.fillStyle='rgba(255,255,255,0.35)';
+    ctx.font='400 22px monospace';
+    ctx.textAlign='right';
+    ctx.fillText(dateStr,W-88,108);
+
+    // ── BÜYÜK NUMARA: 01 ──
+    // Arka planda dev transparan rakam
+    ctx.fillStyle='rgba(255,255,255,0.03)';
+    ctx.font='900 600px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('01',W/2,820);
+
+    // ── ANA BAŞLIK BLOĞU ──
+    // "ILK" - beyaz, serif ruhlu bold
+    ctx.fillStyle='#ffffff';
+    ctx.font='900 220px Arial Black, Arial, sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText('ILK',88,560);
+
+    // Yatay ince çizgi başlıklar arası
+    ctx.strokeStyle='rgba(255,255,255,0.3)';
+    ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(88,590);ctx.lineTo(W-88,590);ctx.stroke();
+
+    // "SATIS" - outline/kontur efekti
+    ctx.strokeStyle='#ffffff';
+    ctx.lineWidth=3;
+    ctx.lineJoin='round';
+    ctx.strokeText('SATIS',88,800);
+    ctx.fillStyle='rgba(255,255,255,0.06)';
+    ctx.fillText('SATIS',88,800);
+
+    // Ünlem işareti - beyaz dolu
+    ctx.fillStyle='#ffffff';
+    ctx.font='900 220px Arial Black, Arial, sans-serif';
+    ctx.fillText('!',W-88,800);
+    ctx.textAlign='left';
+
+    // ── AYIRICI ──
+    ctx.strokeStyle='rgba(255,255,255,0.12)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(88,860);ctx.lineTo(W-88,860);ctx.stroke();
+
+    // ── KİŞİSEL İSİM ALANI ──
+    if(fsName){
+      // İsim etiketi - küçük
+      ctx.fillStyle='rgba(255,255,255,0.4)';
+      ctx.font='400 24px monospace';
+      ctx.textAlign='left';
+      ctx.fillText('KAZANAN',88,920);
+
+      // İsim - büyük, beyaz
+      ctx.fillStyle='#ffffff';
+      ctx.font='800 72px Arial, sans-serif';
+      ctx.textAlign='left';
+      var nameUpper=fsName.toUpperCase();
+      // İsim çok uzunsa küçült
+      var fontSize=72;
+      ctx.font='800 '+fontSize+'px Arial, sans-serif';
+      while(ctx.measureText(nameUpper).width>W-176&&fontSize>36){fontSize-=4;ctx.font='800 '+fontSize+'px Arial, sans-serif';}
+      ctx.fillText(nameUpper,88,1010);
+    }
+
+    // ── ALT BÜYÜK ALAN: quote bloğu ──
+    // Büyük tırnak işareti
+    ctx.fillStyle='rgba(255,255,255,0.06)';
+    ctx.font='900 300px Georgia, serif';
+    ctx.textAlign='left';
+    ctx.fillText('"',60,1380);
+
+    // Quote metni
+    ctx.fillStyle='rgba(255,255,255,0.55)';
+    ctx.font='400 36px Arial, sans-serif';
+    ctx.textAlign='left';
+    var qlines=['Basari bir gunde gelmiyor.','Her gun, bu anlardaki','kararlarda gizlidir.'];
+    var qy=1250;
+    for(var qi=0;qi<qlines.length;qi++){ctx.fillText(qlines[qi],88,qy);qy+=52;}
+
+    // Quote imza
+    ctx.fillStyle='rgba(255,255,255,0.25)';
+    ctx.font='700 28px monospace';
+    ctx.textAlign='left';
+    ctx.fillText('— Canberk Ozturk, MLYNR.',88,qy+20);
+
+    // ── ALT BAR ──
+    // Alt yatay çizgi
+    ctx.strokeStyle='rgba(255,255,255,0.2)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(80,H-130);ctx.lineTo(W-80,H-130);ctx.stroke();
+
+    // Sol - site
+    ctx.fillStyle='rgba(255,255,255,0.6)';
+    ctx.font='700 26px monospace';
+    ctx.textAlign='left';
+    ctx.fillText('mlynr.com',88,H-88);
+
+    // Sağ - instagram
+    ctx.fillStyle='rgba(255,255,255,0.3)';
+    ctx.font='400 26px monospace';
+    ctx.textAlign='right';
+    ctx.fillText('@canberkreels',W-88,H-88);
+
   }catch(e){console.error('fsDrawCard:',e);}
 }
 
