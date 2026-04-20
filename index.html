@@ -547,7 +547,7 @@ body.light .sp-send{background:#000;color:#fff}
 
 
 /* ── ORBITAL FAB ── */
-#orbital-fab{position:fixed;left:24px;top:50%;transform:translateY(-50%);z-index:5500;cursor:pointer;display:none}
+#orbital-fab{position:fixed;left:24px;top:calc(50% + 28px);transform:translateY(-50%);z-index:5500;cursor:pointer;display:none}
 #orbital-fab.show{display:block}
 .orb-fab-btn{width:52px;height:52px;border-radius:50%;background:var(--surface);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.4);transition:all .3s cubic-bezier(.34,1.2,.64,1);position:relative}
 .orb-fab-btn:hover{transform:scale(1.08)}
@@ -555,11 +555,17 @@ body.light .sp-send{background:#000;color:#fff}
 @keyframes orbFabPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.8;transform:scale(1.1)}}
 .orb-fab-icon{font-size:22px}
 .orb-fab-badge{position:absolute;top:-3px;right:-3px;width:16px;height:16px;background:var(--green);border-radius:50%;border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:#000}
+.orb-fab-tooltip{position:absolute;left:60px;top:50%;transform:translateY(-50%);background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+#orbital-fab:hover .orb-fab-tooltip{opacity:1}
 
 /* Orbital Panel */
 #orbital-panel{position:fixed;left:84px;top:50%;transform:translateY(-50%);z-index:5500;width:min(420px,calc(100vw - 108px));background:var(--surface);border:1px solid var(--border2);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.6);display:none;flex-direction:column;overflow:hidden;animation:orbPanelIn .3s cubic-bezier(.34,1.2,.64,1)}
 #orbital-panel.show{display:flex}
 @keyframes orbPanelIn{from{opacity:0;transform:translateY(-50%) translateX(-20px) scale(.95)}to{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}}
+@media(max-width:600px){
+  #orbital-fab{left:16px}
+  #orbital-panel{left:76px;width:calc(100vw - 92px)}
+}
 .orb-panel-header{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
 .orb-panel-avatar{width:36px;height:36px;background:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;font-family:Arial,sans-serif;flex-shrink:0;position:relative}
 .orb-panel-avatar::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:2px solid rgba(34,197,94,.4);animation:orbFabPulse 2s ease-in-out infinite}
@@ -587,10 +593,10 @@ body.light .orb-panel-close{background:rgba(0,0,0,.04)}
 .orb-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:all .3s}
 .orb-dot.done{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.5)}
 .orb-panel-motiv{padding:0 20px 16px;font-size:11px;color:var(--text3);font-style:italic;line-height:1.6;text-align:center}
-@media(max-width:600px){
-  #orbital-fab{left:16px}
-  #orbital-panel{left:76px;width:calc(100vw - 92px)}
-}
+/* Skeleton */
+.orb-skel-wrap{padding:20px;display:flex;flex-direction:column;gap:10px}
+.orb-skel{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200%;animation:skelShimmer 1.5s infinite}
+@keyframes skelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 /* Skeleton */
 .orb-skel-wrap{padding:20px;display:flex;flex-direction:column;gap:10px}
 .orb-skel{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200%;animation:skelShimmer 1.5s infinite}
@@ -925,10 +931,11 @@ body.light .orb-panel-close{background:rgba(0,0,0,.04)}
 
 <!-- ORBITAL FAB -->
 <div id="orbital-fab" onclick="toggleOrbitalPanel()">
-  <div class="orb-fab-btn">
+  <div class="orb-fab-btn" title="Günün Görevleri">
     <span class="orb-fab-icon">📋</span>
-    <div class="orb-fab-badge" id="orb-fab-badge">3</div>
+    <div class="orb-fab-badge" id="orb-fab-badge">5</div>
   </div>
+  <div class="orb-fab-tooltip">Günün Görevleri</div>
 </div>
 
 <!-- ORBITAL PANEL -->
@@ -1788,7 +1795,7 @@ function initBriefing(){
 function updateOrbBadge(){
   var badge=document.getElementById('orb-fab-badge');
   if(!badge)return;
-  var remaining=3-_orbTasks.length;
+  var tasks5=_orbData?[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3,_orbData.gorev4,_orbData.gorev5].filter(Boolean):[];var remaining=tasks5.length-_orbTasks.length;
   badge.textContent=remaining;
   badge.style.display=remaining>0?'flex':'none';
 }
@@ -1844,7 +1851,7 @@ function startOrbital(){
   var ctx=canvas.getContext('2d');ctx.scale(DPR,DPR);
   var cx=W/2,cy=H/2;
   var R=Math.min(W,H)*0.33;
-  var tasks=[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3];
+  var tasks=[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3,_orbData.gorev4||"",_orbData.gorev5||""].filter(function(t){return t&&t.length>0;});
   var nodes=tasks.map(function(t,i){
     return{idx:i,text:t,angle:(i/3)*Math.PI*2-(Math.PI/2),x:0,y:0,hovered:false,scale:1};
   });
@@ -1953,7 +1960,7 @@ function startOrbital(){
       // Alt etiket
       ctx.fillStyle=isDone?'rgba(34,197,94,0.7)':isDark?'rgba(255,255,255,0.25)':'rgba(0,0,0,0.22)';
       ctx.font='500 9px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
-      ctx.fillText('Gorev '+(n.idx+1),n.x,n.y+nr+6);
+      ctx.fillText('Görev '+(n.idx+1),n.x,n.y+nr+6);
     });
 
     _orbRAF=requestAnimationFrame(draw);
@@ -1967,7 +1974,7 @@ function showOrbDetail(idx,tasks){
   if(idx===-1){el.classList.remove('show');return;}
   var isDone=_orbTasks.indexOf(idx)>-1;
   var t=tasks&&tasks[idx]?tasks[idx]:(_orbData?[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3][idx]:'');
-  el.innerHTML='<div class="orb-detail-num">Gorev '+(idx+1)+' / 3</div>'
+  el.innerHTML='<div class="orb-detail-num">Görev '+(idx+1)+' / 5</div>'
     +'<div class="orb-detail-text">'+t+'</div>'
     +'<button class="orb-detail-btn'+(isDone?' done':'')+'" onclick="toggleOrbTask('+idx+')">'
     +(isDone?'✓ Tamamlandi':'Tamamla →')+'</button>';
@@ -1978,7 +1985,7 @@ function toggleOrbTask(idx){
   var pos=_orbTasks.indexOf(idx);
   if(pos>-1)_orbTasks.splice(pos,1);else _orbTasks.push(idx);
   saveOrbTasks(_orbTasks);updateOrbBadge();updateOrbDots();
-  var tasks=_orbData?[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3]:[];
+  var tasks=_orbData?[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3,_orbData.gorev4||'',_orbData.gorev5||''].filter(function(t){return t&&t.length>0;}):[];
   showOrbDetail(idx,tasks);
 }
 
