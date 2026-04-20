@@ -941,7 +941,7 @@ body.light .sp-send{background:#000;color:#fff}
 
 <!-- İLK SATIŞ -->
 <div id="firstsale-overlay" class="overlay" onclick="closeFirstSale()"></div>
-<div id="firstsale-popup" class="popup" style="width:min(360px,90vw);padding:0;background:transparent;border:none;box-shadow:none;max-height:90vh;overflow-y:auto">
+<div id="firstsale-popup" class="popup" style="width:min(340px,82vw);padding:0;background:transparent;border:none;box-shadow:none;max-height:85vh;overflow-y:auto">
   <div class="fs2-wrap">
     <button class="fs2-close" onclick="closeFirstSale()">✕</button>
     <div class="fs2-canvas-wrap"><canvas id="fs-canvas" width="1080" height="1920"></canvas></div>
@@ -1560,66 +1560,59 @@ function fsDrawCard(){
     ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(72,112);ctx.lineTo(W-72,112);ctx.stroke();
 
-    // "İLK" - beyaz alanda tam ortada, dev
+    // "İLK" - beyaz alanda, sol hizalı, alanı dolduruyor
     ctx.fillStyle='#000';
-    ctx.font='900 380px Arial Black,Arial,sans-serif';
-    ctx.textAlign='center';
-    // Baseline ortalı - beyaz alanın ortasına
-    ctx.fillText('İLK',W/2,BY-60);
+    ctx.font='900 340px Arial Black,Arial,sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText('İLK',56,BY-56);
 
-    // --- SİYAH ALAN İÇERİĞİ ---
-
-    // Geçiş çizgisi
-    ctx.strokeStyle='rgba(255,255,255,0.15)';
-    ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(72,BY+40);ctx.lineTo(W-72,BY+40);ctx.stroke();
-
-    // "SATIŞ!" - siyah alanda, outline
+    // --- SİYAH ALAN ---
+    // "SATIŞ!" - sol hizalı, outline
     ctx.save();
     ctx.strokeStyle='#fff';
-    ctx.lineWidth=5;
+    ctx.lineWidth=6;
     ctx.lineJoin='round';
-    ctx.font='900 200px Arial Black,Arial,sans-serif';
-    ctx.textAlign='center';
-    ctx.strokeText('SATIŞ!',W/2,BY+240);
-    ctx.fillStyle='rgba(255,255,255,0.05)';
-    ctx.fillText('SATIŞ!',W/2,BY+240);
+    ctx.font='900 210px Arial Black,Arial,sans-serif';
+    ctx.textAlign='left';
+    ctx.strokeText('SATIŞ!',48,BY+230);
+    ctx.fillStyle='rgba(255,255,255,0.04)';
+    ctx.fillText('SATIŞ!',48,BY+230);
     ctx.restore();
 
-    // KAZANAN + İSİM
-    ctx.strokeStyle='rgba(255,255,255,0.12)';
+    // AYIRICI
+    ctx.strokeStyle='rgba(255,255,255,0.15)';
     ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(72,BY+290);ctx.lineTo(W-72,BY+290);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(72,BY+270);ctx.lineTo(W-72,BY+270);ctx.stroke();
 
-    ctx.fillStyle='rgba(255,255,255,0.3)';
+    // KAZANAN + İSİM
+    ctx.fillStyle='rgba(255,255,255,0.28)';
     ctx.font='500 22px monospace';
     ctx.textAlign='left';
-    ctx.fillText('KAZANAN',72,BY+350);
+    ctx.fillText('KAZANAN',72,BY+330);
 
-    // İsim - temiz, orta boy
     ctx.fillStyle='#fff';
-    var fSize=72;
+    var fSize=78;
     ctx.font='700 '+fSize+'px Arial,sans-serif';
     while(ctx.measureText(fsName.toUpperCase()).width>W-144&&fSize>36){
       fSize-=3;ctx.font='700 '+fSize+'px Arial,sans-serif';
     }
-    ctx.fillText(fsName.toUpperCase(),72,BY+440);
+    ctx.fillText(fsName.toUpperCase(),72,BY+420);
 
-    // QUOTE BLOĞU
-    ctx.strokeStyle='rgba(255,255,255,0.12)';
+    // AYIRICI 2
+    ctx.strokeStyle='rgba(255,255,255,0.08)';
     ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(72,BY+490);ctx.lineTo(W-72,BY+490);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(72,BY+460);ctx.lineTo(W-72,BY+460);ctx.stroke();
 
-    // Sol accent çizgi
-    ctx.fillStyle='rgba(255,255,255,0.18)';
-    ctx.fillRect(72,BY+520,2,150);
+    // QUOTE - sol accent
+    ctx.fillStyle='rgba(255,255,255,0.15)';
+    ctx.fillRect(72,BY+485,2,148);
 
-    ctx.fillStyle='rgba(255,255,255,0.5)';
+    ctx.fillStyle='rgba(255,255,255,0.48)';
     ctx.font='400 34px Arial,sans-serif';
     ctx.textAlign='left';
     var qlines=['"Basari bir gunde gelmiyor.','Her gun, bu anlardaki','kararlarda gizlidir."'];
-    var qy=BY+548;
-    for(var i=0;i<qlines.length;i++){ctx.fillText(qlines[i],96,qy);qy+=46;}
+    var qy=BY+508;
+    for(var qi=0;qi<qlines.length;qi++){ctx.fillText(qlines[qi],96,qy);qy+=46;}
 
     ctx.fillStyle='rgba(255,255,255,0.2)';
     ctx.font='400 22px monospace';
@@ -1628,17 +1621,15 @@ function fsDrawCard(){
     // ALT BAR
     ctx.strokeStyle='rgba(255,255,255,0.1)';
     ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(72,H-100);ctx.lineTo(W-72,H-100);ctx.stroke();
-
+    ctx.beginPath();ctx.moveTo(72,H-96);ctx.lineTo(W-72,H-96);ctx.stroke();
     ctx.fillStyle='rgba(255,255,255,0.55)';
     ctx.font='700 26px monospace';
     ctx.textAlign='left';
-    ctx.fillText('mlynr.com',72,H-60);
-
+    ctx.fillText('mlynr.com',72,H-58);
     ctx.fillStyle='rgba(255,255,255,0.2)';
     ctx.font='400 26px monospace';
     ctx.textAlign='right';
-    ctx.fillText('@canberkreels',W-72,H-60);
+    ctx.fillText('@canberkreels',W-72,H-58);
 
   }catch(e){console.error('fsDrawCard:',e);}
 }
