@@ -1530,130 +1530,114 @@ function fsDrawCard(){
     var ctx=c.getContext('2d');
     var fsName=getUserName()||'Kursiyer';
     var now2=new Date();
-    var months3=['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
-    var dateStr=now2.getDate()+' '+months3[now2.getMonth()]+' '+now2.getFullYear();
+    var ay=['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
+    var tarih=now2.getDate()+' '+ay[now2.getMonth()]+' '+now2.getFullYear();
 
-    // ── ARKAPLAN ──
+    // ARKAPLAN TAM SİYAH
+    ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+
+    // BEYAZ ÜST KUTU - H'nin tam yarısı
+    var BY=H/2;
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,W,BY);
+
+    // --- BEYAZ ALAN İÇERİĞİ ---
+
+    // MLYNR. logosu - sol üst, büyük ve belirgin
     ctx.fillStyle='#000';
-    ctx.fillRect(0,0,W,H);
-
-    // Hafif tekstür
-    for(var tx=0;tx<W;tx+=4){for(var ty=0;ty<H;ty+=4){if(Math.random()>0.92){ctx.fillStyle='rgba(255,255,255,0.012)';ctx.fillRect(tx,ty,1,1);}}}
-
-    // ── UST BEYAZ ALAN (H'nin %38'i) ──
-    var splitY=Math.round(H*0.38);
-    ctx.fillStyle='#fff';
-    ctx.fillRect(0,0,W,splitY);
-
-    // Üst alana ince grid
-    ctx.strokeStyle='rgba(0,0,0,0.04)';
-    ctx.lineWidth=1;
-    for(var gx=0;gx<W;gx+=80){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,splitY);ctx.stroke();}
-    for(var gy=0;gy<splitY;gy+=80){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W,gy);ctx.stroke();}
-
-    // Logo - sol üst
-    ctx.fillStyle='#000';
-    ctx.font='800 36px Arial,sans-serif';
+    ctx.font='900 48px Arial,sans-serif';
     ctx.textAlign='left';
-    ctx.letterSpacing='3px';
-    ctx.fillText('MLYNR.',72,88);
+    ctx.fillText('MLYNR.',72,90);
 
-    // Tarih - sağ üst
-    ctx.fillStyle='rgba(0,0,0,0.3)';
-    ctx.font='400 24px monospace';
+    // Tarih sağ üst
+    ctx.fillStyle='rgba(0,0,0,0.25)';
+    ctx.font='400 26px monospace';
     ctx.textAlign='right';
-    ctx.fillText(dateStr,W-72,88);
+    ctx.fillText(tarih,W-72,90);
 
-    // Üst ince çizgi
-    ctx.strokeStyle='rgba(0,0,0,0.1)';
+    // İnce çizgi logo altı
+    ctx.strokeStyle='rgba(0,0,0,0.08)';
     ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(72,112);ctx.lineTo(W-72,112);ctx.stroke();
 
-    // "ILK" — dev, beyaz alanda
+    // "İLK" - beyaz alanda tam ortada, dev
     ctx.fillStyle='#000';
-    ctx.font='900 310px Arial Black,Arial,sans-serif';
-    ctx.textAlign='left';
-    ctx.fillText('İLK',56,480);
+    ctx.font='900 380px Arial Black,Arial,sans-serif';
+    ctx.textAlign='center';
+    // Baseline ortalı - beyaz alanın ortasına
+    ctx.fillText('İLK',W/2,BY-60);
 
-    // ── GEÇİŞ ÇİZGİSİ ──
-    ctx.fillStyle='#000';
-    ctx.fillRect(0,splitY-3,W,3);
+    // --- SİYAH ALAN İÇERİĞİ ---
 
-    // ── ALT SİYAH ALAN ──
-    // "SATIS!" — outline, büyük
+    // Geçiş çizgisi
+    ctx.strokeStyle='rgba(255,255,255,0.15)';
+    ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(72,BY+40);ctx.lineTo(W-72,BY+40);ctx.stroke();
+
+    // "SATIŞ!" - siyah alanda, outline
     ctx.save();
     ctx.strokeStyle='#fff';
-    ctx.lineWidth=6;
-    ctx.lineJoin='miter';
-    ctx.miterLimit=2;
-    ctx.font='900 240px Arial Black,Arial,sans-serif';
-    ctx.textAlign='left';
-    ctx.strokeText('SATIŞ!',52,H*0.38+240);
-    ctx.fillStyle='rgba(255,255,255,0.04)';
-    ctx.fillText('SATIŞ!',52,H*0.38+240);
+    ctx.lineWidth=5;
+    ctx.lineJoin='round';
+    ctx.font='900 200px Arial Black,Arial,sans-serif';
+    ctx.textAlign='center';
+    ctx.strokeText('SATIŞ!',W/2,BY+240);
+    ctx.fillStyle='rgba(255,255,255,0.05)';
+    ctx.fillText('SATIŞ!',W/2,BY+240);
     ctx.restore();
 
-    // Ayırıcı çizgi
-    ctx.strokeStyle='rgba(255,255,255,0.15)';
+    // KAZANAN + İSİM
+    ctx.strokeStyle='rgba(255,255,255,0.12)';
     ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(72,H*0.38+280);ctx.lineTo(W-72,H*0.38+280);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(72,BY+290);ctx.lineTo(W-72,BY+290);ctx.stroke();
 
-    // KAZANAN label — küçük, soluk
-    ctx.fillStyle='rgba(255,255,255,0.28)';
+    ctx.fillStyle='rgba(255,255,255,0.3)';
     ctx.font='500 22px monospace';
     ctx.textAlign='left';
-    ctx.letterSpacing='3px';
-    ctx.fillText('KAZANAN',72,H*0.38+340);
+    ctx.fillText('KAZANAN',72,BY+350);
 
-    // İsim — orta boy, temiz
+    // İsim - temiz, orta boy
     ctx.fillStyle='#fff';
-    var fSize=64;
+    var fSize=72;
     ctx.font='700 '+fSize+'px Arial,sans-serif';
-    while(ctx.measureText(fsName.toUpperCase()).width>W-144&&fSize>32){
+    while(ctx.measureText(fsName.toUpperCase()).width>W-144&&fSize>36){
       fSize-=3;ctx.font='700 '+fSize+'px Arial,sans-serif';
     }
-    ctx.fillText(fsName.toUpperCase(),72,H*0.38+420);
+    ctx.fillText(fsName.toUpperCase(),72,BY+440);
 
-    // ── BÜYÜK DEKORATİF NUMARA ──
-    ctx.fillStyle='rgba(255,255,255,0.025)';
-    ctx.font='900 520px Arial Black,Arial,sans-serif';
-    ctx.textAlign='right';
-    ctx.fillText('1',W+60,H*0.85);
+    // QUOTE BLOĞU
+    ctx.strokeStyle='rgba(255,255,255,0.12)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(72,BY+490);ctx.lineTo(W-72,BY+490);ctx.stroke();
 
-    // ── QUOTE BLOĞU ──
-    // Sol dikey çizgi
-    ctx.fillStyle='rgba(255,255,255,0.2)';
-    ctx.fillRect(72,H*0.38+490,2,160);
+    // Sol accent çizgi
+    ctx.fillStyle='rgba(255,255,255,0.18)';
+    ctx.fillRect(72,BY+520,2,150);
 
-    ctx.fillStyle='rgba(255,255,255,0.55)';
-    ctx.font='400 36px Arial,sans-serif';
+    ctx.fillStyle='rgba(255,255,255,0.5)';
+    ctx.font='400 34px Arial,sans-serif';
     ctx.textAlign='left';
     var qlines=['"Basari bir gunde gelmiyor.','Her gun, bu anlardaki','kararlarda gizlidir."'];
-    var qy=H*0.38+510;
-    for(var qi=0;qi<qlines.length;qi++){ctx.fillText(qlines[qi],96,qy);qy+=50;}
+    var qy=BY+548;
+    for(var i=0;i<qlines.length;i++){ctx.fillText(qlines[i],96,qy);qy+=46;}
 
-    // İmza
     ctx.fillStyle='rgba(255,255,255,0.2)';
-    ctx.font='400 24px monospace';
-    ctx.textAlign='left';
-    ctx.fillText('— Canberk Ozturk, MLYNR.',96,qy+20);
+    ctx.font='400 22px monospace';
+    ctx.fillText('Canberk Ozturk / MLYNR.',96,qy+16);
 
-    // ── ALT BAR ──
+    // ALT BAR
     ctx.strokeStyle='rgba(255,255,255,0.1)';
     ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(72,H-110);ctx.lineTo(W-72,H-110);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(72,H-100);ctx.lineTo(W-72,H-100);ctx.stroke();
 
-    // MLYNR sol
     ctx.fillStyle='rgba(255,255,255,0.55)';
-    ctx.font='700 26px Arial,sans-serif';
+    ctx.font='700 26px monospace';
     ctx.textAlign='left';
-    ctx.fillText('mlynr.com',72,H-72);
+    ctx.fillText('mlynr.com',72,H-60);
 
-    // @canberkreels sağ
-    ctx.fillStyle='rgba(255,255,255,0.22)';
+    ctx.fillStyle='rgba(255,255,255,0.2)';
     ctx.font='400 26px monospace';
     ctx.textAlign='right';
-    ctx.fillText('@canberkreels',W-72,H-72);
+    ctx.fillText('@canberkreels',W-72,H-60);
 
   }catch(e){console.error('fsDrawCard:',e);}
 }
