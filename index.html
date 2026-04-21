@@ -2031,16 +2031,74 @@ function removeOrbCard(){
 
 function toggleOrbTask(idx){
   var pos=_orbTasks.indexOf(idx);
+  var wasNew=(pos===-1);
   if(pos>-1)_orbTasks.splice(pos,1);else _orbTasks.push(idx);
   saveOrbTasks(_orbTasks);
-  // Progress dots güncelle
   var tasks=getOrbTasks();
+
+  // Progress dots (açık panel)
   var pd=document.getElementById('orb-prog-dots');
   if(pd){var h='';tasks.forEach(function(_,i){h+='<div class="orb-pdot'+(_orbTasks.indexOf(i)>-1?' done':'')+'"></div>';});pd.innerHTML=h;}
-  // Node güncelle
+
+  // Collapsed kart dots - querySelector ile bul
+  var cd=document.getElementById('orb-collapsed-dots-el')||document.querySelector('.orb-collapsed-dots');
+  if(cd){var h2='';tasks.forEach(function(_,i){h2+='<div class="orb-cdot'+(_orbTasks.indexOf(i)>-1?' done':'')+'"></div>';});cd.innerHTML=h2;}
+
+  // Collapsed kart alt yazı
+  var cs=document.getElementById('orb-collapsed-sub-el')||document.querySelector('.orb-collapsed-sub');
+  if(cs){
+    var now2=new Date();
+    var G2=['Pazar','Pazartesi','Sali','Carsamba','Persembe','Cuma','Cumartesi'];
+    var A2=['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
+    cs.textContent=G2[now2.getDay()]+', '+now2.getDate()+' '+A2[now2.getMonth()]+' \xb7 '+_orbTasks.length+'/'+tasks.length+' tamamland\u0131';
+  }
+
+  // Node'ları güncelle
   updateOrbNodeStyles(tasks);
   // Kartı kapat
   _orbActive=-1;removeOrbCard();
+
+  // Yeni tamamlandıysa mini confetti
+  if(wasNew){
+    launchMiniConfetti();
+    if(_orbTasks.length>=tasks.length){
+      setTimeout(showOrbComplete,400);
+    }
+  }
+}
+
+function launchMiniConfetti(){
+  var stage=document.getElementById('orb-stage-wrap');if(!stage)return;
+  var colors=['#22c55e','#fff','#86efac','#4ade80'];
+  for(var i=0;i<18;i++){
+    (function(){
+      var el=document.createElement('div');
+      var tx=(Math.random()-0.5)*120,ty=-(40+Math.random()*60);
+      el.style.cssText='position:absolute;width:5px;height:5px;border-radius:50%;pointer-events:none;z-index:400;'
+        +'background:'+colors[Math.floor(Math.random()*colors.length)]+';'
+        +'left:50%;top:45%;transition:transform .7s ease-out,opacity .7s ease-out;opacity:1;transform:translate(0,0)';
+      stage.appendChild(el);
+      requestAnimationFrame(function(){
+        el.style.transform='translate('+tx+'px,'+ty+'px)';
+        el.style.opacity='0';
+      });
+      setTimeout(function(){el.remove();},800);
+    })();
+  }
+}
+
+function showOrbComplete(){
+  var stage=document.getElementById('orb-stage-wrap');if(!stage)return;
+  if(document.getElementById('orb-complete-banner'))return;
+  var banner=document.createElement('div');
+  banner.id='orb-complete-banner';
+  banner.innerHTML='<div class="orb-complete-emoji">\uD83D\uDD25</div>'
+    +'<div class="orb-complete-title">Bug\u00fcn\u00fc <span>Ezdin!</span></div>'
+    +'<div class="orb-complete-sub">5 / 5 G\u00f6rev Tamamland\u0131</div>'
+    +'<div class="orb-complete-quote">"Bug\u00fcn att\u0131\u011f\u0131n ad\u0131m yar\u0131n 100 sat\u0131\u015f\u0131n temelidir."</div>';
+  stage.appendChild(banner);
+  setTimeout(function(){banner.classList.add('show');},50);
+  launchConfetti();
 }
 
 // ── INIT ──────────────────────────────────────────────────────
