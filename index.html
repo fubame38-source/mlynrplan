@@ -626,17 +626,23 @@ body.light .orb-node-lbl{color:rgba(0,0,0,0.25)}
 .orb-node-el:hover .orb-node-lbl,.orb-node-btn.active~.orb-node-lbl{color:rgba(255,255,255,0.8)}
 
 /* Görev detay kart */
-.orb-task-card{position:absolute;z-index:50;width:200px;background:rgba(8,8,8,0.97);border:1px solid rgba(255,255,255,0.18);border-radius:12px;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,0,0.8);animation:orbCardIn 0.18s ease-out}
-body.light .orb-task-card{background:rgba(255,255,255,0.97);border-color:rgba(0,0,0,0.15);box-shadow:0 24px 60px rgba(0,0,0,0.15)}
+.orb-task-card{position:absolute;z-index:50;width:220px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.12);border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.9),0 0 0 1px rgba(255,255,255,0.04);animation:orbCardIn 0.18s ease-out}
+.orb-task-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)}
+body.light .orb-task-card{background:#fff;border-color:rgba(0,0,0,0.1);box-shadow:0 20px 50px rgba(0,0,0,0.12)}
 @keyframes orbCardIn{from{opacity:0;transform:scale(0.88) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .orb-task-card::before{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:1px;height:5px;background:rgba(255,255,255,0.3)}
-.orb-tc-inner{padding:16px}
-.orb-tc-status{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:10px}
-.orb-tc-status.pending{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.12)}
-body.light .orb-tc-status.pending{background:rgba(0,0,0,0.05);color:rgba(0,0,0,0.4);border-color:rgba(0,0,0,0.1)}
-.orb-tc-status.done{background:rgba(34,197,94,0.12);color:rgba(34,197,94,0.9);border:1px solid rgba(34,197,94,0.3)}
-.orb-tc-title{font-size:13px;font-weight:600;color:#fff;line-height:1.45;margin-bottom:14px}
+.orb-tc-inner{padding:0}
+.orb-tc-header{padding:14px 16px 10px;border-bottom:1px solid rgba(255,255,255,0.06)}
+body.light .orb-tc-header{border-bottom-color:rgba(0,0,0,0.06)}
+.orb-tc-num{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.3);text-transform:uppercase;margin-bottom:6px}
+body.light .orb-tc-num{color:rgba(0,0,0,0.3)}
+.orb-tc-title{font-size:13px;font-weight:600;color:#fff;line-height:1.45}
 body.light .orb-tc-title{color:#000}
+.orb-tc-footer{padding:12px 16px}
+.orb-tc-status{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:10px}
+.orb-tc-status.pending{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.1)}
+body.light .orb-tc-status.pending{background:rgba(0,0,0,0.04);color:rgba(0,0,0,0.35);border-color:rgba(0,0,0,0.08)}
+.orb-tc-status.done{background:rgba(34,197,94,0.1);color:rgba(34,197,94,0.85);border:1px solid rgba(34,197,94,0.25)}
 .orb-tc-btn{width:100%;background:#fff;color:#000;border:none;border-radius:9px;font-family:var(--font);font-size:12px;font-weight:700;padding:11px;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px}
 .orb-tc-btn:hover{opacity:0.88;transform:translateY(-1px)}
 .orb-tc-btn.done{background:var(--green);color:#000}
@@ -2001,10 +2007,14 @@ function showOrbTaskCard(idx,taskTxt,nx,ny,stageW,wrap){
   var isDone=_orbTasks.indexOf(idx)>-1;
   var card=document.createElement('div');
   card.className='orb-task-card';card.id='orb-tc-'+idx;
-  card.innerHTML='<div class="orb-tc-inner">'
-    +'<div class="orb-tc-status '+(isDone?'done':'pending')+'">'+(isDone?'✓ Tamamlandi':'Bekliyor')+'</div>'
+  card.innerHTML=
+    '<div class="orb-tc-header">'
+    +'<div class="orb-tc-num">Görev '+(idx+1)+' / '+getOrbTasks().length+'</div>'
     +'<div class="orb-tc-title">'+taskTxt+'</div>'
-    +'<button class="orb-tc-btn'+(isDone?' done':'')+'" onclick="toggleOrbTask('+idx+')">'+(isDone?'✓ Tamamlandi':'Tamamla →')+'</button>'
+    +'</div>'
+    +'<div class="orb-tc-footer">'
+    +'<div class="orb-tc-status '+(isDone?'done':'pending')+'">'+(isDone?'✓ Tamamlandı':'Bekliyor')+'</div>'
+    +'<button class="orb-tc-btn'+(isDone?' done':'')+'" onclick="toggleOrbTask('+idx+')">'+(isDone?'✓ Tamamlandı':'Tamamla →')+'</button>'
     +'</div>';
   var cardW=210;
   var leftX=Math.max(8, Math.min(nx-cardW/2, stageW-cardW-8));
