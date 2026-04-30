@@ -272,59 +272,68 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 var EDGE_FN='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint';
 var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
 
-var NIŞLER=[
-  {e:'🐾',n:'Evcil Hayvan'},{e:'🏠',n:'Ev & Yaşam'},{e:'💪',n:'Spor & Fitness'},
-  {e:'🌿',n:'Bahçe'},{e:'👶',n:'Bebek & Çocuk'},{e:'🍳',n:'Mutfak Gadget'},
-  {e:'🚗',n:'Araç Aksesuar'},{e:'💄',n:'Güzellik'},{e:'📚',n:'Ofis & Çalışma'},
-  {e:'🎮',n:'Oyun & Teknoloji'},{e:'✈️',n:'Seyahat'},{e:'🧘',n:'Sağlık & Wellness'},
-  {e:'🎨',n:'Sanat & El İşi'},{e:'🎸',n:'Müzik'},{e:'🏕️',n:'Outdoor & Kamp'},
-  {e:'🧹',n:'Temizlik & Düzen'}
+var NISLER=[
+  {e:'\uD83D\uDC3E',n:'Evcil Hayvan'},{e:'\uD83C\uDFE0',n:'Ev & Yasam'},{e:'\uD83D\uDCAA',n:'Spor & Fitness'},
+  {e:'\uD83C\uDF3F',n:'Bahce'},{e:'\uD83D\uDC76',n:'Bebek & Cocuk'},{e:'\uD83C\uDF73',n:'Mutfak Gadget'},
+  {e:'\uD83D\uDE97',n:'Arac Aksesuar'},{e:'\uD83D\uDC84',n:'Guzellik'},{e:'\uD83D\uDCDA',n:'Ofis & Calisma'},
+  {e:'\uD83C\uDFAE',n:'Oyun & Teknoloji'},{e:'\u2708\uFE0F',n:'Seyahat'},{e:'\uD83E\uDDD8',n:'Saglik & Wellness'},
+  {e:'\uD83C\uDFA8',n:'Sanat & El Isi'},{e:'\uD83C\uDFB8',n:'Muzik'},{e:'\uD83C\uDFD5\uFE0F',n:'Outdoor & Kamp'},
+  {e:'\uD83E\uDDF9',n:'Temizlik & Duzen'}
 ];
 
 var selectedNis=null;
-var history_data=[];
-try{var h=localStorage.getItem('mlynr_urun_history');if(h)history_data=JSON.parse(h);}catch(e){}
+var historyData=[];
+try{var h=localStorage.getItem('mlynr_urun_history');if(h)historyData=JSON.parse(h);}catch(e){}
 
 function renderNisGrid(){
-  var g=document.getElementById('niche-grid');g.innerHTML='';
-  NIŞLER.forEach(function(n,i){
-    var btn=document.createElement('div');btn.className='niche-btn'+(selectedNis===i?' sel':'');
+  var g=document.getElementById('niche-grid');
+  if(!g)return;
+  g.innerHTML='';
+  NISLER.forEach(function(n,i){
+    var btn=document.createElement('div');
+    btn.className='niche-btn'+(selectedNis===i?' sel':'');
     btn.textContent=n.e+' '+n.n;
-    btn.addEventListener('click',function(){selectedNis=i;renderNisGrid();});
+    btn.onclick=function(){selectedNis=i;renderNisGrid();};
     g.appendChild(btn);
   });
 }
-renderNisGrid();
 
 function switchTab(tab,el){
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
-  el.classList.add('active');
-  document.getElementById('tab-analiz').style.display=tab==='analiz'?'block':'none';
-  document.getElementById('tab-nis').style.display=tab==='nis'?'block':'none';
+  if(el)el.classList.add('active');
+  var a=document.getElementById('tab-analiz');
+  var b=document.getElementById('tab-nis');
+  if(a)a.style.display=tab==='analiz'?'block':'none';
+  if(b)b.style.display=tab==='nis'?'block':'none';
 }
 
-// ── ANALİZ ──
 function doAnaliz(){
-  var input=document.getElementById('analiz-input').value.trim();
-  if(!input){showToast('Ürün adı veya link gir');return;}
+  var inp=document.getElementById('analiz-input');
+  if(!inp)return;
+  var input=inp.value.trim();
+  if(!input){showToast('Urun adi veya link gir');return;}
   var btn=document.getElementById('analiz-btn');
-  btn.disabled=true;
-  document.getElementById('analiz-loading').style.display='block';
-  document.getElementById('analiz-report').style.display='none';
-  document.getElementById('analiz-report').innerHTML='';
+  var loading=document.getElementById('analiz-loading');
+  var report=document.getElementById('analiz-report');
+  if(btn)btn.disabled=true;
+  if(loading)loading.style.display='block';
+  if(report){report.style.display='none';report.innerHTML='';}
 
-  var steps=['🔍 Ürün araştırılıyor...','📊 Pazar verisi analiz ediliyor...','🎯 Hedef kitle belirleniyor...','💡 Reklam hookları oluşturuluyor...','✅ Rapor hazırlanıyor...'];
-  var stepsEl=document.getElementById('loading-steps');stepsEl.innerHTML='';
+  var stepsEl=document.getElementById('loading-steps');
+  if(stepsEl)stepsEl.innerHTML='';
+  var steps=['Urun arastiriliyor...','Pazar verisi analiz ediliyor...','Hedef kitle belirleniyor...','Reklam hooklari olusturuluyor...','Rapor hazirlaniyor...'];
   var si=0;
   var stepInterval=setInterval(function(){
-    if(si<steps.length){
-      var d=document.createElement('div');d.className='ls-item';d.style.animationDelay=(si*0.1)+'s';d.textContent=steps[si];stepsEl.appendChild(d);si++;
+    if(stepsEl&&si<steps.length){
+      var d=document.createElement('div');
+      d.className='ls-item';
+      d.textContent=steps[si];
+      stepsEl.appendChild(d);
+      si++;
     }
   },700);
 
-  var jsonFormat='{"karar":"SAT","urun_adi":"string","karar_nedeni":"2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"string","hook2":"string","hook3":"string","firsat":"string","uyari":"string","rakip_notu":"string"}';
-
-  var soru='Shopify dropshipping icin su urunu analiz et: '+input+'. Kriterler: 1) Problem cozucu + wow factor var mi? 2) Video/kreatif uretimine uygun mu? 3) Rekabet seviyesi nasil? 4) Shopify icin karli mi? SADECE JSON formatinda yanitla, baska hicbir sey yazma: '+jsonFormat+'. karar degerleri: SAT, DIKKAT, SATMA. rekabet_skoru 1-10 (dusuk=az rakip=iyi).';
+  var soru='Shopify dropshipping icin su urunu analiz et: '+input+'. Degerlendir: 1) Problem cozucu + wow factor var mi? 2) Video kreatif uretimine uygun mu? 3) Rekabet seviyesi nasil? 4) Karli mi? Yaniti SADECE asagidaki JSON formatinda ver, baska hicbir sey yazma: {"karar":"SAT","urun_adi":"string","karar_nedeni":"2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"string","hook2":"string","hook3":"string","firsat":"string","uyari":"string","rakip_notu":"string"} - karar SAT DIKKAT veya SATMA olabilir';
 
   fetch(EDGE_FN,{
     method:'POST',
@@ -334,151 +343,152 @@ function doAnaliz(){
   .then(function(r){return r.json();})
   .then(function(data){
     clearInterval(stepInterval);
-    document.getElementById('analiz-loading').style.display='none';
-    btn.disabled=false;
+    if(loading)loading.style.display='none';
+    if(btn)btn.disabled=false;
     var raw=data.sonuc||data.reply||data.result||data.message||'';
     var parsed=null;
-    try{var m=raw.match(/\{[\s\S]*\}/);if(m)parsed=JSON.parse(m[0]);}catch(e){}
+    try{
+      var m=raw.match(/\{[\s\S]*\}/);
+      if(m)parsed=JSON.parse(m[0]);
+    }catch(ignore){}
     if(parsed&&parsed.karar){
-      renderAnalyzReport(parsed,input);
-      saveHistory(input,parsed.karar,parsed);
+      renderReport(parsed,input);
+      saveHist(input,parsed.karar,parsed);
     }else{
-      renderRawReport(raw||'Analiz yapilamadi, tekrar dene.',input);
+      renderRaw(raw||'Analiz yapilamadi, tekrar dene.',input);
     }
   })
   .catch(function(){
     clearInterval(stepInterval);
-    document.getElementById('analiz-loading').style.display='none';
-    btn.disabled=false;
-    renderAnalyzReport(getDemoData(input),input);
+    if(loading)loading.style.display='none';
+    if(btn)btn.disabled=false;
+    renderReport(demoData(input),input);
   });
 }
 
-function getDemoData(urun){
-  return {
-    karar:'DİKKAT',urun_adi:urun,
-    karar_nedeni:'Bağlantı kurulamadı. Demo verisi gösteriliyor.',
+function demoData(urun){
+  return {karar:'DIKKAT',urun_adi:urun,karar_nedeni:'Baglanti kurulamadi. Demo verisi gosteriliyor.',
     fiyat_min:15,fiyat_max:35,ideal_satis_fiyati:24.99,
     problem_cozucu:6,wow_factor:7,kreatif_uygunluk:7,rekabet_skoru:5,talep_skoru:6,
-    hedef_kitle:'25-45 yaş online alışverişçiler',
-    hedef_kitle_detay:'Problem odaklı satın alma yapan, sosyal medyada aktif kitle',
-    hook1:'"Bunu görünce inanamadım — her evde olması lazım!"',
-    hook2:'"Arkadaşım beni bu ürüne tanıştırdı ve hayatım değişti"',
-    hook3:'"Neden kimse bana bunu daha önce söylemedi?"',
-    rakip_notu:'Orta düzeyde rekabet var.',
-    firsat:'Organik içerik ile viral potansiyel yüksek.',
-    uyari:'Stok yönetimine dikkat et.'
-  };
+    hedef_kitle:'25-45 yas online alisveriscilar',hedef_kitle_detay:'Problem odakli satin alma yapan kitle',
+    hook1:'Bunu gorince inanamadim — her evde olmasi lazim!',
+    hook2:'Arkadasim beni bu urun tanistirdi ve hayatim degisti',
+    hook3:'Neden kimse bana bunu daha once soylemedu?',
+    rakip_notu:'Orta duzey rekabet var.',firsat:'Organik icerik ile viral potansiyel yuksek.',uyari:'Stok yonetimine dikkat et.'};
 }
 
-function renderAnalyzReport(d,inputText){
+function renderReport(d,inputTxt){
   var wrap=document.getElementById('analiz-report');
+  if(!wrap)return;
   wrap.style.display='flex';
-  var cls=d.karar==='SAT'?'sat':(d.karar==='SATMA'?'satma':'dikkat');
-  var emoji=d.karar==='SAT'?'✅':(d.karar==='SATMA'?'❌':'⚠️');
-  var profit=((d.ideal_satis_fiyati||25)*0.35).toFixed(0);
+  var k=d.karar||'DIKKAT';
+  var cls=k==='SAT'?'sat':(k==='SATMA'?'satma':'dikkat');
+  var emoji=k==='SAT'?'✅':(k==='SATMA'?'❌':'⚠️');
+  var profit=Math.round((d.ideal_satis_fiyati||25)*0.35);
+  var rek=d.rekabet_skoru||5;
+  var rekLbl=rek<=4?'DUSUK':(rek<=7?'ORTA':'YUKSEK');
 
-  var html=
-    '<div class="decision-card '+cls+'">'
-    +'<div class="dc-badge">'+emoji+' '+d.karar+'</div>'
-    +'<div class="dc-product">'+(d.urun_adi||inputText)+'</div>'
-    +'<div class="dc-reason">'+(d.karar_nedeni||'')+'</div>'
-    +'</div>'
+  var h='';
+  h+='<div class="decision-card '+cls+'">';
+  h+='<div class="dc-badge">'+emoji+' '+k+'</div>';
+  h+='<div class="dc-product">'+(d.urun_adi||inputTxt)+'</div>';
+  h+='<div class="dc-reason">'+(d.karar_nedeni||'')+'</div>';
+  h+='</div>';
 
-    +'<div class="metrics-grid">'
-    +'<div class="mc"><div class="mc-label">💰 Fiyat Aralığı</div><div class="mc-val">$'+(d.fiyat_min||15)+'-'+(d.fiyat_max||35)+'</div><div class="mc-sub">İdeal: $'+(d.ideal_satis_fiyati||24.99)+'</div></div>'
-    +'<div class="mc"><div class="mc-label">📦 Tahmini Kâr</div><div class="mc-val">~$'+profit+'</div><div class="mc-sub">Satış başına</div></div>'
-    +'<div class="mc"><div class="mc-label">⚔️ Rekabet</div><div class="mc-val">'+(d.rekabet_skoru<=4?'DÜŞÜK':d.rekabet_skoru<=7?'ORTA':'YÜKSEK')+'</div><div class="mc-sub">Skor: '+(d.rekabet_skoru||5)+'/10</div></div>'
-    +'</div>'
+  h+='<div class="metrics-grid">';
+  h+='<div class="mc"><div class="mc-label">Fiyat Araligi</div><div class="mc-val">$'+(d.fiyat_min||15)+'-'+(d.fiyat_max||35)+'</div><div class="mc-sub">Ideal: $'+(d.ideal_satis_fiyati||25)+'</div></div>';
+  h+='<div class="mc"><div class="mc-label">Tahmini Kar</div><div class="mc-val">~$'+profit+'</div><div class="mc-sub">Satis basina</div></div>';
+  h+='<div class="mc"><div class="mc-label">Rekabet</div><div class="mc-val">'+rekLbl+'</div><div class="mc-sub">Skor: '+rek+'/10</div></div>';
+  h+='</div>';
 
-    +'<div class="detail-section">'
-    +'<div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Ürün Skorları</div></div>'
-    +'<div class="ds-body"><div class="score-bars">'
-    +scoreBar('Problem Çözücü',d.problem_cozucu||5,'#22c55e')
-    +scoreBar('Wow Factor',d.wow_factor||5,'#facc15')
-    +scoreBar('Kreatif Uygunluk',d.kreatif_uygunluk||5,'#38bdf8')
-    +scoreBar('Talep',d.talep_skoru||5,'#f97316')
-    +scoreBar('Rekabet (düşük=iyi)',10-(d.rekabet_skoru||5),'#a78bfa')
-    +'</div></div></div>'
+  h+='<div class="detail-section">';
+  h+='<div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Urun Skorlari</div></div>';
+  h+='<div class="ds-body"><div class="score-bars">';
+  h+=sBar('Problem Cozucu',d.problem_cozucu||5,'#22c55e');
+  h+=sBar('Wow Factor',d.wow_factor||5,'#facc15');
+  h+=sBar('Kreatif Uygunluk',d.kreatif_uygunluk||5,'#38bdf8');
+  h+=sBar('Talep',d.talep_skoru||5,'#f97316');
+  h+=sBar('Az Rekabet',10-rek,'#a78bfa');
+  h+='</div></div></div>';
 
-    +'<div class="detail-section">'
-    +'<div class="ds-header"><span class="ds-icon">🎯</span><div class="ds-title">Hedef Kitle</div></div>'
-    +'<div class="ds-body"><p><strong>'+(d.hedef_kitle||'')+'</strong><br>'+(d.hedef_kitle_detay||'')+'</p></div>'
-    +'</div>'
+  h+='<div class="detail-section">';
+  h+='<div class="ds-header"><span class="ds-icon">🎯</span><div class="ds-title">Hedef Kitle</div></div>';
+  h+='<div class="ds-body"><p><strong>'+(d.hedef_kitle||'')+'</strong><br>'+(d.hedef_kitle_detay||'')+'</p></div>';
+  h+='</div>';
 
-    +'<div class="detail-section">'
-    +'<div class="ds-header"><span class="ds-icon">🎬</span><div class="ds-title">Reklam Hook Önerileri</div><span style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:auto">Tıkla → Kopyala</span></div>'
-    +'<div class="ds-body"><div class="hook-list">'
-    +hookItem(d.hook1)+hookItem(d.hook2)+hookItem(d.hook3)
-    +'</div></div></div>'
+  h+='<div class="detail-section">';
+  h+='<div class="ds-header"><span class="ds-icon">🎬</span><div class="ds-title">Reklam Hook Onerileri</div><span style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:auto">Tikla - Kopyala</span></div>';
+  h+='<div class="ds-body"><div class="hook-list">';
+  if(d.hook1)h+='<div class="hook-item" onclick="copyHook(this)"><span class="hook-text">'+d.hook1+'</span><span class="hook-copy">Kopyala</span></div>';
+  if(d.hook2)h+='<div class="hook-item" onclick="copyHook(this)"><span class="hook-text">'+d.hook2+'</span><span class="hook-copy">Kopyala</span></div>';
+  if(d.hook3)h+='<div class="hook-item" onclick="copyHook(this)"><span class="hook-text">'+d.hook3+'</span><span class="hook-copy">Kopyala</span></div>';
+  h+='</div></div></div>';
 
-    +'<div class="detail-section">'
-    +'<div class="ds-header"><span class="ds-icon">🏆</span><div class="ds-title">Fırsat & Uyarı</div></div>'
-    +'<div class="ds-body"><div class="competitor-wrap">'
-    +'<div class="comp-item"><div class="comp-dot pos"></div><span>'+(d.firsat||'')+'</span></div>'
-    +'<div class="comp-item"><div class="comp-dot neg"></div><span>'+(d.uyari||'')+'</span></div>'
-    +'<div class="comp-item"><div class="comp-dot neu"></div><span>'+(d.rakip_notu||'')+'</span></div>'
-    +'</div></div></div>'
+  h+='<div class="detail-section">';
+  h+='<div class="ds-header"><span class="ds-icon">🏆</span><div class="ds-title">Firsat & Uyari</div></div>';
+  h+='<div class="ds-body"><div class="competitor-wrap">';
+  if(d.firsat)h+='<div class="comp-item"><div class="comp-dot pos"></div><span>'+d.firsat+'</span></div>';
+  if(d.uyari)h+='<div class="comp-item"><div class="comp-dot neg"></div><span>'+d.uyari+'</span></div>';
+  if(d.rakip_notu)h+='<div class="comp-item"><div class="comp-dot neu"></div><span>'+d.rakip_notu+'</span></div>';
+  h+='</div></div></div>';
 
-    +'<div class="report-actions">'
-    +'<button class="ra-btn primary" onclick="copyReport()">📋 Raporu Kopyala</button>'
-    +'<button class="ra-btn" onclick="clearAnaliz()">↺ Yeni Analiz</button>'
-    +'</div>';
+  h+='<div class="report-actions">';
+  h+='<button class="ra-btn primary" onclick="copyReport()">Raporu Kopyala</button>';
+  h+='<button class="ra-btn" onclick="clearAnaliz()">Yeni Analiz</button>';
+  h+='</div>';
 
-  wrap.innerHTML=html;
+  wrap.innerHTML=h;
+}
 
-  wrap.querySelectorAll('.hook-item').forEach(function(el){
-    el.addEventListener('click',function(){
-      var txt=el.querySelector('.hook-text').textContent;
-      navigator.clipboard.writeText(txt).then(function(){
-        el.querySelector('.hook-copy').textContent='✓ Kopyalandı';
-        setTimeout(function(){el.querySelector('.hook-copy').textContent='Kopyala';},2000);
-      });
-    });
+function copyHook(el){
+  var txt=el.querySelector('.hook-text').textContent;
+  var copyEl=el.querySelector('.hook-copy');
+  navigator.clipboard.writeText(txt).then(function(){
+    if(copyEl){copyEl.textContent='Kopyalandi';setTimeout(function(){copyEl.textContent='Kopyala';},2000);}
   });
 }
 
-function scoreBar(label,val,color){
+function sBar(label,val,color){
   val=Math.max(0,Math.min(10,val||0));
   return '<div class="score-row"><span class="score-label">'+label+'</span>'
     +'<div class="score-bar-wrap"><div class="score-bar-fill" style="width:'+(val*10)+'%;background:'+color+'"></div></div>'
     +'<span class="score-val">'+val+'/10</span></div>';
 }
 
-function hookItem(txt){
-  if(!txt)return'';
-  return '<div class="hook-item"><span class="hook-text">'+txt+'</span><span class="hook-copy">Kopyala</span></div>';
-}
-
-function renderRawReport(txt,input){
+function renderRaw(txt,input){
   var wrap=document.getElementById('analiz-report');
+  if(!wrap)return;
   wrap.style.display='flex';
-  wrap.innerHTML='<div class="detail-section"><div class="ds-header"><span class="ds-icon">📋</span><div class="ds-title">AI Analizi</div></div><div class="ds-body"><p style="white-space:pre-wrap">'+txt+'</p></div></div><div class="report-actions"><button class="ra-btn" onclick="clearAnaliz()">↺ Yeni Analiz</button></div>';
+  wrap.innerHTML='<div class="detail-section"><div class="ds-header"><span class="ds-icon">📋</span><div class="ds-title">AI Analizi</div></div>'
+    +'<div class="ds-body"><p style="white-space:pre-wrap;font-size:13px;line-height:1.7">'+txt+'</p></div></div>'
+    +'<div class="report-actions"><button class="ra-btn" onclick="clearAnaliz()">Yeni Analiz</button></div>';
 }
 
 function clearAnaliz(){
-  document.getElementById('analiz-input').value='';
-  document.getElementById('analiz-report').style.display='none';
-  document.getElementById('analiz-report').innerHTML='';
+  var inp=document.getElementById('analiz-input');
+  var rep=document.getElementById('analiz-report');
+  if(inp)inp.value='';
+  if(rep){rep.style.display='none';rep.innerHTML='';}
 }
 
 function copyReport(){
   var wrap=document.getElementById('analiz-report');
-  navigator.clipboard.writeText(wrap.innerText||wrap.textContent).then(function(){showToast('✓ Rapor kopyalandı','green');});
+  if(!wrap)return;
+  navigator.clipboard.writeText(wrap.innerText||wrap.textContent).then(function(){showToast('Rapor kopyalandi','green');});
 }
 
-// ── NİŞ → ÜRÜN ──
+// NIS
 function doNis(){
-  if(selectedNis===null){showToast('Bir niş seç');return;}
-  var nis=NIŞLER[selectedNis];
-  var btn=document.getElementById('nis-btn');btn.disabled=true;
-  document.getElementById('nis-loading').style.display='block';
-  document.getElementById('nis-report').style.display='none';
-  document.getElementById('nis-report').innerHTML='';
+  if(selectedNis===null){showToast('Bir nis sec');return;}
+  var nis=NISLER[selectedNis];
+  var btn=document.getElementById('nis-btn');
+  var loading=document.getElementById('nis-loading');
+  var report=document.getElementById('nis-report');
+  if(btn)btn.disabled=true;
+  if(loading)loading.style.display='block';
+  if(report){report.style.display='none';report.innerHTML='';}
 
-  var nisJsonFormat='{"oneriler":[{"urun_adi":"string","neden_kazanir":"string","problem_cozuyor":"string","kreatif_fikri":"string","fiyat_aralik":"string","rekabet":"DUSUK","wow_factor":8,"kreatif_uygunluk":9}]}';
-
-  var soru=nis.e+' '+nis.n+' nisi icin Shopify dropshipping urun onerileri. Kriterler: 1) Problem cozucu + wow factor, 2) Video/kreatif uretimine uygun, 3) Dusuk veya orta rekabet, 4) AliExpress temin edilebilir. SADECE JSON formatinda 4 urun oner: '+nisJsonFormat;
+  var soru=nis.n+' nisi icin Shopify dropshipping urun onerileri. Kriterler: 1) Problem cozucu + wow factor, 2) Video kreatif uretimine uygun, 3) Dusuk veya orta rekabet, 4) AliExpress temin edilebilir. SADECE asagidaki JSON formatinda 4 urun oner, baska hicbir sey yazma: {"oneriler":[{"urun_adi":"string","neden_kazanir":"string","problem_cozuyor":"string","kreatif_fikri":"string","fiyat_aralik":"string","rekabet":"DUSUK","wow_factor":8,"kreatif_uygunluk":9}]}';
 
   fetch(EDGE_FN,{
     method:'POST',
@@ -487,105 +497,124 @@ function doNis(){
   })
   .then(function(r){return r.json();})
   .then(function(data){
-    document.getElementById('nis-loading').style.display='none';
-    btn.disabled=false;
+    if(loading)loading.style.display='none';
+    if(btn)btn.disabled=false;
     var raw=data.sonuc||data.reply||data.result||data.message||'';
     var parsed=null;
-    try{var m=raw.match(/\{[\s\S]*\}/);if(m)parsed=JSON.parse(m[0]);}catch(e){}
-    if(parsed&&parsed.oneriler&&parsed.oneriler.length>0){renderNisReport(parsed.oneriler,nis);}
-    else{renderNisReport(getDemoNis(nis.n),nis);}
+    try{var m=raw.match(/\{[\s\S]*\}/);if(m)parsed=JSON.parse(m[0]);}catch(ignore){}
+    if(parsed&&parsed.oneriler&&parsed.oneriler.length>0){
+      renderNis(parsed.oneriler,nis);
+    }else{
+      renderNis(demoNis(nis.n),nis);
+    }
   })
   .catch(function(){
-    document.getElementById('nis-loading').style.display='none';
-    btn.disabled=false;
-    renderNisReport(getDemoNis(nis.n),nis);
+    if(loading)loading.style.display='none';
+    if(btn)btn.disabled=false;
+    renderNis(demoNis(nis.n),nis);
   });
 }
 
-function getDemoNis(nisAdi){
+function demoNis(n){
   return [
-    {urun_adi:nisAdi+' Problem Çözücü Ürün',neden_kazanir:'Wow factor yüksek, demonstrasyon videosu çekilebilir.',problem_cozuyor:'Günlük hayatı kolaylaştırır',kreatif_fikri:'Before/after video formatı',fiyat_aralik:'$15-35',rekabet:'DUSUK',wow_factor:8,kreatif_uygunluk:9},
-    {urun_adi:nisAdi+' Viral Ürün',neden_kazanir:'Sosyal medyada paylaşılabilir, hediye potansiyeli yüksek.',problem_cozuyor:'Tekrar eden sorunu çözer',kreatif_fikri:'Hook: Bunu görünce inanamadım',fiyat_aralik:'$20-45',rekabet:'DUSUK',wow_factor:9,kreatif_uygunluk:8},
-    {urun_adi:nisAdi+' Nişe Özel Ürün',neden_kazanir:'Spesifik kitleye hitap eder, sadık müşteri yaratır.',problem_cozuyor:'Nişe özel sorun çözer',kreatif_fikri:'Kullanıcı testimonial formatı',fiyat_aralik:'$25-55',rekabet:'ORTA',wow_factor:7,kreatif_uygunluk:8},
-    {urun_adi:nisAdi+' Trend Ürün',neden_kazanir:'Büyüyen trendde, erken girenler avantajlı.',problem_cozuyor:'Modern yaşam ihtiyacını karşılar',kreatif_fikri:'Trend hook ile viral potansiyel',fiyat_aralik:'$10-25',rekabet:'DUSUK',wow_factor:9,kreatif_uygunluk:9}
+    {urun_adi:n+' Problem Cozucu Urun',neden_kazanir:'Wow factor yuksek, demonstrasyon videosu cekilebilir.',problem_cozuyor:'Gunluk hayati kolaylastirir',kreatif_fikri:'Before/after video formati',fiyat_aralik:'$15-35',rekabet:'DUSUK',wow_factor:8,kreatif_uygunluk:9},
+    {urun_adi:n+' Viral Urun',neden_kazanir:'Sosyal medyada paylasilabilir, hediye potansiyeli yuksek.',problem_cozuyor:'Tekrar eden sorunu cozer',kreatif_fikri:'Hook: Bunu gorince inanamadim',fiyat_aralik:'$20-45',rekabet:'DUSUK',wow_factor:9,kreatif_uygunluk:8},
+    {urun_adi:n+' Nise Ozel Urun',neden_kazanir:'Spesifik kitleye hitap eder.',problem_cozuyor:'Nise ozel sorun cozer',kreatif_fikri:'Kullanici testimonial formati',fiyat_aralik:'$25-55',rekabet:'ORTA',wow_factor:7,kreatif_uygunluk:8},
+    {urun_adi:n+' Trend Urun',neden_kazanir:'Buyuyen trendde erken girenler avantajli.',problem_cozuyor:'Modern yasam ihtiyacini karsilar',kreatif_fikri:'Trend hook ile viral potansiyel',fiyat_aralik:'$10-25',rekabet:'DUSUK',wow_factor:9,kreatif_uygunluk:9}
   ];
 }
 
-function renderNisReport(oneriler,nis){
+function renderNis(oneriler,nis){
   var wrap=document.getElementById('nis-report');
+  if(!wrap)return;
   wrap.style.display='flex';
-  var html='<div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:4px">'+nis.e+' '+nis.n+' nişi için öneriler</div>';
-  html+='<div class="suggestions-grid">';
+  var h='<div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:4px">'+nis.n+' nisi icin oneriler</div>';
+  h+='<div class="suggestions-grid">';
   oneriler.forEach(function(o,i){
-    var rTag=o.rekabet==='DUSUK'||o.rekabet==='DÜŞÜK'?'green':o.rekabet==='YUKSEK'||o.rekabet==='YÜKSEK'?'red':'';
-    html+='<div class="suggestion-card">'
-      +'<div class="sc-num">Öneri '+(i+1).toString().padStart(2,'0')+'</div>'
-      +'<div class="sc-product">'+o.urun_adi+'</div>'
-      +(o.problem_cozuyor?'<div style="font-size:11px;color:var(--green);margin-bottom:6px">✓ '+o.problem_cozuyor+'</div>':'')
-      +'<div class="sc-why">'+o.neden_kazanir+'</div>'
-      +(o.kreatif_fikri?'<div style="font-size:11px;color:var(--text3);margin-top:6px;margin-bottom:8px">🎬 '+o.kreatif_fikri+'</div>':'')
-      +'<div class="sc-tags">'
-      +'<span class="sc-tag">'+o.fiyat_aralik+'</span>'
-      +(o.wow_factor?'<span class="sc-tag">Wow: '+o.wow_factor+'/10</span>':'')
-      +(o.kreatif_uygunluk?'<span class="sc-tag">Kreatif: '+o.kreatif_uygunluk+'/10</span>':'')
-      +'<span class="sc-tag '+rTag+'">Rekabet: '+o.rekabet+'</span>'
-      +'</div>'
-      +'<button class="sc-analyze-btn" onclick="analyzeFromSuggestion(''+o.urun_adi.replace(/'/g,'')+'')">🔍 Tam Analiz Al →</button>'
-      +'</div>';
+    var rTag=o.rekabet==='DUSUK'||o.rekabet==='DUSUK'?'green':(o.rekabet==='YUKSEK'?'red':'');
+    h+='<div class="suggestion-card">';
+    h+='<div class="sc-num">Oneri '+(i+1)+'</div>';
+    h+='<div class="sc-product">'+(o.urun_adi||'')+'</div>';
+    if(o.problem_cozuyor)h+='<div style="font-size:11px;color:var(--green);margin-bottom:6px">Cozduğu sorun: '+o.problem_cozuyor+'</div>';
+    h+='<div class="sc-why">'+(o.neden_kazanir||'')+'</div>';
+    if(o.kreatif_fikri)h+='<div style="font-size:11px;color:var(--text3);margin-top:6px;margin-bottom:8px">Kreatif: '+o.kreatif_fikri+'</div>';
+    h+='<div class="sc-tags">';
+    if(o.fiyat_aralik)h+='<span class="sc-tag">'+o.fiyat_aralik+'</span>';
+    if(o.wow_factor)h+='<span class="sc-tag">Wow: '+o.wow_factor+'/10</span>';
+    if(o.kreatif_uygunluk)h+='<span class="sc-tag">Kreatif: '+o.kreatif_uygunluk+'/10</span>';
+    h+='<span class="sc-tag '+rTag+'">'+o.rekabet+'</span>';
+    h+='</div>';
+    h+='<button class="sc-analyze-btn" data-urun="'+(o.urun_adi||'').replace(/"/g,'')+'" onclick="analyzeThis(this)">Tam Analiz Al</button>';
+    h+='</div>';
   });
-  html+='</div><div class="report-actions"><button class="ra-btn" onclick="clearNis()">↺ Farklı Niş</button></div>';
-  wrap.innerHTML=html;
+  h+='</div>';
+  h+='<div class="report-actions"><button class="ra-btn" onclick="clearNis()">Farkli Nis</button></div>';
+  wrap.innerHTML=h;
 }
 
-function analyzeFromSuggestion(urunAdi){
+function analyzeThis(btn){
+  var urun=btn.getAttribute('data-urun');
   switchTab('analiz',document.querySelectorAll('.tab')[0]);
-  document.querySelectorAll('.tab')[0].classList.add('active');
-  document.querySelectorAll('.tab')[1].classList.remove('active');
-  document.getElementById('analiz-input').value=urunAdi;
+  var inp=document.getElementById('analiz-input');
+  if(inp)inp.value=urun;
   setTimeout(function(){doAnaliz();},200);
 }
 
 function clearNis(){
-  selectedNis=null;renderNisGrid();
-  document.getElementById('nis-report').style.display='none';
-  document.getElementById('nis-report').innerHTML='';
+  selectedNis=null;
+  renderNisGrid();
+  var r=document.getElementById('nis-report');
+  if(r){r.style.display='none';r.innerHTML='';}
 }
 
-// ── GEÇMİŞ ──
-function saveHistory(input,karar,data){
-  history_data.unshift({input:input,karar:karar,date:new Date().toISOString().slice(0,10),data:data});
-  if(history_data.length>20)history_data=history_data.slice(0,20);
-  try{localStorage.setItem('mlynr_urun_history',JSON.stringify(history_data));}catch(e){}
+function saveHist(input,karar,data){
+  historyData.unshift({input:input,karar:karar,date:new Date().toISOString().slice(0,10),data:data});
+  if(historyData.length>20)historyData=historyData.slice(0,20);
+  try{localStorage.setItem('mlynr_urun_history',JSON.stringify(historyData));}catch(e){}
   renderHistory();
 }
 
 function renderHistory(){
   var sec=document.getElementById('history-section');
   var list=document.getElementById('history-list');
-  if(!history_data||history_data.length===0){sec.style.display='none';return;}
-  sec.style.display='block';list.innerHTML='';
-  history_data.slice(0,8).forEach(function(h){
-    var cls=h.karar==='SAT'?'sat':(h.karar==='SATMA'?'satma':'dikkat');
-    var div=document.createElement('div');div.className='history-item';
-    div.innerHTML='<div class="hi-decision '+cls+'"></div><span class="hi-name">'+h.input+'</span><span class="hi-date">'+h.date+'</span>';
-    div.addEventListener('click',function(){
-      document.getElementById('analiz-input').value=h.input;
-      if(h.data){document.getElementById('analiz-report').style.display='flex';renderAnalyzReport(h.data,h.input);}
+  if(!sec||!list)return;
+  if(!historyData||historyData.length===0){sec.style.display='none';return;}
+  sec.style.display='block';
+  list.innerHTML='';
+  historyData.slice(0,8).forEach(function(hh){
+    var cls=hh.karar==='SAT'?'sat':(hh.karar==='SATMA'?'satma':'dikkat');
+    var div=document.createElement('div');
+    div.className='history-item';
+    div.innerHTML='<div class="hi-decision '+cls+'"></div><span class="hi-name">'+hh.input+'</span><span class="hi-date">'+hh.date+'</span>';
+    div.onclick=function(){
+      var inp=document.getElementById('analiz-input');
+      if(inp)inp.value=hh.input;
+      if(hh.data){
+        var rep=document.getElementById('analiz-report');
+        if(rep){rep.style.display='flex';renderReport(hh.data,hh.input);}
+      }
       window.scrollTo({top:0,behavior:'smooth'});
-    });
+    };
     list.appendChild(div);
   });
 }
-renderHistory();
-
-document.getElementById('analiz-input').addEventListener('keydown',function(e){if(e.key==='Enter')doAnaliz();});
 
 var _tt;
 function showToast(m,cls){
-  var t=document.getElementById('toast');t.textContent=m;
+  var t=document.getElementById('toast');
+  if(!t)return;
+  t.textContent=m;
   t.className='toast'+(cls?' '+cls:'')+' show';
-  clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);
+  clearTimeout(_tt);
+  _tt=setTimeout(function(){t.classList.remove('show');},2600);
 }
+
+document.addEventListener('DOMContentLoaded',function(){
+  renderNisGrid();
+  renderHistory();
+  var inp=document.getElementById('analiz-input');
+  if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter')doAnaliz();});
+});
 </script></script>
 </body>
 </html>
