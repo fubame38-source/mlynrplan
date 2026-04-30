@@ -1338,6 +1338,25 @@ function removeLoadingMsg(){var el=document.getElementById('sp-loading');if(el)e
 function sendSupportMsg(){
   var inp=document.getElementById('sp-input'),btn=document.getElementById('sp-send-btn');
   if(!inp)return;var soru=inp.value.trim();if(!soru)return;
+
+  var sorularKey='mlynr6_support_sorular_'+email.replace(/[^a-z0-9]/gi,'_')+'_'+new Date().toISOString().slice(0,10);
+  var gecmisSorular=[];
+  try{var sg=LS.getItem(sorularKey);if(sg)gecmisSorular=JSON.parse(sg);}catch(e){}
+  var soruNorm=soru.trim().toLowerCase();
+  var kacKezSoruldu=gecmisSorular.filter(function(s){return s===soruNorm;}).length;
+
+  if(kacKezSoruldu>=2){
+    inp.value='';
+    addUserMsg(soru);
+    setTimeout(function(){
+      addBotMsg('Bu konuyu birkaç kez görüştük ve sana elimden geleni anlattım 🙏 Daha iyi yardım alman için şu an en doğrusu destek ekibimize geçmek. Sağ üstteki "+ Telegram" butonuna tıkla, ekibimiz 10:00–23:00 arasında seninle birebir ilgilenecek.');
+    },400);
+    return;
+  }
+
+  gecmisSorular.push(soruNorm);
+  try{LS.setItem(sorularKey,JSON.stringify(gecmisSorular));}catch(e){}
+
   inp.value='';btn.disabled=true;addUserMsg(soru);addLoadingMsg();
   var gunSayisi=done.length,hafta=Math.min(4,Math.ceil((gunSayisi+1)/7))||1;
   fetch(AI_EP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'coach',soru:soru,gunSayisi:gunSayisi,hafta:hafta,tamamlananGunler:gunSayisi})})
