@@ -9,11 +9,12 @@
 <style>
 :root{
   --font:'Geist',sans-serif;--mono:'Geist Mono',monospace;
-  --bg:#080808;--surface:#111;--surface2:#161616;
+  --bg:#080808;--surface:#111;--surface2:#161616;--surface3:#1a1a1a;
   --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
   --text:#f0f0f0;--text2:#888;--text3:#444;--white:#fff;
   --green:#22c55e;--green-ln:rgba(34,197,94,.2);--green-dim:rgba(34,197,94,.05);
   --gold:#facc15;--gold-ln:rgba(250,204,21,.2);--gold-dim:rgba(250,204,21,.05);
+  --red:#ef4444;--red-ln:rgba(239,68,68,.2);--red-dim:rgba(239,68,68,.05);
   --r:14px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -21,7 +22,7 @@ html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .hidden{display:none!important}
 
-/* ── LOGIN ── */
+/* LOGIN */
 #login-screen{position:fixed;inset:0;z-index:8000;display:flex;align-items:center;justify-content:center;background:var(--bg)}
 .login-card{width:min(420px,94vw);background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:40px 36px;position:relative}
 .login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);border-radius:20px 20px 0 0;pointer-events:none}
@@ -35,13 +36,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
 .login-err{font-size:12px;color:#f87171;margin-top:8px;min-height:18px;text-align:center}
 
-/* ── BACKGROUND ── */
+/* BG */
 .bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:48px 48px}
 .bg-glow{position:fixed;top:-300px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(255,255,255,.03),transparent 70%);pointer-events:none;z-index:0}
 
-/* ── TOPBAR ── */
+/* TOPBAR */
 .topbar{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(8,8,8,.85);border-bottom:1px solid var(--border);padding:0 clamp(16px,4vw,40px)}
-.topbar-inner{max-width:900px;margin:0 auto;height:56px;display:flex;align-items:center;gap:8px;overflow:hidden}
+.topbar-inner{max-width:900px;margin:0 auto;height:56px;display:flex;align-items:center;gap:8px}
 .tl{font-size:11px;font-weight:900;letter-spacing:4px;color:var(--white);flex:1}
 .topbar-right{display:flex;align-items:center;gap:8px;margin-left:auto}
 .support-pill{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:20px;padding:5px 12px;text-decoration:none;transition:all .2s;white-space:nowrap;flex-shrink:0}
@@ -53,69 +54,46 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .logout-btn-sm{background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text3);font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all .2s}
 .logout-btn-sm:hover{border-color:var(--border2);color:var(--text2)}
 
-/* ── MAIN CONTAINER ── */
+/* MAIN */
 #app{display:none}
 .app-inner{max-width:900px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
 
-/* ── HERO ── */
-.hero{padding:clamp(56px,10vw,100px) clamp(20px,5vw,48px) clamp(40px,7vw,72px);position:relative;overflow:hidden;z-index:1}
+/* HERO */
+.hero{padding:clamp(40px,7vw,72px) clamp(20px,5vw,48px) clamp(28px,4vw,48px);position:relative;overflow:hidden;z-index:1}
 .hero::before{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
 .hero-inner{max-width:900px;margin:0 auto}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:20px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:14px}
 .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 1.5s ease-in-out infinite}
-.hero-title{font-size:clamp(56px,12vw,120px);font-weight:900;letter-spacing:-5px;line-height:.85;color:var(--white);margin-bottom:16px}
-.hero-subtitle{font-size:clamp(14px,2.5vw,18px);font-weight:400;color:var(--text2);margin-bottom:12px}
-.hero-desc{font-size:13px;color:var(--text2);line-height:1.85;max-width:480px;margin-bottom:28px}
+.hero-title{font-size:clamp(42px,9vw,88px);font-weight:900;letter-spacing:-4px;line-height:.9;color:var(--white);margin-bottom:10px}
+.hero-subtitle{font-size:14px;font-weight:400;color:var(--text2);margin-bottom:20px}
 
-/* ── TODAY CARD (ana kart) ── */
-.today-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:20px;margin-bottom:0;position:relative;overflow:hidden;backdrop-filter:blur(24px);box-shadow:0 4px 32px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08)}
-.today-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
+/* QUICK ACTIONS - yeni hero kartlar */
+.quick-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.quick-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
+.quick-card:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.5);border-color:rgba(255,255,255,.15)}
+.quick-card.featured{background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.02));border-color:rgba(34,197,94,.25)}
+.quick-card.gold-accent{border-color:rgba(250,204,21,.2);background:linear-gradient(135deg,rgba(250,204,21,.06),var(--surface))}
+.qc-icon{font-size:20px;margin-bottom:10px}
+.qc-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.qc-sub{font-size:11px;color:var(--text2);line-height:1.4}
+.qc-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:20px;padding:3px 8px;margin-top:8px}
+.qc-ping{position:absolute;top:14px;right:14px;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.6);animation:blink 1.5s ease-in-out infinite}
 
-/* ── SECTIONS ── */
-.section{max-width:900px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:16px;position:relative;z-index:1}
+/* PROGRESS ROW */
+.prog-row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px}
+.prog-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);flex-shrink:0}
+.prog-bar{flex:1;height:3px;background:var(--border2);border-radius:10px;overflow:hidden}
+.prog-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#333,var(--white));width:0;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.prog-count{font-family:var(--mono);font-size:10px;color:var(--text2);flex-shrink:0}
 
-/* ── DAILY BLOCK (günlük kullanım) ── */
-.daily-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.daily-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
-.daily-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.5);border-color:rgba(255,255,255,.15);background:var(--surface2)}
-.daily-card.gold-card{border-color:rgba(250,204,21,.2);background:linear-gradient(135deg,rgba(250,204,21,.06),var(--surface))}
-.daily-card.green-card{border-color:rgba(34,197,94,.2);background:linear-gradient(135deg,rgba(34,197,94,.06),var(--surface))}
-.dc-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.dc-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3}
-.dc-sub{font-size:12px;color:var(--text2);line-height:1.5}
-.dc-arrow{position:absolute;top:16px;right:18px;font-size:16px;color:var(--text3);transition:all .2s}
-.daily-card:hover .dc-arrow{color:var(--white);transform:translate(2px,-2px)}
-.dc-ping{position:absolute;top:14px;right:16px;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.6);animation:blink 1.5s ease-in-out infinite}
+/* SECTIONS */
+.section{max-width:900px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:14px;position:relative;z-index:1}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-title{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.section-action{background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all .2s}
+.section-action:hover{border-color:rgba(255,255,255,.25);color:var(--text)}
 
-/* ── PROGRESS BAR ── */
-.prog-section{max-width:900px;margin:0 auto;padding:32px clamp(16px,5vw,48px) 0;position:relative;z-index:1}
-.prog-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.prog-title{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
-.prog-count{font-family:var(--mono);font-size:11px;color:var(--text2);font-weight:500}
-.prog-bar{height:2px;background:var(--border2);border-radius:10px;overflow:hidden}
-.prog-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#444,var(--white));width:0;transition:width .8s cubic-bezier(.4,0,.2,1)}
-
-/* ── MODULES ── */
-.modules-section{max-width:900px;margin:0 auto;padding:clamp(32px,6vw,56px) clamp(20px,5vw,48px);display:flex;flex-direction:column;gap:clamp(32px,5vw,56px);position:relative;z-index:1}
-.module-block{}
-.module-label{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:inline-block}
-.module-title-row{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
-.module-num{font-size:clamp(64px,10vw,96px);font-weight:900;color:var(--surface2);line-height:1;letter-spacing:-4px;user-select:none}
-.module-name{font-size:clamp(16px,2.5vw,22px);font-weight:700;color:var(--text);letter-spacing:-.5px}
-.module-desc{font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:20px;max-width:520px}
-.videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
-.video-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;cursor:pointer;user-select:none;transition:all .25s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
-.video-card:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 16px 48px rgba(0,0,0,.5);border-color:rgba(255,255,255,.15);background:var(--surface2)}
-.video-card.done{background:#141a14;border-color:rgba(34,197,94,.15)}
-.vc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.vc-num{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px}
-.tick{width:18px;height:18px;border-radius:50%;background:var(--border2);display:flex;align-items:center;justify-content:center;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
-.video-card.done .tick{background:var(--green)}
-.tick svg{width:9px;height:9px}
-.vc-title{font-size:11px;font-weight:600;color:var(--text);line-height:1.35}
-.video-card.done .vc-title{color:var(--text2)}
-
-/* ── HAFTALIK GÖREV (mentör atar) ── */
+/* HAFTALIK GÖREV */
 .weekly-task-card{border:1px solid var(--gold-ln);border-radius:var(--r);padding:22px 26px;background:var(--gold-dim);position:relative;overflow:hidden}
 .weekly-task-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .wtc-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(250,204,21,.6);margin-bottom:10px}
@@ -130,7 +108,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .wtc-item-text{font-size:12px;color:var(--text2)}
 .wtc-item.ck .wtc-item-text{color:var(--text)}
 
-/* ── METRİK GİRİŞİ ── */
+/* METRİK GİRİŞİ */
 .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px}
 .metric-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .metric-title{font-size:13px;font-weight:700;color:var(--text)}
@@ -150,15 +128,65 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .metric-row-val{font-size:12px;color:var(--text2);font-weight:600}
 .metric-row-val span{color:var(--text3);font-weight:400;font-size:10px;margin-right:3px}
 
-/* ── OVERLAY & POPUP ── */
-.overlay{position:fixed;inset:0;z-index:8100;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
-.overlay.show{opacity:1;pointer-events:auto}
-.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9) translateY(20px);z-index:8200;width:min(560px,94vw);max-height:90vh;overflow-y:auto;background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:32px;opacity:0;pointer-events:none;transition:all .4s cubic-bezier(.34,1.3,.64,1);box-shadow:0 40px 100px rgba(0,0,0,.8)}
-.popup.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
-.close-btn{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:50%;width:30px;height:30px;color:var(--text2);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1}
-.close-btn:hover{background:rgba(255,255,255,.12);color:var(--text)}
+/* KAYDEDİLEN ÜRÜNLER */
+.saved-products-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.sp-add-form{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sp-input{flex:1;min-width:160px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 14px;outline:none;transition:border-color .2s}
+.sp-input:focus{border-color:rgba(255,255,255,.3)}
+.sp-input::placeholder{color:var(--text3)}
+.sp-status-sel{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:var(--mono);font-size:10px;padding:10px 12px;outline:none;cursor:pointer}
+.sp-add-btn{background:var(--white);color:var(--bg);border:none;border-radius:8px;font-family:var(--font);font-size:12px;font-weight:700;padding:10px 18px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.sp-add-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,255,255,.15)}
+.sp-list{display:flex;flex-direction:column}
+.sp-empty{padding:32px 20px;text-align:center;color:var(--text3);font-size:13px}
+.sp-item{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);transition:background .15s}
+.sp-item:last-child{border-bottom:none}
+.sp-item:hover{background:rgba(255,255,255,.02)}
+.sp-item-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sp-item-dot.SAT{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.5)}
+.sp-item-dot.SATMA{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.5)}
+.sp-item-dot.BEKLEMEDE{background:var(--gold);box-shadow:0 0 6px rgba(250,204,21,.5)}
+.sp-item-name{flex:1;font-size:13px;color:var(--text);font-weight:500}
+.sp-item-badge{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;font-weight:600}
+.sp-item-badge.SAT{color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln)}
+.sp-item-badge.SATMA{color:var(--red);background:var(--red-dim);border:1px solid var(--red-ln)}
+.sp-item-badge.BEKLEMEDE{color:var(--gold);background:var(--gold-dim);border:1px solid var(--gold-ln)}
+.sp-item-date{font-family:var(--mono);font-size:9px;color:var(--text3)}
+.sp-item-del{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:4px 8px;border-radius:6px;transition:all .2s;line-height:1}
+.sp-item-del:hover{color:var(--red);background:var(--red-dim)}
+.sp-status-btn{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text3);font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:3px 8px;cursor:pointer;transition:all .2s}
+.sp-status-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text2)}
 
-/* ── TOPLANTI NOTLARI ── */
+/* ACCORDION MODÜLLER */
+.modules-section{max-width:900px;margin:0 auto;padding:0 clamp(16px,5vw,48px) clamp(32px,5vw,56px);position:relative;z-index:1}
+.module-accordion{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:8px;transition:border-color .2s}
+.module-accordion.open{border-color:var(--border2)}
+.module-accordion-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;user-select:none;transition:background .15s}
+.module-accordion-header:hover{background:rgba(255,255,255,.025)}
+.ma-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text3);min-width:24px}
+.ma-name{font-size:14px;font-weight:600;color:var(--text);flex:1}
+.ma-prog{display:flex;align-items:center;gap:10px}
+.ma-bar-wrap{width:80px;height:3px;background:var(--border2);border-radius:10px;overflow:hidden}
+.ma-bar-fill{height:100%;border-radius:10px;background:var(--green);transition:width .4s}
+.ma-pct{font-family:var(--mono);font-size:9px;color:var(--text3);min-width:28px;text-align:right}
+.ma-chevron{font-size:12px;color:var(--text3);transition:transform .25s;margin-left:4px}
+.module-accordion.open .ma-chevron{transform:rotate(180deg)}
+.ma-body{display:none;padding:0 20px 20px}
+.module-accordion.open .ma-body{display:block}
+.ma-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px;padding-top:4px}
+.videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.video-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;user-select:none;transition:all .2s;position:relative}
+.video-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4);border-color:rgba(255,255,255,.15)}
+.video-card.done{background:#0f1a0f;border-color:rgba(34,197,94,.15)}
+.vc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.vc-num{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px}
+.tick{width:16px;height:16px;border-radius:50%;background:var(--border2);display:flex;align-items:center;justify-content:center;transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+.video-card.done .tick{background:var(--green)}
+.tick svg{width:8px;height:8px}
+.vc-title{font-size:11px;font-weight:500;color:var(--text);line-height:1.35}
+.video-card.done .vc-title{color:var(--text2)}
+
+/* TOPLANTI */
 .meeting-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px}
 .meeting-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
 .meeting-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px}
@@ -169,7 +197,22 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .meeting-add-btn{width:100%;background:transparent;border:1px dashed var(--border2);border-radius:10px;color:var(--text3);font-family:var(--font);font-size:12px;padding:12px;cursor:pointer;transition:all .2s}
 .meeting-add-btn:hover{border-color:rgba(255,255,255,.3);color:var(--text2);background:rgba(255,255,255,.03)}
 
-/* ── AI SUPPORT ── */
+/* OVERLAY / POPUP */
+.overlay{position:fixed;inset:0;z-index:8100;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.show{opacity:1;pointer-events:auto}
+.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9) translateY(20px);z-index:8200;width:min(560px,94vw);max-height:90vh;overflow-y:auto;background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:32px;opacity:0;pointer-events:none;transition:all .4s cubic-bezier(.34,1.3,.64,1);box-shadow:0 40px 100px rgba(0,0,0,.8)}
+.popup.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.close-btn{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:50%;width:30px;height:30px;color:var(--text2);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1}
+.close-btn:hover{background:rgba(255,255,255,.12);color:var(--text)}
+.mp-form{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.mp-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:6px}
+.mp-input,.mp-textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 14px;outline:none;transition:border-color .2s}
+.mp-input:focus,.mp-textarea:focus{border-color:rgba(255,255,255,.3)}
+.mp-textarea{resize:vertical;min-height:80px;line-height:1.6}
+.mp-save{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:14px;cursor:pointer;transition:all .2s;margin-top:4px}
+.mp-save:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
+
+/* AI SUPPORT */
 #support-overlay{position:fixed;top:0;right:-420px;width:min(380px,100vw);height:100vh;z-index:8500;transition:right .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
 #support-overlay.show{right:0;pointer-events:all}
 #support-popup{background:#0d0d0d;border-left:1px solid rgba(255,255,255,.08);position:absolute;top:0;bottom:0;left:0;right:0;display:flex;flex-direction:column;overflow:hidden}
@@ -197,7 +240,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sp-send:hover{opacity:.85}
 .sp-send:disabled{opacity:.3;cursor:not-allowed}
 
-/* ── AI FAB ── */
+/* FAB */
 #ai-fab{position:fixed;bottom:24px;right:24px;z-index:6000;cursor:pointer;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1c1c1c,#111);border:1px solid rgba(255,255,255,.18);border-radius:50px;padding:14px 22px 14px 16px;box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1);transition:all .35s cubic-bezier(.34,1.2,.64,1)}
 #ai-fab:hover{transform:translateY(-3px) scale(1.03)}
 .fab-icon{width:32px;height:32px;background:linear-gradient(135deg,rgba(74,222,128,.2),rgba(74,222,128,.08));border:1px solid rgba(74,222,128,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
@@ -207,64 +250,57 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .fab-dot{width:6px;height:6px;background:#4ade80;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px rgba(74,222,128,.6);animation:fabPulse 2s ease-in-out infinite}
 @keyframes fabPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
 
-/* ── TOPLANTI POPUP ── */
-#meeting-popup{width:min(480px,94vw)}
-.mp-form{display:flex;flex-direction:column;gap:12px;margin-top:20px}
-.mp-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:6px}
-.mp-input,.mp-textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 14px;outline:none;transition:border-color .2s}
-.mp-input:focus,.mp-textarea:focus{border-color:rgba(255,255,255,.3)}
-.mp-textarea{resize:vertical;min-height:80px;line-height:1.6}
-.mp-save{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:14px;cursor:pointer;transition:all .2s;margin-top:4px}
-.mp-save:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
+/* ÜRÜN BULMA METODLARI */
+.method-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .2s}
+.method-card:hover{border-color:var(--border2)}
+.mc-top{display:flex;align-items:center;gap:12px;padding:16px 20px}
+.mc-logo{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;letter-spacing:0}
+.mc-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.mc-tag{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
+.mc-chevron{margin-left:auto;font-size:12px;color:var(--text3);transition:transform .25s;flex-shrink:0}
+.method-card.open .mc-chevron{transform:rotate(180deg)}
+.mc-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border)}
+.method-card.open .mc-body{display:block;padding-top:16px}
+.mc-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.mc-step{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text2);line-height:1.55}
+.mc-step-num{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--border2);font-family:var(--mono);font-size:9px;color:var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.mc-step strong{color:var(--text)}
+.mc-cta{display:inline-flex;align-items:center;gap:6px;background:var(--white);color:var(--bg);border-radius:8px;padding:10px 16px;font-family:var(--font);font-size:12px;font-weight:700;text-decoration:none;transition:all .2s}
+.mc-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,255,255,.15)}
+.mc-hashtags{display:flex;flex-wrap:wrap;gap:6px}
+.mc-hashtag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);color:var(--text2);text-decoration:none;transition:all .2s;background:rgba(255,255,255,.03)}
+.mc-hashtag:hover{border-color:rgba(255,255,255,.25);color:var(--text);background:rgba(255,255,255,.06)}
+@media(max-width:640px){#method-grid{grid-template-columns:1fr}}
 
-/* ── KAZANÇ HESAPLAYICI ── */
-#earn-popup{width:min(520px,94vw)}
-.earn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.earn-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:8px}
-.earn-input-wrap{display:flex;align-items:center;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;overflow:hidden;transition:border-color .2s}
-.earn-input-wrap:focus-within{border-color:rgba(255,255,255,.3)}
-.earn-unit{padding:0 12px;font-size:13px;color:var(--text3);flex-shrink:0}
-.earn-input{background:transparent;border:none;outline:none;color:var(--text);font-family:var(--font);font-size:16px;font-weight:700;padding:12px 12px 12px 0;width:100%}
-.earn-result{background:linear-gradient(135deg,rgba(250,204,21,.08),rgba(250,204,21,.03));border:1px solid rgba(250,204,21,.2);border-radius:14px;padding:20px 22px;margin-bottom:16px}
-.earn-main-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(250,204,21,.6);margin-bottom:12px}
-.earn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.earn-stat-val{font-size:22px;font-weight:800;color:#facc15;letter-spacing:-.5px;line-height:1}
-.earn-stat-lbl{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-top:4px}
-
-/* ── BANNER ── */
+/* BANNER */
 .banner{border:1px solid var(--gold-ln);border-radius:var(--r);padding:20px 24px;background:var(--gold-dim);display:flex;gap:14px;align-items:flex-start}
 .bicon{font-size:18px;flex-shrink:0;margin-top:1px}
 .btxt h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
 .btxt p{font-size:12px;color:var(--text2);line-height:1.7}
 
-/* ── TOAST ── */
+/* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;color:var(--text);z-index:9100;opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.green{border-color:var(--green-ln);color:var(--green)}
 .saved-dot{position:fixed;bottom:24px;left:24px;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:6px;padding:6px 12px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9000}
 .saved-dot.show{opacity:1}
 
-/* ── FOOTER ── */
+/* FOOTER */
 footer{border-top:1px solid var(--border);padding:clamp(40px,7vw,72px) clamp(20px,5vw,48px);text-align:center;position:relative;z-index:1}
 .footer-logo{font-size:12px;font-weight:900;letter-spacing:4px;color:var(--border2);margin-bottom:16px}
 footer p{font-size:12px;color:var(--text3)}
 
-/* ── CONFETTI ── */
+/* CONFETTI */
 #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0;transition:opacity .3s}
 #confetti-canvas.show{opacity:1}
 
-/* ── MOBILE ── */
 @media(max-width:640px){
-  .daily-grid{grid-template-columns:1fr}
+  .quick-grid{grid-template-columns:1fr 1fr}
+  .quick-card:first-child{grid-column:1/-1}
   .videos-grid{grid-template-columns:1fr 1fr}
   .metric-grid{grid-template-columns:1fr 1fr}
-  .earn-row{grid-template-columns:1fr}
-  .module-num{font-size:56px}
+  .sp-add-form{flex-direction:column}
 }
-
-/* ── AI SPINNER ── */
-@keyframes spin{to{transform:rotate(360deg)}}
-.ai-spinner{width:28px;height:28px;border:2.5px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .75s linear infinite}
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -272,7 +308,7 @@ footer p{font-size:12px;color:var(--text3)}
 
 <canvas id="confetti-canvas"></canvas>
 
-<!-- ── LOGIN ── -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">MLYNR.</div>
@@ -286,12 +322,11 @@ footer p{font-size:12px;color:var(--text3)}
   </div>
 </div>
 
-<!-- ── APP ── -->
+<!-- APP -->
 <div id="app">
   <div class="bg-grid"></div>
   <div class="bg-glow"></div>
 
-  <!-- TOPBAR -->
   <nav class="topbar">
     <div class="topbar-inner">
       <div class="tl">MLYNR.</div>
@@ -309,53 +344,44 @@ footer p{font-size:12px;color:var(--text3)}
     <div class="hero-inner">
       <div class="hero-badge"><div class="hero-badge-dot"></div>Shopify Mentörlük · Aktif</div>
       <div class="hero-title">MLYNR<span style="color:var(--text3)">.</span></div>
-      <div class="hero-subtitle">Shopify Mentörlük Portalı</div>
-      <p class="hero-desc">Her gün ihtiyacın olan her şey burada. Görevlerini tamamla, metriklerini gir, mentörünle iletişimde kal.</p>
+      <div class="hero-subtitle">Shopify Mentörlük Portalı — Hoş geldin</div>
 
-      <!-- GÜNLÜK KULLANIM KARTLARI -->
-      <div class="today-card">
-        <div class="daily-grid">
-          <div class="daily-card gold-card" onclick="scrollToTask()">
-            <div class="dc-eyebrow">● Bu Haftanın Görevi</div>
-            <div class="dc-title" id="hero-task-title">Yükleniyor...</div>
-            <div class="dc-sub" id="hero-task-sub"></div>
-            <div class="dc-arrow">↓</div>
-          </div>
-          <div class="daily-card green-card" onclick="scrollToMetrics()">
-            <div class="dc-eyebrow">● Günlük Metrikler</div>
-            <div class="dc-title">Bugünkü satış & reklam verilerini gir</div>
-            <div class="dc-sub">Her gün doldur, ilerlemeyi takip et</div>
-            <div class="dc-arrow">↓</div>
-          </div>
-          <div class="daily-card" onclick="openSupportBot()">
-            <div class="dc-eyebrow">AI Koç</div>
-            <div class="dc-title">Shopify soruların için AI koçuna sor</div>
-            <div class="dc-sub">Kişisel cevap al</div>
-            <div class="dc-ping"></div>
-          </div>
-          <div class="daily-card" onclick="window.location.href='urun_bulucu.html'" style="cursor:pointer">
-            <div class="dc-eyebrow">🔍 AI Ürün Bulucu</div>
-            <div class="dc-title">Kazanan ürün bul, analiz al</div>
-            <div class="dc-sub">SAT / SATMA kararı + tam rapor</div>
-            <div class="dc-arrow">→</div>
-          </div>
+      <!-- QUICK ACTIONS -->
+      <div class="quick-grid">
+        <div class="quick-card featured" onclick="window.location.href='urun_bulucu.html'">
+          <div class="qc-icon">🔍</div>
+          <div class="qc-title">AI Ürün Bulucu</div>
+          <div class="qc-sub">Ürün adı veya link gir, SAT / SATMA kararı + tam rapor al. Kazanan ürünü bul.</div>
+          <div class="qc-badge"><span>●</span> Hemen Başla</div>
         </div>
-        <!-- GENEL İLERLEME -->
-        <div style="padding-top:14px;border-top:1px solid var(--border)">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-            <span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)">Modül İlerlemesi</span>
-            <span style="font-family:var(--mono);font-size:11px;color:var(--text2)" id="prog-count-hero">0 / 0 ders</span>
-          </div>
-          <div class="prog-bar"><div class="prog-fill" id="prog-fill-hero"></div></div>
+        <div class="quick-card gold-accent" onclick="scrollToTask()">
+          <div class="qc-icon">⚡</div>
+          <div class="qc-title">Bu Haftanın Görevi</div>
+          <div class="dc-sub" id="hero-task-sub" style="font-size:11px;color:var(--text2);margin-top:4px;line-height:1.4">Yükleniyor...</div>
         </div>
+        <div class="quick-card" onclick="openSupportBot()">
+          <div class="qc-icon">🤖</div>
+          <div class="qc-title">AI Koç</div>
+          <div class="qc-sub">Shopify soruların için</div>
+          <div class="qc-ping"></div>
+        </div>
+      </div>
+
+      <!-- PROGRESS -->
+      <div class="prog-row">
+        <span class="prog-label">Modül İlerlemesi</span>
+        <div class="prog-bar"><div class="prog-fill" id="prog-fill-hero"></div></div>
+        <span class="prog-count" id="prog-count-hero">0 / 0 ders</span>
       </div>
     </div>
   </section>
 
   <!-- HAFTALIK GÖREV -->
-  <div class="section" id="weekly-task-section">
+  <div class="section" id="weekly-task-section" style="margin-top:20px">
+    <div class="section-header">
+      <span class="section-title">⚡ Mentöründen · Bu Haftanın Görevi</span>
+    </div>
     <div class="weekly-task-card" id="weekly-task-card">
-      <div class="wtc-eyebrow">⚡ Mentöründen · Bu Haftanın Görevi</div>
       <div class="wtc-title" id="wtc-title">Görev yükleniyor...</div>
       <div class="wtc-body" id="wtc-body"></div>
       <div id="wtc-checklist" class="wtc-checklist"></div>
@@ -365,11 +391,11 @@ footer p{font-size:12px;color:var(--text3)}
 
   <!-- METRİK GİRİŞİ -->
   <div class="section" id="metrics-section">
+    <div class="section-header">
+      <span class="section-title">📊 Günlük Metrikler</span>
+      <span class="metric-date" id="metric-date"></span>
+    </div>
     <div class="metric-card">
-      <div class="metric-header">
-        <div class="metric-title">📊 Günlük Metrikler</div>
-        <div class="metric-date" id="metric-date"></div>
-      </div>
       <div class="metric-grid">
         <div class="metric-input-wrap">
           <span class="metric-label">Satış Adedi</span>
@@ -392,11 +418,33 @@ footer p{font-size:12px;color:var(--text3)}
     </div>
   </div>
 
+  <!-- KAYDEDİLEN ÜRÜNLER -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">📦 Kaydettiğim Ürünler</span>
+      <span style="font-family:var(--mono);font-size:9px;color:var(--text3)" id="sp-count">0 ürün</span>
+    </div>
+    <div class="saved-products-card">
+      <div class="sp-add-form">
+        <input class="sp-input" id="sp-name-input" type="text" placeholder="Ürün adı gir...">
+        <select class="sp-status-sel" id="sp-status-sel">
+          <option value="BEKLEMEDE">Beklemede</option>
+          <option value="SAT">SAT</option>
+          <option value="SATMA">SATMA</option>
+        </select>
+        <button class="sp-add-btn" onclick="addSavedProduct()">+ Ekle</button>
+      </div>
+      <div class="sp-list" id="sp-list">
+        <div class="sp-empty">Henüz ürün eklenmedi. Ürün Bulucu'dan analiz yapıp buraya kaydedebilirsin.</div>
+      </div>
+    </div>
+  </div>
+
   <!-- TOPLANTI NOTLARI -->
   <div class="section">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-      <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)">Analiz Toplantıları</div>
-      <button onclick="openMeetingForm()" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all .2s">+ Toplantı Ekle</button>
+    <div class="section-header">
+      <span class="section-title">📋 Analiz Toplantıları</span>
+      <button onclick="openMeetingForm()" class="section-action">+ Ekle</button>
     </div>
     <div class="meeting-card">
       <div class="meeting-list" id="meeting-list">
@@ -406,16 +454,74 @@ footer p{font-size:12px;color:var(--text3)}
     </div>
   </div>
 
-  <!-- MODÜLLER -->
-  <div class="prog-section">
-    <div class="prog-header">
-      <span class="prog-title">Eğitim Modülleri</span>
-      <span class="prog-count" id="prog-count">0 / 0</span>
+  <!-- MODÜLLER (ACCORDION) -->
+  <div class="section" style="margin-bottom:8px">
+    <div class="section-header">
+      <span class="section-title">🎓 Eğitim Modülleri</span>
+      <span class="prog-count" id="prog-count">0 / 0 ders</span>
     </div>
-    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
   </div>
-
   <div class="modules-section" id="modules-wrap"></div>
+
+  <!-- ÜRÜN BULMA METODLARI -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">🎯 Ürün Bulma Metodları</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="method-grid">
+
+      <!-- Facebook Reklam Kütüphanesi -->
+      <div class="method-card" id="mc-fb" onclick="toggleMethod('fb')">
+        <div class="mc-top">
+          <div class="mc-logo" style="background:#1877F2">f</div>
+          <div>
+            <div class="mc-name">Facebook Reklam Kütüphanesi</div>
+            <div class="mc-tag">Rakip reklam analizi</div>
+          </div>
+          <div class="mc-chevron" id="mc-chev-fb">▾</div>
+        </div>
+        <div class="mc-body" id="mc-body-fb">
+          <div class="mc-steps">
+            <div class="mc-step"><span class="mc-step-num">1</span><span>Ülke: <strong>All</strong> seç, Kategori: <strong>All ads</strong> bırak</span></div>
+            <div class="mc-step"><span class="mc-step-num">2</span><span>Niş kelimeyi ara — örn: <strong>"back pain"</strong>, <strong>"kitchen gadget"</strong></span></div>
+            <div class="mc-step"><span class="mc-step-num">3</span><span>En az <strong>2-3 aydır yayında</strong> olan reklamlara bak — yayında = satıyor</span></div>
+            <div class="mc-step"><span class="mc-step-num">4</span><span>Video reklamlara tıkla, yorumları oku — <strong>"where to buy?"</strong> varsa talep var</span></div>
+            <div class="mc-step"><span class="mc-step-num">5</span><span>Aynı ürünü <strong>birden fazla</strong> hesap satıyorsa = kazanan ürün işareti</span></div>
+          </div>
+          <a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&media_type=all" target="_blank" class="mc-cta">Facebook Reklam Kütüphanesi'ni Aç →</a>
+        </div>
+      </div>
+
+      <!-- TikTok Organik Araştırma -->
+      <div class="method-card" id="mc-tt" onclick="toggleMethod('tt')">
+        <div class="mc-top">
+          <div class="mc-logo" style="background:#010101;font-size:18px">♪</div>
+          <div>
+            <div class="mc-name">TikTok Organik Araştırma</div>
+            <div class="mc-tag">Viral ürün keşfi</div>
+          </div>
+          <div class="mc-chevron" id="mc-chev-tt">▾</div>
+        </div>
+        <div class="mc-body" id="mc-body-tt">
+          <div class="mc-steps">
+            <div class="mc-step"><span class="mc-step-num">1</span><span>Aşağıdaki <strong>trend hashtag'lere</strong> tıkla, son 7 günü filtrele</span></div>
+            <div class="mc-step"><span class="mc-step-num">2</span><span><strong>500K+ izlenme</strong> alan ürün videolarına bak — viral = talep var</span></div>
+            <div class="mc-step"><span class="mc-step-num">3</span><span>Yorumlarda <strong>"where to buy"</strong> veya <strong>"link?"</strong> varsa anında araştır</span></div>
+            <div class="mc-step"><span class="mc-step-num">4</span><span>Aynı ürünü <strong>farklı hesaplar</strong> gösteriyorsa trend henüz başlamış demek</span></div>
+          </div>
+          <div class="mc-hashtags">
+            <a href="https://www.tiktok.com/search?q=tiktokmademebuyit" target="_blank" class="mc-hashtag">#TikTokMadeMeBuyIt</a>
+            <a href="https://www.tiktok.com/search?q=viralproducts" target="_blank" class="mc-hashtag">#ViralProducts</a>
+            <a href="https://www.tiktok.com/search?q=tiktokfinds" target="_blank" class="mc-hashtag">#TikTokFinds</a>
+            <a href="https://www.tiktok.com/search?q=amazonfinds" target="_blank" class="mc-hashtag">#AmazonFinds</a>
+            <a href="https://www.tiktok.com/search?q=productsyouneed" target="_blank" class="mc-hashtag">#ProductsYouNeed</a>
+            <a href="https://www.tiktok.com/search?q=coolproducts" target="_blank" class="mc-hashtag">#CoolProducts</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- BANNER -->
   <div class="section">
@@ -448,7 +554,7 @@ footer p{font-size:12px;color:var(--text3)}
 <div id="meeting-popup" class="popup">
   <button class="close-btn" onclick="closeMeetingForm()">✕</button>
   <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px">Toplantı Notu Ekle</div>
-  <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:0">Haftalık analiz toplantısı</div>
+  <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)">Haftalık analiz toplantısı</div>
   <div class="mp-form">
     <div><label class="mp-label">Tarih</label><input class="mp-input" type="date" id="mt-date"></div>
     <div><label class="mp-label">Konu Başlığı</label><input class="mp-input" type="text" id="mt-title" placeholder="Bu haftanın konusu..."></div>
@@ -457,25 +563,7 @@ footer p{font-size:12px;color:var(--text3)}
   </div>
 </div>
 
-<!-- KAZANÇ HESAPLAYICI -->
-<div id="earn-overlay" class="overlay" onclick="closeEarn()"></div>
-<div id="earn-popup" class="popup">
-  <button class="close-btn" onclick="closeEarn()">✕</button>
-  <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px">Kazanç Hesaplayıcı</div>
-  <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:20px">Hedefini gir, potansiyelini gör</div>
-  <div class="earn-row">
-    <div><label class="earn-label">Günlük Satış</label><div class="earn-input-wrap"><span class="earn-unit">📦</span><input id="earn-sales" class="earn-input" type="number" min="1" value="5" oninput="calcEarn()"></div></div>
-    <div><label class="earn-label">Ürün Başı Kâr ($)</label><div class="earn-input-wrap"><span class="earn-unit">$</span><input id="earn-profit" class="earn-input" type="number" min="1" value="15" oninput="calcEarn()"></div></div>
-  </div>
-  <div class="earn-row">
-    <div><label class="earn-label">Reklam Bütçesi/Gün ($)</label><div class="earn-input-wrap"><span class="earn-unit">$</span><input id="earn-ads" class="earn-input" type="number" min="0" value="50" oninput="calcEarn()"></div></div>
-    <div><label class="earn-label">Aylık Hedef ($)</label><div class="earn-input-wrap"><span class="earn-unit">🎯</span><input id="earn-goal" class="earn-input" type="number" min="100" value="3000" oninput="calcEarn()"></div></div>
-  </div>
-  <div id="earn-result" class="earn-result"></div>
-  <div id="earn-plan" style="margin-top:8px"></div>
-</div>
-
-<!-- AI SUPPORT PANEL -->
+<!-- AI SUPPORT -->
 <div id="support-overlay">
   <div id="support-popup">
     <div class="sp-header">
@@ -487,14 +575,11 @@ footer p{font-size:12px;color:var(--text3)}
     <div class="sp-messages" id="sp-messages"></div>
     <div class="sp-quick-section">
       <div class="sp-quick-label">Sık sorulan</div>
-      <div>
-        <button onclick="askQuick(this)" class="sp-quick-btn">Kazanan ürün nasıl bulunur?</button>
-        <button onclick="askQuick(this)" class="sp-quick-btn">Meta reklamlarımı nasıl ölçeklendiririm?</button>
-        <button onclick="askQuick(this)" class="sp-quick-btn">Shopify mağazam satış yapmıyor, neden?</button>
-        <button onclick="askQuick(this)" class="sp-quick-btn">LLC şirket kurmak şart mı?</button>
-        <button onclick="askQuick(this)" class="sp-quick-btn">ROAS'ım düşük ne yapmalıyım?</button>
-        <button onclick="askQuick(this)" class="sp-quick-btn">Product page nasıl optimize edilir?</button>
-      </div>
+      <button onclick="askQuick(this)" class="sp-quick-btn">Kazanan ürün nasıl bulunur?</button>
+      <button onclick="askQuick(this)" class="sp-quick-btn">Meta reklamlarımı nasıl ölçeklendiririm?</button>
+      <button onclick="askQuick(this)" class="sp-quick-btn">Shopify mağazam satış yapmıyor, neden?</button>
+      <button onclick="askQuick(this)" class="sp-quick-btn">LLC şirket kurmak şart mı?</button>
+      <button onclick="askQuick(this)" class="sp-quick-btn">ROAS'ım düşük ne yapmalıyım?</button>
     </div>
     <div class="sp-input-area">
       <textarea class="sp-input" id="sp-input" rows="1" placeholder="Sorunuzu yazın..."></textarea>
@@ -503,7 +588,7 @@ footer p{font-size:12px;color:var(--text3)}
   </div>
 </div>
 
-<!-- AI FAB -->
+<!-- FAB -->
 <div id="ai-fab" onclick="openSupportBot()">
   <div class="fab-icon">🤖</div>
   <div class="fab-txt"><div class="fab-title">AI Koç</div><div class="fab-sub">Shopify Destek</div></div>
@@ -514,14 +599,12 @@ footer p{font-size:12px;color:var(--text3)}
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ──
 var SUPABASE_URL='https://xrelhozqawdseobxqbju.supabase.co';
 var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
 var EDGE_FN=SUPABASE_URL+'/functions/v1/rapid-endpoint';
 var _sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 var LS;try{LS=localStorage;}catch(e){LS={getItem:function(){return null;},setItem:function(){},removeItem:function(){}};}
 
-// ── MODÜLLER ──
 var MODULES=[
   {id:1,name:"Dropshipping'i Anlamak",desc:"İş modelini kavra, başarı yolunu öğren, yaygın hatalardan kaçın.",
    videos:["Açılış Mesajı","Dropshipping 101","Eğitimin Amacı & İlerleyiş Şekli","Bu İşte Başarıya Giden Yolun Adımları","En Çok Yapılan Hatalar"]},
@@ -547,26 +630,38 @@ var MODULES=[
    videos:["Facebook Reklamlarını Ölçekleme","Agentler ile Çalışmak","Dropshipping'den 3PL'e Geçiş"]}
 ];
 
-// ── STATE ──
-var _user=null,email='',done=[],metrics=[],meetings=[],taskChecks={};
+var _user=null,email='',done=[],metrics=[],meetings=[],taskChecks={},savedProducts=[];
 var adminTask={title:'',body:'',due:'',checks:[]};
 
 function stK(){return 'mlynr_shop_'+email.replace(/[^a-z0-9]/gi,'_');}
 function saveState(){
   if(!email)return;
-  try{LS.setItem(stK(),JSON.stringify({done:done,metrics:metrics,meetings:meetings,taskChecks:taskChecks}));}catch(e){}
+  try{LS.setItem(stK(),JSON.stringify({done:done,metrics:metrics,meetings:meetings,taskChecks:taskChecks,savedProducts:savedProducts}));}catch(e){}
   showSaved();
 }
 function loadState(){
   if(!email)return;
   try{
     var r=LS.getItem(stK());
-    if(r){var d=JSON.parse(r);done=d.done||[];metrics=d.metrics||[];meetings=d.meetings||[];taskChecks=d.taskChecks||{};}
-    else{done=[];metrics=[];meetings=[];taskChecks={};}
-  }catch(e){done=[];metrics=[];meetings=[];taskChecks={};}
+    if(r){var d=JSON.parse(r);done=d.done||[];metrics=d.metrics||[];meetings=d.meetings||[];taskChecks=d.taskChecks||{};savedProducts=d.savedProducts||[];}
+    else{done=[];metrics=[];meetings=[];taskChecks={};savedProducts=[];}
+  }catch(e){done=[];metrics=[];meetings=[];taskChecks={};savedProducts=[];}
+  // Ürün bulucu'dan kaydedilenler
+  try{
+    var ext=LS.getItem('mlynr_saved_products');
+    if(ext){
+      var extArr=JSON.parse(ext);
+      extArr.forEach(function(ep){
+        var exists=savedProducts.some(function(sp){return sp.name===ep.name;});
+        if(!exists)savedProducts.unshift(ep);
+      });
+      LS.removeItem('mlynr_saved_products');
+      saveState();
+    }
+  }catch(e){}
 }
 
-// ── AUTH ──
+// AUTH
 var _failCount=0,_failLock=0;
 function doAuth(){
   var em=document.getElementById('inp-email').value.trim().toLowerCase();
@@ -576,11 +671,9 @@ function doAuth(){
   if(!code){er.textContent='Davet kodunu gir.';return;}
   if(_failLock>Date.now()){er.textContent=Math.ceil((_failLock-Date.now())/1000)+' saniye bekle.';return;}
   var btn=document.getElementById('login-btn');btn.disabled=true;er.textContent='Doğrulanıyor...';
-
   fetch(EDGE_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'verify-invite',code:code,email:em})})
     .then(function(r){return r.json();}).then(function(res){
       if(!res.valid){
-        // Fallback: MLYNR ile başlıyorsa demo erişim
         if(code.startsWith('MLYNR')){enterApp(em,null);}
         else{_failCount++;if(_failCount>=5){_failLock=Date.now()+30000;_failCount=0;}er.textContent='Geçersiz davet kodu.';btn.disabled=false;}
         return;
@@ -588,7 +681,7 @@ function doAuth(){
       var pw='MLYNRshop_'+code;
       _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r){
         if(r.error){
-          _sb.auth.signUp({email:em,password:pw}).then(function(r2){
+          _sb.auth.signUp({email:em,password:pw}).then(function(){
             _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r3){
               if(r3.error){er.textContent='Giriş hatası.';btn.disabled=false;return;}
               enterApp(em,r3.data.user);
@@ -597,9 +690,8 @@ function doAuth(){
         }else{enterApp(em,r.data.user);}
       });
     }).catch(function(){
-      // Network error - demo mod
       if(code.startsWith('MLYNR')){enterApp(em,null);}
-      else{er.textContent='Bağlantı hatası. Tekrar dene.';btn.disabled=false;}
+      else{er.textContent='Bağlantı hatası.';btn.disabled=false;}
     });
 }
 
@@ -619,88 +711,61 @@ function enterApp(em,usr){
 
 function doLogout(){
   if(_user)_sb.auth.signOut();
-  _user=null;email='';done=[];metrics=[];meetings=[];taskChecks={};
+  _user=null;email='';done=[];metrics=[];meetings=[];taskChecks={};savedProducts=[];
   document.getElementById('login-screen').classList.remove('hidden');
   document.getElementById('app').style.display='none';
 }
 
-// ── ADMIN TASK (localStorage & Supabase settings tablosu) ──
+// ADMIN TASK
 function loadAdminTask(){
-  // Local fallback
-  try{
-    var local=LS.getItem('mlynr_shop_admin_task');
-    if(local){adminTask=JSON.parse(local);renderTask();}
-  }catch(e){}
-
-  // Supabase'den çek
+  try{var local=LS.getItem('mlynr_shop_admin_task');if(local){adminTask=JSON.parse(local);renderTask();}}catch(e){}
   fetch(SUPABASE_URL+'/rest/v1/settings?key=eq.shopify_weekly_task&select=value',{
     headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
   }).then(function(r){return r.json();}).then(function(d){
     if(d&&d[0]&&d[0].value){
-      try{
-        var t=typeof d[0].value==='string'?JSON.parse(d[0].value):d[0].value;
-        adminTask=t;
-        try{LS.setItem('mlynr_shop_admin_task',JSON.stringify(t));}catch(e){}
-        renderTask();
-      }catch(e){}
+      try{var t=typeof d[0].value==='string'?JSON.parse(d[0].value):d[0].value;adminTask=t;try{LS.setItem('mlynr_shop_admin_task',JSON.stringify(t));}catch(e){}renderTask();}catch(e){}
     }
   }).catch(function(){});
 }
 
 function renderTask(){
   var t=adminTask;
-  // Hero kart
-  document.getElementById('hero-task-title').textContent=t.title||'Görev henüz atanmadı';
-  document.getElementById('hero-task-sub').textContent=t.body?t.body.substring(0,60)+'...':'Mentörün yakında güncelleyecek';
-  // Detay kart
+  document.getElementById('hero-task-sub').textContent=t.title||'Mentörün yakında güncelleyecek';
   document.getElementById('wtc-title').textContent=t.title||'Henüz görev atanmadı';
   document.getElementById('wtc-body').textContent=t.body||'Mentörün bu haftanın görevini yakında ekleyecek.';
-  if(t.due){document.getElementById('wtc-due').textContent='Son Tarih: '+t.due;}
-  // Checklist
+  if(t.due)document.getElementById('wtc-due').textContent='Son Tarih: '+t.due;
   var cl=document.getElementById('wtc-checklist');cl.innerHTML='';
   if(t.checks&&t.checks.length>0){
     t.checks.forEach(function(item,i){
       var checked=taskChecks['task_'+i];
       var div=document.createElement('div');div.className='wtc-item'+(checked?' ck':'');
       div.innerHTML='<div class="wtc-box">'+(checked?'<svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>':'')+'</div><span class="wtc-item-text">'+item+'</span>';
-      div.addEventListener('click',function(){
-        taskChecks['task_'+i]=!taskChecks['task_'+i];
-        saveState();renderTask();
-      });
+      div.addEventListener('click',function(){taskChecks['task_'+i]=!taskChecks['task_'+i];saveState();renderTask();});
       cl.appendChild(div);
     });
   }
 }
 
-// ── METRİKLER ──
+// METRİKLER
 function setMetricDate(){
   var d=new Date();
   document.getElementById('metric-date').textContent=d.toLocaleDateString('tr-TR',{weekday:'long',day:'numeric',month:'long'});
 }
-
 function saveMetrics(){
   var sales=document.getElementById('m-sales').value;
   var revenue=document.getElementById('m-revenue').value;
   var adspend=document.getElementById('m-adspend').value;
   if(!sales&&!revenue&&!adspend){showToast('En az bir değer gir');return;}
-  var d=new Date();
-  var entry={date:d.toISOString().slice(0,10),sales:parseInt(sales)||0,revenue:parseFloat(revenue)||0,adspend:parseFloat(adspend)||0};
-  metrics.unshift(entry);
-  if(metrics.length>30)metrics=metrics.slice(0,30);
-  saveState();
-  renderMetrics();
-  document.getElementById('m-sales').value='';
-  document.getElementById('m-revenue').value='';
-  document.getElementById('m-adspend').value='';
+  var entry={date:new Date().toISOString().slice(0,10),sales:parseInt(sales)||0,revenue:parseFloat(revenue)||0,adspend:parseFloat(adspend)||0};
+  metrics.unshift(entry);if(metrics.length>30)metrics=metrics.slice(0,30);
+  saveState();renderMetrics();
+  document.getElementById('m-sales').value='';document.getElementById('m-revenue').value='';document.getElementById('m-adspend').value='';
   showToast('✓ Metrikler kaydedildi','green');
 }
-
 function renderMetrics(){
-  var hist=document.getElementById('metric-history');
-  var list=document.getElementById('metric-history-list');
+  var hist=document.getElementById('metric-history');var list=document.getElementById('metric-history-list');
   if(!metrics||metrics.length===0){hist.style.display='none';return;}
-  hist.style.display='block';
-  list.innerHTML='';
+  hist.style.display='block';list.innerHTML='';
   metrics.slice(0,7).forEach(function(m){
     var profit=(m.revenue-m.adspend).toFixed(0);
     var div=document.createElement('div');div.className='metric-row';
@@ -713,34 +778,66 @@ function renderMetrics(){
   });
 }
 
-// ── TOPLANTI ──
+// KAYDEDİLEN ÜRÜNLER
+function addSavedProduct(){
+  var name=document.getElementById('sp-name-input').value.trim();
+  var status=document.getElementById('sp-status-sel').value;
+  if(!name){showToast('Ürün adı gir');return;}
+  savedProducts.unshift({name:name,status:status,date:new Date().toISOString().slice(0,10),id:Date.now()});
+  document.getElementById('sp-name-input').value='';
+  saveState();renderSavedProducts();showToast('✓ Ürün kaydedildi','green');
+}
+function deleteSavedProduct(id){
+  savedProducts=savedProducts.filter(function(p){return p.id!==id;});
+  saveState();renderSavedProducts();
+}
+function cycleSavedProductStatus(id){
+  var p=savedProducts.find(function(p){return p.id===id;});
+  if(!p)return;
+  var order=['BEKLEMEDE','SAT','SATMA'];
+  var idx=order.indexOf(p.status);
+  p.status=order[(idx+1)%order.length];
+  saveState();renderSavedProducts();
+}
+function renderSavedProducts(){
+  var list=document.getElementById('sp-list');
+  var count=document.getElementById('sp-count');
+  if(count)count.textContent=savedProducts.length+' ürün';
+  if(!savedProducts||savedProducts.length===0){
+    list.innerHTML='<div class="sp-empty">Henüz ürün eklenmedi. Ürün Bulucu\'dan analiz yapıp buraya kaydedebilirsin.</div>';
+    return;
+  }
+  list.innerHTML='';
+  savedProducts.forEach(function(p){
+    var div=document.createElement('div');div.className='sp-item';
+    div.innerHTML='<div class="sp-item-dot '+p.status+'"></div>'
+      +'<span class="sp-item-name">'+p.name+'</span>'
+      +'<button class="sp-status-btn" onclick="cycleSavedProductStatus('+p.id+')">'+p.status+' ↻</button>'
+      +'<span class="sp-item-date">'+p.date+'</span>'
+      +'<button class="sp-item-del" onclick="deleteSavedProduct('+p.id+')" title="Sil">×</button>';
+    list.appendChild(div);
+  });
+}
+
+// TOPLANTI
 function openMeetingForm(){
   document.getElementById('mt-date').value=new Date().toISOString().slice(0,10);
-  document.getElementById('mt-title').value='';
-  document.getElementById('mt-note').value='';
-  document.getElementById('meeting-overlay').classList.add('show');
-  document.getElementById('meeting-popup').classList.add('show');
+  document.getElementById('mt-title').value='';document.getElementById('mt-note').value='';
+  document.getElementById('meeting-overlay').classList.add('show');document.getElementById('meeting-popup').classList.add('show');
   setTimeout(function(){document.getElementById('mt-title').focus();},300);
 }
-function closeMeetingForm(){
-  document.getElementById('meeting-overlay').classList.remove('show');
-  document.getElementById('meeting-popup').classList.remove('show');
-}
+function closeMeetingForm(){document.getElementById('meeting-overlay').classList.remove('show');document.getElementById('meeting-popup').classList.remove('show');}
 function saveMeeting(){
   var date=document.getElementById('mt-date').value;
   var title=document.getElementById('mt-title').value.trim();
   var note=document.getElementById('mt-note').value.trim();
   if(!title){document.getElementById('mt-title').focus();return;}
   meetings.unshift({date:date,title:title,note:note});
-  saveState();renderMeetings();closeMeetingForm();
-  showToast('✓ Toplantı notu kaydedildi','green');
+  saveState();renderMeetings();closeMeetingForm();showToast('✓ Toplantı notu kaydedildi','green');
 }
 function renderMeetings(){
   var list=document.getElementById('meeting-list');
-  if(!meetings||meetings.length===0){
-    list.innerHTML='<div style="text-align:center;padding:24px;color:var(--text3);font-size:13px">Henüz toplantı notu yok.</div>';
-    return;
-  }
+  if(!meetings||meetings.length===0){list.innerHTML='<div style="text-align:center;padding:24px;color:var(--text3);font-size:13px">Henüz toplantı notu yok.</div>';return;}
   list.innerHTML='';
   meetings.slice(0,10).forEach(function(m){
     var div=document.createElement('div');div.className='meeting-item';
@@ -749,7 +846,7 @@ function renderMeetings(){
   });
 }
 
-// ── MODÜLLER RENDER ──
+// ACCORDION MODÜLLER
 function renderModules(){
   var wrap=document.getElementById('modules-wrap');wrap.innerHTML='';
   var totalDone=0,totalAll=0;
@@ -758,128 +855,125 @@ function renderModules(){
     var modDone=0;
     mod.videos.forEach(function(_,i){if(done.indexOf(mod.id+'-'+i)>-1)modDone++;});
     totalDone+=modDone;
-    var sec=document.createElement('div');sec.className='module-block';
-    var h='<div class="module-label">Modül '+String(mod.id).padStart(2,'0')+' — '+Math.round(modDone/mod.videos.length*100)+'% tamamlandı</div>';
-    h+='<div class="module-title-row"><div class="module-num">'+String(mod.id).padStart(2,'0')+'</div><div class="module-name">'+mod.name+'</div></div>';
-    h+='<div class="module-desc">'+mod.desc+'</div>';
-    h+='<div class="videos-grid" id="vg-'+mod.id+'"></div>';
-    sec.innerHTML=h;wrap.appendChild(sec);
-    var grid=document.getElementById('vg-'+mod.id);
+    var pct=Math.round(modDone/mod.videos.length*100);
+
+    var acc=document.createElement('div');acc.className='module-accordion';acc.id='acc-'+mod.id;
+
+    var header=document.createElement('div');header.className='module-accordion-header';
+    header.innerHTML='<span class="ma-num">'+String(mod.id).padStart(2,'0')+'</span>'
+      +'<span class="ma-name">'+mod.name+'</span>'
+      +'<div class="ma-prog">'
+      +'<div class="ma-bar-wrap"><div class="ma-bar-fill" style="width:'+pct+'%"></div></div>'
+      +'<span class="ma-pct">'+pct+'%</span>'
+      +'</div>'
+      +'<span class="ma-chevron">▾</span>';
+    header.addEventListener('click',function(){
+      var isOpen=acc.classList.contains('open');
+      document.querySelectorAll('.module-accordion.open').forEach(function(a){a.classList.remove('open');});
+      if(!isOpen)acc.classList.add('open');
+    });
+
+    var body=document.createElement('div');body.className='ma-body';
+    var descDiv=document.createElement('div');descDiv.className='ma-desc';descDiv.textContent=mod.desc;
+    body.appendChild(descDiv);
+
+    var grid=document.createElement('div');grid.className='videos-grid';
     mod.videos.forEach(function(v,i){
       (function(mi,vi,vname){
         var id=mi+'-'+vi,isDone=done.indexOf(id)>-1;
         var card=document.createElement('div');card.className='video-card'+(isDone?' done':'');
-        card.innerHTML='<div class="vc-top"><div class="vc-num">'+String(vi+1).padStart(2,'0')+'</div><div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="'+(isDone?'#000':'transparent')+'" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div></div><div class="vc-title">'+vname+'</div>';
+        card.innerHTML='<div class="vc-top"><span class="vc-num">'+String(vi+1).padStart(2,'0')+'</span>'
+          +'<div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="'+(isDone?'#000':'transparent')+'" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div></div>'
+          +'<div class="vc-title">'+vname+'</div>';
         card.addEventListener('click',function(){
           var pos=done.indexOf(id);
           if(pos>-1)done.splice(pos,1);else{done.push(id);launchMiniConfetti();}
-          saveState();renderModules();renderProgress();
-          showToast(done.indexOf(id)>-1?'✓ '+vname:'↩ İşaret kaldırıldı',done.indexOf(id)>-1?'green':'');
+          saveState();renderModules();
+          showToast(done.indexOf(id)>-1?'✓ Tamamlandı':'↩ İşaret kaldırıldı',done.indexOf(id)>-1?'green':'');
         });
         grid.appendChild(card);
       })(mod.id,i,v);
     });
+    body.appendChild(grid);
+    acc.appendChild(header);acc.appendChild(body);
+    wrap.appendChild(acc);
   });
   renderProgress(totalDone,totalAll);
 }
 
-function renderProgress(done2,total2){
-  var d=done2!==undefined?done2:done.length;
-  var t=total2!==undefined?total2:0;
-  if(t===0){MODULES.forEach(function(m){t+=m.videos.length;});}
+function renderProgress(d,t){
+  if(t===undefined){t=0;MODULES.forEach(function(m){t+=m.videos.length;});}
+  if(d===undefined)d=done.length;
   var pct=t>0?Math.round(d/t*100):0;
-  document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-count').textContent=d+' / '+t+' ders';
   document.getElementById('prog-fill-hero').style.width=pct+'%';
   document.getElementById('prog-count-hero').textContent=d+' / '+t+' ders tamamlandı';
+  document.getElementById('prog-count').textContent=d+' / '+t;
 }
 
-function renderAll(){
-  renderTask();renderMetrics();renderMeetings();renderModules();
-}
+function renderAll(){renderTask();renderMetrics();renderMeetings();renderModules();renderSavedProducts();}
 
-// ── SCROLL HELPERS ──
 function scrollToTask(){document.getElementById('weekly-task-section').scrollIntoView({behavior:'smooth'});}
-function scrollToMetrics(){document.getElementById('metrics-section').scrollIntoView({behavior:'smooth'});}
 
-// ── AI SUPPORT ──
+// METOD TOGGLE
+function toggleMethod(id){
+  var card=document.getElementById('mc-'+id);
+  var isOpen=card.classList.contains('open');
+  document.querySelectorAll('.method-card').forEach(function(c){c.classList.remove('open');});
+  if(!isOpen)card.classList.add('open');
+}
+
+// AI SUPPORT
 function askQuick(btn){document.getElementById('sp-input').value=btn.textContent.trim();sendSupportMsg();}
 function openSupportBot(){
   var msgs=document.getElementById('sp-messages');
-  if(msgs&&msgs.children.length===0){addBotMsg('Merhaba! 👋 Ben MLYNR Shopify AI Koçun. Shopify dropshipping hakkında her soruyu sorabilirsin.');}
+  if(msgs&&msgs.children.length===0)addBotMsg('Merhaba! 👋 Ben MLYNR Shopify AI Koçun. Her soruyu sorabilirsin.');
   document.getElementById('support-overlay').classList.add('show');
   setTimeout(function(){document.getElementById('sp-input').focus();},300);
 }
 function closeSupportBot(){document.getElementById('support-overlay').classList.remove('show');}
-function addBotMsg(txt){var msgs=document.getElementById('sp-messages');if(!msgs)return;var div=document.createElement('div');div.className='sp-msg bot';div.textContent=txt;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
-function addUserMsg(txt){var msgs=document.getElementById('sp-messages');if(!msgs)return;var div=document.createElement('div');div.className='sp-msg user';div.textContent=txt;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
-function addLoadingMsg(){var msgs=document.getElementById('sp-messages');if(!msgs)return;var div=document.createElement('div');div.className='sp-msg bot loading';div.id='sp-loading';div.textContent='AI Koç düşünüyor...';msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function addBotMsg(txt){var msgs=document.getElementById('sp-messages');var div=document.createElement('div');div.className='sp-msg bot';div.textContent=txt;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function addUserMsg(txt){var msgs=document.getElementById('sp-messages');var div=document.createElement('div');div.className='sp-msg user';div.textContent=txt;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function addLoadingMsg(){var msgs=document.getElementById('sp-messages');var div=document.createElement('div');div.className='sp-msg bot loading';div.id='sp-loading';div.textContent='Düşünüyor...';msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
 function removeLoadingMsg(){var el=document.getElementById('sp-loading');if(el)el.remove();}
 function sendSupportMsg(){
   var inp=document.getElementById('sp-input'),btn=document.getElementById('sp-send-btn');
-  if(!inp)return;var soru=inp.value.trim();if(!soru)return;
+  var soru=inp.value.trim();if(!soru)return;
   inp.value='';btn.disabled=true;addUserMsg(soru);addLoadingMsg();
   fetch(EDGE_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'support',message:soru,history:[]})})
     .then(function(r){return r.json();}).then(function(data){
-      removeLoadingMsg();
-      var reply=data.reply||data.sonuc||data.message||'Şu an cevap veremiyorum, tekrar dene.';
-      addBotMsg(reply);btn.disabled=false;
-    }).catch(function(){removeLoadingMsg();addBotMsg('Bağlantı hatası. Tekrar dene.');btn.disabled=false;});
+      removeLoadingMsg();addBotMsg(data.reply||data.sonuc||data.message||'Tekrar dene.');btn.disabled=false;
+    }).catch(function(){removeLoadingMsg();addBotMsg('Bağlantı hatası.');btn.disabled=false;});
 }
 document.addEventListener('DOMContentLoaded',function(){
   var inp=document.getElementById('sp-input');
   if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendSupportMsg();}});
+  var spInp=document.getElementById('sp-name-input');
+  if(spInp)spInp.addEventListener('keydown',function(e){if(e.key==='Enter')addSavedProduct();});
 });
 
-// ── KAZANÇ ──
-function openEarn(){calcEarn();document.getElementById('earn-overlay').classList.add('show');document.getElementById('earn-popup').classList.add('show');}
-function closeEarn(){document.getElementById('earn-overlay').classList.remove('show');document.getElementById('earn-popup').classList.remove('show');}
-function calcEarn(){
-  var sales=Math.max(1,parseFloat(document.getElementById('earn-sales').value)||5);
-  var profit=Math.max(1,parseFloat(document.getElementById('earn-profit').value)||15);
-  var ads=Math.max(0,parseFloat(document.getElementById('earn-ads').value)||50);
-  var goal=Math.max(100,parseFloat(document.getElementById('earn-goal').value)||3000);
-  var daily=sales*profit-ads;
-  var monthly=daily*30;
-  var yearly=daily*365;
-  document.getElementById('earn-result').innerHTML='<div class="earn-main-label">Tahmini Kazanç</div><div class="earn-grid"><div class="earn-stat"><div class="earn-stat-val">$'+Math.max(0,daily).toFixed(0)+'</div><div class="earn-stat-lbl">Günlük Kâr</div></div><div class="earn-stat"><div class="earn-stat-val">$'+Math.max(0,monthly).toFixed(0)+'</div><div class="earn-stat-lbl">Aylık Kâr</div></div><div class="earn-stat"><div class="earn-stat-val">$'+Math.max(0,yearly).toFixed(0)+'</div><div class="earn-stat-lbl">Yıllık Kâr</div></div></div>';
-  var plan=document.getElementById('earn-plan');
-  if(plan){
-    var status=monthly>=goal?'✅ Hedefe ulaştın!':'🎯 Hedefe ulaşmak için: günlük satışı artır veya ürün başı kârı yükselt.';
-    plan.innerHTML='<div style="background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.15);border-radius:10px;padding:14px 16px;font-size:12px;color:var(--text2);line-height:1.7">'+status+'</div>';
-  }
-}
-
-// ── CONFETTI ──
+// CONFETTI
 var _cRAF=null;
 function launchMiniConfetti(){
   var c=document.getElementById('confetti-canvas');if(!c)return;
   c.width=window.innerWidth;c.height=window.innerHeight;c.classList.add('show');
-  var ctx=c.getContext('2d');
-  var cols=['#fff','#22c55e','#facc15'];
-  var pieces=[];
+  var ctx=c.getContext('2d');var cols=['#fff','#22c55e','#facc15'];var pieces=[];
   for(var i=0;i<60;i++)pieces.push({x:Math.random()*c.width,y:-10,vx:(Math.random()-.5)*3,vy:Math.random()*3+1,rot:Math.random()*360,vr:(Math.random()-.5)*6,w:Math.random()*6+3,h:Math.random()*3+2,col:cols[Math.floor(Math.random()*cols.length)],o:1});
-  if(_cRAF){cancelAnimationFrame(_cRAF);}
+  if(_cRAF)cancelAnimationFrame(_cRAF);
   var f=0;
   function run(){ctx.clearRect(0,0,c.width,c.height);f++;var alive=false;
     for(var i=0;i<pieces.length;i++){var p=pieces[i];p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;if(f>50)p.o-=.028;if(p.o>0){alive=true;ctx.save();ctx.globalAlpha=Math.max(0,p.o);ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.col;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();}}
-    if(alive)_cRAF=requestAnimationFrame(run);else{c.classList.remove('show');_cRAF=null;}
-  }
+    if(alive)_cRAF=requestAnimationFrame(run);else{c.classList.remove('show');_cRAF=null;}}
   _cRAF=requestAnimationFrame(run);
 }
 
-// ── UTILS ──
 var _st;function showSaved(){var el=document.getElementById('saved-dot');el.classList.add('show');clearTimeout(_st);_st=setTimeout(function(){el.classList.remove('show');},1600);}
 var _tt;function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(cls?' '+cls:'')+' show';clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);}
 
-// ── INIT ──
+// INIT
 (function(){
   _sb.auth.getSession().then(function(r){
-    if(r.data&&r.data.session&&r.data.session.user){
-      enterApp(r.data.session.user.email,r.data.session.user);
-    }else{
-      document.getElementById('login-screen').classList.remove('hidden');
-    }
+    if(r.data&&r.data.session&&r.data.session.user){enterApp(r.data.session.user.email,r.data.session.user);}
+    else{document.getElementById('login-screen').classList.remove('hidden');}
   });
 })();
 </script>
