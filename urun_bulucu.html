@@ -269,21 +269,43 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div class="toast" id="toast"></div>
 
 <script>
-var EDGE_FN='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint';
-var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
+// Direkt Anthropic API - Edge Function yok
+var API_URL='https://api.anthropic.com/v1/messages';
 
 var NISLER=[
-  {e:'\uD83D\uDC3E',n:'Evcil Hayvan'},{e:'\uD83C\uDFE0',n:'Ev & Yasam'},{e:'\uD83D\uDCAA',n:'Spor & Fitness'},
-  {e:'\uD83C\uDF3F',n:'Bahce'},{e:'\uD83D\uDC76',n:'Bebek & Cocuk'},{e:'\uD83C\uDF73',n:'Mutfak Gadget'},
-  {e:'\uD83D\uDE97',n:'Arac Aksesuar'},{e:'\uD83D\uDC84',n:'Guzellik'},{e:'\uD83D\uDCDA',n:'Ofis & Calisma'},
-  {e:'\uD83C\uDFAE',n:'Oyun & Teknoloji'},{e:'\u2708\uFE0F',n:'Seyahat'},{e:'\uD83E\uDDD8',n:'Saglik & Wellness'},
-  {e:'\uD83C\uDFA8',n:'Sanat & El Isi'},{e:'\uD83C\uDFB8',n:'Muzik'},{e:'\uD83C\uDFD5\uFE0F',n:'Outdoor & Kamp'},
-  {e:'\uD83E\uDDF9',n:'Temizlik & Duzen'}
+  {e:'🐾',n:'Evcil Hayvan'},{e:'🏠',n:'Ev & Yaşam'},{e:'💪',n:'Spor & Fitness'},
+  {e:'🌿',n:'Bahçe'},{e:'👶',n:'Bebek & Çocuk'},{e:'🍳',n:'Mutfak Gadget'},
+  {e:'🚗',n:'Araç Aksesuar'},{e:'💄',n:'Güzellik'},{e:'📚',n:'Ofis & Çalışma'},
+  {e:'🎮',n:'Oyun & Teknoloji'},{e:'✈️',n:'Seyahat'},{e:'🧘',n:'Sağlık & Wellness'},
+  {e:'🎨',n:'Sanat & El İşi'},{e:'🎸',n:'Müzik'},{e:'🏕️',n:'Outdoor & Kamp'},
+  {e:'🧹',n:'Temizlik & Düzen'}
 ];
 
 var selectedNis=null;
 var historyData=[];
 try{var h=localStorage.getItem('mlynr_urun_history');if(h)historyData=JSON.parse(h);}catch(e){}
+
+function callAI(prompt, onSuccess, onError) {
+  fetch(API_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: 'Sen bir Shopify dropshipping uzmanisın. Sadece JSON formatında yanıt ver, başka hiçbir şey yazma.',
+      messages: [{role: 'user', content: prompt}]
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var txt = data.content && data.content[0] ? data.content[0].text : '';
+    var parsed = null;
+    try{var m=txt.match(/\{[\s\S]*\}/);if(m)parsed=JSON.parse(m[0]);}catch(ignore){}
+    if(parsed) onSuccess(parsed);
+    else onError(txt);
+  })
+  .catch(function(e){onError(e.message||'Hata');});
+}
 
 function renderNisGrid(){
   var g=document.getElementById('niche-grid');
@@ -311,7 +333,7 @@ function doAnaliz(){
   var inp=document.getElementById('analiz-input');
   if(!inp)return;
   var input=inp.value.trim();
-  if(!input){showToast('Urun adi veya link gir');return;}
+  if(!input){showToast('Ürün adı veya link gir');return;}
   var btn=document.getElementById('analiz-btn');
   var loading=document.getElementById('analiz-loading');
   var report=document.getElementById('analiz-report');
@@ -321,60 +343,42 @@ function doAnaliz(){
 
   var stepsEl=document.getElementById('loading-steps');
   if(stepsEl)stepsEl.innerHTML='';
-  var steps=['Urun arastiriliyor...','Pazar verisi analiz ediliyor...','Hedef kitle belirleniyor...','Reklam hooklari olusturuluyor...','Rapor hazirlaniyor...'];
+  var steps=['Ürün araştırılıyor...','Pazar verisi analiz ediliyor...','Hedef kitle belirleniyor...','Reklam hookları oluşturuluyor...','Rapor hazırlanıyor...'];
   var si=0;
   var stepInterval=setInterval(function(){
     if(stepsEl&&si<steps.length){
-      var d=document.createElement('div');
-      d.className='ls-item';
-      d.textContent=steps[si];
-      stepsEl.appendChild(d);
-      si++;
+      var d=document.createElement('div');d.className='ls-item';d.textContent=steps[si];stepsEl.appendChild(d);si++;
     }
-  },700);
+  },800);
 
-  var soru='Shopify dropshipping icin su urunu analiz et: '+input+'. Degerlendir: 1) Problem cozucu + wow factor var mi? 2) Video kreatif uretimine uygun mu? 3) Rekabet seviyesi nasil? 4) Karli mi? Yaniti SADECE asagidaki JSON formatinda ver, baska hicbir sey yazma: {"karar":"SAT","urun_adi":"string","karar_nedeni":"2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"string","hook2":"string","hook3":"string","firsat":"string","uyari":"string","rakip_notu":"string"} - karar SAT DIKKAT veya SATMA olabilir';
+  var prompt='Shopify dropshipping için şu ürünü analiz et: '+input+'\n\nDeğerlendir: 1) Problem çözücü + wow factor var mı? 2) Video/kreatif üretimine uygun mu? 3) Facebook/TikTok reklamlarında rekabet nasıl? 4) Karlı mı?\n\nSADECE şu JSON formatında yanıt ver:\n{"karar":"SAT","urun_adi":"string","karar_nedeni":"2-3 cümle Türkçe","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Türkçe hook önerisi","hook2":"Türkçe hook önerisi","hook3":"Türkçe hook önerisi","firsat":"string","uyari":"string","rakip_notu":"string"}\nkarar: SAT, DIKKAT veya SATMA';
 
-  fetch(EDGE_FN,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY},
-    body:JSON.stringify({tool:'support',soru:soru})
-  })
-  .then(function(r){return r.json();})
-  .then(function(data){
-    clearInterval(stepInterval);
-    if(loading)loading.style.display='none';
-    if(btn)btn.disabled=false;
-    var raw=data.sonuc||data.reply||data.result||data.message||'';
-    var parsed=null;
-    try{
-      var m=raw.match(/\{[\s\S]*\}/);
-      if(m)parsed=JSON.parse(m[0]);
-    }catch(ignore){}
-    if(parsed&&parsed.karar){
+  callAI(prompt,
+    function(parsed){
+      clearInterval(stepInterval);
+      if(loading)loading.style.display='none';
+      if(btn)btn.disabled=false;
       renderReport(parsed,input);
       saveHist(input,parsed.karar,parsed);
-    }else{
-      renderRaw(raw||'Analiz yapilamadi, tekrar dene.',input);
+    },
+    function(txt){
+      clearInterval(stepInterval);
+      if(loading)loading.style.display='none';
+      if(btn)btn.disabled=false;
+      renderRaw(txt||'Analiz yapılamadı, tekrar dene.',input);
     }
-  })
-  .catch(function(){
-    clearInterval(stepInterval);
-    if(loading)loading.style.display='none';
-    if(btn)btn.disabled=false;
-    renderReport(demoData(input),input);
-  });
+  );
 }
 
 function demoData(urun){
-  return {karar:'DIKKAT',urun_adi:urun,karar_nedeni:'Baglanti kurulamadi. Demo verisi gosteriliyor.',
+  return {karar:'DIKKAT',urun_adi:urun,karar_nedeni:'Bağlantı kurulamadı. Demo verisi gösteriliyor.',
     fiyat_min:15,fiyat_max:35,ideal_satis_fiyati:24.99,
     problem_cozucu:6,wow_factor:7,kreatif_uygunluk:7,rekabet_skoru:5,talep_skoru:6,
-    hedef_kitle:'25-45 yas online alisveriscilar',hedef_kitle_detay:'Problem odakli satin alma yapan kitle',
-    hook1:'Bunu gorince inanamadim — her evde olmasi lazim!',
-    hook2:'Arkadasim beni bu urun tanistirdi ve hayatim degisti',
-    hook3:'Neden kimse bana bunu daha once soylemedu?',
-    rakip_notu:'Orta duzey rekabet var.',firsat:'Organik icerik ile viral potansiyel yuksek.',uyari:'Stok yonetimine dikkat et.'};
+    hedef_kitle:'25-45 yaş online alışverişçiler',hedef_kitle_detay:'Problem odaklı satın alma yapan kitle',
+    hook1:'Bunu görünce inanamadım — her evde olması lazım!',
+    hook2:'Arkadaşım beni bu ürünle tanıştırdı ve hayatım değişti',
+    hook3:'Neden kimse bana bunu daha önce söylemedi?',
+    rakip_notu:'Orta düzey rekabet var.',firsat:'Organik içerikle viral potansiyel yüksek.',uyari:'Stok yönetimine dikkat et.'};
 }
 
 function renderReport(d,inputTxt){
@@ -386,7 +390,7 @@ function renderReport(d,inputTxt){
   var emoji=k==='SAT'?'✅':(k==='SATMA'?'❌':'⚠️');
   var profit=Math.round((d.ideal_satis_fiyati||25)*0.35);
   var rek=d.rekabet_skoru||5;
-  var rekLbl=rek<=4?'DUSUK':(rek<=7?'ORTA':'YUKSEK');
+  var rekLbl=rek<=4?'DÜŞÜK':(rek<=7?'ORTA':'YÜKSEK');
 
   var h='';
   h+='<div class="decision-card '+cls+'">';
@@ -396,15 +400,15 @@ function renderReport(d,inputTxt){
   h+='</div>';
 
   h+='<div class="metrics-grid">';
-  h+='<div class="mc"><div class="mc-label">Fiyat Araligi</div><div class="mc-val">$'+(d.fiyat_min||15)+'-'+(d.fiyat_max||35)+'</div><div class="mc-sub">Ideal: $'+(d.ideal_satis_fiyati||25)+'</div></div>';
-  h+='<div class="mc"><div class="mc-label">Tahmini Kar</div><div class="mc-val">~$'+profit+'</div><div class="mc-sub">Satis basina</div></div>';
-  h+='<div class="mc"><div class="mc-label">Rekabet</div><div class="mc-val">'+rekLbl+'</div><div class="mc-sub">Skor: '+rek+'/10</div></div>';
+  h+='<div class="mc"><div class="mc-label">💰 Fiyat Aralığı</div><div class="mc-val">$'+(d.fiyat_min||15)+'-'+(d.fiyat_max||35)+'</div><div class="mc-sub">İdeal: $'+(d.ideal_satis_fiyati||25)+'</div></div>';
+  h+='<div class="mc"><div class="mc-label">📦 Tahmini Kâr</div><div class="mc-val">~$'+profit+'</div><div class="mc-sub">Satış başına</div></div>';
+  h+='<div class="mc"><div class="mc-label">⚔️ Rekabet</div><div class="mc-val">'+rekLbl+'</div><div class="mc-sub">Skor: '+rek+'/10</div></div>';
   h+='</div>';
 
   h+='<div class="detail-section">';
-  h+='<div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Urun Skorlari</div></div>';
+  h+='<div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Ürün Skorları</div></div>';
   h+='<div class="ds-body"><div class="score-bars">';
-  h+=sBar('Problem Cozucu',d.problem_cozucu||5,'#22c55e');
+  h+=sBar('Problem Çözücü',d.problem_cozucu||5,'#22c55e');
   h+=sBar('Wow Factor',d.wow_factor||5,'#facc15');
   h+=sBar('Kreatif Uygunluk',d.kreatif_uygunluk||5,'#38bdf8');
   h+=sBar('Talep',d.talep_skoru||5,'#f97316');
@@ -417,7 +421,7 @@ function renderReport(d,inputTxt){
   h+='</div>';
 
   h+='<div class="detail-section">';
-  h+='<div class="ds-header"><span class="ds-icon">🎬</span><div class="ds-title">Reklam Hook Onerileri</div><span style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:auto">Tikla - Kopyala</span></div>';
+  h+='<div class="ds-header"><span class="ds-icon">🎬</span><div class="ds-title">Reklam Hook Önerileri</div><span style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:auto">Tıkla → Kopyala</span></div>';
   h+='<div class="ds-body"><div class="hook-list">';
   if(d.hook1)h+='<div class="hook-item" onclick="copyHook(this)"><span class="hook-text">'+d.hook1+'</span><span class="hook-copy">Kopyala</span></div>';
   if(d.hook2)h+='<div class="hook-item" onclick="copyHook(this)"><span class="hook-text">'+d.hook2+'</span><span class="hook-copy">Kopyala</span></div>';
@@ -425,7 +429,7 @@ function renderReport(d,inputTxt){
   h+='</div></div></div>';
 
   h+='<div class="detail-section">';
-  h+='<div class="ds-header"><span class="ds-icon">🏆</span><div class="ds-title">Firsat & Uyari</div></div>';
+  h+='<div class="ds-header"><span class="ds-icon">🏆</span><div class="ds-title">Fırsat & Uyarı</div></div>';
   h+='<div class="ds-body"><div class="competitor-wrap">';
   if(d.firsat)h+='<div class="comp-item"><div class="comp-dot pos"></div><span>'+d.firsat+'</span></div>';
   if(d.uyari)h+='<div class="comp-item"><div class="comp-dot neg"></div><span>'+d.uyari+'</span></div>';
@@ -433,8 +437,8 @@ function renderReport(d,inputTxt){
   h+='</div></div></div>';
 
   h+='<div class="report-actions">';
-  h+='<button class="ra-btn primary" onclick="copyReport()">Raporu Kopyala</button>';
-  h+='<button class="ra-btn" onclick="clearAnaliz()">Yeni Analiz</button>';
+  h+='<button class="ra-btn primary" onclick="copyReport()">📋 Raporu Kopyala</button>';
+  h+='<button class="ra-btn" onclick="clearAnaliz()">↺ Yeni Analiz</button>';
   h+='</div>';
 
   wrap.innerHTML=h;
@@ -444,7 +448,7 @@ function copyHook(el){
   var txt=el.querySelector('.hook-text').textContent;
   var copyEl=el.querySelector('.hook-copy');
   navigator.clipboard.writeText(txt).then(function(){
-    if(copyEl){copyEl.textContent='Kopyalandi';setTimeout(function(){copyEl.textContent='Kopyala';},2000);}
+    if(copyEl){copyEl.textContent='✓ Kopyalandı';setTimeout(function(){copyEl.textContent='Kopyala';},2000);}
   });
 }
 
@@ -461,7 +465,7 @@ function renderRaw(txt,input){
   wrap.style.display='flex';
   wrap.innerHTML='<div class="detail-section"><div class="ds-header"><span class="ds-icon">📋</span><div class="ds-title">AI Analizi</div></div>'
     +'<div class="ds-body"><p style="white-space:pre-wrap;font-size:13px;line-height:1.7">'+txt+'</p></div></div>'
-    +'<div class="report-actions"><button class="ra-btn" onclick="clearAnaliz()">Yeni Analiz</button></div>';
+    +'<div class="report-actions"><button class="ra-btn" onclick="clearAnaliz()">↺ Yeni Analiz</button></div>';
 }
 
 function clearAnaliz(){
@@ -474,12 +478,11 @@ function clearAnaliz(){
 function copyReport(){
   var wrap=document.getElementById('analiz-report');
   if(!wrap)return;
-  navigator.clipboard.writeText(wrap.innerText||wrap.textContent).then(function(){showToast('Rapor kopyalandi','green');});
+  navigator.clipboard.writeText(wrap.innerText||wrap.textContent).then(function(){showToast('✓ Rapor kopyalandı','green');});
 }
 
-// NIS
 function doNis(){
-  if(selectedNis===null){showToast('Bir nis sec');return;}
+  if(selectedNis===null){showToast('Bir niş seç');return;}
   var nis=NISLER[selectedNis];
   var btn=document.getElementById('nis-btn');
   var loading=document.getElementById('nis-loading');
@@ -488,39 +491,32 @@ function doNis(){
   if(loading)loading.style.display='block';
   if(report){report.style.display='none';report.innerHTML='';}
 
-  var soru=nis.n+' nisi icin Shopify dropshipping urun onerileri. Kriterler: 1) Problem cozucu + wow factor, 2) Video kreatif uretimine uygun, 3) Dusuk veya orta rekabet, 4) AliExpress temin edilebilir. SADECE asagidaki JSON formatinda 4 urun oner, baska hicbir sey yazma: {"oneriler":[{"urun_adi":"string","neden_kazanir":"string","problem_cozuyor":"string","kreatif_fikri":"string","fiyat_aralik":"string","rekabet":"DUSUK","wow_factor":8,"kreatif_uygunluk":9}]}';
+  var prompt=nis.n+' nişi için Shopify dropshipping için 4 kazanan ürün öner. Kriterler: 1) Problem çözücü + wow factor, 2) Video/kreatif üretimine uygun, 3) Düşük veya orta rekabet, 4) AliExpress temin edilebilir.\n\nSADECE şu JSON formatında yanıt ver, gerçek ürün isimleri kullan:\n{"oneriler":[{"urun_adi":"gerçek ürün adı","neden_kazanir":"string","problem_cozuyor":"string","kreatif_fikri":"string","fiyat_aralik":"string","rekabet":"DÜŞÜK","wow_factor":8,"kreatif_uygunluk":9}]}';
 
-  fetch(EDGE_FN,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY},
-    body:JSON.stringify({tool:'support',soru:soru})
-  })
-  .then(function(r){return r.json();})
-  .then(function(data){
-    if(loading)loading.style.display='none';
-    if(btn)btn.disabled=false;
-    var raw=data.sonuc||data.reply||data.result||data.message||'';
-    var parsed=null;
-    try{var m=raw.match(/\{[\s\S]*\}/);if(m)parsed=JSON.parse(m[0]);}catch(ignore){}
-    if(parsed&&parsed.oneriler&&parsed.oneriler.length>0){
-      renderNis(parsed.oneriler,nis);
-    }else{
+  callAI(prompt,
+    function(parsed){
+      if(loading)loading.style.display='none';
+      if(btn)btn.disabled=false;
+      if(parsed.oneriler&&parsed.oneriler.length>0){
+        renderNis(parsed.oneriler,nis);
+      }else{
+        renderNis(demoNis(nis.n),nis);
+      }
+    },
+    function(){
+      if(loading)loading.style.display='none';
+      if(btn)btn.disabled=false;
       renderNis(demoNis(nis.n),nis);
     }
-  })
-  .catch(function(){
-    if(loading)loading.style.display='none';
-    if(btn)btn.disabled=false;
-    renderNis(demoNis(nis.n),nis);
-  });
+  );
 }
 
 function demoNis(n){
   return [
-    {urun_adi:n+' Problem Cozucu Urun',neden_kazanir:'Wow factor yuksek, demonstrasyon videosu cekilebilir.',problem_cozuyor:'Gunluk hayati kolaylastirir',kreatif_fikri:'Before/after video formati',fiyat_aralik:'$15-35',rekabet:'DUSUK',wow_factor:8,kreatif_uygunluk:9},
-    {urun_adi:n+' Viral Urun',neden_kazanir:'Sosyal medyada paylasilabilir, hediye potansiyeli yuksek.',problem_cozuyor:'Tekrar eden sorunu cozer',kreatif_fikri:'Hook: Bunu gorince inanamadim',fiyat_aralik:'$20-45',rekabet:'DUSUK',wow_factor:9,kreatif_uygunluk:8},
-    {urun_adi:n+' Nise Ozel Urun',neden_kazanir:'Spesifik kitleye hitap eder.',problem_cozuyor:'Nise ozel sorun cozer',kreatif_fikri:'Kullanici testimonial formati',fiyat_aralik:'$25-55',rekabet:'ORTA',wow_factor:7,kreatif_uygunluk:8},
-    {urun_adi:n+' Trend Urun',neden_kazanir:'Buyuyen trendde erken girenler avantajli.',problem_cozuyor:'Modern yasam ihtiyacini karsilar',kreatif_fikri:'Trend hook ile viral potansiyel',fiyat_aralik:'$10-25',rekabet:'DUSUK',wow_factor:9,kreatif_uygunluk:9}
+    {urun_adi:n+' Problem Çözücü Ürün',neden_kazanir:'Wow factor yüksek, demonstrasyon videosu çekilebilir.',problem_cozuyor:'Günlük hayatı kolaylaştırır',kreatif_fikri:'Before/after video formatı',fiyat_aralik:'$15-35',rekabet:'DÜŞÜK',wow_factor:8,kreatif_uygunluk:9},
+    {urun_adi:n+' Viral Ürün',neden_kazanir:'Sosyal medyada paylaşılabilir.',problem_cozuyor:'Tekrar eden sorunu çözer',kreatif_fikri:'Hook videosu',fiyat_aralik:'$20-45',rekabet:'DÜŞÜK',wow_factor:9,kreatif_uygunluk:8},
+    {urun_adi:n+' Nişe Özel Ürün',neden_kazanir:'Spesifik kitleye hitap eder.',problem_cozuyor:'Nişe özel sorun çözer',kreatif_fikri:'Testimonial formatı',fiyat_aralik:'$25-55',rekabet:'ORTA',wow_factor:7,kreatif_uygunluk:8},
+    {urun_adi:n+' Trend Ürün',neden_kazanir:'Büyüyen trendde.',problem_cozuyor:'Modern yaşam ihtiyacı',kreatif_fikri:'Trend hook',fiyat_aralik:'$10-25',rekabet:'DÜŞÜK',wow_factor:9,kreatif_uygunluk:9}
   ];
 }
 
@@ -528,27 +524,27 @@ function renderNis(oneriler,nis){
   var wrap=document.getElementById('nis-report');
   if(!wrap)return;
   wrap.style.display='flex';
-  var h='<div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:4px">'+nis.n+' nisi icin oneriler</div>';
+  var h='<div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:4px">'+nis.n+' nişi için öneriler</div>';
   h+='<div class="suggestions-grid">';
   oneriler.forEach(function(o,i){
-    var rTag=o.rekabet==='DUSUK'||o.rekabet==='DUSUK'?'green':(o.rekabet==='YUKSEK'?'red':'');
+    var rTag=o.rekabet==='DÜŞÜK'||o.rekabet==='DUSUK'?'green':(o.rekabet==='YÜKSEK'||o.rekabet==='YUKSEK'?'red':'');
     h+='<div class="suggestion-card">';
-    h+='<div class="sc-num">Oneri '+(i+1)+'</div>';
+    h+='<div class="sc-num">Öneri '+(i+1)+'</div>';
     h+='<div class="sc-product">'+(o.urun_adi||'')+'</div>';
-    if(o.problem_cozuyor)h+='<div style="font-size:11px;color:var(--green);margin-bottom:6px">Cozduğu sorun: '+o.problem_cozuyor+'</div>';
+    if(o.problem_cozuyor)h+='<div style="font-size:11px;color:var(--green);margin-bottom:6px">✓ '+o.problem_cozuyor+'</div>';
     h+='<div class="sc-why">'+(o.neden_kazanir||'')+'</div>';
-    if(o.kreatif_fikri)h+='<div style="font-size:11px;color:var(--text3);margin-top:6px;margin-bottom:8px">Kreatif: '+o.kreatif_fikri+'</div>';
+    if(o.kreatif_fikri)h+='<div style="font-size:11px;color:var(--text3);margin-top:6px;margin-bottom:8px">🎬 '+o.kreatif_fikri+'</div>';
     h+='<div class="sc-tags">';
     if(o.fiyat_aralik)h+='<span class="sc-tag">'+o.fiyat_aralik+'</span>';
     if(o.wow_factor)h+='<span class="sc-tag">Wow: '+o.wow_factor+'/10</span>';
     if(o.kreatif_uygunluk)h+='<span class="sc-tag">Kreatif: '+o.kreatif_uygunluk+'/10</span>';
     h+='<span class="sc-tag '+rTag+'">'+o.rekabet+'</span>';
     h+='</div>';
-    h+='<button class="sc-analyze-btn" data-urun="'+(o.urun_adi||'').replace(/"/g,'')+'" onclick="analyzeThis(this)">Tam Analiz Al</button>';
+    h+='<button class="sc-analyze-btn" data-urun="'+(o.urun_adi||'').replace(/"/g,'')+'" onclick="analyzeThis(this)">🔍 Tam Analiz Al →</button>';
     h+='</div>';
   });
   h+='</div>';
-  h+='<div class="report-actions"><button class="ra-btn" onclick="clearNis()">Farkli Nis</button></div>';
+  h+='<div class="report-actions"><button class="ra-btn" onclick="clearNis()">↺ Farklı Niş</button></div>';
   wrap.innerHTML=h;
 }
 
@@ -583,16 +579,12 @@ function renderHistory(){
   list.innerHTML='';
   historyData.slice(0,8).forEach(function(hh){
     var cls=hh.karar==='SAT'?'sat':(hh.karar==='SATMA'?'satma':'dikkat');
-    var div=document.createElement('div');
-    div.className='history-item';
+    var div=document.createElement('div');div.className='history-item';
     div.innerHTML='<div class="hi-decision '+cls+'"></div><span class="hi-name">'+hh.input+'</span><span class="hi-date">'+hh.date+'</span>';
     div.onclick=function(){
       var inp=document.getElementById('analiz-input');
       if(inp)inp.value=hh.input;
-      if(hh.data){
-        var rep=document.getElementById('analiz-report');
-        if(rep){rep.style.display='flex';renderReport(hh.data,hh.input);}
-      }
+      if(hh.data){var rep=document.getElementById('analiz-report');if(rep){rep.style.display='flex';renderReport(hh.data,hh.input);}}
       window.scrollTo({top:0,behavior:'smooth'});
     };
     list.appendChild(div);
@@ -601,12 +593,9 @@ function renderHistory(){
 
 var _tt;
 function showToast(m,cls){
-  var t=document.getElementById('toast');
-  if(!t)return;
-  t.textContent=m;
-  t.className='toast'+(cls?' '+cls:'')+' show';
-  clearTimeout(_tt);
-  _tt=setTimeout(function(){t.classList.remove('show');},2600);
+  var t=document.getElementById('toast');if(!t)return;
+  t.textContent=m;t.className='toast'+(cls?' '+cls:'')+' show';
+  clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);
 }
 
 document.addEventListener('DOMContentLoaded',function(){
