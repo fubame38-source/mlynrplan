@@ -332,14 +332,14 @@ function doAnaliz(){
   fetch(EDGE_FN,{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY},
-    body:JSON.stringify({tool:'support',message:msg,history:[]})
+    body:JSON.stringify({tool:'support',soru:msg})
   })
   .then(function(r){return r.json();})
   .then(function(data){
     clearInterval(stepInterval);
     document.getElementById('analiz-loading').style.display='none';
     btn.disabled=false;
-    var raw=data.reply||data.sonuc||data.result||data.message||'';
+    var raw=data.sonuc||data.reply||data.result||'';
     var parsed=null;
     try{var m=raw.match(/\{[\s\S]*\}/);if(m)parsed=JSON.parse(m[0]);}catch(e){}
     if(parsed&&parsed.karar){renderAnalyzReport(parsed,input);saveHistory(input,parsed.karar,parsed);}
@@ -499,13 +499,13 @@ function doNis(){
   fetch(EDGE_FN,{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY},
-    body:JSON.stringify({tool:'support',message:nisMsg,history:[]})
+    body:JSON.stringify({tool:'support',soru:nisMsg})
   })
   .then(function(r){return r.json();})
   .then(function(data){
     document.getElementById('nis-loading').style.display='none';
     btn.disabled=false;
-    var raw=data.reply||data.sonuc||data.result||data.message||'';
+    var raw=data.sonuc||data.reply||data.result||'';
     var parsed=null;
     try{var m=raw.match(/\{[\s\S]*\}/);if(m)parsed=JSON.parse(m[0]);}catch(e){}
     if(parsed&&parsed.oneriler&&parsed.oneriler.length>0){renderNisReport(parsed.oneriler,nis);}
