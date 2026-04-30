@@ -664,6 +664,24 @@ footer p{font-size:12px;color:var(--text3)}
   </footer>
 </div>
 
+<!-- İSİM POPUP -->
+<div id="name-overlay" class="overlay"></div>
+<div id="name-popup" class="popup" style="width:min(420px,94vw)">
+  <div style="font-size:22px;font-weight:900;color:var(--text);margin-bottom:6px;letter-spacing:-.5px">Hoş geldin! 👋</div>
+  <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:24px">Seni tanıyalım</div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div>
+      <label class="mp-label">Adın</label>
+      <input class="mp-input" type="text" id="inp-firstname" placeholder="Adın..." autocomplete="given-name">
+    </div>
+    <div>
+      <label class="mp-label">Soyadın</label>
+      <input class="mp-input" type="text" id="inp-lastname" placeholder="Soyadın..." autocomplete="family-name">
+    </div>
+    <button class="mp-save" onclick="saveUserName()" style="margin-top:4px">PLATFORMA GİR →</button>
+  </div>
+</div>
+
 <!-- TOPLANTI POPUP -->
 <div id="meeting-overlay" class="overlay" onclick="closeMeetingForm()"></div>
 <div id="meeting-popup" class="popup">
@@ -813,8 +831,10 @@ function doAuth(){
 
 function enterApp(em,usr){
   email=em;_user=usr;
+  try{LS.setItem('mlynr_cached_email',em);}catch(e){}
   document.getElementById('login-screen').classList.add('hidden');
   document.getElementById('app').style.display='block';
+  // isim yoksa fallback email
   var disp=em.split('@')[0];
   document.getElementById('uav').textContent=disp.charAt(0).toUpperCase();
   document.getElementById('uname').textContent=disp;
@@ -823,11 +843,13 @@ function enterApp(em,usr){
   loadAdminTask();
   renderAll();
   setMetricDate();
+  checkUserName();
   document.getElementById('login-btn').disabled=false;
 }
 
 function doLogout(){
   if(_user)_sb.auth.signOut();
+  try{LS.removeItem('mlynr_cached_email');}catch(e){}
   _user=null;email='';done=[];metrics=[];meetings=[];taskChecks={};savedProducts=[];
   document.getElementById('login-screen').classList.remove('hidden');
   document.getElementById('app').style.display='none';
@@ -1057,6 +1079,36 @@ function applyTheme(){
   try{var t=LS.getItem('mlynr_theme');if(t==='light'){document.body.classList.add('light-mode');document.getElementById('theme-toggle').textContent='🌙';}}catch(e){}
 }
 
+// İSİM SİSTEMİ
+function checkUserName(){
+  try{
+    var n=LS.getItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));
+    if(!n){openNamePopup();}else{applyUserName(n);}
+  }catch(e){}
+}
+function openNamePopup(){
+  document.getElementById('name-overlay').classList.add('show');
+  document.getElementById('name-popup').classList.add('show');
+  setTimeout(function(){document.getElementById('inp-firstname').focus();},300);
+}
+function saveUserName(){
+  var fn=document.getElementById('inp-firstname').value.trim();
+  var ln=document.getElementById('inp-lastname').value.trim();
+  if(!fn){document.getElementById('inp-firstname').focus();return;}
+  var full=fn+(ln?' '+ln:'');
+  try{LS.setItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'),full);}catch(e){}
+  document.getElementById('name-overlay').classList.remove('show');
+  document.getElementById('name-popup').classList.remove('show');
+  applyUserName(full);
+  showToast('Hoş geldin, '+fn+'! 👋','green');
+}
+function applyUserName(full){
+  var parts=full.split(' ');
+  var fn=parts[0];
+  document.getElementById('uav').textContent=fn.charAt(0).toUpperCase();
+  document.getElementById('uname').textContent=full;
+}
+
 function scrollToTask(){document.getElementById('weekly-task-section').scrollIntoView({behavior:'smooth'});}
 
 // METOD TOGGLE
@@ -1100,6 +1152,8 @@ document.addEventListener('DOMContentLoaded',function(){
   if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendSupportMsg();}});
   var spInp=document.getElementById('sp-name-input');
   if(spInp)spInp.addEventListener('keydown',function(e){if(e.key==='Enter')addSavedProduct();});
+  var lnInp=document.getElementById('inp-lastname');
+  if(lnInp)lnInp.addEventListener('keydown',function(e){if(e.key==='Enter')saveUserName();});
 });
 
 // CONFETTI
@@ -1123,8 +1177,22 @@ var _tt;function showToast(m,cls){var t=document.getElementById('toast');t.textC
 // INIT
 (function(){
   _sb.auth.getSession().then(function(r){
-    if(r.data&&r.data.session&&r.data.session.user){enterApp(r.data.session.user.email,r.data.session.user);}
-    else{document.getElementById('login-screen').classList.remove('hidden');}
+    if(r.data&&r.data.session&&r.data.session.user){
+      enterApp(r.data.session.user.email,r.data.session.user);
+    } else {
+      // Session yoksa localStorage'dan cached email ile giriş
+      try{
+        var cachedEmail=LS.getItem('mlynr_cached_email');
+        if(cachedEmail){enterApp(cachedEmail,null);return;}
+      }catch(e){}
+      document.getElementById('login-screen').classList.remove('hidden');
+    }
+  }).catch(function(){
+    try{
+      var cachedEmail=LS.getItem('mlynr_cached_email');
+      if(cachedEmail){enterApp(cachedEmail,null);return;}
+    }catch(e){}
+    document.getElementById('login-screen').classList.remove('hidden');
   });
 })();
 </script>
