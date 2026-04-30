@@ -418,7 +418,7 @@ footer p{font-size:12px;color:var(--text3)}
 <canvas id="confetti-canvas"></canvas>
 
 <!-- LOGIN -->
-<div id="login-screen">
+<div id="login-screen" style="display:none">
   <div class="login-card">
     <div class="login-logo">MLYNR.</div>
     <div class="login-logo-sub">Shopify Mentörlük Portalı</div>
@@ -746,7 +746,7 @@ function doAuth(){
 function enterApp(em,usr){
   email=em;_user=usr;
   try{localStorage.setItem('mlynr_cached_email',em);}catch(e){}
-  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='block';
   // isim yoksa fallback email
   var disp=em.split('@')[0];
@@ -765,7 +765,7 @@ function doLogout(){
   if(_user)_sb.auth.signOut();
   try{localStorage.removeItem('mlynr_cached_email');}catch(e){}
   _user=null;email='';done=[];metrics=[];meetings=[];taskChecks={};savedProducts=[];
-  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
 }
 
@@ -1090,6 +1090,9 @@ var _tt;function showToast(m,cls){var t=document.getElementById('toast');t.textC
 
 // INIT
 (function(){
+  function showLogin(){
+    document.getElementById('login-screen').style.display='flex';
+  }
   try{
     var cachedEmail=localStorage.getItem('mlynr_cached_email');
     if(cachedEmail){
@@ -1104,10 +1107,10 @@ var _tt;function showToast(m,cls){var t=document.getElementById('toast');t.textC
     if(r.data&&r.data.session&&r.data.session.user){
       enterApp(r.data.session.user.email,r.data.session.user);
     } else {
-      document.getElementById('login-screen').classList.remove('hidden');
+      showLogin();
     }
   }).catch(function(){
-    document.getElementById('login-screen').classList.remove('hidden');
+    showLogin();
   });
 })();
 </script>
