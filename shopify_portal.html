@@ -457,17 +457,12 @@ footer p{font-size:12px;color:var(--text3)}
       <div class="hero-subtitle">Shopify Mentörlük Portalı — Hoş geldin</div>
 
       <!-- QUICK ACTIONS -->
-      <div class="quick-grid">
+      <div class="quick-grid" style="grid-template-columns:2fr 1fr">
         <div class="quick-card featured" onclick="window.location.href='https://mlynrplan.com/urun_bulucu.html'">
           <div class="qc-icon">🔍</div>
           <div class="qc-title">AI Ürün Bulucu</div>
           <div class="qc-sub">Ürün adı veya link gir, SAT / SATMA kararı + tam rapor al. Kazanan ürünü bul.</div>
           <div class="qc-badge"><span>●</span> Hemen Başla</div>
-        </div>
-        <div class="quick-card gold-accent" onclick="scrollToTask()">
-          <div class="qc-icon">⚡</div>
-          <div class="qc-title">Bu Haftanın Görevi</div>
-          <div class="dc-sub" id="hero-task-sub" style="font-size:11px;color:var(--text2);margin-top:4px;line-height:1.4">Yükleniyor...</div>
         </div>
         <div class="quick-card" onclick="openSupportBot()">
           <div class="qc-icon">🤖</div>
@@ -496,40 +491,6 @@ footer p{font-size:12px;color:var(--text3)}
       <div class="wtc-body" id="wtc-body"></div>
       <div id="wtc-checklist" class="wtc-checklist"></div>
       <div class="wtc-due" id="wtc-due"></div>
-    </div>
-  </div>
-
-  <!-- METRİK GİRİŞİ -->
-  <div class="section" id="metrics-section">
-    <div class="section-header" onclick="toggleMetrics()" style="cursor:pointer">
-      <span class="section-title">📊 Günlük Metrikler</span>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span class="metric-date" id="metric-date"></span>
-        <span id="metric-chevron" style="font-size:11px;color:var(--text3);transition:transform .25s">▾</span>
-      </div>
-    </div>
-    <div id="metric-body" style="display:none">
-    <div class="metric-card">
-      <div class="metric-grid">
-        <div class="metric-input-wrap">
-          <span class="metric-label">Satış Adedi</span>
-          <input class="metric-input" type="number" id="m-sales" placeholder="0" min="0">
-        </div>
-        <div class="metric-input-wrap">
-          <span class="metric-label">Ciro ($)</span>
-          <input class="metric-input" type="number" id="m-revenue" placeholder="0" min="0">
-        </div>
-        <div class="metric-input-wrap">
-          <span class="metric-label">Reklam ($)</span>
-          <input class="metric-input" type="number" id="m-adspend" placeholder="0" min="0">
-        </div>
-      </div>
-      <button class="metric-save-btn" onclick="saveMetrics()">Kaydet ✓</button>
-      <div class="metric-history" id="metric-history" style="display:none">
-        <div class="metric-history-title">Son Kayıtlar</div>
-        <div id="metric-history-list"></div>
-      </div>
-    </div>
     </div>
   </div>
 
