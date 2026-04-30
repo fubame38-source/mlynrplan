@@ -981,7 +981,7 @@ function renderProgress(d,t){
   document.getElementById('prog-count').textContent=d+' / '+t;
 }
 
-function renderAll(){renderTask();renderMetrics();renderMeetings();renderModules();renderSavedProducts();}
+function renderAll(){renderTask();renderMeetings();renderModules();}
 
 // THEME TOGGLE
 function toggleTheme(){
@@ -1090,22 +1090,28 @@ var _tt;function showToast(m,cls){var t=document.getElementById('toast');t.textC
 
 // INIT
 (function(){
+  // Önce cache'e bak — hızlı giriş
+  try{
+    var cachedEmail=LS.getItem('mlynr_cached_email');
+    if(cachedEmail){
+      enterApp(cachedEmail,null);
+      // Arka planda Supabase session'ı da güncelle
+      _sb.auth.getSession().then(function(r){
+        if(r.data&&r.data.session&&r.data.session.user){
+          _user=r.data.session.user;
+        }
+      }).catch(function(){});
+      return;
+    }
+  }catch(e){}
+  // Cache yoksa Supabase'e bak
   _sb.auth.getSession().then(function(r){
     if(r.data&&r.data.session&&r.data.session.user){
       enterApp(r.data.session.user.email,r.data.session.user);
     } else {
-      // Session yoksa localStorage'dan cached email ile giriş
-      try{
-        var cachedEmail=LS.getItem('mlynr_cached_email');
-        if(cachedEmail){enterApp(cachedEmail,null);return;}
-      }catch(e){}
       document.getElementById('login-screen').classList.remove('hidden');
     }
   }).catch(function(){
-    try{
-      var cachedEmail=LS.getItem('mlynr_cached_email');
-      if(cachedEmail){enterApp(cachedEmail,null);return;}
-    }catch(e){}
     document.getElementById('login-screen').classList.remove('hidden');
   });
 })();
