@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MLYNR. — Shopify Mentörlük Portalı</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<meta name="color-scheme" content="dark light">
+<style>:root{color-scheme:dark}</style>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -17,6 +18,40 @@
   --red:#ef4444;--red-ln:rgba(239,68,68,.2);--red-dim:rgba(239,68,68,.05);
   --r:14px;
 }
+body.light-mode{
+  --bg:#f5f5f0;--surface:#fff;--surface2:#f0f0eb;--surface3:#e8e8e3;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.14);
+  --text:#111;--text2:#555;--text3:#aaa;--white:#111;
+  --green:#16a34a;--green-ln:rgba(22,163,74,.2);--green-dim:rgba(22,163,74,.06);
+  --gold:#b45309;--gold-ln:rgba(180,83,9,.2);--gold-dim:rgba(180,83,9,.06);
+  --red:#dc2626;--red-ln:rgba(220,38,38,.2);--red-dim:rgba(220,38,38,.06);
+}
+body.light-mode .bg-grid{background-image:linear-gradient(rgba(0,0,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px)}
+body.light-mode .bg-glow{background:radial-gradient(ellipse,rgba(0,0,0,.04),transparent 70%)}
+body.light-mode .topbar{background:rgba(245,245,240,.9);border-color:rgba(0,0,0,.08)}
+body.light-mode .login-card{background:#fff;border-color:rgba(0,0,0,.12)}
+body.light-mode .login-card::before{background:linear-gradient(90deg,transparent,rgba(0,0,0,.06),transparent)}
+body.light-mode .login-input{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.12);color:#111}
+body.light-mode .login-btn{background:#111;color:#fff}
+body.light-mode #ai-fab{background:linear-gradient(135deg,#fff,#f5f5f0);border-color:rgba(0,0,0,.15);box-shadow:0 8px 40px rgba(0,0,0,.15)}
+body.light-mode #support-popup,body.light-mode .sp-header,body.light-mode .sp-messages,body.light-mode .sp-quick-section,body.light-mode .sp-input-area{background:#fff}
+body.light-mode .sp-msg.bot{background:#f5f5f0;color:#333;border-color:rgba(0,0,0,.08)}
+body.light-mode .sp-msg.user{background:#111;color:#fff}
+body.light-mode .sp-input{background:#f5f5f0;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .sp-send{background:#111;color:#fff}
+body.light-mode .sp-quick-btn{border-color:rgba(0,0,0,.08);color:#555}
+body.light-mode .sp-quick-btn:hover{background:#f5f5f0;color:#111}
+body.light-mode #support-popup{border-left-color:rgba(0,0,0,.08)}
+body.light-mode .module-accordion{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .module-accordion.open{background:#fafaf8;border-color:rgba(0,0,0,.14)}
+body.light-mode .ma-num-big{color:#e8e8e3}
+body.light-mode .video-card{background:#f8f8f5;border-color:rgba(0,0,0,.08)}
+body.light-mode .video-card:hover{background:#f0f0eb}
+body.light-mode .video-card.done{background:rgba(22,163,74,.05);border-color:rgba(22,163,74,.2)}
+body.light-mode .metric-input{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.12);color:#111}
+body.light-mode .sp-add-form .sp-input{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.12);color:#111}
+body.light-mode .popup{background:#fff}
+body.light-mode .mp-input,.light-mode .mp-textarea{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.12);color:#111}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:hidden;color-scheme:dark}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;color-scheme:dark}
@@ -335,6 +370,7 @@ footer p{font-size:12px;color:var(--text3)}
       <div class="topbar-right">
         <div class="uav" id="uav">?</div>
         <span class="uname" id="uname"></span>
+        <button id="theme-toggle" onclick="toggleTheme()" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:14px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0" title="Tema değiştir">☀️</button>
         <a href="https://t.me/mlynr_bot" target="_blank" class="support-pill"><div class="dot"></div><span>Canlı Destek</span></a>
         <button class="logout-btn-sm" onclick="doLogout()">Çıkış</button>
       </div>
@@ -350,7 +386,7 @@ footer p{font-size:12px;color:var(--text3)}
 
       <!-- QUICK ACTIONS -->
       <div class="quick-grid">
-        <div class="quick-card featured" onclick="window.location.href='urun_bulucu.html'">
+        <div class="quick-card featured" onclick="window.location.href='https://mlynrplan.com/urun_bulucu.html'">
           <div class="qc-icon">🔍</div>
           <div class="qc-title">AI Ürün Bulucu</div>
           <div class="qc-sub">Ürün adı veya link gir, SAT / SATMA kararı + tam rapor al. Kazanan ürünü bul.</div>
@@ -711,6 +747,7 @@ function enterApp(em,usr){
   document.getElementById('uav').textContent=disp.charAt(0).toUpperCase();
   document.getElementById('uname').textContent=disp;
   loadState();
+  applyTheme();
   loadAdminTask();
   renderAll();
   setMetricDate();
@@ -887,7 +924,8 @@ function renderModules(){
         +'<span class="ma-pct">'+pct+'%</span>'
         +'<span class="ma-chevron">▾</span>'
       +'</div>';
-    header.addEventListener('click',function(){
+    header.addEventListener('click',function(e){
+      e.stopPropagation();
       var isOpen=acc.classList.contains('open');
       document.querySelectorAll('.module-accordion.open').forEach(function(a){a.classList.remove('open');});
       if(!isOpen)acc.classList.add('open');
@@ -905,10 +943,15 @@ function renderModules(){
         card.innerHTML='<div class="vc-top"><span class="vc-num">'+String(vi+1).padStart(2,'0')+'</span>'
           +'<div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="'+(isDone?'#000':'transparent')+'" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div></div>'
           +'<div class="vc-title">'+vname+'</div>';
-        card.addEventListener('click',function(){
+        card.addEventListener('click',function(e){
+          e.stopPropagation();
+          var openAccId=null;
+          var openAcc=document.querySelector('.module-accordion.open');
+          if(openAcc)openAccId=openAcc.id;
           var pos=done.indexOf(id);
           if(pos>-1)done.splice(pos,1);else{done.push(id);launchMiniConfetti();}
           saveState();renderModules();
+          if(openAccId){var el=document.getElementById(openAccId);if(el)el.classList.add('open');}
           showToast(done.indexOf(id)>-1?'✓ Tamamlandı':'↩ İşaret kaldırıldı',done.indexOf(id)>-1?'green':'');
         });
         grid.appendChild(card);
@@ -932,6 +975,16 @@ function renderProgress(d,t){
 
 function renderAll(){renderTask();renderMetrics();renderMeetings();renderModules();renderSavedProducts();}
 
+// THEME TOGGLE
+function toggleTheme(){
+  var isLight=document.body.classList.toggle('light-mode');
+  document.getElementById('theme-toggle').textContent=isLight?'🌙':'☀️';
+  try{LS.setItem('mlynr_theme',isLight?'light':'dark');}catch(e){}
+}
+function applyTheme(){
+  try{var t=LS.getItem('mlynr_theme');if(t==='light'){document.body.classList.add('light-mode');document.getElementById('theme-toggle').textContent='🌙';}}catch(e){}
+}
+
 function scrollToTask(){document.getElementById('weekly-task-section').scrollIntoView({behavior:'smooth'});}
 
 // METOD TOGGLE
@@ -941,6 +994,12 @@ function toggleMethod(id){
   document.querySelectorAll('.method-card').forEach(function(c){c.classList.remove('open');});
   if(!isOpen)card.classList.add('open');
 }
+// method card body'deki linklerin click'inin card'a bubble etmesini engelle
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.mc-body').forEach(function(b){
+    b.addEventListener('click',function(e){e.stopPropagation();});
+  });
+});
 
 // AI SUPPORT
 function askQuick(btn){document.getElementById('sp-input').value=btn.textContent.trim();sendSupportMsg();}
