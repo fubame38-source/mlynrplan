@@ -744,6 +744,7 @@ function doAuth(){
 }
 
 function enterApp(em,usr){
+  if(email&&email===em)return; // zaten giriş yapılmış, tekrar çağrılmasın
   email=em;_user=usr;
   try{localStorage.setItem('mlynr_cached_email',em);}catch(e){}
   document.getElementById('login-screen').style.display='none';
@@ -1090,33 +1091,41 @@ var _tt;function showToast(m,cls){var t=document.getElementById('toast');t.textC
 
 // INIT
 (function(){
-  // Önce cache ile hızlı giriş (flash önlemek için)
+  var entered=false;
+
+  function tryEnter(em,usr){
+    if(entered)return;
+    entered=true;
+    enterApp(em,usr);
+  }
+
+  function showLogin(){
+    if(!entered){
+      document.getElementById('login-screen').style.display='flex';
+    }
+  }
+
+  // Önce cache - anında giriş
   try{
-    var cachedEmail=localStorage.getItem('mlynr_cached_email');
-    if(cachedEmail){enterApp(cachedEmail,null);}
+    var ce=localStorage.getItem('mlynr_cached_email');
+    if(ce){tryEnter(ce,null);}
   }catch(e){}
 
-  // Supabase auth state - her durumda doğru session'ı yakalar
-  _sb.auth.onAuthStateChange(function(event,session){
-    if(event==='SIGNED_IN'&&session&&session.user){
-      if(!email){enterApp(session.user.email,session.user);}
-      else{_user=session.user;}
-    } else if(event==='SIGNED_OUT'){
-      // Sadece kullanıcı manuel çıkış yaparsa
-    } else if(event==='INITIAL_SESSION'){
-      if(session&&session.user){
-        if(!email){enterApp(session.user.email,session.user);}
-        else{_user=session.user;}
-      } else {
-        // Session yok, cache de yok ise login göster
-        try{
-          var ce=localStorage.getItem('mlynr_cached_email');
-          if(!ce){document.getElementById('login-screen').style.display='flex';}
-        }catch(e){
-          document.getElementById('login-screen').style.display='flex';
-        }
-      }
+  // Supabase session - 2 saniye içinde gelirse kullan
+  var loginTimer=setTimeout(function(){
+    if(!entered)showLogin();
+  },2000);
+
+  _sb.auth.getSession().then(function(r){
+    clearTimeout(loginTimer);
+    if(r.data&&r.data.session&&r.data.session.user){
+      tryEnter(r.data.session.user.email,r.data.session.user);
+    } else {
+      if(!entered)showLogin();
     }
+  }).catch(function(){
+    clearTimeout(loginTimer);
+    if(!entered)showLogin();
   });
 })();
 </script>
