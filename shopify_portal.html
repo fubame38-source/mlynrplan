@@ -745,7 +745,7 @@ function doAuth(){
 
 function enterApp(em,usr){
   email=em;_user=usr;
-  try{LS.setItem('mlynr_cached_email',em);}catch(e){}
+  try{localStorage.setItem('mlynr_cached_email',em);}catch(e){}
   document.getElementById('login-screen').classList.add('hidden');
   document.getElementById('app').style.display='block';
   // isim yoksa fallback email
@@ -763,7 +763,7 @@ function enterApp(em,usr){
 
 function doLogout(){
   if(_user)_sb.auth.signOut();
-  try{LS.removeItem('mlynr_cached_email');}catch(e){}
+  try{localStorage.removeItem('mlynr_cached_email');}catch(e){}
   _user=null;email='';done=[];metrics=[];meetings=[];taskChecks={};savedProducts=[];
   document.getElementById('login-screen').classList.remove('hidden');
   document.getElementById('app').style.display='none';
@@ -1090,21 +1090,16 @@ var _tt;function showToast(m,cls){var t=document.getElementById('toast');t.textC
 
 // INIT
 (function(){
-  // Önce cache'e bak — hızlı giriş
   try{
-    var cachedEmail=LS.getItem('mlynr_cached_email');
+    var cachedEmail=localStorage.getItem('mlynr_cached_email');
     if(cachedEmail){
       enterApp(cachedEmail,null);
-      // Arka planda Supabase session'ı da güncelle
       _sb.auth.getSession().then(function(r){
-        if(r.data&&r.data.session&&r.data.session.user){
-          _user=r.data.session.user;
-        }
+        if(r.data&&r.data.session&&r.data.session.user)_user=r.data.session.user;
       }).catch(function(){});
       return;
     }
   }catch(e){}
-  // Cache yoksa Supabase'e bak
   _sb.auth.getSession().then(function(r){
     if(r.data&&r.data.session&&r.data.session.user){
       enterApp(r.data.session.user.email,r.data.session.user);
