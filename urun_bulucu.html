@@ -270,7 +270,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <script>
 // Direkt Anthropic API - Edge Function yok
-var API_URL='https://api.anthropic.com/v1/messages';
+var API_URL='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/shopify-endpoint';
 
 var NISLER=[
   {e:'🐾',n:'Evcil Hayvan'},{e:'🏠',n:'Ev & Yaşam'},{e:'💪',n:'Spor & Fitness'},
@@ -289,16 +289,11 @@ function callAI(prompt, onSuccess, onError) {
   fetch(API_URL, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: 'Sen bir Shopify dropshipping uzmanisın. Sadece JSON formatında yanıt ver, başka hiçbir şey yazma.',
-      messages: [{role: 'user', content: prompt}]
-    })
+    body: JSON.stringify({prompt: prompt})
   })
   .then(function(r){return r.json();})
   .then(function(data){
-    var txt = data.content && data.content[0] ? data.content[0].text : '';
+    var txt = data.sonuc || '';
     var parsed = null;
     try{var m=txt.match(/\{[\s\S]*\}/);if(m)parsed=JSON.parse(m[0]);}catch(ignore){}
     if(parsed) onSuccess(parsed);
