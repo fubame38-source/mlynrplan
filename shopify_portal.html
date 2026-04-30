@@ -1090,27 +1090,33 @@ var _tt;function showToast(m,cls){var t=document.getElementById('toast');t.textC
 
 // INIT
 (function(){
-  function showLogin(){
-    document.getElementById('login-screen').style.display='flex';
-  }
+  // Önce cache ile hızlı giriş (flash önlemek için)
   try{
     var cachedEmail=localStorage.getItem('mlynr_cached_email');
-    if(cachedEmail){
-      enterApp(cachedEmail,null);
-      _sb.auth.getSession().then(function(r){
-        if(r.data&&r.data.session&&r.data.session.user)_user=r.data.session.user;
-      }).catch(function(){});
-      return;
-    }
+    if(cachedEmail){enterApp(cachedEmail,null);}
   }catch(e){}
-  _sb.auth.getSession().then(function(r){
-    if(r.data&&r.data.session&&r.data.session.user){
-      enterApp(r.data.session.user.email,r.data.session.user);
-    } else {
-      showLogin();
+
+  // Supabase auth state - her durumda doğru session'ı yakalar
+  _sb.auth.onAuthStateChange(function(event,session){
+    if(event==='SIGNED_IN'&&session&&session.user){
+      if(!email){enterApp(session.user.email,session.user);}
+      else{_user=session.user;}
+    } else if(event==='SIGNED_OUT'){
+      // Sadece kullanıcı manuel çıkış yaparsa
+    } else if(event==='INITIAL_SESSION'){
+      if(session&&session.user){
+        if(!email){enterApp(session.user.email,session.user);}
+        else{_user=session.user;}
+      } else {
+        // Session yok, cache de yok ise login göster
+        try{
+          var ce=localStorage.getItem('mlynr_cached_email');
+          if(!ce){document.getElementById('login-screen').style.display='flex';}
+        }catch(e){
+          document.getElementById('login-screen').style.display='flex';
+        }
+      }
     }
-  }).catch(function(){
-    showLogin();
   });
 })();
 </script>
