@@ -327,44 +327,30 @@ function doAnaliz(){
     }
   },700);
 
+  var msg='Shopify dropshipping icin su urunu analiz et: "'+input+'"\n\nKRİTERLER:\n1. Problem cozucu + wow factor var mi?\n2. Video kreatif uretimine uygun mu?\n3. Rekabet seviyesi nasil?\n4. Shopify icin karli mi?\n\nSADECE su JSON formatinda yanitla, baska hicbir sey yazma:\n{"karar":"SAT","urun_adi":"string","karar_nedeni":"2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"string","hook2":"string","hook3":"string","firsat":"string","uyari":"string","rakip_notu":"string"}\nkarar degerler: SAT DIKKAT SATMA';
+
   fetch(EDGE_FN,{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY},
-    body:JSON.stringify({
-      tool:'analyze',
-      urun:input,
-      prompt:'Sen bir Shopify dropshipping uzmanısın. Aşağıdaki ürünü analiz et ve JSON formatında yanıt ver. JSON dışında hiçbir şey yazma. Format: {"karar":"SAT"|"SATMA"|"DİKKAT","urun_adi":"string","karar_nedeni":"string (2-3 cümle)","fiyat_min":number,"fiyat_max":number,"ideal_satis_fiyati":number,"hedef_kitle":"string","hedef_kitle_detay":"string","rekabet_seviyesi":"DÜŞÜK"|"ORTA"|"YÜKSEK","pazar_buyuklugu":"KÜÇÜK"|"ORTA"|"BÜYÜK","mevsimsellik":"YILLIK"|"MEVSİMSEL","kâr_marji_skoru":number(1-10),"viral_potansiyel":number(1-10),"rekabet_skoru":number(1-10),"talep_skoru":number(1-10),"hook1":"string","hook2":"string","hook3":"string","rakip_notu":"string","firsat":"string","uyari":"string"}'
-    })
+    body:JSON.stringify({tool:'support',message:msg,history:[]})
   })
   .then(function(r){return r.json();})
   .then(function(data){
     clearInterval(stepInterval);
     document.getElementById('analiz-loading').style.display='none';
     btn.disabled=false;
-
-    var raw=data.sonuc||data.result||'';
+    var raw=data.reply||data.sonuc||data.result||data.message||'';
     var parsed=null;
-    // JSON parse dene
-    try{
-      var m=raw.match(/\{[\s\S]*\}/);
-      if(m)parsed=JSON.parse(m[0]);
-    }catch(e){}
-
-    if(parsed){
-      renderAnalyzReport(parsed,input);
-      saveHistory(input,parsed.karar,parsed);
-    } else {
-      // Fallback: ham metin göster
-      renderRawReport(raw,input);
-    }
+    try{var m=raw.match(/\{[\s\S]*\}/);if(m)parsed=JSON.parse(m[0]);}catch(e){}
+    if(parsed&&parsed.karar){renderAnalyzReport(parsed,input);saveHistory(input,parsed.karar,parsed);}
+    else{renderRawReport(raw||'Analiz yapilamadi, tekrar dene.',input);}
   })
-  .catch(function(err){
+  .catch(function(){
     clearInterval(stepInterval);
     document.getElementById('analiz-loading').style.display='none';
     btn.disabled=false;
-    // Demo data göster
     renderAnalyzReport(getDemoData(input),input);
-  });
+  });;
 }
 
 function getDemoData(urun){
@@ -412,9 +398,10 @@ function renderAnalyzReport(d,inputText){
     +'<div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Ürün Skorları</div></div>'
     +'<div class="ds-body">'
     +'<div class="score-bars">'
-    +scoreBar('Kâr Marjı',d['kâr_marji_skoru']||d.kar_marji_skoru||5,'#22c55e')
-    +scoreBar('Viral Potansiyel',d.viral_potansiyel||5,'#facc15')
-    +scoreBar('Talep',d.talep_skoru||5,'#38bdf8')
+    +scoreBar('Problem Çözücü',d.problem_cozucu||5,'#22c55e')
+    +scoreBar('Wow Factor',d.wow_factor||5,'#facc15')
+    +scoreBar('Kreatif Uygunluk',d.kreatif_uygunluk||5,'#38bdf8')
+    +scoreBar('Talep',d.talep_skoru||5,'#f97316')
     +scoreBar('Rekabet (düşük=iyi)',10-(d.rekabet_skoru||5),'#a78bfa')
     +'</div>'
     +'</div></div>'
@@ -507,31 +494,28 @@ function doNis(){
   document.getElementById('nis-report').style.display='none';
   document.getElementById('nis-report').innerHTML='';
 
+  var nisMsg=nis.e+' '+nis.n+' nisi icin Shopify dropshipping urun onerileri.\n\nKRİTERLER:\n1. Problem cozucu + wow factor\n2. Video kreatif uretimine uygun\n3. Dusuk veya orta rekabet\n4. AliExpress temin edilebilir\n\nSADECE su JSON formatinda 4 urun oner, baska hicbir sey yazma:\n{"oneriler":[{"urun_adi":"string","neden_kazanir":"string","problem_cozuyor":"string","kreatif_fikri":"string","fiyat_aralik":"string","rekabet":"DUSUK","wow_factor":8,"kreatif_uygunluk":9}]}';
+
   fetch(EDGE_FN,{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY},
-    body:JSON.stringify({
-      tool:'analyze',
-      urun:nis.n+' nişi için Shopify dropshipping ürün önerileri',
-      prompt:'Sen bir Shopify dropshipping uzmanısın. '+nis.n+' nişi için 4 adet kazanan ürün öner. JSON formatında yanıt ver, başka hiçbir şey yazma. Format: {"oneriler":[{"urun_adi":"string","neden_kazanir":"string","fiyat_aralik":"string","viral_potansiyel":number(1-10),"rekabet":"DÜŞÜK"|"ORTA"|"YÜKSEK","tag1":"string","tag2":"string"},...]}'
-    })
+    body:JSON.stringify({tool:'support',message:nisMsg,history:[]})
   })
   .then(function(r){return r.json();})
   .then(function(data){
     document.getElementById('nis-loading').style.display='none';
     btn.disabled=false;
-    var raw=data.sonuc||data.result||'';
+    var raw=data.reply||data.sonuc||data.result||data.message||'';
     var parsed=null;
     try{var m=raw.match(/\{[\s\S]*\}/);if(m)parsed=JSON.parse(m[0]);}catch(e){}
-    if(parsed&&parsed.oneriler){renderNisReport(parsed.oneriler,nis);}
+    if(parsed&&parsed.oneriler&&parsed.oneriler.length>0){renderNisReport(parsed.oneriler,nis);}
     else{renderNisReport(getDemoNis(nis.n),nis);}
   })
   .catch(function(){
     document.getElementById('nis-loading').style.display='none';
     btn.disabled=false;
     renderNisReport(getDemoNis(nis.n),nis);
-  });
-}
+  });}
 
 function getDemoNis(nisAdi){
   return [
