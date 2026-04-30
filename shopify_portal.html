@@ -533,67 +533,17 @@ footer p{font-size:12px;color:var(--text3)}
     </div>
   </div>
 
-  <!-- KAYDEDİLEN ÜRÜNLER -->
-  <div class="section">
-    <div class="section-header">
-      <span class="section-title">📦 Kaydettiğim Ürünler</span>
-      <span style="font-family:var(--mono);font-size:9px;color:var(--text3)" id="sp-count">0 ürün</span>
-    </div>
-    <div class="saved-products-card">
-      <div class="sp-add-form">
-        <input class="sp-input" id="sp-name-input" type="text" placeholder="Ürün adı gir...">
-        <select class="sp-status-sel" id="sp-status-sel">
-          <option value="BEKLEMEDE">Beklemede</option>
-          <option value="SAT">SAT</option>
-          <option value="SATMA">SATMA</option>
-        </select>
-        <button class="sp-add-btn" onclick="addSavedProduct()">+ Ekle</button>
-      </div>
-      <div class="sp-list" id="sp-list">
-        <div class="sp-empty">Henüz ürün eklenmedi. Ürün Bulucu'dan analiz yapıp buraya kaydedebilirsin.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TOPLANTI NOTLARI -->
-  <div class="section">
-    <div class="section-header">
-      <span class="section-title">📋 Analiz Toplantıları</span>
-      <button onclick="openMeetingForm()" class="section-action">+ Ekle</button>
-    </div>
-    <div class="meeting-card">
-      <div class="meeting-list" id="meeting-list">
-        <div style="text-align:center;padding:24px;color:var(--text3);font-size:13px">Henüz toplantı notu yok.</div>
-      </div>
-      <button class="meeting-add-btn" onclick="openMeetingForm()">+ Yeni Toplantı Notu Ekle</button>
-    </div>
-  </div>
-
-  <!-- MODÜLLER (ACCORDION) -->
-  <div class="section" style="margin-bottom:8px">
-    <div class="section-header">
-      <span class="section-title">🎓 Eğitim Modülleri</span>
-      <span class="prog-count" id="prog-count">0 / 0 ders</span>
-    </div>
-  </div>
-  <div class="modules-section" id="modules-wrap"></div>
-
   <!-- ÜRÜN BULMA METODLARI -->
   <div class="section">
     <div class="section-header">
       <span class="section-title">🎯 Ürün Bulma Metodları</span>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="method-grid">
-
-      <!-- Facebook Reklam Kütüphanesi -->
       <div class="method-card" id="mc-fb" onclick="toggleMethod('fb')">
         <div class="mc-top">
           <div class="mc-logo" style="background:#1877F2">f</div>
-          <div>
-            <div class="mc-name">Facebook Reklam Kütüphanesi</div>
-            <div class="mc-tag">Rakip reklam analizi</div>
-          </div>
-          <div class="mc-chevron" id="mc-chev-fb">▾</div>
+          <div><div class="mc-name">Facebook Reklam Kütüphanesi</div><div class="mc-tag">Rakip reklam analizi</div></div>
+          <div class="mc-chevron">▾</div>
         </div>
         <div class="mc-body" id="mc-body-fb">
           <div class="mc-steps">
@@ -606,16 +556,11 @@ footer p{font-size:12px;color:var(--text3)}
           <a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&media_type=all" target="_blank" class="mc-cta">Facebook Reklam Kütüphanesi'ni Aç →</a>
         </div>
       </div>
-
-      <!-- TikTok Organik Araştırma -->
       <div class="method-card" id="mc-tt" onclick="toggleMethod('tt')">
         <div class="mc-top">
           <div class="mc-logo" style="background:#010101;font-size:18px">♪</div>
-          <div>
-            <div class="mc-name">TikTok Organik Araştırma</div>
-            <div class="mc-tag">Viral ürün keşfi</div>
-          </div>
-          <div class="mc-chevron" id="mc-chev-tt">▾</div>
+          <div><div class="mc-name">TikTok Organik Araştırma</div><div class="mc-tag">Viral ürün keşfi</div></div>
+          <div class="mc-chevron">▾</div>
         </div>
         <div class="mc-body" id="mc-body-tt">
           <div class="mc-steps">
@@ -634,9 +579,17 @@ footer p{font-size:12px;color:var(--text3)}
           </div>
         </div>
       </div>
-
     </div>
   </div>
+
+  <!-- MODÜLLER (ACCORDION) -->
+  <div class="section" style="margin-bottom:8px">
+    <div class="section-header">
+      <span class="section-title">🎓 Eğitim Modülleri</span>
+      <span class="prog-count" id="prog-count">0 / 0 ders</span>
+    </div>
+  </div>
+  <div class="modules-section" id="modules-wrap"></div>
 
   <!-- BANNER -->
   <div class="section">
