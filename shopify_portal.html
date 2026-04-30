@@ -18,8 +18,8 @@
   --r:14px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;overflow-x:hidden}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{scroll-behavior:smooth;overflow-x:hidden;color-scheme:dark}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;color-scheme:dark}
 .hidden{display:none!important}
 
 /* LOGIN */
@@ -157,33 +157,35 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sp-status-btn{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text3);font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:3px 8px;cursor:pointer;transition:all .2s}
 .sp-status-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text2)}
 
-/* ACCORDION MODÜLLER */
-.modules-section{max-width:900px;margin:0 auto;padding:0 clamp(16px,5vw,48px) clamp(32px,5vw,56px);position:relative;z-index:1}
-.module-accordion{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:8px;transition:border-color .2s}
-.module-accordion.open{border-color:var(--border2)}
-.module-accordion-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;user-select:none;transition:background .15s}
-.module-accordion-header:hover{background:rgba(255,255,255,.025)}
-.ma-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text3);min-width:24px}
-.ma-name{font-size:14px;font-weight:600;color:var(--text);flex:1}
-.ma-prog{display:flex;align-items:center;gap:10px}
-.ma-bar-wrap{width:80px;height:3px;background:var(--border2);border-radius:10px;overflow:hidden}
+/* MODÜLLER */
+.modules-section{max-width:900px;margin:0 auto;padding:0 clamp(16px,5vw,48px) clamp(32px,5vw,56px);display:flex;flex-direction:column;gap:4px;position:relative;z-index:1}
+.module-accordion{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all .2s}
+.module-accordion.open{border-color:rgba(255,255,255,.15);background:var(--surface2)}
+.module-accordion-header{display:flex;align-items:center;gap:0;padding:0;cursor:pointer;user-select:none}
+.ma-num-big{font-size:clamp(48px,7vw,72px);font-weight:900;letter-spacing:-4px;line-height:1;color:var(--surface2);padding:20px 16px 20px 24px;flex-shrink:0;transition:color .2s;user-select:none}
+.module-accordion.open .ma-num-big{color:var(--surface3)}
+.ma-content{flex:1;padding:20px 20px 20px 0}
+.ma-label-row{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.ma-name{font-size:clamp(14px,2vw,17px);font-weight:700;color:var(--text);letter-spacing:-.3px}
+.ma-right{display:flex;align-items:center;gap:12px;padding-right:20px;flex-shrink:0}
+.ma-bar-wrap{width:72px;height:2px;background:var(--border2);border-radius:10px;overflow:hidden}
 .ma-bar-fill{height:100%;border-radius:10px;background:var(--green);transition:width .4s}
-.ma-pct{font-family:var(--mono);font-size:9px;color:var(--text3);min-width:28px;text-align:right}
-.ma-chevron{font-size:12px;color:var(--text3);transition:transform .25s;margin-left:4px}
+.ma-pct{font-family:var(--mono);font-size:9px;color:var(--text3);min-width:32px;text-align:right}
+.ma-chevron{font-size:11px;color:var(--text3);transition:transform .25s}
 .module-accordion.open .ma-chevron{transform:rotate(180deg)}
-.ma-body{display:none;padding:0 20px 20px}
+.ma-body{display:none;border-top:1px solid var(--border);padding:20px 24px 24px}
 .module-accordion.open .ma-body{display:block}
-.ma-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px;padding-top:4px}
+.ma-desc{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:16px}
 .videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.video-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;user-select:none;transition:all .2s;position:relative}
-.video-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4);border-color:rgba(255,255,255,.15)}
-.video-card.done{background:#0f1a0f;border-color:rgba(34,197,94,.15)}
-.vc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.video-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 15px;cursor:pointer;user-select:none;transition:all .2s}
+.video-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.5);border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.04)}
+.video-card.done{background:rgba(34,197,94,.04);border-color:rgba(34,197,94,.18)}
+.vc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
 .vc-num{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px}
 .tick{width:16px;height:16px;border-radius:50%;background:var(--border2);display:flex;align-items:center;justify-content:center;transition:all .25s cubic-bezier(.34,1.56,.64,1)}
 .video-card.done .tick{background:var(--green)}
 .tick svg{width:8px;height:8px}
-.vc-title{font-size:11px;font-weight:500;color:var(--text);line-height:1.35}
+.vc-title{font-size:11px;font-weight:500;color:var(--text);line-height:1.4}
 .video-card.done .vc-title{color:var(--text2)}
 
 /* TOPLANTI */
@@ -391,10 +393,14 @@ footer p{font-size:12px;color:var(--text3)}
 
   <!-- METRİK GİRİŞİ -->
   <div class="section" id="metrics-section">
-    <div class="section-header">
+    <div class="section-header" onclick="toggleMetrics()" style="cursor:pointer">
       <span class="section-title">📊 Günlük Metrikler</span>
-      <span class="metric-date" id="metric-date"></span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="metric-date" id="metric-date"></span>
+        <span id="metric-chevron" style="font-size:11px;color:var(--text3);transition:transform .25s">▾</span>
+      </div>
     </div>
+    <div id="metric-body" style="display:none">
     <div class="metric-card">
       <div class="metric-grid">
         <div class="metric-input-wrap">
@@ -415,6 +421,7 @@ footer p{font-size:12px;color:var(--text3)}
         <div class="metric-history-title">Son Kayıtlar</div>
         <div id="metric-history-list"></div>
       </div>
+    </div>
     </div>
   </div>
 
@@ -602,6 +609,7 @@ footer p{font-size:12px;color:var(--text3)}
 var SUPABASE_URL='https://xrelhozqawdseobxqbju.supabase.co';
 var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
 var EDGE_FN=SUPABASE_URL+'/functions/v1/rapid-endpoint';
+var SUPPORT_FN=SUPABASE_URL+'/functions/v1/shopify-endpoint';
 var _sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 var LS;try{LS=localStorage;}catch(e){LS={getItem:function(){return null;},setItem:function(){},removeItem:function(){}};}
 
@@ -846,6 +854,14 @@ function renderMeetings(){
   });
 }
 
+// METRİK TOGGLE
+var _metricOpen=false;
+function toggleMetrics(){
+  _metricOpen=!_metricOpen;
+  document.getElementById('metric-body').style.display=_metricOpen?'block':'none';
+  document.getElementById('metric-chevron').style.transform=_metricOpen?'rotate(180deg)':'rotate(0deg)';
+}
+
 // ACCORDION MODÜLLER
 function renderModules(){
   var wrap=document.getElementById('modules-wrap');wrap.innerHTML='';
@@ -860,13 +876,17 @@ function renderModules(){
     var acc=document.createElement('div');acc.className='module-accordion';acc.id='acc-'+mod.id;
 
     var header=document.createElement('div');header.className='module-accordion-header';
-    header.innerHTML='<span class="ma-num">'+String(mod.id).padStart(2,'0')+'</span>'
-      +'<span class="ma-name">'+mod.name+'</span>'
-      +'<div class="ma-prog">'
-      +'<div class="ma-bar-wrap"><div class="ma-bar-fill" style="width:'+pct+'%"></div></div>'
-      +'<span class="ma-pct">'+pct+'%</span>'
+    header.innerHTML=
+      '<div class="ma-num-big">'+String(mod.id).padStart(2,'0')+'</div>'
+      +'<div class="ma-content">'
+        +'<div class="ma-label-row">Modül '+String(mod.id).padStart(2,'0')+' — '+pct+'% tamamlandı</div>'
+        +'<div class="ma-name">'+mod.name+'</div>'
       +'</div>'
-      +'<span class="ma-chevron">▾</span>';
+      +'<div class="ma-right">'
+        +'<div class="ma-bar-wrap"><div class="ma-bar-fill" style="width:'+pct+'%"></div></div>'
+        +'<span class="ma-pct">'+pct+'%</span>'
+        +'<span class="ma-chevron">▾</span>'
+      +'</div>';
     header.addEventListener('click',function(){
       var isOpen=acc.classList.contains('open');
       document.querySelectorAll('.module-accordion.open').forEach(function(a){a.classList.remove('open');});
@@ -939,10 +959,10 @@ function sendSupportMsg(){
   var inp=document.getElementById('sp-input'),btn=document.getElementById('sp-send-btn');
   var soru=inp.value.trim();if(!soru)return;
   inp.value='';btn.disabled=true;addUserMsg(soru);addLoadingMsg();
-  fetch(EDGE_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'support',message:soru,history:[]})})
+  fetch(SUPPORT_FN,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY},body:JSON.stringify({prompt:'Sen MLYNR Shopify AI Koçusun. Kısa, net, pratik cevaplar ver. Soru: '+soru})})
     .then(function(r){return r.json();}).then(function(data){
-      removeLoadingMsg();addBotMsg(data.reply||data.sonuc||data.message||'Tekrar dene.');btn.disabled=false;
-    }).catch(function(){removeLoadingMsg();addBotMsg('Bağlantı hatası.');btn.disabled=false;});
+      removeLoadingMsg();addBotMsg(data.sonuc||data.reply||data.message||'Tekrar dene.');btn.disabled=false;
+    }).catch(function(){removeLoadingMsg();addBotMsg('Bağlantı hatası. Tekrar dene.');btn.disabled=false;});
 }
 document.addEventListener('DOMContentLoaded',function(){
   var inp=document.getElementById('sp-input');
