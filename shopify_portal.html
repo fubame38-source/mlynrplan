@@ -499,14 +499,14 @@ footer p{font-size:12px;color:var(--text3)}
     <div class="section-header">
       <span class="section-title">🎯 Ürün Bulma Metodları</span>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="method-grid">
-      <div class="method-card" id="mc-fb" onclick="toggleMethod('fb')">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start" id="method-grid">
+      <div class="method-card" id="mc-fb" onclick="toggleMethod('fb',event)">
         <div class="mc-top">
           <div class="mc-logo" style="background:#1877F2">f</div>
           <div><div class="mc-name">Facebook Reklam Kütüphanesi</div><div class="mc-tag">Rakip reklam analizi</div></div>
           <div class="mc-chevron">▾</div>
         </div>
-        <div class="mc-body" id="mc-body-fb">
+        <div class="mc-body" id="mc-body-fb" onclick="event.stopPropagation()">
           <div class="mc-steps">
             <div class="mc-step"><span class="mc-step-num">1</span><span>Ülke: <strong>All</strong> seç, Kategori: <strong>All ads</strong> bırak</span></div>
             <div class="mc-step"><span class="mc-step-num">2</span><span>Niş kelimeyi ara — örn: <strong>"back pain"</strong>, <strong>"kitchen gadget"</strong></span></div>
@@ -517,13 +517,13 @@ footer p{font-size:12px;color:var(--text3)}
           <a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&media_type=all" target="_blank" class="mc-cta">Facebook Reklam Kütüphanesi'ni Aç →</a>
         </div>
       </div>
-      <div class="method-card" id="mc-tt" onclick="toggleMethod('tt')">
+      <div class="method-card" id="mc-tt" onclick="toggleMethod('tt',event)">
         <div class="mc-top">
           <div class="mc-logo" style="background:#010101;font-size:18px">♪</div>
           <div><div class="mc-name">TikTok Organik Araştırma</div><div class="mc-tag">Viral ürün keşfi</div></div>
           <div class="mc-chevron">▾</div>
         </div>
-        <div class="mc-body" id="mc-body-tt">
+        <div class="mc-body" id="mc-body-tt" onclick="event.stopPropagation()">
           <div class="mc-steps">
             <div class="mc-step"><span class="mc-step-num">1</span><span>Aşağıdaki <strong>trend hashtag'lere</strong> tıkla, son 7 günü filtrele</span></div>
             <div class="mc-step"><span class="mc-step-num">2</span><span><strong>500K+ izlenme</strong> alan ürün videolarına bak — viral = talep var</span></div>
@@ -1032,18 +1032,13 @@ function applyUserName(full){
 function scrollToTask(){document.getElementById('weekly-task-section').scrollIntoView({behavior:'smooth'});}
 
 // METOD TOGGLE
-function toggleMethod(id){
+function toggleMethod(id,e){
+  if(e)e.stopPropagation();
   var card=document.getElementById('mc-'+id);
   var isOpen=card.classList.contains('open');
   document.querySelectorAll('.method-card').forEach(function(c){c.classList.remove('open');});
   if(!isOpen)card.classList.add('open');
 }
-// method card body'deki linklerin click'inin card'a bubble etmesini engelle
-document.addEventListener('DOMContentLoaded',function(){
-  document.querySelectorAll('.mc-body').forEach(function(b){
-    b.addEventListener('click',function(e){e.stopPropagation();});
-  });
-});
 
 // AI SUPPORT
 function askQuick(btn){document.getElementById('sp-input').value=btn.textContent.trim();sendSupportMsg();}
