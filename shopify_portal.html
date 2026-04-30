@@ -19,39 +19,111 @@
   --r:14px;
 }
 body.light-mode{
-  --bg:#f5f5f0;--surface:#fff;--surface2:#f0f0eb;--surface3:#e8e8e3;
-  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.14);
-  --text:#111;--text2:#555;--text3:#aaa;--white:#111;
-  --green:#16a34a;--green-ln:rgba(22,163,74,.2);--green-dim:rgba(22,163,74,.06);
-  --gold:#b45309;--gold-ln:rgba(180,83,9,.2);--gold-dim:rgba(180,83,9,.06);
+  --bg:#f7f7f5;--surface:#ffffff;--surface2:#f0f0ed;--surface3:#e8e8e5;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.13);
+  --text:#111;--text2:#555;--text3:#999;--white:#111;
+  --green:#16a34a;--green-ln:rgba(22,163,74,.2);--green-dim:rgba(22,163,74,.07);
+  --gold:#92400e;--gold-ln:rgba(146,64,14,.18);--gold-dim:rgba(146,64,14,.05);
   --red:#dc2626;--red-ln:rgba(220,38,38,.2);--red-dim:rgba(220,38,38,.06);
 }
-body.light-mode .bg-grid{background-image:linear-gradient(rgba(0,0,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px)}
-body.light-mode .bg-glow{background:radial-gradient(ellipse,rgba(0,0,0,.04),transparent 70%)}
-body.light-mode .topbar{background:rgba(245,245,240,.9);border-color:rgba(0,0,0,.08)}
-body.light-mode .login-card{background:#fff;border-color:rgba(0,0,0,.12)}
-body.light-mode .login-card::before{background:linear-gradient(90deg,transparent,rgba(0,0,0,.06),transparent)}
-body.light-mode .login-input{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.12);color:#111}
+/* BG */
+body.light-mode .bg-grid{background-image:linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px)}
+body.light-mode .bg-glow{background:none}
+/* TOPBAR */
+body.light-mode .topbar{background:rgba(247,247,245,.92);border-color:rgba(0,0,0,.08)}
+body.light-mode .logout-btn-sm{border-color:rgba(0,0,0,.1);color:#888}
+/* LOGIN */
+body.light-mode .login-card{background:#fff;border-color:rgba(0,0,0,.1)}
+body.light-mode .login-card::before{background:linear-gradient(90deg,transparent,rgba(0,0,0,.05),transparent)}
+body.light-mode .login-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .login-input::placeholder{color:#bbb}
 body.light-mode .login-btn{background:#111;color:#fff}
-body.light-mode #ai-fab{background:linear-gradient(135deg,#fff,#f5f5f0);border-color:rgba(0,0,0,.15);box-shadow:0 8px 40px rgba(0,0,0,.15)}
-body.light-mode #support-popup,body.light-mode .sp-header,body.light-mode .sp-messages,body.light-mode .sp-quick-section,body.light-mode .sp-input-area{background:#fff}
-body.light-mode .sp-msg.bot{background:#f5f5f0;color:#333;border-color:rgba(0,0,0,.08)}
-body.light-mode .sp-msg.user{background:#111;color:#fff}
-body.light-mode .sp-input{background:#f5f5f0;border-color:rgba(0,0,0,.1);color:#111}
-body.light-mode .sp-send{background:#111;color:#fff}
-body.light-mode .sp-quick-btn{border-color:rgba(0,0,0,.08);color:#555}
-body.light-mode .sp-quick-btn:hover{background:#f5f5f0;color:#111}
-body.light-mode #support-popup{border-left-color:rgba(0,0,0,.08)}
+body.light-mode .login-btn:hover{box-shadow:0 8px 24px rgba(0,0,0,.2)}
+/* CARDS */
+body.light-mode .quick-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .quick-card:hover{border-color:rgba(0,0,0,.16);background:#fafaf8}
+body.light-mode .quick-card.featured{background:linear-gradient(135deg,rgba(22,163,74,.08),rgba(22,163,74,.02));border-color:rgba(22,163,74,.25)}
+body.light-mode .quick-card.gold-accent{background:linear-gradient(135deg,rgba(146,64,14,.06),#fff);border-color:rgba(146,64,14,.15)}
+body.light-mode .prog-row{background:#fff;border-color:rgba(0,0,0,.08)}
+/* HAFTALIK GÖREV */
+body.light-mode .weekly-task-card{background:#fffbf5;border-color:rgba(146,64,14,.2)}
+body.light-mode .weekly-task-card::before{background:linear-gradient(90deg,transparent,rgba(146,64,14,.3),transparent)}
+body.light-mode .wtc-eyebrow{color:rgba(146,64,14,.7)}
+body.light-mode .wtc-due{color:rgba(146,64,14,.5)}
+body.light-mode .wtc-box{border-color:rgba(146,64,14,.3)}
+body.light-mode .wtc-item.ck .wtc-box{background:#92400e;border-color:#92400e}
+/* METRİKLER */
+body.light-mode .metric-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .metric-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .metric-input:focus{border-color:rgba(0,0,0,.3)}
+body.light-mode .metric-save-btn{background:#111;color:#fff}
+body.light-mode .metric-row{background:#f7f7f5}
+/* KAYDEDİLEN ÜRÜNLER */
+body.light-mode .saved-products-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .sp-add-form{border-color:rgba(0,0,0,.06)}
+body.light-mode .sp-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .sp-input::placeholder{color:#bbb}
+body.light-mode .sp-status-sel{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#555}
+body.light-mode .sp-add-btn{background:#111;color:#fff}
+body.light-mode .sp-item{border-color:rgba(0,0,0,.06)}
+body.light-mode .sp-item:hover{background:rgba(0,0,0,.02)}
+body.light-mode .sp-status-btn{border-color:rgba(0,0,0,.1);color:#888}
+/* TOPLANTI */
+body.light-mode .meeting-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .meeting-item{background:#f7f7f5;border-color:rgba(0,0,0,.07)}
+body.light-mode .meeting-add-btn{border-color:rgba(0,0,0,.1);color:#999}
+body.light-mode .meeting-add-btn:hover{background:rgba(0,0,0,.03);color:#555}
+/* MODÜLLER */
 body.light-mode .module-accordion{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .module-accordion:hover{border-color:rgba(0,0,0,.14)}
 body.light-mode .module-accordion.open{background:#fafaf8;border-color:rgba(0,0,0,.14)}
-body.light-mode .ma-num-big{color:#e8e8e3}
-body.light-mode .video-card{background:#f8f8f5;border-color:rgba(0,0,0,.08)}
-body.light-mode .video-card:hover{background:#f0f0eb}
-body.light-mode .video-card.done{background:rgba(22,163,74,.05);border-color:rgba(22,163,74,.2)}
-body.light-mode .metric-input{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.12);color:#111}
-body.light-mode .sp-add-form .sp-input{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.12);color:#111}
-body.light-mode .popup{background:#fff}
-body.light-mode .mp-input,.light-mode .mp-textarea{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.12);color:#111}
+body.light-mode .ma-num-big{color:#ebebea}
+body.light-mode .ma-body{border-color:rgba(0,0,0,.07)}
+body.light-mode .video-card{background:#f7f7f5;border-color:rgba(0,0,0,.07)}
+body.light-mode .video-card:hover{background:#f0f0ed;border-color:rgba(0,0,0,.14)}
+body.light-mode .video-card.done{background:rgba(22,163,74,.05);border-color:rgba(22,163,74,.18)}
+body.light-mode .tick{background:rgba(0,0,0,.07)}
+/* METOD KARTLARI */
+body.light-mode .method-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .mc-body{border-color:rgba(0,0,0,.07)}
+body.light-mode .mc-step{color:#555}
+body.light-mode .mc-step-num{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:#999}
+body.light-mode .mc-cta{background:#111;color:#fff}
+body.light-mode .mc-hashtag{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1);color:#555}
+body.light-mode .mc-hashtag:hover{background:rgba(0,0,0,.08);color:#111}
+/* BANNER */
+body.light-mode .banner{background:#fffbf5;border-color:rgba(146,64,14,.2)}
+/* POPUP */
+body.light-mode .popup{background:#fff;border-color:rgba(0,0,0,.1)}
+body.light-mode .overlay{background:rgba(0,0,0,.4)}
+body.light-mode .close-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:#555}
+body.light-mode .mp-input,body.light-mode .mp-textarea{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .mp-save{background:#111;color:#fff}
+/* AI FAB */
+body.light-mode #ai-fab{background:linear-gradient(135deg,#fff,#f7f7f5);border-color:rgba(0,0,0,.12);box-shadow:0 8px 32px rgba(0,0,0,.12)}
+body.light-mode .fab-title{color:#111}
+/* AI SUPPORT PANEL */
+body.light-mode #support-popup{background:#fff;border-left-color:rgba(0,0,0,.08)}
+body.light-mode .sp-header{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .sp-header-title{color:#111}
+body.light-mode .sp-header-sub{color:rgba(0,0,0,.4)}
+body.light-mode .sp-avatar{background:#111}
+body.light-mode .sp-avatar span{color:#fff!important}
+body.light-mode .sp-close-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:#555}
+body.light-mode .sp-messages{background:#fff}
+body.light-mode .sp-msg.bot{background:#f7f7f5;color:#333;border-color:rgba(0,0,0,.08)}
+body.light-mode .sp-msg.user{background:#111;color:#fff}
+body.light-mode .sp-quick-section{background:#fff;border-color:rgba(0,0,0,.07)}
+body.light-mode .sp-quick-label{color:rgba(0,0,0,.3)}
+body.light-mode .sp-quick-btn{border-color:rgba(0,0,0,.08);color:#666}
+body.light-mode .sp-quick-btn:hover{background:#f7f7f5;color:#111;border-color:rgba(0,0,0,.15)}
+body.light-mode .sp-input-area{background:#fff;border-color:rgba(0,0,0,.07)}
+body.light-mode .sp-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .sp-input::placeholder{color:#bbb}
+body.light-mode .sp-send{background:#111;color:#fff}
+/* TOAST */
+body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .saved-dot{background:rgba(22,163,74,.08)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:hidden;color-scheme:dark}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;color-scheme:dark}
