@@ -891,6 +891,7 @@ function saveMeeting(){
 }
 function renderMeetings(){
   var list=document.getElementById('meeting-list');
+  if(!list)return;
   if(!meetings||meetings.length===0){list.innerHTML='<div style="text-align:center;padding:24px;color:var(--text3);font-size:13px">Henüz toplantı notu yok.</div>';return;}
   list.innerHTML='';
   meetings.slice(0,10).forEach(function(m){
@@ -982,7 +983,11 @@ function renderProgress(d,t){
   document.getElementById('prog-count').textContent=d+' / '+t;
 }
 
-function renderAll(){renderTask();renderMeetings();renderModules();}
+function renderAll(){
+  try{renderTask();}catch(e){console.error('renderTask:',e);}
+  try{renderMeetings();}catch(e){console.error('renderMeetings:',e);}
+  try{renderModules();}catch(e){console.error('renderModules:',e);}
+}
 
 // THEME TOGGLE
 function toggleTheme(){
