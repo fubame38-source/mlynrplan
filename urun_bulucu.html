@@ -17,6 +17,49 @@
   --gold:#facc15;--gold-ln:rgba(250,204,21,.2);--gold-dim:rgba(250,204,21,.05);
   --r:14px;
 }
+body.light-mode{
+  --bg:#f7f7f5;--surface:#fff;--surface2:#f0f0ed;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.13);
+  --text:#111;--text2:#555;--text3:#999;--white:#111;
+  --green:#16a34a;--green-ln:rgba(22,163,74,.2);--green-dim:rgba(22,163,74,.07);
+  --red:#dc2626;--red-ln:rgba(220,38,38,.2);--red-dim:rgba(220,38,38,.06);
+  --gold:#92400e;--gold-ln:rgba(146,64,14,.18);--gold-dim:rgba(146,64,14,.05);
+}
+body.light-mode .bg-grid{background-image:linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px)}
+body.light-mode .bg-glow{background:none}
+body.light-mode .topbar{background:rgba(247,247,245,.92);border-color:rgba(0,0,0,.08)}
+body.light-mode .input-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .ic-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .ic-input::placeholder{color:#bbb}
+body.light-mode .tabs{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .tab.active{background:#f7f7f5;color:#111}
+body.light-mode .tab{color:#999}
+body.light-mode .niche-btn{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.08);color:#555}
+body.light-mode .niche-btn:hover{background:rgba(0,0,0,.08);color:#111}
+body.light-mode .niche-btn.sel{background:rgba(22,163,74,.08);border-color:rgba(22,163,74,.25);color:#16a34a}
+body.light-mode .analyze-btn{background:#111;color:#fff}
+body.light-mode .clear-btn{border-color:rgba(0,0,0,.1);color:#888}
+body.light-mode .decision-card.sat{background:linear-gradient(135deg,rgba(22,163,74,.1),rgba(22,163,74,.03))}
+body.light-mode .decision-card.satma{background:linear-gradient(135deg,rgba(220,38,38,.1),rgba(220,38,38,.03))}
+body.light-mode .decision-card.dikkat{background:linear-gradient(135deg,rgba(146,64,14,.08),rgba(146,64,14,.02))}
+body.light-mode .mc{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .mc-val{color:#111}
+body.light-mode .detail-section{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .ds-header{border-color:rgba(0,0,0,.07)}
+body.light-mode .hook-item{background:#f7f7f5;border-color:rgba(0,0,0,.07);color:#555}
+body.light-mode .hook-item:hover{border-color:rgba(0,0,0,.15);color:#111}
+body.light-mode .comp-item{background:#f7f7f5}
+body.light-mode .score-bar-wrap{background:rgba(0,0,0,.08)}
+body.light-mode .suggestion-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .suggestion-card:hover{border-color:rgba(0,0,0,.18)}
+body.light-mode .sc-tag{border-color:rgba(0,0,0,.1);color:#888}
+body.light-mode .ra-btn{border-color:rgba(0,0,0,.1);color:#888}
+body.light-mode .ra-btn:hover{border-color:rgba(0,0,0,.2);color:#555}
+body.light-mode .ra-btn.primary{background:#16a34a;color:#fff}
+body.light-mode .ra-btn.secondary{background:#111;color:#fff}
+body.light-mode .history-item{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .history-item:hover{background:#f7f7f5;border-color:rgba(0,0,0,.14)}
+body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
@@ -178,6 +221,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="tl-sep">/</div>
     <div class="tl-page">Ürün Bulucu</div>
     <a href="https://mlynrplan.com/shopify_portal.html" class="back-link">← Portala Dön</a>
+    <button id="theme-toggle" onclick="toggleTheme()" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:14px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;margin-left:8px" title="Tema değiştir">☀️</button>
   </div>
 </nav>
 
@@ -511,7 +555,18 @@ function renderHistory(){
 var _tt;
 function showToast(m,cls){var t=document.getElementById('toast');if(!t)return;t.textContent=m;t.className='toast'+(cls?' '+cls:'')+' show';clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);}
 
+// THEME
+function toggleTheme(){
+  var isLight=document.body.classList.toggle('light-mode');
+  document.getElementById('theme-toggle').textContent=isLight?'🌙':'☀️';
+  try{localStorage.setItem('mlynr_theme',isLight?'light':'dark');}catch(e){}
+}
+function applyTheme(){
+  try{var t=localStorage.getItem('mlynr_theme');if(t==='light'){document.body.classList.add('light-mode');var btn=document.getElementById('theme-toggle');if(btn)btn.textContent='🌙';}}catch(e){}
+}
+
 document.addEventListener('DOMContentLoaded',function(){
+  applyTheme();
   renderNisGrid();renderHistory();
   var inp=document.getElementById('analiz-input');
   if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter')doAnaliz();});
