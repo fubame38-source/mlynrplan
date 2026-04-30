@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MLYNR. — Ürün Bulucu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+  --bg:#080808;--surface:#111;--surface2:#161616;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --text:#f0f0f0;--text2:#888;--text3:#444;--white:#fff;
+  --green:#22c55e;--green-ln:rgba(34,197,94,.2);--green-dim:rgba(34,197,94,.05);
+  --red:#ef4444;--red-ln:rgba(239,68,68,.2);--red-dim:rgba(239,68,68,.05);
+  --gold:#facc15;--gold-ln:rgba(250,204,21,.2);--gold-dim:rgba(250,204,21,.05);
+  --r:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:48px 48px}
+.bg-glow{position:fixed;top:-300px;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse,rgba(255,255,255,.025),transparent 70%);pointer-events:none;z-index:0}
+
+/* ── TOPBAR ── */
+.topbar{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(8,8,8,.9);border-bottom:1px solid var(--border);padding:0 clamp(16px,4vw,40px)}
+.topbar-inner{max-width:860px;margin:0 auto;height:52px;display:flex;align-items:center;gap:16px}
+.tl{font-size:11px;font-weight:900;letter-spacing:4px;color:var(--white)}
+.tl-sep{font-size:11px;color:var(--text3)}
+.tl-page{font-size:11px;color:var(--text2);font-family:var(--mono)}
+.back-link{margin-left:auto;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s}
+.back-link:hover{color:var(--text2)}
+
+/* ── HERO ── */
+.hero{padding:clamp(48px,8vw,80px) clamp(20px,5vw,48px) 0;max-width:860px;margin:0 auto;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:20px}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-size:clamp(42px,8vw,80px);font-weight:900;letter-spacing:-3px;line-height:.9;color:var(--white);margin-bottom:14px}
+.hero-sub{font-size:14px;color:var(--text2);margin-bottom:0;line-height:1.7;max-width:460px}
+
+/* ── TABS ── */
+.tabs-wrap{max-width:860px;margin:0 auto;padding:clamp(28px,5vw,48px) clamp(20px,5vw,48px) 0;position:relative;z-index:1}
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;width:fit-content;margin-bottom:28px}
+.tab{padding:9px 20px;border-radius:9px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);cursor:pointer;transition:all .2s;user-select:none}
+.tab:hover{color:var(--text2)}
+.tab.active{background:var(--surface2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.4)}
+
+/* ── INPUT CARD ── */
+.input-card{background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}
+.input-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
+.ic-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:block}
+.ic-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:15px;padding:14px 18px;outline:none;transition:border-color .2s,box-shadow .2s}
+.ic-input:focus{border-color:rgba(255,255,255,.3);box-shadow:0 0 0 3px rgba(255,255,255,.04)}
+.ic-input::placeholder{color:var(--text3)}
+.ic-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.ic-hint{font-size:12px;color:var(--text3);margin-top:10px;line-height:1.6}
+
+/* NİŞ SEÇİCİ */
+.niche-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:0}
+.niche-btn{padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-size:12px;cursor:pointer;transition:all .2s;text-align:center;user-select:none;line-height:1.3}
+.niche-btn:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:var(--text)}
+.niche-btn.sel{border-color:var(--green-ln);background:var(--green-dim);color:var(--green)}
+
+/* ANA BUTON */
+.analyze-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:.3px;padding:14px 28px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);flex-shrink:0}
+.analyze-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,255,255,.18)}
+.analyze-btn:disabled{background:var(--surface2);color:var(--text3);cursor:not-allowed;transform:none;box-shadow:none}
+.clear-btn{background:transparent;border:1px solid var(--border);border-radius:10px;color:var(--text3);font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 18px;cursor:pointer;transition:all .2s}
+.clear-btn:hover{border-color:var(--border2);color:var(--text2)}
+
+/* ── LOADING ── */
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:32px;height:32px;border:2.5px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .75s linear infinite}
+.loading-txt{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.loading-steps{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:8px}
+.ls-item{font-size:12px;color:var(--text3);opacity:0;animation:fadeIn .4s ease forwards}
+@keyframes fadeIn{to{opacity:1}}
+
+/* ── RAPOR ── */
+.report-wrap{display:none;flex-direction:column;gap:12px;animation:slideUp .4s cubic-bezier(.34,1.2,.64,1)}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* KARAR KARTI */
+.decision-card{border-radius:18px;padding:28px 32px;position:relative;overflow:hidden}
+.decision-card.sat{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(34,197,94,.04));border:1px solid var(--green-ln)}
+.decision-card.satma{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.04));border:1px solid var(--red-ln)}
+.decision-card.dikkat{background:linear-gradient(135deg,rgba(250,204,21,.1),rgba(250,204,21,.03));border:1px solid var(--gold-ln)}
+.dc-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:16px}
+.sat .dc-badge{background:rgba(34,197,94,.15);color:var(--green);border:1px solid var(--green-ln)}
+.satma .dc-badge{background:rgba(239,68,68,.15);color:var(--red);border:1px solid var(--red-ln)}
+.dikkat .dc-badge{background:rgba(250,204,21,.15);color:var(--gold);border:1px solid var(--gold-ln)}
+.dc-product{font-size:22px;font-weight:800;color:var(--white);letter-spacing:-.5px;margin-bottom:8px;line-height:1.2}
+.dc-reason{font-size:14px;color:var(--text2);line-height:1.75}
+
+/* METRIK KARTLARI */
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px}
+.mc-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.mc-val{font-size:22px;font-weight:800;color:var(--white);letter-spacing:-.5px;line-height:1;margin-bottom:4px}
+.mc-sub{font-size:11px;color:var(--text2)}
+
+/* DETAY BÖLÜMLERI */
+.detail-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.ds-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.ds-icon{font-size:16px}
+.ds-title{font-size:13px;font-weight:700;color:var(--text)}
+.ds-body{padding:16px 20px}
+.ds-body p{font-size:13px;color:var(--text2);line-height:1.8}
+.ds-body strong{color:var(--text);font-weight:600}
+
+/* HOOK LİSTESİ */
+.hook-list{display:flex;flex-direction:column;gap:8px}
+.hook-item{padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-size:13px;color:var(--text2);line-height:1.6;cursor:pointer;transition:all .2s;position:relative}
+.hook-item:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
+.hook-copy{position:absolute;top:10px;right:12px;font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px}
+.hook-item:hover .hook-copy{color:var(--text2)}
+
+/* RAKIP NOTU */
+.competitor-wrap{display:flex;flex-direction:column;gap:6px}
+.comp-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:12px;color:var(--text2);line-height:1.5}
+.comp-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.comp-dot.pos{background:var(--green)}
+.comp-dot.neg{background:var(--red)}
+.comp-dot.neu{background:var(--text3)}
+
+/* SKOR BARLAR */
+.score-bars{display:flex;flex-direction:column;gap:10px}
+.score-row{display:flex;align-items:center;gap:12px}
+.score-label{font-size:11px;color:var(--text2);min-width:90px}
+.score-bar-wrap{flex:1;height:4px;background:var(--border2);border-radius:99px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.score-val{font-family:var(--mono);font-size:10px;color:var(--text2);min-width:28px;text-align:right}
+
+/* ÖNERİ KARTLARI (niş modu) */
+.suggestion-card{background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:22px 24px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
+.suggestion-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+.suggestion-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.5);border-color:rgba(255,255,255,.18)}
+.sc-num{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.sc-product{font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px;line-height:1.3}
+.sc-why{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px}
+.sc-tags{display:flex;gap:6px;flex-wrap:wrap}
+.sc-tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:4px 10px;border-radius:20px;border:1px solid var(--border2);color:var(--text3)}
+.sc-tag.green{border-color:var(--green-ln);color:var(--green);background:var(--green-dim)}
+.sc-tag.red{border-color:var(--red-ln);color:var(--red);background:var(--red-dim)}
+.sc-analyze-btn{margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding:7px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:transparent;transition:all .2s}
+.sc-analyze-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
+
+.suggestions-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* SHARE / AKSIYON ── */
+.report-actions{display:flex;gap:8px;padding-top:4px}
+.ra-btn{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:1px solid var(--border2);background:transparent;color:var(--text3)}
+.ra-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text2)}
+.ra-btn.primary{background:var(--white);color:var(--bg);border-color:transparent}
+.ra-btn.primary:hover{box-shadow:0 6px 20px rgba(255,255,255,.15);transform:translateY(-1px)}
+
+/* GEÇMİŞ ── */
+.history-wrap{max-width:860px;margin:0 auto;padding:0 clamp(20px,5vw,48px) clamp(40px,6vw,60px);position:relative;z-index:1}
+.history-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;margin-top:32px}
+.history-list{display:flex;flex-direction:column;gap:6px}
+.history-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s}
+.history-item:hover{border-color:var(--border2);background:var(--surface2)}
+.hi-decision{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.hi-decision.sat{background:var(--green)}
+.hi-decision.satma{background:var(--red)}
+.hi-decision.dikkat{background:var(--gold)}
+.hi-name{font-size:13px;color:var(--text);flex:1}
+.hi-date{font-family:var(--mono);font-size:10px;color:var(--text3)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;color:var(--text);z-index:9100;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.green{border-color:var(--green-ln);color:var(--green)}
+
+@media(max-width:640px){
+  .metrics-grid{grid-template-columns:1fr 1fr}
+  .niche-grid{grid-template-columns:repeat(3,1fr)}
+  .suggestions-grid{grid-template-columns:1fr}
+  .report-actions{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <div class="tl">MLYNR.</div>
+    <div class="tl-sep">/</div>
+    <div class="tl-page">Ürün Bulucu</div>
+    <a href="shopify_portal.html" class="back-link">← Portala Dön</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge"><div class="hero-badge-dot"></div>AI Destekli · Shopify Dropshipping</div>
+  <div class="hero-title">ÜRÜN<br>BULUCU</div>
+  <p class="hero-sub">Ürün adı veya AliExpress linki gir, AI tam bir analiz çıkarsın. Ya da niş seç, kazanan ürün önerisi al.</p>
+</div>
+
+<div class="tabs-wrap">
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('analiz',this)">Ürün Analizi</div>
+    <div class="tab" onclick="switchTab('nis',this)">Niş → Ürün Öner</div>
+  </div>
+
+  <!-- ANALİZ TABI -->
+  <div id="tab-analiz">
+    <div class="input-card">
+      <span class="ic-label">Ürün Adı veya AliExpress URL</span>
+      <input class="ic-input" id="analiz-input" type="text" placeholder="Örn: Posture corrector back brace · veya aliexpress.com/item/..." />
+      <div class="ic-hint">Ürün adı, AliExpress linki veya Amazon linki girebilirsin. AI web'de araştırıp analiz yapar.</div>
+      <div class="ic-row">
+        <button class="analyze-btn" onclick="doAnaliz()" id="analiz-btn">🔍 Analiz Et</button>
+        <button class="clear-btn" onclick="clearAnaliz()">Temizle</button>
+      </div>
+    </div>
+
+    <!-- LOADING -->
+    <div id="analiz-loading" style="display:none">
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <div class="loading-txt">AI analiz yapıyor</div>
+        <div class="loading-steps" id="loading-steps"></div>
+      </div>
+    </div>
+
+    <!-- RAPOR -->
+    <div id="analiz-report" class="report-wrap"></div>
+  </div>
+
+  <!-- NİŞ TABI -->
+  <div id="tab-nis" style="display:none">
+    <div class="input-card">
+      <span class="ic-label">Bir Niş Seç</span>
+      <div class="niche-grid" id="niche-grid"></div>
+      <div class="ic-row" style="margin-top:16px">
+        <button class="analyze-btn" onclick="doNis()" id="nis-btn">💡 Ürün Öner</button>
+        <button class="clear-btn" onclick="clearNis()">Temizle</button>
+      </div>
+    </div>
+
+    <div id="nis-loading" style="display:none">
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <div class="loading-txt">Kazanan ürünler aranıyor</div>
+      </div>
+    </div>
+
+    <div id="nis-report" style="display:none;flex-direction:column;gap:12px"></div>
+  </div>
+</div>
+
+<!-- GEÇMİŞ -->
+<div class="history-wrap">
+  <div id="history-section" style="display:none">
+    <div class="history-label">Geçmiş Analizler</div>
+    <div class="history-list" id="history-list"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var EDGE_FN='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint';
+var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
+
+var NIŞLER=[
+  {e:'🐾',n:'Evcil Hayvan'},{e:'🏠',n:'Ev & Yaşam'},{e:'💪',n:'Spor & Fitness'},
+  {e:'🌿',n:'Bahçe'},{e:'👶',n:'Bebek & Çocuk'},{e:'🍳',n:'Mutfak Gadget'},
+  {e:'🚗',n:'Araç Aksesuar'},{e:'💄',n:'Güzellik'},{e:'📚',n:'Ofis & Çalışma'},
+  {e:'🎮',n:'Oyun & Teknoloji'},{e:'✈️',n:'Seyahat'},{e:'🧘',n:'Sağlık & Wellness'},
+  {e:'🎨',n:'Sanat & El İşi'},{e:'🎸',n:'Müzik'},{e:'🏕️',n:'Outdoor & Kamp'},
+  {e:'🧹',n:'Temizlik & Düzen'}
+];
+
+var selectedNis=null;
+var history_data=[];
+
+// Geçmişi yükle
+try{var h=localStorage.getItem('mlynr_urun_history');if(h)history_data=JSON.parse(h);}catch(e){}
+
+// Niş grid render
+function renderNisGrid(){
+  var g=document.getElementById('niche-grid');g.innerHTML='';
+  NIŞLER.forEach(function(n,i){
+    var btn=document.createElement('div');btn.className='niche-btn'+(selectedNis===i?' sel':'');
+    btn.textContent=n.e+' '+n.n;
+    btn.addEventListener('click',function(){selectedNis=i;renderNisGrid();});
+    g.appendChild(btn);
+  });
+}
+renderNisGrid();
+
+// Tab geçiş
+function switchTab(tab,el){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  el.classList.add('active');
+  document.getElementById('tab-analiz').style.display=tab==='analiz'?'block':'none';
+  document.getElementById('tab-nis').style.display=tab==='nis'?'block':'none';
+}
+
+// ── ANALİZ ──
+function doAnaliz(){
+  var input=document.getElementById('analiz-input').value.trim();
+  if(!input){showToast('Ürün adı veya link gir');return;}
+  var btn=document.getElementById('analiz-btn');
+  btn.disabled=true;
+  document.getElementById('analiz-loading').style.display='block';
+  document.getElementById('analiz-report').style.display='none';
+  document.getElementById('analiz-report').innerHTML='';
+
+  // Loading steps animasyonu
+  var steps=['🔍 Ürün araştırılıyor...','📊 Pazar verisi analiz ediliyor...','🎯 Hedef kitle belirleniyor...','💡 Reklam hook\'ları oluşturuluyor...','✅ Rapor hazırlanıyor...'];
+  var stepsEl=document.getElementById('loading-steps');stepsEl.innerHTML='';
+  var si=0;
+  var stepInterval=setInterval(function(){
+    if(si<steps.length){
+      var d=document.createElement('div');d.className='ls-item';d.style.animationDelay=(si*0.1)+'s';d.textContent=steps[si];stepsEl.appendChild(d);si++;
+    }
+  },700);
+
+  fetch(EDGE_FN,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY},
+    body:JSON.stringify({
+      tool:'analyze',
+      urun:input,
+      prompt:'Sen bir Shopify dropshipping uzmanısın. Aşağıdaki ürünü analiz et ve JSON formatında yanıt ver. JSON dışında hiçbir şey yazma. Format: {"karar":"SAT"|"SATMA"|"DİKKAT","urun_adi":"string","karar_nedeni":"string (2-3 cümle)","fiyat_min":number,"fiyat_max":number,"ideal_satis_fiyati":number,"hedef_kitle":"string","hedef_kitle_detay":"string","rekabet_seviyesi":"DÜŞÜK"|"ORTA"|"YÜKSEK","pazar_buyuklugu":"KÜÇÜK"|"ORTA"|"BÜYÜK","mevsimsellik":"YILLIK"|"MEVSİMSEL","kâr_marji_skoru":number(1-10),"viral_potansiyel":number(1-10),"rekabet_skoru":number(1-10),"talep_skoru":number(1-10),"hook1":"string","hook2":"string","hook3":"string","rakip_notu":"string","firsat":"string","uyari":"string"}'
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    clearInterval(stepInterval);
+    document.getElementById('analiz-loading').style.display='none';
+    btn.disabled=false;
+
+    var raw=data.sonuc||data.result||'';
+    var parsed=null;
+    // JSON parse dene
+    try{
+      var m=raw.match(/\{[\s\S]*\}/);
+      if(m)parsed=JSON.parse(m[0]);
+    }catch(e){}
+
+    if(parsed){
+      renderAnalyzReport(parsed,input);
+      saveHistory(input,parsed.karar,parsed);
+    } else {
+      // Fallback: ham metin göster
+      renderRawReport(raw,input);
+    }
+  })
+  .catch(function(err){
+    clearInterval(stepInterval);
+    document.getElementById('analiz-loading').style.display='none';
+    btn.disabled=false;
+    // Demo data göster
+    renderAnalyzReport(getDemoData(input),input);
+  });
+}
+
+function getDemoData(urun){
+  return {
+    karar:'DİKKAT',urun_adi:urun,
+    karar_nedeni:'Bu ürün için pazar araştırması yapılamadı. Demo verisi gösteriliyor. Gerçek analiz için internet bağlantısını kontrol et.',
+    fiyat_min:15,fiyat_max:35,ideal_satis_fiyati:24.99,
+    hedef_kitle:'25-45 yaş arası online alışveriş yapan kadınlar',
+    hedef_kitle_detay:'Problem odaklı satın alma yapan, sosyal medyada aktif kitle',
+    rekabet_seviyesi:'ORTA',pazar_buyuklugu:'ORTA',mevsimsellik:'YILLIK',
+    kâr_marji_skoru:6,viral_potansiyel:7,rekabet_skoru:5,talep_skoru:7,
+    hook1:'"Bunu görünce inanamadım — her evde olması lazım!"',
+    hook2:'"Arkadaşım beni bu ürüne tanıştırdı ve hayatım değişti"',
+    hook3:'"Neden kimse bana bunu daha önce söylemedi?"',
+    rakip_notu:'Orta düzeyde rekabet var. Fark yaratmak için yüksek kalite görseller ve güçlü sosyal kanıt kullan.',
+    firsat:'Organik içerik ile viral potansiyel yüksek. Video formatı iyi performans gösterebilir.',
+    uyari:'Sezon dışı dönemde satışlar düşebilir. Stok yönetimine dikkat et.'
+  };
+}
+
+function renderAnalyzReport(d,inputText){
+  var wrap=document.getElementById('analiz-report');
+  wrap.style.display='flex';
+  var cls=d.karar==='SAT'?'sat':d.karar==='SATMA'?'satma':'dikkat';
+  var emoji=d.karar==='SAT'?'✅':d.karar==='SATMA'?'❌':'⚠️';
+  var profit=(d.ideal_satis_fiyati*0.35).toFixed(0);
+
+  var html=
+    // Karar
+    '<div class="decision-card '+cls+'">'
+    +'<div class="dc-badge">'+emoji+' '+d.karar+'</div>'
+    +'<div class="dc-product">'+d.urun_adi+'</div>'
+    +'<div class="dc-reason">'+d.karar_nedeni+'</div>'
+    +'</div>'
+
+    // Metrikler
+    +'<div class="metrics-grid">'
+    +'<div class="mc"><div class="mc-label">💰 Fiyat Aralığı</div><div class="mc-val">$'+d.fiyat_min+'-'+d.fiyat_max+'</div><div class="mc-sub">İdeal: $'+d.ideal_satis_fiyati+'</div></div>'
+    +'<div class="mc"><div class="mc-label">📦 Tahmini Kâr</div><div class="mc-val">~$'+profit+'</div><div class="mc-sub">Satış başına (est.)</div></div>'
+    +'<div class="mc"><div class="mc-label">⚔️ Rekabet</div><div class="mc-val">'+d.rekabet_seviyesi+'</div><div class="mc-sub">Pazar: '+d.pazar_buyuklugu+'</div></div>'
+    +'</div>'
+
+    // Skor barları
+    +'<div class="detail-section">'
+    +'<div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Ürün Skorları</div></div>'
+    +'<div class="ds-body">'
+    +'<div class="score-bars">'
+    +scoreBar('Kâr Marjı',d['kâr_marji_skoru']||d.kar_marji_skoru||5,'#22c55e')
+    +scoreBar('Viral Potansiyel',d.viral_potansiyel||5,'#facc15')
+    +scoreBar('Talep',d.talep_skoru||5,'#38bdf8')
+    +scoreBar('Rekabet (düşük=iyi)',10-(d.rekabet_skoru||5),'#a78bfa')
+    +'</div>'
+    +'</div></div>'
+
+    // Hedef Kitle
+    +'<div class="detail-section">'
+    +'<div class="ds-header"><span class="ds-icon">🎯</span><div class="ds-title">Hedef Kitle</div></div>'
+    +'<div class="ds-body"><p><strong>'+d.hedef_kitle+'</strong><br>'+d.hedef_kitle_detay+'</p></div>'
+    +'</div>'
+
+    // Hook önerileri
+    +'<div class="detail-section">'
+    +'<div class="ds-header"><span class="ds-icon">🎬</span><div class="ds-title">Reklam Hook Önerileri</div><span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px;margin-left:auto">Kopyalamak için tıkla</span></div>'
+    +'<div class="ds-body">'
+    +'<div class="hook-list">'
+    +hookItem(d.hook1)
+    +hookItem(d.hook2)
+    +hookItem(d.hook3)
+    +'</div></div></div>'
+
+    // Rakip notu
+    +'<div class="detail-section">'
+    +'<div class="ds-header"><span class="ds-icon">🏆</span><div class="ds-title">Rakip Analizi & Strateji</div></div>'
+    +'<div class="ds-body">'
+    +'<div class="competitor-wrap">'
+    +'<div class="comp-item"><div class="comp-dot pos"></div><span>'+d.firsat+'</span></div>'
+    +'<div class="comp-item"><div class="comp-dot neg"></div><span>'+d.uyari+'</span></div>'
+    +'<div class="comp-item"><div class="comp-dot neu"></div><span>'+d.rakip_notu+'</span></div>'
+    +'</div></div></div>'
+
+    // Aksiyonlar
+    +'<div class="report-actions">'
+    +'<button class="ra-btn primary" onclick="copyReport()">📋 Raporu Kopyala</button>'
+    +'<button class="ra-btn" onclick="clearAnaliz()">↺ Yeni Analiz</button>'
+    +'</div>';
+
+  wrap.innerHTML=html;
+
+  // Hook tıklama
+  wrap.querySelectorAll('.hook-item').forEach(function(el){
+    el.addEventListener('click',function(){
+      var txt=el.querySelector('.hook-text').textContent;
+      navigator.clipboard.writeText(txt).then(function(){
+        el.querySelector('.hook-copy').textContent='✓ Kopyalandı';
+        setTimeout(function(){el.querySelector('.hook-copy').textContent='Kopyala';},2000);
+      });
+    });
+  });
+}
+
+function scoreBar(label,val,color){
+  val=Math.max(0,Math.min(10,val||0));
+  var pct=val*10;
+  return '<div class="score-row">'
+    +'<span class="score-label">'+label+'</span>'
+    +'<div class="score-bar-wrap"><div class="score-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div>'
+    +'<span class="score-val">'+val+'/10</span>'
+    +'</div>';
+}
+
+function hookItem(txt){
+  if(!txt)return'';
+  return '<div class="hook-item"><span class="hook-text">'+txt+'</span><span class="hook-copy">Kopyala</span></div>';
+}
+
+function renderRawReport(txt,input){
+  var wrap=document.getElementById('analiz-report');
+  wrap.style.display='flex';
+  wrap.innerHTML='<div class="detail-section"><div class="ds-header"><span class="ds-icon">📋</span><div class="ds-title">AI Analizi — '+input+'</div></div><div class="ds-body"><p style="white-space:pre-wrap">'+txt+'</p></div></div><div class="report-actions"><button class="ra-btn" onclick="clearAnaliz()">↺ Yeni Analiz</button></div>';
+}
+
+function clearAnaliz(){
+  document.getElementById('analiz-input').value='';
+  document.getElementById('analiz-report').style.display='none';
+  document.getElementById('analiz-report').innerHTML='';
+}
+
+function copyReport(){
+  var wrap=document.getElementById('analiz-report');
+  var txt=wrap.innerText||wrap.textContent;
+  navigator.clipboard.writeText(txt).then(function(){showToast('✓ Rapor kopyalandı','green');});
+}
+
+// ── NİŞ → ÜRÜN ──
+function doNis(){
+  if(selectedNis===null){showToast('Bir niş seç');return;}
+  var nis=NIŞLER[selectedNis];
+  var btn=document.getElementById('nis-btn');btn.disabled=true;
+  document.getElementById('nis-loading').style.display='block';
+  document.getElementById('nis-report').style.display='none';
+  document.getElementById('nis-report').innerHTML='';
+
+  fetch(EDGE_FN,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY},
+    body:JSON.stringify({
+      tool:'analyze',
+      urun:nis.n+' nişi için Shopify dropshipping ürün önerileri',
+      prompt:'Sen bir Shopify dropshipping uzmanısın. '+nis.n+' nişi için 4 adet kazanan ürün öner. JSON formatında yanıt ver, başka hiçbir şey yazma. Format: {"oneriler":[{"urun_adi":"string","neden_kazanir":"string","fiyat_aralik":"string","viral_potansiyel":number(1-10),"rekabet":"DÜŞÜK"|"ORTA"|"YÜKSEK","tag1":"string","tag2":"string"},...]}'
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    document.getElementById('nis-loading').style.display='none';
+    btn.disabled=false;
+    var raw=data.sonuc||data.result||'';
+    var parsed=null;
+    try{var m=raw.match(/\{[\s\S]*\}/);if(m)parsed=JSON.parse(m[0]);}catch(e){}
+    if(parsed&&parsed.oneriler){renderNisReport(parsed.oneriler,nis);}
+    else{renderNisReport(getDemoNis(nis.n),nis);}
+  })
+  .catch(function(){
+    document.getElementById('nis-loading').style.display='none';
+    btn.disabled=false;
+    renderNisReport(getDemoNis(nis.n),nis);
+  });
+}
+
+function getDemoNis(nisAdi){
+  return [
+    {urun_adi:nisAdi+' Özel Ürün 1',neden_kazanir:'Yüksek viral potansiyeli olan, problem çözen bir ürün.',fiyat_aralik:'$15-35',viral_potansiyel:8,rekabet:'DÜŞÜK',tag1:'Problem Çözücü',tag2:'Viral'},
+    {urun_adi:nisAdi+' Özel Ürün 2',neden_kazanir:'Geniş hedef kitlesi olan ve tekrar satın alınan bir ürün.',fiyat_aralik:'$20-45',viral_potansiyel:7,rekabet:'ORTA',tag1:'Tekrar Satın Alma',tag2:'Geniş Kitle'},
+    {urun_adi:nisAdi+' Özel Ürün 3',neden_kazanir:'Nişe özel, Amazon\'da çok satılan bir ürün kategorisi.',fiyat_aralik:'$25-55',viral_potansiyel:6,rekabet:'ORTA',tag1:'Amazon Bestseller',tag2:'Kaliteli'},
+    {urun_adi:nisAdi+' Özel Ürün 4',neden_kazanir:'Mevsimsel talep artışı gösteren, hediye potansiyeli yüksek ürün.',fiyat_aralik:'$10-25',viral_potansiyel:9,rekabet:'DÜŞÜK',tag1:'Hediye',tag2:'Mevsimsel'}
+  ];
+}
+
+function renderNisReport(oneriler,nis){
+  var wrap=document.getElementById('nis-report');
+  wrap.style.display='flex';
+  var html='<div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:4px">'+nis.e+' '+nis.n+' nişi için öneriler</div>';
+  html+='<div class="suggestions-grid">';
+  oneriler.forEach(function(o,i){
+    var rTag=o.rekabet==='DÜŞÜK'?'green':o.rekabet==='YÜKSEK'?'red':'';
+    html+='<div class="suggestion-card" id="sc-'+i+'">'
+      +'<div class="sc-num">Öneri '+(i+1).toString().padStart(2,'0')</div>'
+      +'<div class="sc-product">'+o.urun_adi+'</div>'
+      +'<div class="sc-why">'+o.neden_kazanir+'</div>'
+      +'<div class="sc-tags">'
+      +'<span class="sc-tag">'+o.fiyat_aralik+'</span>'
+      +'<span class="sc-tag">Viral: '+o.viral_potansiyel+'/10</span>'
+      +'<span class="sc-tag '+rTag+'">Rekabet: '+o.rekabet+'</span>'
+      +(o.tag1?'<span class="sc-tag">'+o.tag1+'</span>':'')
+      +(o.tag2?'<span class="sc-tag">'+o.tag2+'</span>':'')
+      +'</div>'
+      +'<button class="sc-analyze-btn" onclick="analyzeFromSuggestion(\''+o.urun_adi+'\')">🔍 Tam Analiz Al →</button>'
+      +'</div>';
+  });
+  html+='</div>';
+  html+='<div class="report-actions"><button class="ra-btn" onclick="clearNis()">↺ Farklı Niş</button></div>';
+  wrap.innerHTML=html;
+}
+
+function analyzeFromSuggestion(urunAdi){
+  // Analiz tabına geç
+  switchTab('analiz',document.querySelector('.tab'));
+  document.getElementById('analiz-input').value=urunAdi;
+  document.querySelectorAll('.tab')[0].classList.add('active');
+  document.querySelectorAll('.tab')[1].classList.remove('active');
+  setTimeout(function(){doAnaliz();},300);
+}
+
+function clearNis(){
+  selectedNis=null;renderNisGrid();
+  document.getElementById('nis-report').style.display='none';
+  document.getElementById('nis-report').innerHTML='';
+}
+
+// ── GEÇMİŞ ──
+function saveHistory(input,karar,data){
+  var entry={input:input,karar:karar,date:new Date().toISOString().slice(0,10),data:data};
+  history_data.unshift(entry);
+  if(history_data.length>20)history_data=history_data.slice(0,20);
+  try{localStorage.setItem('mlynr_urun_history',JSON.stringify(history_data));}catch(e){}
+  renderHistory();
+}
+
+function renderHistory(){
+  var sec=document.getElementById('history-section');
+  var list=document.getElementById('history-list');
+  if(!history_data||history_data.length===0){sec.style.display='none';return;}
+  sec.style.display='block';list.innerHTML='';
+  history_data.slice(0,8).forEach(function(h,i){
+    var cls=h.karar==='SAT'?'sat':h.karar==='SATMA'?'satma':'dikkat';
+    var div=document.createElement('div');div.className='history-item';
+    div.innerHTML='<div class="hi-decision '+cls+'"></div><span class="hi-name">'+h.input+'</span><span class="hi-date">'+h.date+'</span>';
+    div.addEventListener('click',function(){
+      document.getElementById('analiz-input').value=h.input;
+      window.scrollTo({top:0,behavior:'smooth'});
+      if(h.data){
+        document.getElementById('analiz-report').style.display='flex';
+        renderAnalyzReport(h.data,h.input);
+      }
+    });
+    list.appendChild(div);
+  });
+}
+renderHistory();
+
+// ── ENTER TUŞ ──
+document.getElementById('analiz-input').addEventListener('keydown',function(e){if(e.key==='Enter')doAnaliz();});
+
+// ── TOAST ──
+var _tt;
+function showToast(m,cls){
+  var t=document.getElementById('toast');t.textContent=m;
+  t.className='toast'+(cls?' '+cls:'')+' show';
+  clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);
+}
+</script>
+</body>
+</html>
