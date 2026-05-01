@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MLYNR. — İçerik Stüdyosu</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+  --bg:#080808;--surface:#111;--surface2:#161616;--surface3:#1c1c1c;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --text:#f0f0f0;--text2:#888;--text3:#444;--white:#fff;
+  --purple:#a78bfa;--purple-ln:rgba(167,139,250,.25);--purple-dim:rgba(167,139,250,.06);
+  --green:#22c55e;--green-ln:rgba(34,197,94,.2);--green-dim:rgba(34,197,94,.05);
+  --gold:#facc15;--gold-ln:rgba(250,204,21,.2);--gold-dim:rgba(250,204,21,.05);
+  --blue:#38bdf8;--blue-ln:rgba(56,189,248,.2);--blue-dim:rgba(56,189,248,.05);
+  --r:14px;
+}
+body.light-mode{
+  --bg:#f7f7f5;--surface:#fff;--surface2:#f0f0ed;--surface3:#e8e8e5;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.13);
+  --text:#111;--text2:#555;--text3:#999;--white:#111;
+  --purple:#7c3aed;--purple-ln:rgba(124,58,237,.2);--purple-dim:rgba(124,58,237,.06);
+  --green:#16a34a;--green-ln:rgba(22,163,74,.2);--green-dim:rgba(22,163,74,.07);
+  --gold:#92400e;--gold-ln:rgba(146,64,14,.18);--gold-dim:rgba(146,64,14,.05);
+  --blue:#0284c7;--blue-ln:rgba(2,132,199,.2);--blue-dim:rgba(2,132,199,.05);
+}
+body.light-mode .bg-grid{background-image:linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px)}
+body.light-mode .bg-glow{background:none}
+body.light-mode .topbar{background:rgba(247,247,245,.92);border-color:rgba(0,0,0,.08)}
+body.light-mode .tab-bar{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .tab-btn.active{background:#f0f0ed;color:#111}
+body.light-mode .tab-btn{color:#999}
+body.light-mode .input-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .ic-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .ic-input::placeholder{color:#bbb}
+body.light-mode .platform-btn{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.08);color:#555}
+body.light-mode .platform-btn.sel{background:var(--purple-dim);border-color:var(--purple-ln);color:var(--purple)}
+body.light-mode .result-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .format-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .format-card:hover{border-color:rgba(0,0,0,.16)}
+body.light-mode .format-card.selected{background:var(--purple-dim);border-color:var(--purple-ln)}
+body.light-mode .script-block{background:#f7f7f5;border-color:rgba(0,0,0,.07)}
+body.light-mode .cal-day{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:48px 48px}
+.bg-glow{position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse,rgba(167,139,250,.04),transparent 70%);pointer-events:none;z-index:0}
+
+.topbar{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(8,8,8,.9);border-bottom:1px solid var(--border);padding:0 clamp(16px,4vw,40px)}
+.topbar-inner{max-width:860px;margin:0 auto;height:52px;display:flex;align-items:center;gap:16px}
+.tl{font-size:11px;font-weight:900;letter-spacing:4px;color:var(--white)}
+.tl-sep{font-size:11px;color:var(--text3)}
+.tl-page{font-size:11px;color:var(--text2);font-family:var(--mono)}
+.back-link{margin-left:auto;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s}
+.back-link:hover{color:var(--text2)}
+
+/* HERO */
+.hero{padding:clamp(40px,7vw,64px) clamp(20px,5vw,48px) 0;max-width:860px;margin:0 auto;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:16px}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-size:clamp(36px,7vw,72px);font-weight:900;letter-spacing:-3px;line-height:.9;color:var(--white);margin-bottom:10px}
+.hero-title span{color:var(--purple)}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.7;max-width:480px;margin-bottom:0}
+
+/* TAB BAR */
+.tab-wrap{max-width:860px;margin:0 auto;padding:clamp(24px,4vw,40px) clamp(20px,5vw,48px) 0;position:relative;z-index:1}
+.tab-bar{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;width:fit-content;margin-bottom:24px}
+.tab-btn{padding:9px 20px;border-radius:9px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);cursor:pointer;transition:all .2s;user-select:none;border:none;background:transparent}
+.tab-btn:hover{color:var(--text2)}
+.tab-btn.active{background:var(--surface2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.4)}
+
+/* INPUT CARD */
+.input-card{background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:22px 24px;margin-bottom:14px;position:relative;overflow:hidden}
+.input-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--purple-ln),transparent)}
+.ic-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:block}
+.ic-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:15px;padding:13px 16px;outline:none;transition:border-color .2s}
+.ic-input:focus{border-color:var(--purple-ln);box-shadow:0 0 0 3px rgba(167,139,250,.06)}
+.ic-input::placeholder{color:var(--text3)}
+.ic-hint{font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6}
+
+/* PLATFORM SEÇİMİ */
+.platform-grid{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;margin-bottom:4px}
+.platform-btn{padding:8px 16px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-size:12px;cursor:pointer;transition:all .2s;user-select:none;display:flex;align-items:center;gap:6px}
+.platform-btn:hover{border-color:rgba(255,255,255,.18);color:var(--text)}
+.platform-btn.sel{background:var(--purple-dim);border-color:var(--purple-ln);color:var(--purple)}
+
+/* ACTION BUTTONS */
+.action-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.primary-btn{display:flex;align-items:center;gap:8px;background:var(--purple);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:13px 24px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
+.primary-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(167,139,250,.35)}
+.primary-btn:disabled{background:var(--surface2);color:var(--text3);cursor:not-allowed;transform:none;box-shadow:none}
+.secondary-btn{background:transparent;border:1px solid var(--border);border-radius:10px;color:var(--text3);font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:13px 18px;cursor:pointer;transition:all .2s}
+.secondary-btn:hover{border-color:var(--border2);color:var(--text2)}
+
+/* LOADING */
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 20px;gap:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:28px;height:28px;border:2px solid var(--border2);border-top-color:var(--purple);border-radius:50%;animation:spin .7s linear infinite}
+.loading-txt{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+
+/* RESULT AREA */
+.result-area{display:none;flex-direction:column;gap:12px;animation:slideUp .4s cubic-bezier(.34,1.2,.64,1)}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* RESULT CARD */
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.rc-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.rc-icon{font-size:16px}
+.rc-title{font-size:13px;font-weight:700;color:var(--text)}
+.rc-body{padding:16px 20px}
+
+/* FORMAT KARTLARI */
+.formats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.format-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;cursor:pointer;transition:all .2s;position:relative}
+.format-card:hover{border-color:rgba(255,255,255,.18);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.4)}
+.format-card.selected{background:var(--purple-dim);border-color:var(--purple-ln)}
+.fc-emoji{font-size:20px;margin-bottom:8px}
+.fc-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.fc-why{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:10px}
+.fc-score{display:flex;align-items:center;gap:8px}
+.fc-score-label{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
+.fc-bar{flex:1;height:3px;background:var(--border2);border-radius:99px;overflow:hidden}
+.fc-bar-fill{height:100%;border-radius:99px;background:var(--purple)}
+.fc-score-val{font-family:var(--mono);font-size:9px;color:var(--text2)}
+.fc-badge{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:3px 8px;border-radius:20px;border:1px solid var(--purple-ln);color:var(--purple);background:var(--purple-dim)}
+.use-format-btn{margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding:7px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:transparent;transition:all .2s}
+.use-format-btn:hover{border-color:var(--purple-ln);color:var(--purple)}
+
+/* SCRIPT BÖLÜMLERI */
+.script-sections{display:flex;flex-direction:column;gap:10px}
+.script-block{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative}
+.sb-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.sb-time{background:var(--surface3);padding:2px 8px;border-radius:4px;color:var(--text3);font-size:8px}
+.sb-text{font-size:13px;color:var(--text2);line-height:1.7;white-space:pre-wrap}
+.sb-copy{position:absolute;top:12px;right:12px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text3);font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:4px 10px;cursor:pointer;transition:all .2s}
+.sb-copy:hover{border-color:var(--purple-ln);color:var(--purple)}
+
+/* TAKVİM */
+.calendar-grid{display:flex;flex-direction:column;gap:8px}
+.cal-day{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start}
+.cal-day-num{font-size:28px;font-weight:900;letter-spacing:-2px;color:var(--border2);flex-shrink:0;line-height:1;min-width:36px}
+.cal-day.active .cal-day-num{color:var(--purple)}
+.cal-day-body{flex:1}
+.cal-day-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.cal-day-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.cal-day-desc{font-size:12px;color:var(--text2);line-height:1.6}
+.cal-day-format{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:3px 10px;border-radius:20px;border:1px solid var(--border2);color:var(--text3);margin-top:8px}
+
+/* TIPS */
+.tips-list{display:flex;flex-direction:column;gap:8px}
+.tip-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:12px;color:var(--text2);line-height:1.6}
+.tip-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;margin-top:5px}
+
+/* COPY ALL */
+.copy-all-btn{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:1px solid var(--border2);background:transparent;color:var(--text3)}
+.copy-all-btn:hover{border-color:var(--purple-ln);color:var(--purple)}
+.copy-all-btn.primary-copy{background:var(--purple);color:#fff;border-color:transparent}
+.copy-all-btn.primary-copy:hover{box-shadow:0 6px 20px rgba(167,139,250,.3);transform:translateY(-1px)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;color:var(--text);z-index:9100;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.green{border-color:var(--green-ln);color:var(--green)}
+.toast.purple{border-color:var(--purple-ln);color:var(--purple)}
+
+footer{border-top:1px solid var(--border);padding:40px clamp(20px,5vw,48px);text-align:center;position:relative;z-index:1;margin-top:40px}
+footer p{font-size:12px;color:var(--text3)}
+
+@media(max-width:640px){
+  .formats-grid{grid-template-columns:1fr}
+  .platform-grid{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <div class="tl">MLYNR.</div>
+    <div class="tl-sep">/</div>
+    <div class="tl-page">İçerik Stüdyosu</div>
+    <a href="https://mlynrplan.com/shopify_portal.html" class="back-link">← Portala Dön</a>
+    <button id="theme-toggle" onclick="toggleTheme()" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:14px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;margin-left:8px">☀️</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge"><div class="hero-dot"></div>Organik Pazarlama · AI Destekli</div>
+  <div class="hero-title">İÇERİK<br><span>STÜDYOSU</span></div>
+  <p class="hero-sub">Ürününü gir, AI viral format analizi yapsın, hook & script yazsın, haftalık içerik takvimi çıkarsın.</p>
+</div>
+
+<div class="tab-wrap">
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('format',this)">📊 Format Analizi</button>
+    <button class="tab-btn" onclick="switchTab('script',this)">✍️ Hook & Script</button>
+    <button class="tab-btn" onclick="switchTab('takvim',this)">📅 İçerik Takvimi</button>
+  </div>
+
+  <!-- ====== FORMAT ANALİZİ ====== -->
+  <div id="tab-format">
+    <div class="input-card">
+      <span class="ic-label">Ürününüz</span>
+      <input class="ic-input" id="format-input" type="text" placeholder="Örn: Postür düzelticisi, köpek tasması, mutfak gadget...">
+      <div class="ic-hint">Ürün adı yeterli. AI hangi video formatının senin ürünün için en iyi çalışacağını analiz edecek.</div>
+      <div class="action-row">
+        <button class="primary-btn" id="format-btn" onclick="doFormat()">📊 Format Analizi Yap</button>
+        <button class="secondary-btn" onclick="clearFormat()">Temizle</button>
+      </div>
+    </div>
+    <div id="format-loading" style="display:none"><div class="loading-wrap"><div class="spinner"></div><div class="loading-txt">Formatlar analiz ediliyor...</div></div></div>
+    <div id="format-result" class="result-area"></div>
+  </div>
+
+  <!-- ====== HOOK & SCRIPT ====== -->
+  <div id="tab-script" style="display:none">
+    <div class="input-card">
+      <span class="ic-label">Ürün & Format</span>
+      <input class="ic-input" id="script-input" type="text" placeholder="Örn: Postür düzelticisi · Problem-Çözüm formatı">
+      <div style="margin-top:14px">
+        <div class="ic-label">Platform</div>
+        <div class="platform-grid" id="platform-grid">
+          <div class="platform-btn sel" onclick="selPlatform(this,'tiktok')">🎵 TikTok / Reels</div>
+          <div class="platform-btn" onclick="selPlatform(this,'youtube')">▶️ YouTube Shorts</div>
+          <div class="platform-btn" onclick="selPlatform(this,'instagram')">📸 Instagram</div>
+        </div>
+      </div>
+      <div class="ic-hint" style="margin-top:10px">Format analizinden bir format seçip buraya taşıyabilirsin, ya da direkt yaz.</div>
+      <div class="action-row">
+        <button class="primary-btn" id="script-btn" onclick="doScript()">✍️ Script Yaz</button>
+        <button class="secondary-btn" onclick="clearScript()">Temizle</button>
+      </div>
+    </div>
+    <div id="script-loading" style="display:none"><div class="loading-wrap"><div class="spinner"></div><div class="loading-txt">Script yazılıyor...</div></div></div>
+    <div id="script-result" class="result-area"></div>
+  </div>
+
+  <!-- ====== TAKVİM ====== -->
+  <div id="tab-takvim" style="display:none">
+    <div class="input-card">
+      <span class="ic-label">Ürün & Hedef</span>
+      <input class="ic-input" id="takvim-input" type="text" placeholder="Örn: Postür düzelticisi · Haftada 3 video · TikTok+Reels">
+      <div class="ic-hint" style="margin-top:8px">Haftalık içerik planı: hangi gün ne çekeceğini, hangi formatı kullanacağını, hook fikirlerini verir.</div>
+      <div class="action-row">
+        <button class="primary-btn" id="takvim-btn" onclick="doTakvim()">📅 Plan Oluştur</button>
+        <button class="secondary-btn" onclick="clearTakvim()">Temizle</button>
+      </div>
+    </div>
+    <div id="takvim-loading" style="display:none"><div class="loading-wrap"><div class="spinner"></div><div class="loading-txt">Haftalık plan oluşturuluyor...</div></div></div>
+    <div id="takvim-result" class="result-area"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <p>MLYNR. İçerik Stüdyosu · <a href="https://mlynrplan.com/shopify_portal.html" style="color:var(--text2);text-decoration:none">Portala Dön</a></p>
+</footer>
+
+<script>
+var API_URL='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/shopify-endpoint';
+var API_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
+var selectedPlatform='tiktok';
+
+// Sağlam AI çağrısı
+function callAI(prompt, onSuccess, onError) {
+  fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + API_KEY, 'apikey': API_KEY },
+    body: JSON.stringify({ prompt: prompt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var raw = '';
+    if (typeof data.sonuc === 'string') raw = data.sonuc;
+    else if (typeof data.reply === 'string') raw = data.reply;
+    else if (typeof data.message === 'string') raw = data.message;
+    else if (data.sonuc && typeof data.sonuc === 'object') { onSuccess(data.sonuc); return; }
+    else raw = JSON.stringify(data);
+
+    raw = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+    var parsed = null;
+    try { parsed = JSON.parse(raw); } catch(e) {}
+    if (!parsed) { try { var m = raw.match(/\{[\s\S]*\}/); if (m) parsed = JSON.parse(m[0]); } catch(e) {} }
+    if (parsed) onSuccess(parsed);
+    else onError(raw || 'Yanıt alınamadı.');
+  })
+  .catch(function(e) { onError(e.message || 'Bağlantı hatası'); });
+}
+
+// TAB
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab-btn').forEach(function(t) { t.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  ['format','script','takvim'].forEach(function(t) {
+    document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+  });
+}
+
+// PLATFORM
+function selPlatform(el, val) {
+  document.querySelectorAll('.platform-btn').forEach(function(b) { b.classList.remove('sel'); });
+  el.classList.add('sel');
+  selectedPlatform = val;
+}
+
+// ====== FORMAT ANALİZİ ======
+function doFormat() {
+  var input = document.getElementById('format-input').value.trim();
+  if (!input) { showToast('Ürün adı gir'); return; }
+  var btn = document.getElementById('format-btn');
+  var loading = document.getElementById('format-loading');
+  var result = document.getElementById('format-result');
+  btn.disabled = true;
+  loading.style.display = 'block';
+  result.style.display = 'none';
+  result.innerHTML = '';
+
+  var prompt = 'Shopify dropshipping urun icin organik video icerik format analizi yap. Urun: ' + input + '\n\nMeta ve TikTok 2025 algoritmasi: orijinal icerigi odul veriyor, calinan video icerigi kesfete dusurulmuyor. Bu yuzden orijinal cekime uygun formatlar oncelikli.\n\nSADECE JSON yaz:\n{"formats":[{"isim":"format adi","emoji":"emoji","neden_calisir":"Turkce 1-2 cumle","viral_skoru":9,"cekimi_kolay":8,"satis_etkisi":7,"en_iyi_platform":"TikTok/Reels","ornek_hook":"Turkce ornek hook","rozet":"EN IYI"},{"isim":"format2","emoji":"emoji","neden_calisir":"...","viral_skoru":8,"cekimi_kolay":7,"satis_etkisi":9,"en_iyi_platform":"Reels","ornek_hook":"...","rozet":""},{"isim":"format3","emoji":"emoji","neden_calisir":"...","viral_skoru":7,"cekimi_kolay":9,"satis_etkisi":8,"en_iyi_platform":"TikTok","ornek_hook":"...","rozet":""},{"isim":"format4","emoji":"emoji","neden_calisir":"...","viral_skoru":6,"cekimi_kolay":8,"satis_etkisi":7,"en_iyi_platform":"Reels","ornek_hook":"...","rozet":""}],"genel_ipucu":"Bu urun icin 1-2 cumle genel strateji tavsiyesi"}';
+
+  callAI(prompt,
+    function(parsed) {
+      loading.style.display = 'none';
+      btn.disabled = false;
+      if (parsed.formats && parsed.formats.length) renderFormat(parsed, input);
+      else { result.style.display = 'flex'; result.innerHTML = '<div class="result-card"><div class="rc-body"><p style="color:var(--text2);font-size:13px">Format analizi yapılamadı, tekrar dene.</p></div></div>'; }
+    },
+    function(txt) {
+      loading.style.display = 'none';
+      btn.disabled = false;
+      result.style.display = 'flex';
+      result.innerHTML = '<div class="result-card"><div class="rc-body"><p style="color:var(--text2);font-size:13px;white-space:pre-wrap">' + (txt||'Hata oluştu.') + '</p></div></div>';
+    }
+  );
+}
+
+function renderFormat(data, inputTxt) {
+  var result = document.getElementById('format-result');
+  result.style.display = 'flex';
+  var h = '';
+
+  // Genel ipucu
+  if (data.genel_ipucu) {
+    h += '<div class="result-card"><div class="rc-header"><span class="rc-icon">💡</span><div class="rc-title">Strateji Tavsiyesi</div></div><div class="rc-body"><p style="font-size:13px;color:var(--text2);line-height:1.7">' + data.genel_ipucu + '</p></div></div>';
+  }
+
+  // Format kartları
+  h += '<div class="result-card"><div class="rc-header"><span class="rc-icon">📊</span><div class="rc-title">En İyi Formatlar — ' + inputTxt + '</div></div><div class="rc-body"><div class="formats-grid">';
+  data.formats.forEach(function(f, i) {
+    var v = Math.max(0, Math.min(10, f.viral_skoru || 5));
+    h += '<div class="format-card" id="fc-' + i + '">';
+    if (f.rozet) h += '<div class="fc-badge">' + f.rozet + '</div>';
+    h += '<div class="fc-emoji">' + (f.emoji || '🎬') + '</div>';
+    h += '<div class="fc-name">' + (f.isim || '') + '</div>';
+    h += '<div class="fc-why">' + (f.neden_calisir || '') + '</div>';
+    h += '<div class="fc-score"><span class="fc-score-label">Viral</span><div class="fc-bar"><div class="fc-bar-fill" style="width:' + (v*10) + '%"></div></div><span class="fc-score-val">' + v + '/10</span></div>';
+    if (f.en_iyi_platform) h += '<div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text3);margin-top:8px">📍 ' + f.en_iyi_platform + '</div>';
+    if (f.ornek_hook) h += '<div style="margin-top:10px;padding:10px 12px;background:var(--surface3);border-radius:8px;font-size:11px;color:var(--text2);line-height:1.5;border-left:2px solid var(--purple)"><span style="font-family:var(--mono);font-size:8px;color:var(--text3);display:block;margin-bottom:4px">ÖRNEK HOOK</span>' + f.ornek_hook + '</div>';
+    var urunFormat = (inputTxt + ' · ' + (f.isim || '')).replace(/"/g, '&quot;');
+    h += '<button class="use-format-btn" data-val="' + urunFormat + '" onclick="useFormat(this)">Bu formatı kullan →</button>';
+    h += '</div>';
+  });
+  h += '</div></div></div>';
+  h += '<div style="display:flex;gap:8px"><button class="secondary-btn" onclick="clearFormat()">↺ Yeni Analiz</button></div>';
+  result.innerHTML = h;
+}
+
+function useFormat(btn) {
+  var val = btn.getAttribute('data-val');
+  document.getElementById('script-input').value = val;
+  switchTab('script', document.querySelectorAll('.tab-btn')[1]);
+  showToast('✓ Script tabına taşındı', 'purple');
+}
+
+function clearFormat() {
+  document.getElementById('format-input').value = '';
+  var r = document.getElementById('format-result');
+  r.style.display = 'none'; r.innerHTML = '';
+}
+
+// ====== HOOK & SCRIPT ======
+function doScript() {
+  var input = document.getElementById('script-input').value.trim();
+  if (!input) { showToast('Ürün ve format gir'); return; }
+  var btn = document.getElementById('script-btn');
+  var loading = document.getElementById('script-loading');
+  var result = document.getElementById('script-result');
+  btn.disabled = true;
+  loading.style.display = 'block';
+  result.style.display = 'none';
+  result.innerHTML = '';
+
+  var platformMap = { tiktok: 'TikTok/Reels (15-30 sn)', youtube: 'YouTube Shorts (60 sn)', instagram: 'Instagram Reels (15-30 sn)' };
+  var platLabel = platformMap[selectedPlatform] || 'TikTok/Reels';
+
+  var prompt = 'Shopify dropshipping icin organik video script yaz. Urun/Format: ' + input + '. Platform: ' + platLabel + '.\n\nOnemli: Meta 2025 guncellemesi - calinan video icerigi artik kesfete dusurulmuyor. Orijinal cekim icerigi sart. Scriptler kendi cekilebilecek, yuz gostermeye gerek olmayan, basit ama etkili videolar icin olmali.\n\nSADECE JSON yaz:\n{"hook_secenekleri":["hook 1 Turkce","hook 2 Turkce","hook 3 Turkce"],"script":{"opening":"0-3 saniye - dikkat cekici acilis Turkce","problem":"3-8 saniye - problemi goster","cozum":"8-18 saniye - urun cozumu","cta":"18-30 saniye - harekete gecirici Turkce"},"cekim_ipuclari":["ipucu 1","ipucu 2","ipucu 3"],"caption":"Turkce caption onerisi hashtag ile"}';
+
+  callAI(prompt,
+    function(parsed) {
+      loading.style.display = 'none';
+      btn.disabled = false;
+      renderScript(parsed, input);
+    },
+    function(txt) {
+      loading.style.display = 'none';
+      btn.disabled = false;
+      result.style.display = 'flex';
+      result.innerHTML = '<div class="result-card"><div class="rc-body"><p style="color:var(--text2);font-size:13px;white-space:pre-wrap">' + (txt||'Hata oluştu.') + '</p></div></div>';
+    }
+  );
+}
+
+function renderScript(data, inputTxt) {
+  var result = document.getElementById('script-result');
+  result.style.display = 'flex';
+  var h = '';
+
+  // Hooklar
+  if (data.hook_secenekleri && data.hook_secenekleri.length) {
+    h += '<div class="result-card"><div class="rc-header"><span class="rc-icon">🎣</span><div class="rc-title">Hook Seçenekleri</div><span style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:auto">Tıkla → Kopyala</span></div><div class="rc-body"><div style="display:flex;flex-direction:column;gap:8px">';
+    data.hook_secenekleri.forEach(function(hk, i) {
+      h += '<div style="padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-size:13px;color:var(--text2);line-height:1.6;cursor:pointer;transition:all .2s;position:relative" onclick="copyText(this,\'' + hk.replace(/'/g, "\\'") + '\')" onmouseover="this.style.borderColor=\'rgba(167,139,250,.3)\'" onmouseout="this.style.borderColor=\'\'"><span style="font-family:var(--mono);font-size:8px;color:var(--text3);margin-right:8px">0' + (i+1) + '</span>' + hk + '<span style="position:absolute;top:10px;right:12px;font-size:9px;color:var(--text3);font-family:var(--mono)">Kopyala</span></div>';
+    });
+    h += '</div></div></div>';
+  }
+
+  // Script
+  if (data.script) {
+    var s = data.script;
+    h += '<div class="result-card"><div class="rc-header"><span class="rc-icon">📝</span><div class="rc-title">Video Script</div></div><div class="rc-body"><div class="script-sections">';
+    var parts = [
+      { label: 'OPENING — HOOK', time: '0–3 sn', text: s.opening },
+      { label: 'PROBLEM', time: '3–8 sn', text: s.problem },
+      { label: 'ÇÖZÜM', time: '8–18 sn', text: s.cozum },
+      { label: 'CTA', time: '18–30 sn', text: s.cta }
+    ];
+    parts.forEach(function(p) {
+      if (p.text) {
+        h += '<div class="script-block"><div class="sb-label">' + p.label + '<span class="sb-time">' + p.time + '</span></div><div class="sb-text">' + p.text + '</div><button class="sb-copy" onclick="copyText(null,\'' + p.text.replace(/'/g,"\\'").replace(/\n/g,' ') + '\')">Kopyala</button></div>';
+      }
+    });
+    h += '</div></div></div>';
+  }
+
+  // Çekim ipuçları
+  if (data.cekim_ipuclari && data.cekim_ipuclari.length) {
+    h += '<div class="result-card"><div class="rc-header"><span class="rc-icon">📱</span><div class="rc-title">Çekim İpuçları</div></div><div class="rc-body"><div class="tips-list">';
+    data.cekim_ipuclari.forEach(function(tip) {
+      h += '<div class="tip-item"><div class="tip-dot"></div><span>' + tip + '</span></div>';
+    });
+    h += '</div></div></div>';
+  }
+
+  // Caption
+  if (data.caption) {
+    h += '<div class="result-card"><div class="rc-header"><span class="rc-icon">✍️</span><div class="rc-title">Caption Önerisi</div></div><div class="rc-body"><div style="padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-size:13px;color:var(--text2);line-height:1.7;cursor:pointer" onclick="copyText(this,\'' + data.caption.replace(/'/g,"\\'") + '\')">' + data.caption + '</div></div></div>';
+  }
+
+  // Copy all + reset
+  h += '<div style="display:flex;gap:8px"><button class="copy-all-btn primary-copy" onclick="copyAllScript()">📋 Tüm Scripti Kopyala</button><button class="secondary-btn" onclick="clearScript()">↺ Yeni Script</button></div>';
+  result.innerHTML = h;
+}
+
+function copyText(el, txt) {
+  navigator.clipboard.writeText(txt).then(function() { showToast('✓ Kopyalandı', 'purple'); });
+}
+
+function copyAllScript() {
+  var r = document.getElementById('script-result');
+  if (r) navigator.clipboard.writeText(r.innerText || r.textContent).then(function() { showToast('✓ Script kopyalandı', 'purple'); });
+}
+
+function clearScript() {
+  document.getElementById('script-input').value = '';
+  var r = document.getElementById('script-result');
+  r.style.display = 'none'; r.innerHTML = '';
+}
+
+// ====== TAKVİM ======
+function doTakvim() {
+  var input = document.getElementById('takvim-input').value.trim();
+  if (!input) { showToast('Ürün ve hedef gir'); return; }
+  var btn = document.getElementById('takvim-btn');
+  var loading = document.getElementById('takvim-loading');
+  var result = document.getElementById('takvim-result');
+  btn.disabled = true;
+  loading.style.display = 'block';
+  result.style.display = 'none';
+  result.innerHTML = '';
+
+  var prompt = 'Shopify dropshipping icin haftalik organik icerik takvimi olustur. Bilgi: ' + input + '.\n\nMeta 2025: orijinal icerik artik zorunlu, calinan video cezalandiriliyor. Takvim farkli formatlari dengeli dagitsin ve her gun cekimi kolay, pratik icerikler onersın.\n\nSADECE JSON yaz:\n{"takvim":[{"gun":"Pazartesi","gun_kisa":"Pzt","aktif":true,"format":"Problem-Cozum","baslik":"Video baslik onerisi","aciklama":"Ne cekecegin 1 cumle","hook":"Turkce hook onerisi"},{"gun":"Sali","gun_kisa":"Sal","aktif":false,"format":"Dinlenme Gunu","baslik":"","aciklama":"Bu gun cekim yok, planlama yap","hook":""},{"gun":"Carsamba","gun_kisa":"Car","aktif":true,"format":"POV Kesif","baslik":"...","aciklama":"...","hook":"..."},{"gun":"Persembe","gun_kisa":"Per","aktif":true,"format":"Before-After","baslik":"...","aciklama":"...","hook":"..."},{"gun":"Cuma","gun_kisa":"Cum","aktif":false,"format":"Dinlenme","baslik":"","aciklama":"Hafta ici analiz ve planlama","hook":""},{"gun":"Cumartesi","gun_kisa":"Cmt","aktif":true,"format":"Trend Hook","baslik":"...","aciklama":"...","hook":"..."},{"gun":"Pazar","gun_kisa":"Paz","aktif":true,"format":"Testimonial","baslik":"...","aciklama":"...","hook":"..."}],"haftalik_ozet":"Bu hafta icin 1-2 cumle ozet ve strateji notu"}';
+
+  callAI(prompt,
+    function(parsed) {
+      loading.style.display = 'none';
+      btn.disabled = false;
+      if (parsed.takvim && parsed.takvim.length) renderTakvim(parsed, input);
+      else { result.style.display = 'flex'; result.innerHTML = '<div class="result-card"><div class="rc-body"><p style="color:var(--text2)">Takvim oluşturulamadı, tekrar dene.</p></div></div>'; }
+    },
+    function(txt) {
+      loading.style.display = 'none';
+      btn.disabled = false;
+      result.style.display = 'flex';
+      result.innerHTML = '<div class="result-card"><div class="rc-body"><p style="color:var(--text2);font-size:13px">' + (txt||'Hata oluştu.') + '</p></div></div>';
+    }
+  );
+}
+
+function renderTakvim(data, inputTxt) {
+  var result = document.getElementById('takvim-result');
+  result.style.display = 'flex';
+  var h = '';
+
+  if (data.haftalik_ozet) {
+    h += '<div class="result-card"><div class="rc-header"><span class="rc-icon">🎯</span><div class="rc-title">Haftalık Strateji</div></div><div class="rc-body"><p style="font-size:13px;color:var(--text2);line-height:1.7">' + data.haftalik_ozet + '</p></div></div>';
+  }
+
+  h += '<div class="result-card"><div class="rc-header"><span class="rc-icon">📅</span><div class="rc-title">7 Günlük Plan — ' + inputTxt + '</div></div><div class="rc-body"><div class="calendar-grid">';
+  data.takvim.forEach(function(g, i) {
+    var isActive = g.aktif !== false && g.format && g.format.indexOf('Dinlenme') === -1 && g.format.indexOf('Gunu') === -1;
+    h += '<div class="cal-day' + (isActive ? ' active' : '') + '">';
+    h += '<div class="cal-day-num">' + (i+1) + '</div>';
+    h += '<div class="cal-day-body">';
+    h += '<div class="cal-day-label">' + (g.gun || '') + '</div>';
+    if (isActive) {
+      h += '<div class="cal-day-title">' + (g.baslik || '') + '</div>';
+      if (g.aciklama) h += '<div class="cal-day-desc">' + g.aciklama + '</div>';
+      if (g.hook) h += '<div style="margin-top:8px;padding:8px 12px;background:var(--surface3);border-radius:6px;font-size:11px;color:var(--text2);border-left:2px solid var(--purple)"><span style="font-family:var(--mono);font-size:7px;color:var(--text3);display:block;margin-bottom:3px">HOOK</span>' + g.hook + '</div>';
+      h += '<div class="cal-day-format">' + (g.format || '') + '</div>';
+    } else {
+      h += '<div class="cal-day-title" style="color:var(--text3)">Dinlenme Günü</div>';
+      h += '<div class="cal-day-desc">' + (g.aciklama || 'Analiz yap, yorum oku, içerik planla.') + '</div>';
+    }
+    h += '</div></div>';
+  });
+  h += '</div></div></div>';
+  h += '<div style="display:flex;gap:8px"><button class="copy-all-btn primary-copy" onclick="copyTakvim()">📋 Takvimi Kopyala</button><button class="secondary-btn" onclick="clearTakvim()">↺ Yeni Plan</button></div>';
+  result.innerHTML = h;
+}
+
+function copyTakvim() {
+  var r = document.getElementById('takvim-result');
+  if (r) navigator.clipboard.writeText(r.innerText || r.textContent).then(function() { showToast('✓ Takvim kopyalandı', 'purple'); });
+}
+
+function clearTakvim() {
+  document.getElementById('takvim-input').value = '';
+  var r = document.getElementById('takvim-result');
+  r.style.display = 'none'; r.innerHTML = '';
+}
+
+// THEME
+function toggleTheme() {
+  var isLight = document.body.classList.toggle('light-mode');
+  document.getElementById('theme-toggle').textContent = isLight ? '🌙' : '☀️';
+  try { localStorage.setItem('mlynr_theme', isLight ? 'light' : 'dark'); } catch(e) {}
+}
+function applyTheme() {
+  try { var t = localStorage.getItem('mlynr_theme'); if (t === 'light') { document.body.classList.add('light-mode'); document.getElementById('theme-toggle').textContent = '🌙'; } } catch(e) {}
+}
+
+var _tt;
+function showToast(m, cls) {
+  var t = document.getElementById('toast'); if (!t) return;
+  t.textContent = m;
+  t.className = 'toast' + (cls ? ' ' + cls : '') + ' show';
+  clearTimeout(_tt);
+  _tt = setTimeout(function() { t.classList.remove('show'); }, 2600);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  applyTheme();
+  var fi = document.getElementById('format-input');
+  if (fi) fi.addEventListener('keydown', function(e) { if (e.key === 'Enter') doFormat(); });
+  var si = document.getElementById('script-input');
+  if (si) si.addEventListener('keydown', function(e) { if (e.key === 'Enter') doScript(); });
+  var ti = document.getElementById('takvim-input');
+  if (ti) ti.addEventListener('keydown', function(e) { if (e.key === 'Enter') doTakvim(); });
+});
+</script>
+</body>
+</html>
