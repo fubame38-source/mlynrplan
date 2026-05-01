@@ -16,6 +16,7 @@
   --green:#22c55e;--green-ln:rgba(34,197,94,.2);--green-dim:rgba(34,197,94,.05);
   --gold:#facc15;--gold-ln:rgba(250,204,21,.2);--gold-dim:rgba(250,204,21,.05);
   --red:#ef4444;--red-ln:rgba(239,68,68,.2);--red-dim:rgba(239,68,68,.05);
+  --purple:#a78bfa;--purple-ln:rgba(167,139,250,.2);--purple-dim:rgba(167,139,250,.05);
   --r:14px;
 }
 body.light-mode{
@@ -25,57 +26,35 @@ body.light-mode{
   --green:#16a34a;--green-ln:rgba(22,163,74,.2);--green-dim:rgba(22,163,74,.07);
   --gold:#92400e;--gold-ln:rgba(146,64,14,.18);--gold-dim:rgba(146,64,14,.05);
   --red:#dc2626;--red-ln:rgba(220,38,38,.2);--red-dim:rgba(220,38,38,.06);
+  --purple:#7c3aed;--purple-ln:rgba(124,58,237,.2);--purple-dim:rgba(124,58,237,.05);
 }
-/* BG */
 body.light-mode .bg-grid{background-image:linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px)}
 body.light-mode .bg-glow{background:none}
-/* TOPBAR */
 body.light-mode .topbar{background:rgba(247,247,245,.92);border-color:rgba(0,0,0,.08)}
 body.light-mode .logout-btn-sm{border-color:rgba(0,0,0,.1);color:#888}
-/* LOGIN */
 body.light-mode .login-card{background:#fff;border-color:rgba(0,0,0,.1)}
-body.light-mode .login-card::before{background:linear-gradient(90deg,transparent,rgba(0,0,0,.05),transparent)}
 body.light-mode .login-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
 body.light-mode .login-input::placeholder{color:#bbb}
 body.light-mode .login-btn{background:#111;color:#fff}
-body.light-mode .login-btn:hover{box-shadow:0 8px 24px rgba(0,0,0,.2)}
-/* CARDS */
 body.light-mode .quick-card{background:#fff;border-color:rgba(0,0,0,.08)}
 body.light-mode .quick-card:hover{border-color:rgba(0,0,0,.16);background:#fafaf8}
 body.light-mode .quick-card.featured{background:linear-gradient(135deg,rgba(22,163,74,.08),rgba(22,163,74,.02));border-color:rgba(22,163,74,.25)}
+body.light-mode .quick-card.purple-accent{background:linear-gradient(135deg,rgba(124,58,237,.06),#fff);border-color:rgba(124,58,237,.15)}
 body.light-mode .quick-card.gold-accent{background:linear-gradient(135deg,rgba(146,64,14,.06),#fff);border-color:rgba(146,64,14,.15)}
 body.light-mode .prog-row{background:#fff;border-color:rgba(0,0,0,.08)}
-/* HAFTALIK GÖREV */
 body.light-mode .weekly-task-card{background:#fffbf5;border-color:rgba(146,64,14,.2)}
-body.light-mode .weekly-task-card::before{background:linear-gradient(90deg,transparent,rgba(146,64,14,.3),transparent)}
 body.light-mode .wtc-eyebrow{color:rgba(146,64,14,.7)}
-body.light-mode .wtc-due{color:rgba(146,64,14,.5)}
 body.light-mode .wtc-box{border-color:rgba(146,64,14,.3)}
 body.light-mode .wtc-item.ck .wtc-box{background:#92400e;border-color:#92400e}
-/* METRİKLER */
 body.light-mode .metric-card{background:#fff;border-color:rgba(0,0,0,.08)}
 body.light-mode .metric-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
-body.light-mode .metric-input:focus{border-color:rgba(0,0,0,.3)}
 body.light-mode .metric-save-btn{background:#111;color:#fff}
 body.light-mode .metric-row{background:#f7f7f5}
-/* KAYDEDİLEN ÜRÜNLER */
 body.light-mode .saved-products-card{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light-mode .sp-add-form{border-color:rgba(0,0,0,.06)}
 body.light-mode .sp-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
-body.light-mode .sp-input::placeholder{color:#bbb}
-body.light-mode .sp-status-sel{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#555}
 body.light-mode .sp-add-btn{background:#111;color:#fff}
 body.light-mode .sp-item{border-color:rgba(0,0,0,.06)}
-body.light-mode .sp-item:hover{background:rgba(0,0,0,.02)}
-body.light-mode .sp-status-btn{border-color:rgba(0,0,0,.1);color:#888}
-/* TOPLANTI */
-body.light-mode .meeting-card{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light-mode .meeting-item{background:#f7f7f5;border-color:rgba(0,0,0,.07)}
-body.light-mode .meeting-add-btn{border-color:rgba(0,0,0,.1);color:#999}
-body.light-mode .meeting-add-btn:hover{background:rgba(0,0,0,.03);color:#555}
-/* MODÜLLER */
 body.light-mode .module-accordion{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light-mode .module-accordion:hover{border-color:rgba(0,0,0,.14)}
 body.light-mode .module-accordion.open{background:#fafaf8;border-color:rgba(0,0,0,.14)}
 body.light-mode .ma-num-big{color:#ebebea}
 body.light-mode .ma-body{border-color:rgba(0,0,0,.07)}
@@ -83,54 +62,37 @@ body.light-mode .video-card{background:#f7f7f5;border-color:rgba(0,0,0,.07)}
 body.light-mode .video-card:hover{background:#f0f0ed;border-color:rgba(0,0,0,.14)}
 body.light-mode .video-card.done{background:rgba(22,163,74,.05);border-color:rgba(22,163,74,.18)}
 body.light-mode .tick{background:rgba(0,0,0,.07)}
-/* METOD KARTLARI */
 body.light-mode .method-card{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light-mode .mc-body{border-color:rgba(0,0,0,.07)}
 body.light-mode .mc-step{color:#555}
 body.light-mode .mc-step-num{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:#999}
 body.light-mode .mc-cta{background:#111;color:#fff}
 body.light-mode .mc-hashtag{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1);color:#555}
-body.light-mode .mc-hashtag:hover{background:rgba(0,0,0,.08);color:#111}
-/* BANNER */
 body.light-mode .banner{background:#fffbf5;border-color:rgba(146,64,14,.2)}
-/* POPUP */
-body.light-mode .popup{background:#fff;border-color:rgba(0,0,0,.1)}
 body.light-mode .overlay{background:rgba(0,0,0,.4)}
+body.light-mode .popup{background:#fff;border-color:rgba(0,0,0,.1)}
 body.light-mode .close-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:#555}
-body.light-mode .mp-input,body.light-mode .mp-textarea{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .mp-input,.mp-textarea{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
 body.light-mode .mp-save{background:#111;color:#fff}
-/* AI FAB */
 body.light-mode #ai-fab{background:linear-gradient(135deg,#fff,#f7f7f5);border-color:rgba(0,0,0,.12);box-shadow:0 8px 32px rgba(0,0,0,.12)}
 body.light-mode .fab-title{color:#111}
-/* AI SUPPORT PANEL */
 body.light-mode #support-popup{background:#fff;border-left-color:rgba(0,0,0,.08)}
 body.light-mode .sp-header{background:#fff;border-color:rgba(0,0,0,.08)}
 body.light-mode .sp-header-title{color:#111}
-body.light-mode .sp-header-sub{color:rgba(0,0,0,.4)}
-body.light-mode .sp-avatar{background:#111}
-body.light-mode .sp-avatar span{color:#fff!important}
-body.light-mode .sp-close-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:#555}
-body.light-mode .sp-messages{background:#fff}
 body.light-mode .sp-msg.bot{background:#f7f7f5;color:#333;border-color:rgba(0,0,0,.08)}
 body.light-mode .sp-msg.user{background:#111;color:#fff}
-body.light-mode .sp-quick-section{background:#fff;border-color:rgba(0,0,0,.07)}
-body.light-mode .sp-quick-label{color:rgba(0,0,0,.3)}
 body.light-mode .sp-quick-btn{border-color:rgba(0,0,0,.08);color:#666}
-body.light-mode .sp-quick-btn:hover{background:#f7f7f5;color:#111;border-color:rgba(0,0,0,.15)}
-body.light-mode .sp-input-area{background:#fff;border-color:rgba(0,0,0,.07)}
-body.light-mode .sp-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
-body.light-mode .sp-input::placeholder{color:#bbb}
+body.light-mode .sp-quick-btn:hover{background:#f7f7f5;color:#111}
+body.light-mode #sp-chat-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
 body.light-mode .sp-send{background:#111;color:#fff}
-/* TOAST */
 body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
 body.light-mode .saved-dot{background:rgba(22,163,74,.08)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;overflow-x:hidden;color-scheme:dark}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;color-scheme:dark}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .hidden{display:none!important}
 
 /* LOGIN */
-#login-screen{position:fixed;inset:0;z-index:8000;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+#login-screen{position:fixed;inset:0;z-index:8000;display:none;align-items:center;justify-content:center;background:var(--bg)}
 .login-card{width:min(420px,94vw);background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:40px 36px;position:relative}
 .login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);border-radius:20px 20px 0 0;pointer-events:none}
 .login-logo{font-size:36px;font-weight:900;letter-spacing:-1.5px;color:var(--white);text-align:center;margin-bottom:4px;line-height:1}
@@ -163,7 +125,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 /* MAIN */
 #app{display:none}
-.app-inner{max-width:900px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
 
 /* HERO */
 .hero{padding:clamp(40px,7vw,72px) clamp(20px,5vw,48px) clamp(28px,4vw,48px);position:relative;overflow:hidden;z-index:1}
@@ -174,16 +135,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .hero-title{font-size:clamp(42px,9vw,88px);font-weight:900;letter-spacing:-4px;line-height:.9;color:var(--white);margin-bottom:10px}
 .hero-subtitle{font-size:14px;font-weight:400;color:var(--text2);margin-bottom:20px}
 
-/* QUICK ACTIONS - yeni hero kartlar */
-.quick-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:14px}
+/* QUICK GRID */
+.quick-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
 .quick-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
 .quick-card:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.5);border-color:rgba(255,255,255,.15)}
 .quick-card.featured{background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.02));border-color:rgba(34,197,94,.25)}
+.quick-card.purple-accent{background:linear-gradient(135deg,rgba(167,139,250,.08),rgba(167,139,250,.02));border-color:rgba(167,139,250,.25)}
 .quick-card.gold-accent{border-color:rgba(250,204,21,.2);background:linear-gradient(135deg,rgba(250,204,21,.06),var(--surface))}
 .qc-icon{font-size:20px;margin-bottom:10px}
 .qc-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
 .qc-sub{font-size:11px;color:var(--text2);line-height:1.4}
-.qc-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:20px;padding:3px 8px;margin-top:8px}
+.qc-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;border-radius:20px;padding:3px 8px;margin-top:8px}
+.qc-badge.green{color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln)}
+.qc-badge.purple{color:var(--purple);background:var(--purple-dim);border:1px solid var(--purple-ln)}
 .qc-ping{position:absolute;top:14px;right:14px;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.6);animation:blink 1.5s ease-in-out infinite}
 
 /* PROGRESS ROW */
@@ -215,57 +179,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .wtc-item-text{font-size:12px;color:var(--text2)}
 .wtc-item.ck .wtc-item-text{color:var(--text)}
 
-/* METRİK GİRİŞİ */
-.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px}
-.metric-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.metric-title{font-size:13px;font-weight:700;color:var(--text)}
-.metric-date{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px}
-.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.metric-input-wrap{display:flex;flex-direction:column;gap:6px}
-.metric-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
-.metric-input{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:18px;font-weight:700;padding:12px 14px;outline:none;width:100%;transition:border-color .2s}
-.metric-input:focus{border-color:rgba(255,255,255,.3)}
-.metric-save-btn{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.5px;padding:12px;cursor:pointer;transition:all .2s}
-.metric-save-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
-.metric-history{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
-.metric-history-title{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
-.metric-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;background:var(--surface2);margin-bottom:4px}
-.metric-row-date{font-family:var(--mono);font-size:10px;color:var(--text3)}
-.metric-row-vals{display:flex;gap:16px}
-.metric-row-val{font-size:12px;color:var(--text2);font-weight:600}
-.metric-row-val span{color:var(--text3);font-weight:400;font-size:10px;margin-right:3px}
-
-/* KAYDEDİLEN ÜRÜNLER */
-.saved-products-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.sp-add-form{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.sp-input{flex:1;min-width:160px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 14px;outline:none;transition:border-color .2s}
-.sp-input:focus{border-color:rgba(255,255,255,.3)}
-.sp-input::placeholder{color:var(--text3)}
-.sp-status-sel{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:var(--mono);font-size:10px;padding:10px 12px;outline:none;cursor:pointer}
-.sp-add-btn{background:var(--white);color:var(--bg);border:none;border-radius:8px;font-family:var(--font);font-size:12px;font-weight:700;padding:10px 18px;cursor:pointer;transition:all .2s;white-space:nowrap}
-.sp-add-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,255,255,.15)}
-.sp-list{display:flex;flex-direction:column}
-.sp-empty{padding:32px 20px;text-align:center;color:var(--text3);font-size:13px}
-.sp-item{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);transition:background .15s}
-.sp-item:last-child{border-bottom:none}
-.sp-item:hover{background:rgba(255,255,255,.02)}
-.sp-item-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.sp-item-dot.SAT{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.5)}
-.sp-item-dot.SATMA{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.5)}
-.sp-item-dot.BEKLEMEDE{background:var(--gold);box-shadow:0 0 6px rgba(250,204,21,.5)}
-.sp-item-name{flex:1;font-size:13px;color:var(--text);font-weight:500}
-.sp-item-badge{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;font-weight:600}
-.sp-item-badge.SAT{color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln)}
-.sp-item-badge.SATMA{color:var(--red);background:var(--red-dim);border:1px solid var(--red-ln)}
-.sp-item-badge.BEKLEMEDE{color:var(--gold);background:var(--gold-dim);border:1px solid var(--gold-ln)}
-.sp-item-date{font-family:var(--mono);font-size:9px;color:var(--text3)}
-.sp-item-del{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:4px 8px;border-radius:6px;transition:all .2s;line-height:1}
-.sp-item-del:hover{color:var(--red);background:var(--red-dim)}
-.sp-status-btn{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text3);font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:3px 8px;cursor:pointer;transition:all .2s}
-.sp-status-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text2)}
-
 /* MODÜLLER */
-.modules-section{max-width:900px;margin:0 auto;padding:0 clamp(16px,5vw,48px) clamp(32px,5vw,56px);display:flex;flex-direction:column;gap:4px;position:relative;z-index:1}
 .module-accordion{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all .2s}
 .module-accordion.open{border-color:rgba(255,255,255,.15);background:var(--surface2)}
 .module-accordion-header{display:flex;align-items:center;gap:0;padding:0;cursor:pointer;user-select:none}
@@ -285,7 +199,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .ma-desc{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:16px}
 .videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .video-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 15px;cursor:pointer;user-select:none;transition:all .2s}
-.video-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.5);border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.04)}
+.video-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.5);border-color:rgba(255,255,255,.15)}
 .video-card.done{background:rgba(34,197,94,.04);border-color:rgba(34,197,94,.18)}
 .vc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
 .vc-num{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px}
@@ -295,16 +209,32 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .vc-title{font-size:11px;font-weight:500;color:var(--text);line-height:1.4}
 .video-card.done .vc-title{color:var(--text2)}
 
-/* TOPLANTI */
-.meeting-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px}
-.meeting-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.meeting-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px}
-.mi-date{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px;white-space:nowrap;margin-top:2px;min-width:64px}
-.mi-body{flex:1}
-.mi-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
-.mi-note{font-size:11px;color:var(--text2);line-height:1.5}
-.meeting-add-btn{width:100%;background:transparent;border:1px dashed var(--border2);border-radius:10px;color:var(--text3);font-family:var(--font);font-size:12px;padding:12px;cursor:pointer;transition:all .2s}
-.meeting-add-btn:hover{border-color:rgba(255,255,255,.3);color:var(--text2);background:rgba(255,255,255,.03)}
+/* ÜRÜN BULMA METODLARI */
+.method-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .2s}
+.method-card:hover{border-color:var(--border2)}
+.mc-top{display:flex;align-items:center;gap:12px;padding:16px 20px}
+.mc-logo{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0}
+.mc-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.mc-tag{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
+.mc-chevron{margin-left:auto;font-size:12px;color:var(--text3);transition:transform .25s;flex-shrink:0}
+.method-card.open .mc-chevron{transform:rotate(180deg)}
+.mc-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border)}
+.method-card.open .mc-body{display:block;padding-top:16px}
+.mc-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.mc-step{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text2);line-height:1.55}
+.mc-step-num{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--border2);font-family:var(--mono);font-size:9px;color:var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.mc-step strong{color:var(--text)}
+.mc-cta{display:inline-flex;align-items:center;gap:6px;background:var(--white);color:var(--bg);border-radius:8px;padding:10px 16px;font-family:var(--font);font-size:12px;font-weight:700;text-decoration:none;transition:all .2s}
+.mc-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,255,255,.15)}
+.mc-hashtags{display:flex;flex-wrap:wrap;gap:6px}
+.mc-hashtag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);color:var(--text2);text-decoration:none;transition:all .2s;background:rgba(255,255,255,.03)}
+.mc-hashtag:hover{border-color:rgba(255,255,255,.25);color:var(--text)}
+
+/* BANNER */
+.banner{border:1px solid var(--gold-ln);border-radius:var(--r);padding:20px 24px;background:var(--gold-dim);display:flex;gap:14px;align-items:flex-start}
+.bicon{font-size:18px;flex-shrink:0;margin-top:1px}
+.btxt h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.btxt p{font-size:12px;color:var(--text2);line-height:1.7}
 
 /* OVERLAY / POPUP */
 .overlay{position:fixed;inset:0;z-index:8100;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
@@ -321,7 +251,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .mp-save{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:14px;cursor:pointer;transition:all .2s;margin-top:4px}
 .mp-save:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
 
-/* AI SUPPORT */
+/* AI SUPPORT PANEL */
 #support-overlay{position:fixed;top:0;right:-420px;width:min(380px,100vw);height:100vh;z-index:8500;transition:right .35s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
 #support-overlay.show{right:0;pointer-events:all}
 #support-popup{background:#0d0d0d;border-left:1px solid rgba(255,255,255,.08);position:absolute;top:0;bottom:0;left:0;right:0;display:flex;flex-direction:column;overflow:hidden}
@@ -334,7 +264,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sp-close-btn:hover{background:rgba(255,255,255,.14);color:#fff}
 .sp-messages{flex:1;overflow-y:auto;padding:16px 16px 8px;display:flex;flex-direction:column;gap:10px;background:#0d0d0d;min-height:120px;max-height:300px}
 .sp-msg{max-width:84%;padding:11px 14px;font-size:13px;line-height:1.55}
-.sp-msg.bot{background:#1c1c1c;color:rgba(255,255,255,.82);border-radius:4px 14px 14px 14px;align-self:flex-start;border:1px solid rgba(255,255,255,.07)}
+.sp-msg.bot{background:#1c1c1c;color:rgba(255,255,255,.82);border-radius:4px 14px 14px 14px;align-self:flex-start;border:1px solid rgba(255,255,255,.07);white-space:pre-wrap;word-wrap:break-word}
 .sp-msg.user{background:#fff;color:#000;border-radius:14px 4px 14px 14px;align-self:flex-end;font-weight:500}
 .sp-msg.loading{background:#1c1c1c;color:rgba(255,255,255,.3);border-radius:4px 14px 14px 14px;align-self:flex-start;border:1px solid rgba(255,255,255,.07);font-family:var(--mono);font-size:11px;letter-spacing:1px}
 .sp-quick-section{flex-shrink:0;border-top:1px solid rgba(255,255,255,.07);background:#0d0d0d;padding:12px 14px 14px;overflow-y:auto;max-height:220px}
@@ -342,9 +272,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sp-quick-btn{display:block;width:100%;background:transparent;border:1px solid rgba(255,255,255,.09);border-radius:9px;color:rgba(255,255,255,.5);font-family:var(--font);font-size:12px;padding:9px 12px;cursor:pointer;text-align:left;transition:all .2s;margin-bottom:4px}
 .sp-quick-btn:hover{background:#1c1c1c;color:rgba(255,255,255,.9);border-color:rgba(255,255,255,.2)}
 .sp-input-area{padding:10px 14px 16px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:8px;flex-shrink:0;background:#0d0d0d}
-.sp-input{flex:1;background:#1c1c1c;border:1px solid rgba(255,255,255,.1);border-radius:11px;color:#fff;font-family:var(--font);font-size:13px;padding:10px 13px;outline:none;resize:none;transition:border-color .2s}
-.sp-input:focus{border-color:rgba(255,255,255,.28)}
-.sp-input::placeholder{color:rgba(255,255,255,.22)}
+#sp-chat-input{flex:1;background:#1c1c1c;border:1px solid rgba(255,255,255,.1);border-radius:11px;color:#fff;font-family:var(--font);font-size:13px;padding:10px 13px;outline:none;resize:none;transition:border-color .2s}
+#sp-chat-input:focus{border-color:rgba(255,255,255,.28)}
+#sp-chat-input::placeholder{color:rgba(255,255,255,.22)}
 .sp-send{background:#fff;color:#000;border:none;border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .2s;font-weight:700}
 .sp-send:hover{opacity:.85}
 .sp-send:disabled{opacity:.3;cursor:not-allowed}
@@ -358,34 +288,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .fab-sub{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#4ade80;margin-top:1px}
 .fab-dot{width:6px;height:6px;background:#4ade80;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px rgba(74,222,128,.6);animation:fabPulse 2s ease-in-out infinite}
 @keyframes fabPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
-
-/* ÜRÜN BULMA METODLARI */
-.method-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .2s}
-.method-card:hover{border-color:var(--border2)}
-.mc-top{display:flex;align-items:center;gap:12px;padding:16px 20px}
-.mc-logo{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;letter-spacing:0}
-.mc-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
-.mc-tag{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
-.mc-chevron{margin-left:auto;font-size:12px;color:var(--text3);transition:transform .25s;flex-shrink:0}
-.method-card.open .mc-chevron{transform:rotate(180deg)}
-.mc-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border)}
-.method-card.open .mc-body{display:block;padding-top:16px}
-.mc-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.mc-step{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text2);line-height:1.55}
-.mc-step-num{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--border2);font-family:var(--mono);font-size:9px;color:var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.mc-step strong{color:var(--text)}
-.mc-cta{display:inline-flex;align-items:center;gap:6px;background:var(--white);color:var(--bg);border-radius:8px;padding:10px 16px;font-family:var(--font);font-size:12px;font-weight:700;text-decoration:none;transition:all .2s}
-.mc-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,255,255,.15)}
-.mc-hashtags{display:flex;flex-wrap:wrap;gap:6px}
-.mc-hashtag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);color:var(--text2);text-decoration:none;transition:all .2s;background:rgba(255,255,255,.03)}
-.mc-hashtag:hover{border-color:rgba(255,255,255,.25);color:var(--text);background:rgba(255,255,255,.06)}
-@media(max-width:640px){#method-grid{grid-template-columns:1fr}}
-
-/* BANNER */
-.banner{border:1px solid var(--gold-ln);border-radius:var(--r);padding:20px 24px;background:var(--gold-dim);display:flex;gap:14px;align-items:flex-start}
-.bicon{font-size:18px;flex-shrink:0;margin-top:1px}
-.btxt h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
-.btxt p{font-size:12px;color:var(--text2);line-height:1.7}
 
 /* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;color:var(--text);z-index:9100;opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;white-space:nowrap}
@@ -407,8 +309,6 @@ footer p{font-size:12px;color:var(--text3)}
   .quick-grid{grid-template-columns:1fr 1fr}
   .quick-card:first-child{grid-column:1/-1}
   .videos-grid{grid-template-columns:1fr 1fr}
-  .metric-grid{grid-template-columns:1fr 1fr}
-  .sp-add-form{flex-direction:column}
 }
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -457,12 +357,18 @@ footer p{font-size:12px;color:var(--text3)}
       <div class="hero-subtitle">Shopify Mentörlük Portalı — Hoş geldin</div>
 
       <!-- QUICK ACTIONS -->
-      <div class="quick-grid" style="grid-template-columns:2fr 1fr">
+      <div class="quick-grid">
         <div class="quick-card featured" onclick="window.location.href='https://mlynrplan.com/urun_bulucu.html'">
           <div class="qc-icon">🔍</div>
           <div class="qc-title">AI Ürün Bulucu</div>
-          <div class="qc-sub">Ürün adı veya link gir, SAT / SATMA kararı + tam rapor al. Kazanan ürünü bul.</div>
-          <div class="qc-badge"><span>●</span> Hemen Başla</div>
+          <div class="qc-sub">Ürün adı veya link gir, SAT / SATMA kararı + tam rapor al.</div>
+          <div class="qc-badge green"><span>●</span> Hemen Başla</div>
+        </div>
+        <div class="quick-card purple-accent" onclick="window.location.href='https://mlynrplan.com/icerik_studyosu.html'">
+          <div class="qc-icon">🎬</div>
+          <div class="qc-title">İçerik Stüdyosu</div>
+          <div class="qc-sub">Viral format analizi, hook & script, haftalık içerik planı.</div>
+          <div class="qc-badge purple"><span>●</span> Yeni</div>
         </div>
         <div class="quick-card" onclick="openSupportBot()">
           <div class="qc-icon">🤖</div>
@@ -486,7 +392,7 @@ footer p{font-size:12px;color:var(--text3)}
     <div class="section-header">
       <span class="section-title">⚡ Mentöründen · Bu Haftanın Görevi</span>
     </div>
-    <div class="weekly-task-card" id="weekly-task-card">
+    <div class="weekly-task-card">
       <div class="wtc-title" id="wtc-title">Görev yükleniyor...</div>
       <div class="wtc-body" id="wtc-body"></div>
       <div id="wtc-checklist" class="wtc-checklist"></div>
@@ -526,9 +432,9 @@ footer p{font-size:12px;color:var(--text3)}
         <div class="mc-body" id="mc-body-tt" onclick="event.stopPropagation()">
           <div class="mc-steps">
             <div class="mc-step"><span class="mc-step-num">1</span><span>Aşağıdaki <strong>trend hashtag'lere</strong> tıkla, son 7 günü filtrele</span></div>
-            <div class="mc-step"><span class="mc-step-num">2</span><span><strong>500K+ izlenme</strong> alan ürün videolarına bak — viral = talep var</span></div>
-            <div class="mc-step"><span class="mc-step-num">3</span><span>Yorumlarda <strong>"where to buy"</strong> veya <strong>"link?"</strong> varsa anında araştır</span></div>
-            <div class="mc-step"><span class="mc-step-num">4</span><span>Aynı ürünü <strong>farklı hesaplar</strong> gösteriyorsa trend henüz başlamış demek</span></div>
+            <div class="mc-step"><span class="mc-step-num">2</span><span><strong>500K+ izlenme</strong> alan ürün videolarına bak</span></div>
+            <div class="mc-step"><span class="mc-step-num">3</span><span>Yorumlarda <strong>"where to buy"</strong> varsa anında araştır</span></div>
+            <div class="mc-step"><span class="mc-step-num">4</span><span>Aynı ürünü <strong>farklı hesaplar</strong> gösteriyorsa trend başlamış demek</span></div>
           </div>
           <div class="mc-hashtags">
             <a href="https://www.tiktok.com/search?q=tiktokmademebuyit" target="_blank" class="mc-hashtag">#TikTokMadeMeBuyIt</a>
@@ -536,14 +442,13 @@ footer p{font-size:12px;color:var(--text3)}
             <a href="https://www.tiktok.com/search?q=tiktokfinds" target="_blank" class="mc-hashtag">#TikTokFinds</a>
             <a href="https://www.tiktok.com/search?q=amazonfinds" target="_blank" class="mc-hashtag">#AmazonFinds</a>
             <a href="https://www.tiktok.com/search?q=productsyouneed" target="_blank" class="mc-hashtag">#ProductsYouNeed</a>
-            <a href="https://www.tiktok.com/search?q=coolproducts" target="_blank" class="mc-hashtag">#CoolProducts</a>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODÜLLER (ACCORDION) -->
+  <!-- MODÜLLER -->
   <div class="section" style="margin-bottom:8px">
     <div class="section-header">
       <span class="section-title">🎓 Eğitim Modülleri</span>
@@ -584,29 +489,9 @@ footer p{font-size:12px;color:var(--text3)}
   <div style="font-size:22px;font-weight:900;color:var(--text);margin-bottom:6px;letter-spacing:-.5px">Hoş geldin! 👋</div>
   <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:24px">Seni tanıyalım</div>
   <div style="display:flex;flex-direction:column;gap:12px">
-    <div>
-      <label class="mp-label">Adın</label>
-      <input class="mp-input" type="text" id="inp-firstname" placeholder="Adın..." autocomplete="given-name">
-    </div>
-    <div>
-      <label class="mp-label">Soyadın</label>
-      <input class="mp-input" type="text" id="inp-lastname" placeholder="Soyadın..." autocomplete="family-name">
-    </div>
+    <div><label class="mp-label">Adın</label><input class="mp-input" type="text" id="inp-firstname" placeholder="Adın..." autocomplete="given-name"></div>
+    <div><label class="mp-label">Soyadın</label><input class="mp-input" type="text" id="inp-lastname" placeholder="Soyadın..." autocomplete="family-name"></div>
     <button class="mp-save" onclick="saveUserName()" style="margin-top:4px">PLATFORMA GİR →</button>
-  </div>
-</div>
-
-<!-- TOPLANTI POPUP -->
-<div id="meeting-overlay" class="overlay" onclick="closeMeetingForm()"></div>
-<div id="meeting-popup" class="popup">
-  <button class="close-btn" onclick="closeMeetingForm()">✕</button>
-  <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px">Toplantı Notu Ekle</div>
-  <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)">Haftalık analiz toplantısı</div>
-  <div class="mp-form">
-    <div><label class="mp-label">Tarih</label><input class="mp-input" type="date" id="mt-date"></div>
-    <div><label class="mp-label">Konu Başlığı</label><input class="mp-input" type="text" id="mt-title" placeholder="Bu haftanın konusu..."></div>
-    <div><label class="mp-label">Notlar & Kararlar</label><textarea class="mp-textarea" id="mt-note" placeholder="Toplantıda ne konuşuldu, ne kararlaştırıldı?"></textarea></div>
-    <button class="mp-save" onclick="saveMeeting()">Kaydet ✓</button>
   </div>
 </div>
 
@@ -629,7 +514,7 @@ footer p{font-size:12px;color:var(--text3)}
       <button onclick="askQuick(this)" class="sp-quick-btn">ROAS'ım düşük ne yapmalıyım?</button>
     </div>
     <div class="sp-input-area">
-      <textarea class="sp-input" id="sp-input" rows="1" placeholder="Sorunuzu yazın..."></textarea>
+      <textarea id="sp-chat-input" rows="1" placeholder="Sorunuzu yazın..."></textarea>
       <button class="sp-send" id="sp-send-btn" onclick="sendSupportMsg()">➤</button>
     </div>
   </div>
@@ -694,7 +579,6 @@ function loadState(){
     if(r){var d=JSON.parse(r);done=d.done||[];metrics=d.metrics||[];meetings=d.meetings||[];taskChecks=d.taskChecks||{};savedProducts=d.savedProducts||[];}
     else{done=[];metrics=[];meetings=[];taskChecks={};savedProducts=[];}
   }catch(e){done=[];metrics=[];meetings=[];taskChecks={};savedProducts=[];}
-  // Ürün bulucu'dan kaydedilenler
   try{
     var ext=LS.getItem('mlynr_saved_products');
     if(ext){
@@ -744,12 +628,11 @@ function doAuth(){
 }
 
 function enterApp(em,usr){
-  if(email&&email===em)return; // zaten giriş yapılmış, tekrar çağrılmasın
+  if(email&&email===em)return;
   email=em;_user=usr;
   try{localStorage.setItem('mlynr_cached_email',em);}catch(e){}
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='block';
-  // isim yoksa fallback email
   var disp=em.split('@')[0];
   document.getElementById('uav').textContent=disp.charAt(0).toUpperCase();
   document.getElementById('uname').textContent=disp;
@@ -757,7 +640,6 @@ function enterApp(em,usr){
   applyTheme();
   loadAdminTask();
   renderAll();
-  setMetricDate();
   checkUserName();
   document.getElementById('login-btn').disabled=false;
 }
@@ -784,7 +666,6 @@ function loadAdminTask(){
 
 function renderTask(){
   var t=adminTask;
-  document.getElementById('hero-task-sub').textContent=t.title||'Mentörün yakında güncelleyecek';
   document.getElementById('wtc-title').textContent=t.title||'Henüz görev atanmadı';
   document.getElementById('wtc-body').textContent=t.body||'Mentörün bu haftanın görevini yakında ekleyecek.';
   if(t.due)document.getElementById('wtc-due').textContent='Son Tarih: '+t.due;
@@ -800,116 +681,7 @@ function renderTask(){
   }
 }
 
-// METRİKLER
-function setMetricDate(){
-  var d=new Date();
-  document.getElementById('metric-date').textContent=d.toLocaleDateString('tr-TR',{weekday:'long',day:'numeric',month:'long'});
-}
-function saveMetrics(){
-  var sales=document.getElementById('m-sales').value;
-  var revenue=document.getElementById('m-revenue').value;
-  var adspend=document.getElementById('m-adspend').value;
-  if(!sales&&!revenue&&!adspend){showToast('En az bir değer gir');return;}
-  var entry={date:new Date().toISOString().slice(0,10),sales:parseInt(sales)||0,revenue:parseFloat(revenue)||0,adspend:parseFloat(adspend)||0};
-  metrics.unshift(entry);if(metrics.length>30)metrics=metrics.slice(0,30);
-  saveState();renderMetrics();
-  document.getElementById('m-sales').value='';document.getElementById('m-revenue').value='';document.getElementById('m-adspend').value='';
-  showToast('✓ Metrikler kaydedildi','green');
-}
-function renderMetrics(){
-  var hist=document.getElementById('metric-history');var list=document.getElementById('metric-history-list');
-  if(!metrics||metrics.length===0){hist.style.display='none';return;}
-  hist.style.display='block';list.innerHTML='';
-  metrics.slice(0,7).forEach(function(m){
-    var profit=(m.revenue-m.adspend).toFixed(0);
-    var div=document.createElement('div');div.className='metric-row';
-    div.innerHTML='<span class="metric-row-date">'+m.date+'</span><div class="metric-row-vals">'
-      +'<span class="metric-row-val"><span>Satış</span>'+m.sales+'</span>'
-      +'<span class="metric-row-val"><span>Ciro</span>$'+m.revenue+'</span>'
-      +'<span class="metric-row-val"><span>Kâr</span>$'+profit+'</span>'
-      +'</div>';
-    list.appendChild(div);
-  });
-}
-
-// KAYDEDİLEN ÜRÜNLER
-function addSavedProduct(){
-  var name=document.getElementById('sp-name-input').value.trim();
-  var status=document.getElementById('sp-status-sel').value;
-  if(!name){showToast('Ürün adı gir');return;}
-  savedProducts.unshift({name:name,status:status,date:new Date().toISOString().slice(0,10),id:Date.now()});
-  document.getElementById('sp-name-input').value='';
-  saveState();renderSavedProducts();showToast('✓ Ürün kaydedildi','green');
-}
-function deleteSavedProduct(id){
-  savedProducts=savedProducts.filter(function(p){return p.id!==id;});
-  saveState();renderSavedProducts();
-}
-function cycleSavedProductStatus(id){
-  var p=savedProducts.find(function(p){return p.id===id;});
-  if(!p)return;
-  var order=['BEKLEMEDE','SAT','SATMA'];
-  var idx=order.indexOf(p.status);
-  p.status=order[(idx+1)%order.length];
-  saveState();renderSavedProducts();
-}
-function renderSavedProducts(){
-  var list=document.getElementById('sp-list');
-  var count=document.getElementById('sp-count');
-  if(count)count.textContent=savedProducts.length+' ürün';
-  if(!savedProducts||savedProducts.length===0){
-    list.innerHTML='<div class="sp-empty">Henüz ürün eklenmedi. Ürün Bulucu\'dan analiz yapıp buraya kaydedebilirsin.</div>';
-    return;
-  }
-  list.innerHTML='';
-  savedProducts.forEach(function(p){
-    var div=document.createElement('div');div.className='sp-item';
-    div.innerHTML='<div class="sp-item-dot '+p.status+'"></div>'
-      +'<span class="sp-item-name">'+p.name+'</span>'
-      +'<button class="sp-status-btn" onclick="cycleSavedProductStatus('+p.id+')">'+p.status+' ↻</button>'
-      +'<span class="sp-item-date">'+p.date+'</span>'
-      +'<button class="sp-item-del" onclick="deleteSavedProduct('+p.id+')" title="Sil">×</button>';
-    list.appendChild(div);
-  });
-}
-
-// TOPLANTI
-function openMeetingForm(){
-  document.getElementById('mt-date').value=new Date().toISOString().slice(0,10);
-  document.getElementById('mt-title').value='';document.getElementById('mt-note').value='';
-  document.getElementById('meeting-overlay').classList.add('show');document.getElementById('meeting-popup').classList.add('show');
-  setTimeout(function(){document.getElementById('mt-title').focus();},300);
-}
-function closeMeetingForm(){document.getElementById('meeting-overlay').classList.remove('show');document.getElementById('meeting-popup').classList.remove('show');}
-function saveMeeting(){
-  var date=document.getElementById('mt-date').value;
-  var title=document.getElementById('mt-title').value.trim();
-  var note=document.getElementById('mt-note').value.trim();
-  if(!title){document.getElementById('mt-title').focus();return;}
-  meetings.unshift({date:date,title:title,note:note});
-  saveState();renderMeetings();closeMeetingForm();showToast('✓ Toplantı notu kaydedildi','green');
-}
-function renderMeetings(){
-  var list=document.getElementById('meeting-list');
-  if(!list)return;
-  if(!meetings||meetings.length===0){list.innerHTML='<div style="text-align:center;padding:24px;color:var(--text3);font-size:13px">Henüz toplantı notu yok.</div>';return;}
-  list.innerHTML='';
-  meetings.slice(0,10).forEach(function(m){
-    var div=document.createElement('div');div.className='meeting-item';
-    div.innerHTML='<span class="mi-date">'+m.date+'</span><div class="mi-body"><div class="mi-title">'+m.title+'</div><div class="mi-note">'+m.note+'</div></div>';
-    list.appendChild(div);
-  });
-}
-
-// METRİK TOGGLE
-var _metricOpen=false;
-function toggleMetrics(){
-  _metricOpen=!_metricOpen;
-  document.getElementById('metric-body').style.display=_metricOpen?'block':'none';
-  document.getElementById('metric-chevron').style.transform=_metricOpen?'rotate(180deg)':'rotate(0deg)';
-}
-
-// ACCORDION MODÜLLER
+// MODÜLLER
 function renderModules(){
   var wrap=document.getElementById('modules-wrap');wrap.innerHTML='';
   var totalDone=0,totalAll=0;
@@ -919,32 +691,20 @@ function renderModules(){
     mod.videos.forEach(function(_,i){if(done.indexOf(mod.id+'-'+i)>-1)modDone++;});
     totalDone+=modDone;
     var pct=Math.round(modDone/mod.videos.length*100);
-
     var acc=document.createElement('div');acc.className='module-accordion';acc.id='acc-'+mod.id;
-
     var header=document.createElement('div');header.className='module-accordion-header';
-    header.innerHTML=
-      '<div class="ma-num-big">'+String(mod.id).padStart(2,'0')+'</div>'
-      +'<div class="ma-content">'
-        +'<div class="ma-label-row">Modül '+String(mod.id).padStart(2,'0')+' — '+pct+'% tamamlandı</div>'
-        +'<div class="ma-name">'+mod.name+'</div>'
-      +'</div>'
-      +'<div class="ma-right">'
-        +'<div class="ma-bar-wrap"><div class="ma-bar-fill" style="width:'+pct+'%"></div></div>'
-        +'<span class="ma-pct">'+pct+'%</span>'
-        +'<span class="ma-chevron">▾</span>'
-      +'</div>';
+    header.innerHTML='<div class="ma-num-big">'+String(mod.id).padStart(2,'0')+'</div>'
+      +'<div class="ma-content"><div class="ma-label-row">Modül '+String(mod.id).padStart(2,'0')+' — '+pct+'% tamamlandı</div><div class="ma-name">'+mod.name+'</div></div>'
+      +'<div class="ma-right"><div class="ma-bar-wrap"><div class="ma-bar-fill" style="width:'+pct+'%"></div></div><span class="ma-pct">'+pct+'%</span><span class="ma-chevron">▾</span></div>';
     header.addEventListener('click',function(e){
       e.stopPropagation();
       var isOpen=acc.classList.contains('open');
       document.querySelectorAll('.module-accordion.open').forEach(function(a){a.classList.remove('open');});
       if(!isOpen)acc.classList.add('open');
     });
-
     var body=document.createElement('div');body.className='ma-body';
     var descDiv=document.createElement('div');descDiv.className='ma-desc';descDiv.textContent=mod.desc;
     body.appendChild(descDiv);
-
     var grid=document.createElement('div');grid.className='videos-grid';
     mod.videos.forEach(function(v,i){
       (function(mi,vi,vname){
@@ -962,7 +722,6 @@ function renderModules(){
           if(pos>-1)done.splice(pos,1);else{done.push(id);launchMiniConfetti();}
           saveState();renderModules();
           if(openAccId){var el=document.getElementById(openAccId);if(el)el.classList.add('open');}
-          showToast(done.indexOf(id)>-1?'✓ Tamamlandı':'↩ İşaret kaldırıldı',done.indexOf(id)>-1?'green':'');
         });
         grid.appendChild(card);
       })(mod.id,i,v);
@@ -975,8 +734,6 @@ function renderModules(){
 }
 
 function renderProgress(d,t){
-  if(t===undefined){t=0;MODULES.forEach(function(m){t+=m.videos.length;});}
-  if(d===undefined)d=done.length;
   var pct=t>0?Math.round(d/t*100):0;
   document.getElementById('prog-fill-hero').style.width=pct+'%';
   document.getElementById('prog-count-hero').textContent=d+' / '+t+' ders tamamlandı';
@@ -984,12 +741,11 @@ function renderProgress(d,t){
 }
 
 function renderAll(){
-  try{renderTask();}catch(e){console.error('renderTask:',e);}
-  try{renderMeetings();}catch(e){console.error('renderMeetings:',e);}
-  try{renderModules();}catch(e){console.error('renderModules:',e);}
+  try{renderTask();}catch(e){}
+  try{renderModules();}catch(e){}
 }
 
-// THEME TOGGLE
+// THEME
 function toggleTheme(){
   var isLight=document.body.classList.toggle('light-mode');
   document.getElementById('theme-toggle').textContent=isLight?'🌙':'☀️';
@@ -1024,12 +780,9 @@ function saveUserName(){
 }
 function applyUserName(full){
   var parts=full.split(' ');
-  var fn=parts[0];
-  document.getElementById('uav').textContent=fn.charAt(0).toUpperCase();
+  document.getElementById('uav').textContent=parts[0].charAt(0).toUpperCase();
   document.getElementById('uname').textContent=full;
 }
-
-function scrollToTask(){document.getElementById('weekly-task-section').scrollIntoView({behavior:'smooth'});}
 
 // METOD TOGGLE
 function toggleMethod(id,e){
@@ -1040,36 +793,146 @@ function toggleMethod(id,e){
   if(!isOpen)card.classList.add('open');
 }
 
-// AI SUPPORT
-function askQuick(btn){document.getElementById('sp-input').value=btn.textContent.trim();sendSupportMsg();}
+// ============================================================
+// AI SUPPORT - DÜZELTİLMİŞ VERSİYON
+// ============================================================
+function askQuick(btn){document.getElementById('sp-chat-input').value=btn.textContent.trim();sendSupportMsg();}
+
 function openSupportBot(){
   var msgs=document.getElementById('sp-messages');
-  if(msgs&&msgs.children.length===0)addBotMsg('Merhaba! 👋 Ben MLYNR Shopify AI Koçun. Her soruyu sorabilirsin.');
+  if(msgs&&msgs.children.length===0){
+    addBotMsg('Merhaba! 👋 Ben MLYNR Shopify AI Koçun. Shopify, ürün bulma, reklam, ölçekleme — her konuda yardımcı olurum.');
+  }
   document.getElementById('support-overlay').classList.add('show');
-  setTimeout(function(){document.getElementById('sp-input').focus();},300);
+  setTimeout(function(){document.getElementById('sp-chat-input').focus();},300);
 }
+
 function closeSupportBot(){document.getElementById('support-overlay').classList.remove('show');}
-function addBotMsg(txt){var msgs=document.getElementById('sp-messages');var div=document.createElement('div');div.className='sp-msg bot';div.textContent=txt;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
-function addUserMsg(txt){var msgs=document.getElementById('sp-messages');var div=document.createElement('div');div.className='sp-msg user';div.textContent=txt;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
-function addLoadingMsg(){var msgs=document.getElementById('sp-messages');var div=document.createElement('div');div.className='sp-msg bot loading';div.id='sp-loading';div.textContent='Düşünüyor...';msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
-function removeLoadingMsg(){var el=document.getElementById('sp-loading');if(el)el.remove();}
-function sendSupportMsg(){
-  var inp=document.getElementById('sp-input'),btn=document.getElementById('sp-send-btn');
-  var soru=inp.value.trim();if(!soru)return;
-  inp.value='';btn.disabled=true;addUserMsg(soru);addLoadingMsg();
-  fetch(SUPPORT_FN,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY},body:JSON.stringify({prompt:'Sen MLYNR Shopify AI Koçusun. Kısa, net, pratik cevaplar ver. Soru: '+soru})})
-    .then(function(r){return r.json();}).then(function(data){
-      removeLoadingMsg();addBotMsg(data.sonuc||data.reply||data.message||'Tekrar dene.');btn.disabled=false;
-    }).catch(function(){removeLoadingMsg();addBotMsg('Bağlantı hatası. Tekrar dene.');btn.disabled=false;});
+
+function addBotMsg(txt){
+  var msgs=document.getElementById('sp-messages');
+  var div=document.createElement('div');
+  div.className='sp-msg bot';
+  div.textContent=txt;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
 }
-document.addEventListener('DOMContentLoaded',function(){
-  var inp=document.getElementById('sp-input');
-  if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendSupportMsg();}});
-  var spInp=document.getElementById('sp-name-input');
-  if(spInp)spInp.addEventListener('keydown',function(e){if(e.key==='Enter')addSavedProduct();});
-  var lnInp=document.getElementById('inp-lastname');
-  if(lnInp)lnInp.addEventListener('keydown',function(e){if(e.key==='Enter')saveUserName();});
-});
+
+function addUserMsg(txt){
+  var msgs=document.getElementById('sp-messages');
+  var div=document.createElement('div');
+  div.className='sp-msg user';
+  div.textContent=txt;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function addLoadingMsg(){
+  var msgs=document.getElementById('sp-messages');
+  var div=document.createElement('div');
+  div.className='sp-msg bot loading';
+  div.id='sp-loading';
+  div.textContent='Düşünüyor...';
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function removeLoadingMsg(){
+  var el=document.getElementById('sp-loading');
+  if(el)el.remove();
+}
+
+// Response'dan düz metin çıkar - JSON gösterme
+function extractText(data){
+  // 1. Direkt string alanlar
+  var candidates=['sonuc','reply','message','result','content','cevap','text','answer'];
+  for(var i=0;i<candidates.length;i++){
+    var v=data[candidates[i]];
+    if(typeof v==='string'&&v.trim()){
+      // Eğer JSON string ise parse edip içinden metin çıkar
+      var cleaned=v.replace(/```json/gi,'').replace(/```/g,'').trim();
+      // JSON gibi görünüyorsa parse et
+      if(cleaned.startsWith('{')||cleaned.startsWith('[')){
+        try{
+          var parsed=JSON.parse(cleaned);
+          // Parse edilen objeden metin çıkar
+          var innerText=extractText(parsed);
+          if(innerText)return innerText;
+        }catch(e){}
+      }
+      return cleaned;
+    }
+    // Obje ise recursive
+    if(v&&typeof v==='object'&&!Array.isArray(v)){
+      var innerText=extractText(v);
+      if(innerText)return innerText;
+    }
+  }
+  // 2. Hiçbiri yoksa tüm string değerleri birleştir
+  var parts=[];
+  Object.keys(data).forEach(function(k){
+    if(typeof data[k]==='string'&&data[k].trim().length>10){
+      parts.push(data[k]);
+    }
+  });
+  return parts.join('\n\n')||'';
+}
+
+function sendSupportMsg(){
+  var inp=document.getElementById('sp-chat-input');
+  var btn=document.getElementById('sp-send-btn');
+  var soru=inp.value.trim();
+  if(!soru)return;
+  inp.value='';
+  btn.disabled=true;
+  addUserMsg(soru);
+  addLoadingMsg();
+
+  var systemPrompt='Sen MLYNR Shopify Mentörlük Programının AI Koçusun. Shopify dropshipping, ürün bulma, Meta reklamları, ölçekleme ve e-ticaret konularında uzmansin. Kisa, net, pratik ve Turkce cevaplar ver. Madde madde yaz, anlasilir ol. JSON veya kod blogu kullanma, duz metin yaz.';
+
+  fetch(SUPPORT_FN,{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':'Bearer '+SUPABASE_KEY,
+      'apikey':SUPABASE_KEY
+    },
+    body:JSON.stringify({
+      prompt: systemPrompt + '\n\nSoru: ' + soru
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    removeLoadingMsg();
+    var reply='';
+
+    // Tüm olası formatlari dene
+    if(typeof data==='string'){
+      reply=data;
+    } else if(data){
+      reply=extractText(data);
+    }
+
+    // Hala boşsa
+    if(!reply){reply='Şu anda cevap alamadım, tekrar dene.';}
+
+    // Markdown temizle
+    reply=reply
+      .replace(/```json[\s\S]*?```/g,'')
+      .replace(/```[\s\S]*?```/g,'')
+      .replace(/\*\*(.*?)\*\*/g,'$1')
+      .replace(/\*(.*?)\*/g,'$1')
+      .trim();
+
+    addBotMsg(reply);
+    btn.disabled=false;
+  })
+  .catch(function(){
+    removeLoadingMsg();
+    addBotMsg('Bağlantı hatası. Tekrar dene.');
+    btn.disabled=false;
+  });
+}
 
 // CONFETTI
 var _cRAF=null;
@@ -1086,48 +949,31 @@ function launchMiniConfetti(){
   _cRAF=requestAnimationFrame(run);
 }
 
-var _st;function showSaved(){var el=document.getElementById('saved-dot');el.classList.add('show');clearTimeout(_st);_st=setTimeout(function(){el.classList.remove('show');},1600);}
-var _tt;function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(cls?' '+cls:'')+' show';clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);}
+var _st;
+function showSaved(){var el=document.getElementById('saved-dot');el.classList.add('show');clearTimeout(_st);_st=setTimeout(function(){el.classList.remove('show');},1600);}
+var _tt;
+function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(cls?' '+cls:'')+' show';clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);}
 
 // INIT
 (function(){
   var entered=false;
-
-  function tryEnter(em,usr){
-    if(entered)return;
-    entered=true;
-    enterApp(em,usr);
-  }
-
-  function showLogin(){
-    if(!entered){
-      document.getElementById('login-screen').style.display='flex';
-    }
-  }
-
-  // Önce cache - anında giriş
-  try{
-    var ce=localStorage.getItem('mlynr_cached_email');
-    if(ce){tryEnter(ce,null);}
-  }catch(e){}
-
-  // Supabase session - 2 saniye içinde gelirse kullan
-  var loginTimer=setTimeout(function(){
-    if(!entered)showLogin();
-  },2000);
-
+  function tryEnter(em,usr){if(entered)return;entered=true;enterApp(em,usr);}
+  function showLogin(){if(!entered){document.getElementById('login-screen').style.display='flex';}}
+  try{var ce=localStorage.getItem('mlynr_cached_email');if(ce){tryEnter(ce,null);}}catch(e){}
+  var loginTimer=setTimeout(function(){if(!entered)showLogin();},2000);
   _sb.auth.getSession().then(function(r){
     clearTimeout(loginTimer);
-    if(r.data&&r.data.session&&r.data.session.user){
-      tryEnter(r.data.session.user.email,r.data.session.user);
-    } else {
-      if(!entered)showLogin();
-    }
-  }).catch(function(){
-    clearTimeout(loginTimer);
-    if(!entered)showLogin();
-  });
+    if(r.data&&r.data.session&&r.data.session.user){tryEnter(r.data.session.user.email,r.data.session.user);}
+    else{if(!entered)showLogin();}
+  }).catch(function(){clearTimeout(loginTimer);if(!entered)showLogin();});
 })();
+
+document.addEventListener('DOMContentLoaded',function(){
+  var inp=document.getElementById('sp-chat-input');
+  if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendSupportMsg();}});
+  var lnInp=document.getElementById('inp-lastname');
+  if(lnInp)lnInp.addEventListener('keydown',function(e){if(e.key==='Enter')saveUserName();});
+});
 </script>
 </body>
 </html>
