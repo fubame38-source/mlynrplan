@@ -280,7 +280,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <div class="history-wrap">
   <div id="history-section" style="display:none">
-    <div class="history-label">Geçmiş Analizler</div>
+    <div class="history-label" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:32px">
+      <span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)">Geçmiş Analizler</span>
+      <button onclick="clearAllHist()" style="background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text3);font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(239,68,68,.4)';this.style.color='#ef4444'" onmouseout="this.style.borderColor='';this.style.color=''">Tümünü Sil</button>
+    </div>
     <div class="history-list" id="history-list"></div>
   </div>
 </div>
@@ -418,6 +421,28 @@ function switchTab(tab, el) {
   document.getElementById('tab-nis').style.display = tab === 'nis' ? 'block' : 'none';
 }
 
+function buildAnalizPrompt(input) {
+  var isAliExpress = input.indexOf('aliexpress') !== -1;
+  var isAmazon = input.indexOf('amazon') !== -1;
+  var isURL = input.startsWith('http') || input.indexOf('.com/') !== -1;
+
+  var urunBilgisi = '';
+  if (isAliExpress) {
+    // AliExpress URL'den item ID çıkar
+    var itemMatch = input.match(/\/item\/(\d+)/);
+    var itemId = itemMatch ? itemMatch[1] : '';
+    urunBilgisi = 'Bu bir AliExpress urun linki' + (itemId ? ' (item ID: ' + itemId + ')' : '') + '. URL: ' + input + '. Bu linkteki urunu analiz et. AliExpress urunleri genellikle Cinden gelen dropshipping urunleridir. URL\'deki kelimelerden ürün kategorisini anla ve gercekci bir Shopify dropshipping analizi yap.';
+  } else if (isAmazon) {
+    urunBilgisi = 'Bu bir Amazon urun linki: ' + input + '. Bu urunu rakip olarak degerlendirip dropshipping potansiyelini analiz et.';
+  } else if (isURL) {
+    urunBilgisi = 'Bu bir urun linki: ' + input + '. Linkteki urun bilgilerinden dropshipping analizi yap.';
+  } else {
+    urunBilgisi = 'Urun adi: ' + input;
+  }
+
+  return urunBilgisi + '\n\nShopify dropshipping icin analiz yap. SADECE asagidaki JSON formatinda yanit ver, baska hicbir sey yazma:\n{"karar":"SAT","urun_adi":"gercek urun adi Turkce","karar_nedeni":"Turkce 2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Turkce hook","hook2":"Turkce hook","hook3":"Turkce hook","firsat":"string","uyari":"string","rakip_notu":"string","aliexpress_arama":"English search term","amazon_arama":"English search term"}\nkarar degeri: SAT, DIKKAT veya SATMA olsun. urun_adi alanina URL degil gercek urun adini yaz.';
+}
+
 function doAnaliz() {
   var inp = document.getElementById('analiz-input'); if (!inp) return;
   var input = inp.value.trim(); if (!input) { showToast('Ürün adı veya link gir'); return; }
@@ -428,13 +453,13 @@ function doAnaliz() {
   if (loading) loading.style.display = 'block';
   if (report) { report.style.display = 'none'; report.innerHTML = ''; }
   var stepsEl = document.getElementById('loading-steps'); if (stepsEl) stepsEl.innerHTML = '';
-  var steps = ['Ürün araştırılıyor...','Pazar verisi analiz ediliyor...','Hedef kitle belirleniyor...','Reklam hookları oluşturuluyor...','Rapor hazırlanıyor...'];
+  var steps = ['Link analiz ediliyor...','Ürün bilgisi çıkarılıyor...','Pazar verisi hesaplanıyor...','Reklam hookları yazılıyor...','Rapor hazırlanıyor...'];
   var si = 0;
   var stepInterval = setInterval(function() {
     if (stepsEl && si < steps.length) { var d = document.createElement('div'); d.className = 'ls-item'; d.textContent = steps[si]; stepsEl.appendChild(d); si++; }
   }, 800);
 
-  var prompt = 'Shopify dropshipping urun analizi yap: ' + input + '. Sadece asagidaki JSON formatinda yanit ver, baska hicbir sey yazma:\n{"karar":"SAT","urun_adi":"string","karar_nedeni":"Turkce 2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Turkce hook","hook2":"Turkce hook","hook3":"Turkce hook","firsat":"string","uyari":"string","rakip_notu":"string","aliexpress_arama":"English search term","amazon_arama":"English search term"}\nkarar degeri: SAT, DIKKAT veya SATMA olsun.';
+  var prompt = buildAnalizPrompt(input);
 
   callAI(prompt,
     function(parsed) {
@@ -628,10 +653,43 @@ function clearNis() {
   if (r) { r.style.display = 'none'; r.innerHTML = ''; }
 }
 
+function getDisplayName(input) {
+  // URL'den temiz isim çıkar
+  if (!input) return 'Bilinmeyen Ürün';
+  if (input.startsWith('http') || input.indexOf('.com/') !== -1) {
+    // AliExpress item ID'yi bul
+    if (input.indexOf('aliexpress') !== -1) {
+      var m = input.match(/\/item\/(\d+)/);
+      return m ? 'AliExpress #' + m[1] : 'AliExpress Ürünü';
+    }
+    if (input.indexOf('amazon') !== -1) return 'Amazon Ürünü';
+    // Genel URL — domain'i göster
+    try { return new URL(input).hostname.replace('www.',''); } catch(e) {}
+    return 'URL Ürünü';
+  }
+  return input;
+}
+
 function saveHist(input, karar, data) {
-  historyData.unshift({ input: input, karar: karar, date: new Date().toISOString().slice(0,10), data: data });
-  if (historyData.length > 20) historyData = historyData.slice(0, 20);
+  // Gerçek ürün adını kaydet (URL değil)
+  var displayName = (data && data.urun_adi) ? data.urun_adi : getDisplayName(input);
+  historyData.unshift({ input: input, displayName: displayName, karar: karar, date: new Date().toISOString().slice(0,10), data: data, id: Date.now() });
+  if (historyData.length > 30) historyData = historyData.slice(0, 30);
   try { localStorage.setItem('mlynr_urun_history', JSON.stringify(historyData)); } catch(e) {}
+  renderHistory();
+}
+
+function deleteHist(id, e) {
+  e.stopPropagation();
+  historyData = historyData.filter(function(h) { return h.id !== id; });
+  try { localStorage.setItem('mlynr_urun_history', JSON.stringify(historyData)); } catch(e) {}
+  renderHistory();
+}
+
+function clearAllHist() {
+  if (!confirm('Tüm geçmiş silinsin mi?')) return;
+  historyData = [];
+  try { localStorage.removeItem('mlynr_urun_history'); } catch(e) {}
   renderHistory();
 }
 
@@ -642,16 +700,44 @@ function renderHistory() {
   if (!historyData || historyData.length === 0) { sec.style.display = 'none'; return; }
   sec.style.display = 'block';
   list.innerHTML = '';
-  historyData.slice(0, 8).forEach(function(hh) {
+  historyData.slice(0, 20).forEach(function(hh) {
     var k = (hh.karar || 'DIKKAT').toUpperCase();
     var cls = k === 'SAT' ? 'sat' : (k === 'SATMA' ? 'satma' : 'dikkat');
+    var displayName = hh.displayName || (hh.data && hh.data.urun_adi ? hh.data.urun_adi : getDisplayName(hh.input));
+    var histId = hh.id || Math.random();
+
     var div = document.createElement('div');
     div.className = 'history-item';
-    div.innerHTML = '<div class="hi-decision ' + cls + '"></div><span class="hi-name">' + hh.input + '</span><span class="hi-date">' + hh.date + '</span>';
+    div.style.cssText = 'position:relative';
+
+    var dot = document.createElement('div');
+    dot.className = 'hi-decision ' + cls;
+
+    var nameEl = document.createElement('span');
+    nameEl.className = 'hi-name';
+    nameEl.textContent = displayName;
+
+    var dateEl = document.createElement('span');
+    dateEl.className = 'hi-date';
+    dateEl.textContent = hh.date || '';
+
+    var delBtn = document.createElement('button');
+    delBtn.textContent = '×';
+    delBtn.style.cssText = 'background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:0 4px;line-height:1;margin-left:4px;flex-shrink:0;transition:color .2s';
+    delBtn.title = 'Sil';
+    delBtn.onmouseover = function() { this.style.color = '#ef4444'; };
+    delBtn.onmouseout = function() { this.style.color = ''; };
+    delBtn.onclick = function(e) { deleteHist(histId, e); };
+
+    div.appendChild(dot);
+    div.appendChild(nameEl);
+    div.appendChild(dateEl);
+    div.appendChild(delBtn);
+
     div.onclick = function() {
       var inp = document.getElementById('analiz-input');
-      if (inp) inp.value = hh.input;
-      if (hh.data) { var rep = document.getElementById('analiz-report'); if (rep) { rep.style.display = 'flex'; renderReport(hh.data, hh.input); } }
+      if (inp) inp.value = hh.input || displayName;
+      if (hh.data) { var rep = document.getElementById('analiz-report'); if (rep) { rep.style.display = 'flex'; renderReport(hh.data, hh.input || displayName); } }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     list.appendChild(div);
