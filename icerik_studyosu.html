@@ -271,7 +271,21 @@ var API_URL='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/shopify-endpo
 var API_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
 var selectedPlatform='tiktok';
 
-// Sağlam AI çağrısı
+// JSON parse - iç içe string desteğiyle
+function tryParseJSON(raw) {
+  if (!raw) return null;
+  // Markdown temizle
+  raw = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+  // Direkt parse
+  try { return JSON.parse(raw); } catch(e) {}
+  // { } bloğu bul
+  try { var m1 = raw.match(/\{[\s\S]*\}/); if (m1) return JSON.parse(m1[0]); } catch(e) {}
+  // [ ] array bul
+  try { var m2 = raw.match(/\[[\s\S]*\]/); if (m2) return JSON.parse(m2[0]); } catch(e) {}
+  return null;
+}
+
+// Sağlam AI çağrısı - tüm nested formatları handle eder
 function callAI(prompt, onSuccess, onError) {
   fetch(API_URL, {
     method: 'POST',
@@ -280,19 +294,39 @@ function callAI(prompt, onSuccess, onError) {
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
-    var raw = '';
-    if (typeof data.sonuc === 'string') raw = data.sonuc;
-    else if (typeof data.reply === 'string') raw = data.reply;
-    else if (typeof data.message === 'string') raw = data.message;
-    else if (data.sonuc && typeof data.sonuc === 'object') { onSuccess(data.sonuc); return; }
-    else raw = JSON.stringify(data);
-
-    raw = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-    var parsed = null;
-    try { parsed = JSON.parse(raw); } catch(e) {}
-    if (!parsed) { try { var m = raw.match(/\{[\s\S]*\}/); if (m) parsed = JSON.parse(m[0]); } catch(e) {} }
-    if (parsed) onSuccess(parsed);
-    else onError(raw || 'Yanıt alınamadı.');
+    // 1. Direkt obje
+    if (data && typeof data === 'object') {
+      // Bilinen alanlar obje mi?
+      var fields = ['sonuc','reply','message','result','content','data'];
+      for (var i = 0; i < fields.length; i++) {
+        var v = data[fields[i]];
+        if (v && typeof v === 'object' && !Array.isArray(v)) { onSuccess(v); return; }
+      }
+      // String alanlar - içinde JSON olabilir
+      for (var j = 0; j < fields.length; j++) {
+        var s = data[fields[j]];
+        if (typeof s === 'string' && s.length > 2) {
+          var p = tryParseJSON(s);
+          if (p) { onSuccess(p); return; }
+        }
+      }
+      // Tüm data'yı dene (belki root obje zaten beklenen formatta)
+      if (data.formats || data.oneriler || data.script || data.takvim || data.karar) {
+        onSuccess(data); return;
+      }
+      // Tüm string değerleri birleştir ve parse dene
+      var allText = Object.values(data).filter(function(v) { return typeof v === 'string'; }).join(' ');
+      var pp = tryParseJSON(allText);
+      if (pp) { onSuccess(pp); return; }
+      // Son çare: data'nın kendisi
+      onError(allText || JSON.stringify(data));
+    } else if (typeof data === 'string') {
+      var parsed = tryParseJSON(data);
+      if (parsed) onSuccess(parsed);
+      else onError(data);
+    } else {
+      onError('Yanıt alınamadı.');
+    }
   })
   .catch(function(e) { onError(e.message || 'Bağlantı hatası'); });
 }
