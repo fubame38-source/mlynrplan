@@ -579,10 +579,15 @@ function doNis() {
     function(txt) {
       if (loading) loading.style.display = 'none';
       if (btn) btn.disabled = false;
-      // Fallback olarak raw text göster, demoNis kullanma
+      // Son şans: raw text parse dene
+      var retry = tryParseJSON(txt);
+      if (retry) {
+        var oneriler = retry.oneriler || (Array.isArray(retry) ? retry : null);
+        if (oneriler && oneriler.length) { renderNis(oneriler, nis); return; }
+      }
       if (report) {
         report.style.display = 'flex';
-        report.innerHTML = '<div class="detail-section"><div class="ds-header"><span class="ds-icon">⚠️</span><div class="ds-title">Yanıt alınamadı</div></div><div class="ds-body"><p>AI yanıtı işlenemedi. Tekrar dene veya farklı niş seç.</p><p style="margin-top:8px;font-size:11px;color:var(--text3)">' + (txt||'') + '</p></div></div>'
+        report.innerHTML = '<div class="detail-section"><div class="ds-header"><span class="ds-icon">⚠️</span><div class="ds-title">Yanıt alınamadı</div></div><div class="ds-body"><p>AI yanıtı işlenemedi. Tekrar dene veya farklı niş seç.</p></div></div>'
           + '<div class="report-actions"><button class="ra-btn" onclick="clearNis()">↺ Farklı Niş</button></div>';
       }
     }
