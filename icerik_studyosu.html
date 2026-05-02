@@ -371,8 +371,11 @@ function doFormat() {
     function(txt) {
       loading.style.display = 'none';
       btn.disabled = false;
+      // Son şans: ham metni parse etmeyi dene
+      var retry = tryParseJSON(txt);
+      if (retry && retry.formats && retry.formats.length) { renderFormat(retry, input); return; }
       result.style.display = 'flex';
-      result.innerHTML = '<div class="result-card"><div class="rc-body"><p style="color:var(--text2);font-size:13px;white-space:pre-wrap">' + (txt||'Hata oluştu.') + '</p></div></div>';
+      result.innerHTML = '<div class="result-card"><div class="rc-body"><p style="color:var(--text2);font-size:13px">Format analizi yapılamadı, tekrar dene.</p></div></div>';
     }
   );
 }
@@ -447,8 +450,10 @@ function doScript() {
     function(txt) {
       loading.style.display = 'none';
       btn.disabled = false;
+      var retry = tryParseJSON(txt);
+      if (retry && (retry.hook_secenekleri || retry.script)) { renderScript(retry, input); return; }
       result.style.display = 'flex';
-      result.innerHTML = '<div class="result-card"><div class="rc-body"><p style="color:var(--text2);font-size:13px;white-space:pre-wrap">' + (txt||'Hata oluştu.') + '</p></div></div>';
+      result.innerHTML = '<div class="result-card"><div class="rc-body"><p style="color:var(--text2);font-size:13px">Script oluşturulamadı, tekrar dene.</p></div></div>';
     }
   );
 }
@@ -543,8 +548,10 @@ function doTakvim() {
     function(txt) {
       loading.style.display = 'none';
       btn.disabled = false;
+      var retry = tryParseJSON(txt);
+      if (retry && retry.takvim && retry.takvim.length) { renderTakvim(retry, input); return; }
       result.style.display = 'flex';
-      result.innerHTML = '<div class="result-card"><div class="rc-body"><p style="color:var(--text2);font-size:13px">' + (txt||'Hata oluştu.') + '</p></div></div>';
+      result.innerHTML = '<div class="result-card"><div class="rc-body"><p style="color:var(--text2);font-size:13px">Plan oluşturulamadı, tekrar dene.</p></div></div>';
     }
   );
 }
