@@ -391,6 +391,29 @@ footer p{font-size:12px;color:var(--text3)}
     </div>
   </div>
 
+  <!-- BUGÜNÜN İÇERİK GÖREVİ -->
+  <div class="section" id="today-content-section" style="display:none">
+    <div class="section-header">
+      <span class="section-title">🎬 Bugünün İçerik Görevi</span>
+      <a href="https://mlynrplan.com/icerik_studyosu.html" style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--text2)'" onmouseout="this.style.color=''">Stüdyoya Git →</a>
+    </div>
+    <div id="today-content-card" style="background:var(--purple-dim);border:1px solid var(--purple-ln);border-radius:var(--r);padding:20px 24px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--purple),transparent)"></div>
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--purple);opacity:.7;margin-bottom:8px" id="today-content-day"></div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px" id="today-content-title"></div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:12px" id="today-content-desc"></div>
+      <div id="today-content-hook" style="padding:10px 14px;background:var(--surface);border-radius:8px;border-left:2px solid var(--purple);font-size:12px;color:var(--text2);margin-bottom:14px;display:none">
+        <div style="font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:4px">HOOK</div>
+        <div id="today-hook-text"></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="today-cekildi-btn" onclick="toggleTodayCekildi()" style="display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:1px solid var(--border2);background:transparent;color:var(--text3)">📹 Çek</button>
+        <button id="today-yayinlandi-btn" onclick="toggleTodayYayinlandi()" style="display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:1px solid var(--border2);background:transparent;color:var(--text3)">🚀 Yayınla</button>
+        <span id="today-format-badge" style="font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:8px 12px;border-radius:20px;border:1px solid var(--border2);color:var(--text3)"></span>
+      </div>
+    </div>
+  </div>
+
   <!-- ÜRÜN BULMA METODLARI -->
   <div class="section">
     <div class="section-header">
@@ -734,6 +757,60 @@ function renderProgress(d,t){
 function renderAll(){
   try{renderTask();}catch(e){}
   try{renderModules();}catch(e){}
+  try{renderTodayContentTask();}catch(e){}
+}
+
+function renderTodayContentTask(){
+  var day = new Date().getDay();
+  var todayIdx = day === 0 ? 6 : day - 1;
+  var gunler = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
+  try{
+    var saved = JSON.parse(LS.getItem('mlynr_calendars')||'[]');
+    if(!saved.length){document.getElementById('today-content-section').style.display='none';return;}
+    var cal = saved[0]; // en son kaydedilen
+    var takvim = cal.takvim || [];
+    var tracking = cal.tracking || {};
+    var gun = takvim[todayIdx];
+    if(!gun||!gun.baslik){document.getElementById('today-content-section').style.display='none';return;}
+    document.getElementById('today-content-section').style.display='block';
+    document.getElementById('today-content-day').textContent = gunler[todayIdx] + ' · ' + cal.urun;
+    document.getElementById('today-content-title').textContent = gun.baslik || '';
+    document.getElementById('today-content-desc').textContent = gun.aciklama || '';
+    var hookEl = document.getElementById('today-content-hook');
+    var hookTxt = document.getElementById('today-hook-text');
+    if(gun.hook){hookEl.style.display='block';hookTxt.textContent=gun.hook;}else{hookEl.style.display='none';}
+    document.getElementById('today-format-badge').textContent = gun.format || '';
+    // Takip durumu
+    var t = tracking[todayIdx] || {};
+    var cb = document.getElementById('today-cekildi-btn');
+    var yb = document.getElementById('today-yayinlandi-btn');
+    if(t.cekildi){cb.style.background='rgba(56,189,248,.1)';cb.style.borderColor='rgba(56,189,248,.3)';cb.style.color='var(--blue)';cb.textContent='📹 Çekildi ✓';}
+    else{cb.style.background='';cb.style.borderColor='';cb.style.color='';cb.textContent='📹 Çek';}
+    if(t.yayinlandi){yb.style.background='var(--green-dim)';yb.style.borderColor='var(--green-ln)';yb.style.color='var(--green)';yb.textContent='🚀 Yayınlandı ✓';}
+    else{yb.style.background='';yb.style.borderColor='';yb.style.color='';yb.textContent='🚀 Yayınla';}
+  }catch(e){document.getElementById('today-content-section').style.display='none';}
+}
+
+function toggleTodayCekildi(){
+  var day=new Date().getDay();var todayIdx=day===0?6:day-1;
+  updateTodayTracking(todayIdx,'cekildi');
+}
+function toggleTodayYayinlandi(){
+  var day=new Date().getDay();var todayIdx=day===0?6:day-1;
+  updateTodayTracking(todayIdx,'yayinlandi');
+}
+function updateTodayTracking(idx,field){
+  try{
+    var saved=JSON.parse(LS.getItem('mlynr_calendars')||'[]');
+    if(!saved.length)return;
+    var cal=saved[0];
+    if(!cal.tracking)cal.tracking={};
+    if(!cal.tracking[idx])cal.tracking[idx]={};
+    cal.tracking[idx][field]=!cal.tracking[idx][field];
+    LS.setItem('mlynr_calendars',JSON.stringify(saved));
+    renderTodayContentTask();
+    showToast(field==='cekildi'?'📹 Video durumu güncellendi':'🚀 Yayın durumu güncellendi','green');
+  }catch(e){}
 }
 
 // THEME
