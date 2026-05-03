@@ -200,7 +200,6 @@ footer p{font-size:12px;color:var(--text3)}
   .platform-grid{flex-wrap:wrap}
 }
 </style>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -600,7 +599,7 @@ function renderTakvim(data, inputTxt) {
     h += '</div></div>';
   });
   h += '</div></div></div>';
-  h += '<div style="display:flex;gap:8px"><button class="copy-all-btn primary-copy" onclick="saveCalendarToSupabase(currentCalData,document.getElementById(\'takvim-input\').value)">💾 Takvimi Kaydet</button><button class="copy-all-btn" onclick="copyTakvim()">📋 Kopyala</button><button class="secondary-btn" onclick="clearTakvim()">↺ Yeni Plan</button></div>';
+  h += '<div style="display:flex;gap:8px"><button class="copy-all-btn primary-copy" onclick="saveCalendarLocal()">💾 Portala Kaydet</button><button class="copy-all-btn" onclick="copyTakvim()">📋 Kopyala</button><button class="secondary-btn" onclick="clearTakvim()">↺ Yeni Plan</button></div>';
   result.innerHTML = h;
   currentCalData = data.takvim;
 }
@@ -616,8 +615,268 @@ function clearTakvim() {
   r.style.display = 'none'; r.innerHTML = '';
 }
 
-// ====== SUPABASE TAKVİM SİSTEMİ ======
-var SB_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
+// ====== TAKVİM SİSTEMİ (localStorage) ======
+var currentCalData = null;
+var currentWeekStart = '';
+
+function getWeekStart() {
+  var d = new Date();
+  var day = d.getDay();
+  var diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  var mon = new Date(d.setDate(diff));
+  return mon.toISOString().slice(0, 10);
+}
+
+function getTodayIndex() {
+  // Pazartesi=0 ... Pazar=6
+  var day = new Date().getDay();
+  return day === 0 ? 6 : day - 1;
+}
+
+function onTakvimiTab() {
+  loadSavedCalendarsLocal();
+}
+
+// Portala kaydet — localStorage'a yazar, portal da buradan okur
+function saveCalendarLocal() {
+  if (!currentCalData) { showToast('Önce plan oluştur'); return; }
+  var inputTxt = document.getElementById('takvim-input').value || 'Ürün';
+  try {
+    var weekStart = getWeekStart();
+    var saved = JSON.parse(localStorage.getItem('mlynr_calendars') || '[]');
+    saved = saved.filter(function(c) { return c.week_start !== weekStart; });
+    saved.unshift({
+      week_start: weekStart,
+      urun: inputTxt,
+      takvim: currentCalData,
+      tracking: {} // gun_index -> { cekildi, yayinlandi, goruntulenme, begeni, not }
+    });
+    if (saved.length > 8) saved = saved.slice(0, 8);
+    localStorage.setItem('mlynr_calendars', JSON.stringify(saved));
+    currentWeekStart = weekStart;
+    showToast('✓ Portala kaydedildi!', 'purple');
+    loadSavedCalendarsLocal();
+  } catch(e) { showToast('Kaydetme hatası'); }
+}
+
+function getCalendars() {
+  try { return JSON.parse(localStorage.getItem('mlynr_calendars') || '[]'); } catch(e) { return []; }
+}
+
+function saveTracking(weekStart, tracking) {
+  try {
+    var saved = getCalendars();
+    var cal = saved.find(function(c) { return c.week_start === weekStart; });
+    if (cal) {
+      cal.tracking = tracking;
+      localStorage.setItem('mlynr_calendars', JSON.stringify(saved));
+    }
+  } catch(e) {}
+}
+
+function loadSavedCalendarsLocal() {
+  var sec = document.getElementById('saved-calendars-section');
+  var list = document.getElementById('saved-calendars-list');
+  if (!sec || !list) return;
+  var saved = getCalendars();
+  if (!saved.length) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  list.innerHTML = '';
+  saved.forEach(function(c) {
+    var tracking = c.tracking || {};
+    var aktifGunler = (c.takvim || []).filter(function(g) { return g.baslik && g.baslik.length > 0; });
+    var cekildi = Object.values(tracking).filter(function(t) { return t.cekildi; }).length;
+    var yayinlandi = Object.values(tracking).filter(function(t) { return t.yayinlandi; }).length;
+    var div = document.createElement('div');
+    div.className = 'saved-cal-item';
+    div.innerHTML = '<div class="sci-dot"></div>'
+      + '<div style="flex:1"><div class="sci-name">' + c.urun + '</div>'
+      + '<div style="display:flex;gap:10px;margin-top:3px">'
+      + '<span style="font-family:var(--mono);font-size:8px;color:var(--blue)">📹 ' + cekildi + '/' + aktifGunler.length + '</span>'
+      + '<span style="font-family:var(--mono);font-size:8px;color:var(--green)">✓ ' + yayinlandi + '/' + aktifGunler.length + '</span>'
+      + '</div></div>'
+      + '<span class="sci-date">' + c.week_start + '</span>'
+      + '<button class="sci-del" onclick="deleteCalendarLocal(\'' + c.week_start + '\',event)">×</button>';
+    div.onclick = function() { openCalendar(c); };
+    list.appendChild(div);
+  });
+}
+
+function openCalendar(cal) {
+  currentWeekStart = cal.week_start;
+  var tracking = cal.tracking || {};
+  var rows = (cal.takvim || []).map(function(g, i) {
+    var t = tracking[i] || {};
+    return {
+      gun_index: i,
+      gun: g.gun || '',
+      baslik: g.baslik || '',
+      format: g.format || '',
+      hook: g.hook || '',
+      aciklama: g.aciklama || '',
+      cekildi: t.cekildi || false,
+      yayinlandi: t.yayinlandi || false,
+      goruntulenme: t.goruntulenme || 0,
+      begeni: t.begeni || 0,
+      not_text: t.not || ''
+    };
+  });
+  renderTrackingCalendar(rows, cal.week_start);
+  document.getElementById('takvim-result').scrollIntoView({ behavior: 'smooth' });
+}
+
+function deleteCalendarLocal(weekStart, e) {
+  e.stopPropagation();
+  if (!confirm('Silinsin mi?')) return;
+  try {
+    var saved = getCalendars().filter(function(c) { return c.week_start !== weekStart; });
+    localStorage.setItem('mlynr_calendars', JSON.stringify(saved));
+    loadSavedCalendarsLocal();
+  } catch(e) {}
+}
+
+function toggleCekildi(gunIndex) {
+  var btn = document.getElementById('cekildi-btn-' + gunIndex);
+  var isDone = btn.classList.contains('cekildi-done');
+  btn.className = 'track-btn' + (!isDone ? ' cekildi-done' : '');
+  btn.textContent = !isDone ? '📹 Çekildi ✓' : '📹 Çek';
+  saveTrackingFromUI();
+}
+
+function toggleYayinlandi(gunIndex) {
+  var btn = document.getElementById('yayinlandi-btn-' + gunIndex);
+  var isDone = btn.classList.contains('yayinlandi-done');
+  btn.className = 'track-btn' + (!isDone ? ' yayinlandi-done' : '');
+  btn.textContent = !isDone ? '🚀 Yayınlandı ✓' : '🚀 Yayınla';
+  saveTrackingFromUI();
+}
+
+var _saveT;
+function saveStats(gunIndex) {
+  clearTimeout(_saveT);
+  _saveT = setTimeout(function() { saveTrackingFromUI(); updateOzetStats(); }, 600);
+}
+
+function saveTrackingFromUI() {
+  if (!currentWeekStart) return;
+  var tracking = {};
+  document.querySelectorAll('[id^="cekildi-btn-"]').forEach(function(btn) {
+    var i = parseInt(btn.id.replace('cekildi-btn-', ''));
+    if (!tracking[i]) tracking[i] = {};
+    tracking[i].cekildi = btn.classList.contains('cekildi-done');
+  });
+  document.querySelectorAll('[id^="yayinlandi-btn-"]').forEach(function(btn) {
+    var i = parseInt(btn.id.replace('yayinlandi-btn-', ''));
+    if (!tracking[i]) tracking[i] = {};
+    tracking[i].yayinlandi = btn.classList.contains('yayinlandi-done');
+  });
+  document.querySelectorAll('[id^="goruntulenme-"]').forEach(function(el) {
+    var i = parseInt(el.id.replace('goruntulenme-', ''));
+    if (!tracking[i]) tracking[i] = {};
+    tracking[i].goruntulenme = parseInt(el.value) || 0;
+  });
+  document.querySelectorAll('[id^="begeni-"]').forEach(function(el) {
+    var i = parseInt(el.id.replace('begeni-', ''));
+    if (!tracking[i]) tracking[i] = {};
+    tracking[i].begeni = parseInt(el.value) || 0;
+  });
+  document.querySelectorAll('[id^="not-"]').forEach(function(el) {
+    var i = parseInt(el.id.replace('not-', ''));
+    if (!tracking[i]) tracking[i] = {};
+    tracking[i].not = el.value || '';
+  });
+  saveTracking(currentWeekStart, tracking);
+  updateOzetStats();
+}
+
+function updateOzetStats() {
+  var totalGor = 0, totalCekildi = 0, totalYayinlandi = 0;
+  document.querySelectorAll('[id^="goruntulenme-"]').forEach(function(el) { totalGor += parseInt(el.value) || 0; });
+  document.querySelectorAll('[id^="cekildi-btn-"]').forEach(function(el) { if (el.classList.contains('cekildi-done')) totalCekildi++; });
+  document.querySelectorAll('[id^="yayinlandi-btn-"]').forEach(function(el) { if (el.classList.contains('yayinlandi-done')) totalYayinlandi++; });
+  var c1 = document.getElementById('ozet-cekildi'); if (c1) c1.textContent = totalCekildi;
+  var c2 = document.getElementById('ozet-yayinlandi'); if (c2) c2.textContent = totalYayinlandi;
+  var c3 = document.getElementById('ozet-goruntulenme'); if (c3) c3.textContent = totalGor >= 1000 ? (totalGor/1000).toFixed(1)+'K' : totalGor;
+}
+
+function renderTrackingCalendar(rows, weekStart) {
+  var result = document.getElementById('takvim-result');
+  result.style.display = 'flex';
+  var todayIdx = getTodayIndex();
+  var cekildi = rows.filter(function(r) { return r.cekildi; }).length;
+  var yayinlandi = rows.filter(function(r) { return r.yayinlandi; }).length;
+  var totalGor = rows.reduce(function(s, r) { return s + (r.goruntulenme || 0); }, 0);
+  var h = '';
+  // Özet
+  h += '<div class="result-card"><div class="rc-header"><span class="rc-icon">📊</span><div class="rc-title">Haftalık Özet</div></div><div class="rc-body">';
+  h += '<div class="haftalik-ozet-kart">';
+  h += '<div class="ozet-stat"><div class="ozet-num" id="ozet-cekildi">' + cekildi + '</div><div class="ozet-label">Çekildi</div></div>';
+  h += '<div class="ozet-stat"><div class="ozet-num" id="ozet-yayinlandi">' + yayinlandi + '</div><div class="ozet-label">Yayınlandı</div></div>';
+  h += '<div class="ozet-stat"><div class="ozet-num" id="ozet-goruntulenme">' + (totalGor >= 1000 ? (totalGor/1000).toFixed(1)+'K' : totalGor) + '</div><div class="ozet-label">Görüntülenme</div></div>';
+  h += '</div></div></div>';
+  // Günler
+  h += '<div class="result-card"><div class="rc-header"><span class="rc-icon">📅</span><div class="rc-title">Günlük Takip</div></div><div class="rc-body"><div class="calendar-grid">';
+  rows.forEach(function(r) {
+    var isActive = r.baslik && r.baslik.length > 0;
+    var isToday = r.gun_index === todayIdx;
+    h += '<div class="cal-day' + (isActive ? ' active' : '') + (isToday ? '" style="border-color:var(--purple);box-shadow:0 0 0 1px var(--purple-ln)' : '') + '">';
+    h += '<div class="cal-day-num"' + (isToday ? ' style="color:var(--purple)"' : '') + '>' + (r.gun_index + 1) + '</div>';
+    h += '<div class="cal-day-body" style="flex:1">';
+    h += '<div class="cal-day-label">' + (r.gun || '') + (isToday ? ' <span style="color:var(--purple);font-weight:700">· Bugün</span>' : '') + '</div>';
+    if (isActive) {
+      h += '<div class="cal-day-title">' + r.baslik + '</div>';
+      if (r.hook) h += '<div style="margin-top:6px;padding:6px 10px;background:var(--surface3);border-radius:6px;font-size:11px;color:var(--text2);border-left:2px solid var(--purple)"><span style="font-family:var(--mono);font-size:7px;color:var(--text3);display:block;margin-bottom:2px">HOOK</span>' + r.hook + '</div>';
+      h += '<div class="cal-day-format">' + (r.format || '') + '</div>';
+      h += '<div class="cal-track-row">';
+      h += '<button id="cekildi-btn-' + r.gun_index + '" class="track-btn' + (r.cekildi ? ' cekildi-done' : '') + '" onclick="toggleCekildi(' + r.gun_index + ')">' + (r.cekildi ? '📹 Çekildi ✓' : '📹 Çek') + '</button>';
+      h += '<button id="yayinlandi-btn-' + r.gun_index + '" class="track-btn' + (r.yayinlandi ? ' yayinlandi-done' : '') + '" onclick="toggleYayinlandi(' + r.gun_index + ')">' + (r.yayinlandi ? '🚀 Yayınlandı ✓' : '🚀 Yayınla') + '</button>';
+      h += '</div>';
+      h += '<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">';
+      h += '<div class="track-stat">👁 <input id="goruntulenme-' + r.gun_index + '" type="number" placeholder="0" value="' + (r.goruntulenme || '') + '" oninput="saveStats(' + r.gun_index + ')" min="0"></div>';
+      h += '<div class="track-stat">❤️ <input id="begeni-' + r.gun_index + '" type="number" placeholder="0" value="' + (r.begeni || '') + '" oninput="saveStats(' + r.gun_index + ')" min="0"></div>';
+      h += '</div>';
+      h += '<input id="not-' + r.gun_index + '" class="track-note-input" type="text" placeholder="Not ekle..." value="' + (r.not_text || '') + '" oninput="saveStats(' + r.gun_index + ')" style="width:100%;margin-top:8px">';
+    } else {
+      h += '<div class="cal-day-title" style="color:var(--text3)">Dinlenme Günü</div>';
+    }
+    h += '</div></div>';
+  });
+  h += '</div></div></div>';
+  h += '<div style="display:flex;gap:8px"><button class="copy-all-btn primary-copy" onclick="saveCalendarLocal()">💾 Kaydet</button><button class="copy-all-btn" onclick="copyTakvim()">📋 Kopyala</button><button class="secondary-btn" onclick="clearTakvim()">↺ Yeni Plan</button></div>';
+  result.innerHTML = h;
+}
+
+// THEME
+function toggleTheme() {
+  var isLight = document.body.classList.toggle('light-mode');
+  document.getElementById('theme-toggle').textContent = isLight ? '🌙' : '☀️';
+  try { localStorage.setItem('mlynr_theme', isLight ? 'light' : 'dark'); } catch(e) {}
+}
+function applyTheme() {
+  try { var t = localStorage.getItem('mlynr_theme'); if (t === 'light') { document.body.classList.add('light-mode'); document.getElementById('theme-toggle').textContent = '🌙'; } } catch(e) {}
+}
+
+var _tt;
+function showToast(m, cls) {
+  var t = document.getElementById('toast'); if (!t) return;
+  t.textContent = m;
+  t.className = 'toast' + (cls ? ' ' + cls : '') + ' show';
+  clearTimeout(_tt);
+  _tt = setTimeout(function() { t.classList.remove('show'); }, 2600);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  applyTheme();
+  var fi = document.getElementById('format-input');
+  if (fi) fi.addEventListener('keydown', function(e) { if (e.key === 'Enter') doFormat(); });
+  var si = document.getElementById('script-input');
+  if (si) si.addEventListener('keydown', function(e) { if (e.key === 'Enter') doScript(); });
+  var ti = document.getElementById('takvim-input');
+  if (ti) ti.addEventListener('keydown', function(e) { if (e.key === 'Enter') doTakvim(); });
+});
+</script>
+</body>
+</html>
 var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
 var _sb2 = null;
 var calEmail = '';
