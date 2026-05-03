@@ -272,16 +272,6 @@ footer p{font-size:12px;color:var(--text3)}
   <!-- ====== TAKVİM ====== -->
   <div id="tab-takvim" style="display:none">
 
-    <!-- LOGIN / KULLANICI -->
-    <div id="takvim-login-card" class="input-card" style="display:none">
-      <span class="ic-label">📅 Takvimini Kaydet & Takip Et</span>
-      <p style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6">Takvimini kaydetmek ve cihazlar arası takip etmek için e-posta adresini gir.</p>
-      <input class="ic-input" id="cal-email" type="email" placeholder="ornek@gmail.com" style="font-size:14px">
-      <div class="action-row" style="margin-top:10px">
-        <button class="primary-btn" onclick="calLogin()">Giriş Yap & Kaydet</button>
-      </div>
-    </div>
-
     <!-- KAYITLI TAKVİMLER -->
     <div id="saved-calendars-section" style="display:none;margin-bottom:14px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
@@ -634,6 +624,39 @@ var calEmail = '';
 var currentWeekStart = '';
 var currentCalData = null;
 
+function getCalEmail() {
+  // Portal'dan cached email al
+  try {
+    var e = localStorage.getItem('mlynr_cached_email');
+    if (e) return e;
+    // Alternatif: mlynr_shop_ ile başlayan key'den çıkar
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.startsWith('mlynr_shop_fullname_')) {
+        var em = k.replace('mlynr_shop_fullname_', '').replace(/_/g, '.').replace(/\.\.+/g, '_');
+        // Basit validation
+        if (em.indexOf('@') > 0) return em;
+      }
+    }
+  } catch(e) {}
+  return null;
+}
+
+function onTakvimiTab() {
+  if (!_sb2) return;
+  calEmail = getCalEmail() || '';
+  var sec = document.getElementById('saved-calendars-section');
+  var lbl = document.getElementById('cal-user-label');
+  if (calEmail) {
+    if (lbl) lbl.textContent = calEmail;
+    if (sec) sec.style.display = 'block';
+    loadSavedCalendars();
+  } else {
+    // localStorage fallback
+    loadSavedCalendarsLocal();
+  }
+}
+
 function getWeekStart() {
   var d = new Date();
   var day = d.getDay();
@@ -642,37 +665,68 @@ function getWeekStart() {
   return mon.toISOString().slice(0, 10);
 }
 
-// Tab'a geçince login durumunu kontrol et
-function onTakvimiTab() {
-  if (!_sb2) return;
-  var saved = '';
-  try { saved = localStorage.getItem('mlynr_cal_email') || ''; } catch(e) {}
-  if (saved) {
-    calEmail = saved;
-    document.getElementById('cal-user-label').textContent = calEmail;
-    document.getElementById('takvim-login-card').style.display = 'none';
-    document.getElementById('saved-calendars-section').style.display = 'block';
-    loadSavedCalendars();
-  } else {
-    document.getElementById('takvim-login-card').style.display = 'block';
-    document.getElementById('saved-calendars-section').style.display = 'none';
-  }
+function saveCalendarLocal(takvimData, inputTxt) {
+  try {
+    var weekStart = getWeekStart();
+    var saved = JSON.parse(localStorage.getItem('mlynr_calendars') || '[]');
+    saved = saved.filter(function(c) { return c.week_start !== weekStart; });
+    saved.unshift({ week_start: weekStart, urun: inputTxt, takvim: takvimData, created_at: new Date().toISOString() });
+    if (saved.length > 10) saved = saved.slice(0, 10);
+    localStorage.setItem('mlynr_calendars', JSON.stringify(saved));
+    currentWeekStart = weekStart;
+    showToast('✓ Takvim kaydedildi', 'purple');
+    loadSavedCalendarsLocal();
+  } catch(e) { showToast('Kaydetme hatası'); }
 }
 
-function calLogin() {
-  var em = document.getElementById('cal-email').value.trim().toLowerCase();
-  if (!em || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { showToast('Geçerli e-posta gir'); return; }
-  calEmail = em;
-  try { localStorage.setItem('mlynr_cal_email', em); } catch(e) {}
-  document.getElementById('cal-user-label').textContent = calEmail;
-  document.getElementById('takvim-login-card').style.display = 'none';
-  document.getElementById('saved-calendars-section').style.display = 'block';
-  loadSavedCalendars();
-  showToast('✓ Giriş yapıldı', 'purple');
+function loadSavedCalendarsLocal() {
+  var sec = document.getElementById('saved-calendars-section');
+  var list = document.getElementById('saved-calendars-list');
+  if (!sec || !list) return;
+  try {
+    var saved = JSON.parse(localStorage.getItem('mlynr_calendars') || '[]');
+    if (!saved.length) { sec.style.display = 'none'; return; }
+    sec.style.display = 'block';
+    list.innerHTML = '';
+    saved.forEach(function(c) {
+      var div = document.createElement('div');
+      div.className = 'saved-cal-item';
+      div.innerHTML = '<div class="sci-dot"></div>'
+        + '<div style="flex:1"><div class="sci-name">' + c.urun + '</div></div>'
+        + '<span class="sci-date">' + c.week_start + '</span>'
+        + '<button class="sci-del" onclick="deleteCalendarLocal(\'' + c.week_start + '\',event)">×</button>';
+      div.onclick = function() {
+        currentWeekStart = c.week_start;
+        // Render directly from local data
+        var rows = c.takvim.map(function(g, i) {
+          return { gun_index: i, gun: g.gun, baslik: g.baslik, format: g.format, hook: g.hook, cekildi: false, yayinlandi: false, goruntulenme: 0, begeni: 0, not_text: '' };
+        });
+        renderTrackingCalendar(rows, c.week_start);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+      list.appendChild(div);
+    });
+  } catch(e) {}
+}
+
+function deleteCalendarLocal(weekStart, e) {
+  e.stopPropagation();
+  if (!confirm('Silinsin mi?')) return;
+  try {
+    var saved = JSON.parse(localStorage.getItem('mlynr_calendars') || '[]');
+    saved = saved.filter(function(c) { return c.week_start !== weekStart; });
+    localStorage.setItem('mlynr_calendars', JSON.stringify(saved));
+    loadSavedCalendarsLocal();
+  } catch(e) {}
 }
 
 async function saveCalendarToSupabase(takvimData, inputTxt) {
-  if (!calEmail) { showToast('Önce e-posta ile giriş yap'); return; }
+  if (!calEmail) calEmail = getCalEmail() || '';
+  if (!calEmail) {
+    // Email yoksa localStorage'a kaydet
+    saveCalendarLocal(takvimData, inputTxt);
+    return;
+  }
   var weekStart = getWeekStart();
   currentWeekStart = weekStart;
 
