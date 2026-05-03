@@ -613,6 +613,7 @@ function renderTakvim(data, inputTxt) {
   h += '<div style="display:flex;gap:8px"><button class="copy-all-btn primary-copy" onclick="saveCalendarToSupabase(currentCalData,document.getElementById(\'takvim-input\').value)">💾 Takvimi Kaydet</button><button class="copy-all-btn" onclick="copyTakvim()">📋 Kopyala</button><button class="secondary-btn" onclick="clearTakvim()">↺ Yeni Plan</button></div>';
   result.innerHTML = h;
   currentCalData = data.takvim;
+}
 
 function copyTakvim() {
   var r = document.getElementById('takvim-result');
@@ -628,7 +629,7 @@ function clearTakvim() {
 // ====== SUPABASE TAKVİM SİSTEMİ ======
 var SB_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
 var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
-var _sb2 = supabase.createClient(SB_URL, SB_KEY);
+var _sb2 = null;
 var calEmail = '';
 var currentWeekStart = '';
 var currentCalData = null;
@@ -643,6 +644,7 @@ function getWeekStart() {
 
 // Tab'a geçince login durumunu kontrol et
 function onTakvimiTab() {
+  if (!_sb2) return;
   var saved = '';
   try { saved = localStorage.getItem('mlynr_cal_email') || ''; } catch(e) {}
   if (saved) {
@@ -903,6 +905,7 @@ function showToast(m, cls) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  _sb2 = supabase.createClient(SB_URL, SB_KEY);
   applyTheme();
   var fi = document.getElementById('format-input');
   if (fi) fi.addEventListener('keydown', function(e) { if (e.key === 'Enter') doFormat(); });
