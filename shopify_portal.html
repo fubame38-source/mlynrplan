@@ -463,15 +463,15 @@ footer p{font-size:12px;color:var(--text3)}
     <div class="section-header">
       <span class="section-title">⚡ Hızlı Erişim</span>
     </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button onclick="window.location.href='https://mlynrplan.com/urun_bulucu.html'" style="display:flex;align-items:center;gap:8px;padding:12px 20px;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1)" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(255,255,255,.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <span>🔍</span> Ürün Bul
+    <div class="action-steps">
+      <button class="action-step-btn primary-step" onclick="window.location.href='https://mlynrplan.com/urun_bulucu.html'">
+        <span class="step-num">1</span> Ürün Bul
       </button>
-      <button onclick="window.location.href='https://mlynrplan.com/icerik_studyosu.html'" style="display:flex;align-items:center;gap:8px;padding:12px 20px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:10px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(255,255,255,.25)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='';this.style.color=''">
-        <span>🎬</span> İçerik Üret
+      <button class="action-step-btn" onclick="window.location.href='https://mlynrplan.com/icerik_studyosu.html'">
+        <span class="step-num">2</span> İçerik Üret
       </button>
-      <button onclick="openSupportBot()" style="display:flex;align-items:center;gap:8px;padding:12px 20px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:10px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(255,255,255,.25)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='';this.style.color=''">
-        <span>🤖</span> AI Koç
+      <button class="action-step-btn" onclick="openSupportBot()">
+        <span class="step-num">3</span> AI Koç
       </button>
     </div>
   </div>
