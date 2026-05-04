@@ -458,21 +458,146 @@ footer p{font-size:12px;color:var(--text3)}
     </div>
   </section>
 
-  <!-- ─── HIZLI ERİŞİM ─── -->
+  <!-- ─── TODAY'S MISSION ─── -->
   <div class="section" style="margin-top:20px">
     <div class="section-header">
-      <span class="section-title">⚡ Hızlı Erişim</span>
+      <span class="section-title">⚡ Bugünün Görevi</span>
     </div>
-    <div class="action-steps">
-      <button class="action-step-btn primary-step" onclick="window.location.href='https://mlynrplan.com/urun_bulucu.html'">
-        <span class="step-num">1</span> Ürün Bul
-      </button>
-      <button class="action-step-btn" onclick="window.location.href='https://mlynrplan.com/icerik_studyosu.html'">
-        <span class="step-num">2</span> İçerik Üret
-      </button>
-      <button class="action-step-btn" onclick="openSupportBot()">
-        <span class="step-num">3</span> AI Koç
-      </button>
+    <div class="mission-hero">
+      <div class="mh-top">
+        <div>
+          <div class="mh-eyebrow">Growth OS · Günlük Aksiyon</div>
+          <div class="mh-title" id="mh-title">Para Kazanmaya Başla</div>
+          <div class="mh-status">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block"></span>
+            <span id="mh-status-txt">Henüz ürün seçmedin</span>
+          </div>
+          <div class="mh-earning">Potansiyel: <span id="mh-potential">₺0 → ₺50,000/ay</span></div>
+        </div>
+        <div class="mh-xp">
+          <div class="mh-xp-label">XP</div>
+          <div class="mh-xp-val" id="mh-xp-val">320</div>
+          <div class="mh-xp-sub">/ 1000</div>
+          <div class="xp-track"><div class="xp-fill" id="xp-fill-bar"></div></div>
+        </div>
+      </div>
+
+      <!-- STREAK -->
+      <div style="margin-bottom:14px">
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Bu Haftaki Aktivite</div>
+        <div class="streak-row" id="streak-row">
+          <div class="streak-box done">Pzt</div>
+          <div class="streak-box done">Sal</div>
+          <div class="streak-box done">Çrş</div>
+          <div class="streak-box today">Per</div>
+          <div class="streak-box">Cum</div>
+          <div class="streak-box">Cmt</div>
+          <div class="streak-box">Paz</div>
+        </div>
+      </div>
+
+      <!-- 3 STEP ACTIONS -->
+      <div class="action-steps">
+        <button class="action-step-btn primary-step" onclick="window.location.href='https://mlynrplan.com/urun_bulucu.html'">
+          <span class="step-num">1</span> Ürün Bul
+        </button>
+        <button class="action-step-btn" onclick="window.location.href='https://mlynrplan.com/icerik_studyosu.html'">
+          <span class="step-num">2</span> Reklam Açısı Oluştur
+        </button>
+        <button class="action-step-btn" onclick="showToast('🚀 Meta Ads entegrasyonu yakında!','green')">
+          <span class="step-num">3</span> Reklamı Başlat
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── METRİKLER + WINNER FEED + KOÇ ─── -->
+  <div class="section">
+    <!-- Metrikler -->
+    <div class="metrics-row" style="margin-bottom:14px">
+      <div class="metrics-row-card">
+        <div class="mr-label">🧪 Bugün Test</div>
+        <div class="mr-val" id="mr-test">0</div>
+        <div class="mr-sub">ürün analiz edildi</div>
+      </div>
+      <div class="metrics-row-card">
+        <div class="mr-label">📣 Aktif Reklam</div>
+        <div class="mr-val" id="mr-ads">0</div>
+        <div class="mr-sub">kampanya çalışıyor</div>
+      </div>
+      <div class="metrics-row-card">
+        <div class="mr-label">💸 Tahmini Gelir</div>
+        <div class="mr-val" id="mr-rev">₺0</div>
+        <div class="mr-sub">bugünkü tahmin</div>
+      </div>
+    </div>
+
+    <!-- Winner + Koç -->
+    <div class="two-col asymm">
+      <!-- WINNER FEED -->
+      <div>
+        <div class="section-header" style="margin-bottom:10px">
+          <span class="section-title">🔥 Winner Feed</span>
+          <span style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--red)">● CANLI</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="winner-row">
+            <div class="winner-rank g">#1</div>
+            <div class="winner-emoji-col">🛌</div>
+            <div class="winner-info">
+              <div class="winner-name">Ortopedik Boyun Yastığı Pro</div>
+              <div class="winner-meta">342 satış bu hafta · ₺1,890 ort.</div>
+            </div>
+            <span class="winner-badge hot">🔥 HOT</span>
+          </div>
+          <div class="winner-row">
+            <div class="winner-rank s">#2</div>
+            <div class="winner-emoji-col">💡</div>
+            <div class="winner-info">
+              <div class="winner-name">RGB LED Ayna Işığı</div>
+              <div class="winner-meta">218 satış · ₺1,240 ort.</div>
+            </div>
+            <span class="winner-badge trend">↑ TREND</span>
+          </div>
+          <div class="winner-row">
+            <div class="winner-rank">#3</div>
+            <div class="winner-emoji-col">🧴</div>
+            <div class="winner-info">
+              <div class="winner-name">Ultrasonik Cilt Cihazı</div>
+              <div class="winner-meta">197 satış · ₺2,100 ort.</div>
+            </div>
+            <span class="winner-badge new">✨ YENİ</span>
+          </div>
+          <div class="winner-row">
+            <div class="winner-rank">#4</div>
+            <div class="winner-emoji-col">🎯</div>
+            <div class="winner-info">
+              <div class="winner-name">Masaj Tabancası Mini</div>
+              <div class="winner-meta">163 satış · ₺1,650 ort.</div>
+            </div>
+            <span class="winner-badge trend">↑ ÇIKIYOR</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI KOÇ -->
+      <div class="coach-bubble">
+        <div class="coach-head">
+          <div class="coach-avatar">🧠</div>
+          <div>
+            <div class="coach-label">AI Koç</div>
+            <div class="coach-status">● Aktif</div>
+          </div>
+        </div>
+        <div class="coach-msg">
+          Bugün <strong>0 aksiyon</strong> aldın. <span class="warn">Bir ürün seçmezsen ilerleyemezsin.</span><br><br>
+          Her gün tek bir ürün analiz etmek seni 30 günde ilk satışa götürür.
+        </div>
+        <div class="coach-actions">
+          <button class="coach-cta primary" onclick="window.location.href='https://mlynrplan.com/urun_bulucu.html'">Ürün Bul →</button>
+          <button class="coach-cta ghost" onclick="openSupportBot()">Soru Sor</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -694,13 +819,7 @@ function loadState(){
   updateXP();
 }
 
-function updateXP(){
-  var xp=done.length*30;
-  document.getElementById('mh-xp-val').textContent=xp;
-  var pct=Math.min(100,Math.round(xp/10));
-  document.getElementById('xp-fill-bar').style.width=pct+'%';
-  document.getElementById('mr-test').textContent=done.length;
-}
+function updateXP(){}
 
 /* AUTH */
 var _failCount=0,_failLock=0;
@@ -915,7 +1034,12 @@ function toggleTheme(){
   try{LS.setItem('mlynr_theme',isLight?'light':'dark');}catch(e){}
 }
 function applyTheme(){
-  try{var t=LS.getItem('mlynr_theme');if(t==='light'){document.body.classList.add('light-mode');document.getElementById('theme-toggle').textContent='🌙';}}catch(e){}
+  try{
+    var t=LS.getItem('mlynr_theme');
+    var btn=document.getElementById('theme-toggle');
+    if(t==='light'){document.body.classList.add('light-mode');if(btn)btn.textContent='🌙';}
+    else{document.body.classList.remove('light-mode');if(btn)btn.textContent='☀️';}
+  }catch(e){}
 }
 
 /* İSİM */
