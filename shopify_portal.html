@@ -47,13 +47,6 @@ body.light-mode .wtc-eyebrow{color:rgba(146,64,14,.7)}
 body.light-mode .wtc-box{border-color:rgba(146,64,14,.3)}
 body.light-mode .wtc-item.ck .wtc-box{background:#92400e;border-color:#92400e}
 body.light-mode .metric-card{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light-mode .metric-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
-body.light-mode .metric-save-btn{background:#111;color:#fff}
-body.light-mode .metric-row{background:#f7f7f5}
-body.light-mode .saved-products-card{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light-mode .sp-input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
-body.light-mode .sp-add-btn{background:#111;color:#fff}
-body.light-mode .sp-item{border-color:rgba(0,0,0,.06)}
 body.light-mode .module-accordion{background:#fff;border-color:rgba(0,0,0,.08)}
 body.light-mode .module-accordion.open{background:#fafaf8;border-color:rgba(0,0,0,.14)}
 body.light-mode .ma-num-big{color:#ebebea}
@@ -71,12 +64,24 @@ body.light-mode .banner{background:#fffbf5;border-color:rgba(146,64,14,.2)}
 body.light-mode .overlay{background:rgba(0,0,0,.4)}
 body.light-mode .popup{background:#fff;border-color:rgba(0,0,0,.1)}
 body.light-mode .close-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:#555}
-body.light-mode .mp-input,.mp-textarea{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
 body.light-mode .mp-save{background:#111;color:#fff}
 body.light-mode #ai-fab{background:linear-gradient(135deg,#fff,#f7f7f5);border-color:rgba(0,0,0,.12);box-shadow:0 8px 32px rgba(0,0,0,.12)}
 body.light-mode .fab-title{color:#111}
 body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
 body.light-mode .saved-dot{background:rgba(22,163,74,.08)}
+/* ── YENİ MODÜLLER LIGHT ── */
+body.light-mode .mission-hero{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .mh-status{background:#f7f7f5;border-color:rgba(0,0,0,.08)}
+body.light-mode .action-step-btn{background:#fff;border-color:rgba(0,0,0,.1);color:#555}
+body.light-mode .action-step-btn:hover{border-color:rgba(0,0,0,.2);color:#111}
+body.light-mode .action-step-btn.primary-step{background:#111;color:#fff;border-color:#111}
+body.light-mode .winner-row{background:#fff;border-color:rgba(0,0,0,.07)}
+body.light-mode .winner-row:hover{border-color:rgba(0,0,0,.15);background:#f7f7f5}
+body.light-mode .coach-bubble{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .metrics-row-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .streak-box{background:#f7f7f5;border-color:rgba(0,0,0,.07)}
+body.light-mode .streak-box.done{background:rgba(22,163,74,.07);border-color:rgba(22,163,74,.2)}
+body.light-mode .streak-box.today{border-color:rgba(250,204,21,.4);background:rgba(250,204,21,.05)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -155,6 +160,30 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .section-action{background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all .2s}
 .section-action:hover{border-color:rgba(255,255,255,.25);color:var(--text)}
 
+/* ─── MISSION HERO ─── */
+.mission-hero{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:24px 28px;position:relative;overflow:hidden}
+.mission-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent)}
+.mh-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.mh-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.mh-title{font-size:clamp(20px,4vw,28px);font-weight:900;letter-spacing:-1px;color:var(--white);line-height:1.1;margin-bottom:6px}
+.mh-status{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:5px 10px}
+.mh-earning{margin-top:10px;font-size:12px;color:var(--text2)}
+.mh-earning span{color:var(--green);font-weight:600}
+.mh-xp{text-align:right;flex-shrink:0}
+.mh-xp-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.mh-xp-val{font-size:28px;font-weight:900;letter-spacing:-2px;color:var(--white);line-height:1}
+.mh-xp-sub{font-family:var(--mono);font-size:9px;color:var(--text3)}
+.xp-track{width:100%;height:3px;background:var(--border2);border-radius:10px;overflow:hidden;margin-top:6px}
+.xp-fill{height:100%;background:linear-gradient(90deg,#333,var(--white));border-radius:10px;width:32%;transition:width .8s cubic-bezier(.4,0,.2,1)}
+/* 3 STEP BUTTONS */
+.action-steps{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.action-step-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none}
+.action-step-btn:hover{border-color:rgba(255,255,255,.25);color:var(--text);transform:translateY(-1px)}
+.action-step-btn.primary-step{background:var(--white);color:var(--bg);border-color:transparent}
+.action-step-btn.primary-step:hover{box-shadow:0 6px 20px rgba(255,255,255,.15);transform:translateY(-2px)}
+.step-num{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.1);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.action-step-btn.primary-step .step-num{background:rgba(0,0,0,.15);color:var(--bg)}
+
 /* HAFTALIK GÖREV */
 .weekly-task-card{border:1px solid var(--gold-ln);border-radius:var(--r);padding:22px 26px;background:var(--gold-dim);position:relative;overflow:hidden}
 .weekly-task-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
@@ -169,6 +198,55 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .wtc-item.ck .wtc-box{background:var(--gold);border-color:var(--gold)}
 .wtc-item-text{font-size:12px;color:var(--text2)}
 .wtc-item.ck .wtc-item-text{color:var(--text)}
+
+/* ─── WINNER FEED ─── */
+.winner-row{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;transition:all .2s;cursor:pointer}
+.winner-row:hover{border-color:var(--border2);transform:translateX(3px)}
+.winner-rank{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text3);min-width:20px;text-align:center}
+.winner-rank.g{color:var(--gold)}
+.winner-rank.s{color:var(--text2)}
+.winner-emoji-col{font-size:18px;flex-shrink:0}
+.winner-info{flex:1;min-width:0}
+.winner-name{font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.winner-meta{font-family:var(--mono);font-size:9px;color:var(--text3)}
+.winner-badge{font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:3px 8px;border-radius:6px}
+.winner-badge.hot{background:var(--red-dim);border:1px solid var(--red-ln);color:var(--red)}
+.winner-badge.trend{background:var(--green-dim);border:1px solid var(--green-ln);color:var(--green)}
+.winner-badge.new{background:var(--purple-dim);border:1px solid var(--purple-ln);color:var(--purple)}
+
+/* ─── AI KOÇ BUBBLE ─── */
+.coach-bubble{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:20px 24px;position:relative;overflow:hidden}
+.coach-bubble::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
+.coach-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.coach-avatar{width:32px;height:32px;border-radius:8px;background:var(--surface2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.coach-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.coach-status{font-family:var(--mono);font-size:9px;color:var(--green)}
+.coach-msg{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px}
+.coach-msg strong{color:var(--text)}
+.coach-msg .warn{color:var(--gold)}
+.coach-actions{display:flex;gap:8px;flex-wrap:wrap}
+.coach-cta{padding:8px 14px;border-radius:8px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;border:none}
+.coach-cta.primary{background:var(--white);color:var(--bg)}
+.coach-cta.primary:hover{box-shadow:0 4px 16px rgba(255,255,255,.15)}
+.coach-cta.ghost{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.coach-cta.ghost:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
+
+/* ─── STREAK ─── */
+.streak-row{display:flex;gap:5px}
+.streak-box{flex:1;height:32px;border-radius:6px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text3)}
+.streak-box.done{border-color:var(--green-ln);background:var(--green-dim);color:var(--green)}
+.streak-box.today{border-color:var(--gold-ln);background:var(--gold-dim);color:var(--gold)}
+
+/* ─── METRICS ROW ─── */
+.metrics-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.metrics-row-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px}
+.mr-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.mr-val{font-size:22px;font-weight:900;letter-spacing:-1px;color:var(--white);line-height:1;margin-bottom:4px}
+.mr-sub{font-size:11px;color:var(--text2)}
+
+/* ─── 2 COL LAYOUT ─── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.two-col.asymm{grid-template-columns:3fr 2fr}
 
 /* MODÜLLER */
 .module-accordion{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all .2s}
@@ -234,11 +312,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .popup.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
 .close-btn{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:50%;width:30px;height:30px;color:var(--text2);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1}
 .close-btn:hover{background:rgba(255,255,255,.12);color:var(--text)}
-.mp-form{display:flex;flex-direction:column;gap:12px;margin-top:20px}
 .mp-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:6px}
 .mp-input,.mp-textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 14px;outline:none;transition:border-color .2s}
 .mp-input:focus,.mp-textarea:focus{border-color:rgba(255,255,255,.3)}
-.mp-textarea{resize:vertical;min-height:80px;line-height:1.6}
 .mp-save{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:14px;cursor:pointer;transition:all .2s;margin-top:4px}
 .mp-save:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
 
@@ -287,19 +363,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .saved-dot{position:fixed;bottom:24px;left:24px;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:6px;padding:6px 12px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9000}
 .saved-dot.show{opacity:1}
 
+/* CONFETTI */
+#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0;transition:opacity .3s}
+#confetti-canvas.show{opacity:1}
+
 /* FOOTER */
 footer{border-top:1px solid var(--border);padding:clamp(40px,7vw,72px) clamp(20px,5vw,48px);text-align:center;position:relative;z-index:1}
 .footer-logo{font-size:12px;font-weight:900;letter-spacing:4px;color:var(--border2);margin-bottom:16px}
 footer p{font-size:12px;color:var(--text3)}
 
-/* CONFETTI */
-#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0;transition:opacity .3s}
-#confetti-canvas.show{opacity:1}
-
 @media(max-width:640px){
   .quick-grid{grid-template-columns:1fr 1fr}
   .quick-card:first-child{grid-column:1/-1}
   .videos-grid{grid-template-columns:1fr 1fr}
+  .two-col{grid-template-columns:1fr}
+  .two-col.asymm{grid-template-columns:1fr}
+  .metrics-row{grid-template-columns:1fr 1fr}
+  .action-steps{flex-direction:column}
 }
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -378,8 +458,151 @@ footer p{font-size:12px;color:var(--text3)}
     </div>
   </section>
 
+  <!-- ─── TODAY'S MISSION ─── -->
+  <div class="section" style="margin-top:20px">
+    <div class="section-header">
+      <span class="section-title">⚡ Bugünün Görevi</span>
+    </div>
+    <div class="mission-hero">
+      <div class="mh-top">
+        <div>
+          <div class="mh-eyebrow">Growth OS · Günlük Aksiyon</div>
+          <div class="mh-title" id="mh-title">Para Kazanmaya Başla</div>
+          <div class="mh-status">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block"></span>
+            <span id="mh-status-txt">Henüz ürün seçmedin</span>
+          </div>
+          <div class="mh-earning">Potansiyel: <span id="mh-potential">₺0 → ₺50,000/ay</span></div>
+        </div>
+        <div class="mh-xp">
+          <div class="mh-xp-label">XP</div>
+          <div class="mh-xp-val" id="mh-xp-val">320</div>
+          <div class="mh-xp-sub">/ 1000</div>
+          <div class="xp-track"><div class="xp-fill" id="xp-fill-bar"></div></div>
+        </div>
+      </div>
+
+      <!-- STREAK -->
+      <div style="margin-bottom:14px">
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Bu Haftaki Aktivite</div>
+        <div class="streak-row" id="streak-row">
+          <div class="streak-box done">Pzt</div>
+          <div class="streak-box done">Sal</div>
+          <div class="streak-box done">Çrş</div>
+          <div class="streak-box today">Per</div>
+          <div class="streak-box">Cum</div>
+          <div class="streak-box">Cmt</div>
+          <div class="streak-box">Paz</div>
+        </div>
+      </div>
+
+      <!-- 3 STEP ACTIONS -->
+      <div class="action-steps">
+        <button class="action-step-btn primary-step" onclick="window.location.href='https://mlynrplan.com/urun_bulucu.html'">
+          <span class="step-num">1</span> Ürün Bul
+        </button>
+        <button class="action-step-btn" onclick="window.location.href='https://mlynrplan.com/icerik_studyosu.html'">
+          <span class="step-num">2</span> Reklam Açısı Oluştur
+        </button>
+        <button class="action-step-btn" onclick="showToast('🚀 Meta Ads entegrasyonu yakında!','green')">
+          <span class="step-num">3</span> Reklamı Başlat
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── METRİKLER + WINNER FEED + KOÇ ─── -->
+  <div class="section">
+    <!-- Metrikler -->
+    <div class="metrics-row" style="margin-bottom:14px">
+      <div class="metrics-row-card">
+        <div class="mr-label">🧪 Bugün Test</div>
+        <div class="mr-val" id="mr-test">0</div>
+        <div class="mr-sub">ürün analiz edildi</div>
+      </div>
+      <div class="metrics-row-card">
+        <div class="mr-label">📣 Aktif Reklam</div>
+        <div class="mr-val" id="mr-ads">0</div>
+        <div class="mr-sub">kampanya çalışıyor</div>
+      </div>
+      <div class="metrics-row-card">
+        <div class="mr-label">💸 Tahmini Gelir</div>
+        <div class="mr-val" id="mr-rev">₺0</div>
+        <div class="mr-sub">bugünkü tahmin</div>
+      </div>
+    </div>
+
+    <!-- Winner + Koç -->
+    <div class="two-col asymm">
+      <!-- WINNER FEED -->
+      <div>
+        <div class="section-header" style="margin-bottom:10px">
+          <span class="section-title">🔥 Winner Feed</span>
+          <span style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--red)">● CANLI</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="winner-row">
+            <div class="winner-rank g">#1</div>
+            <div class="winner-emoji-col">🛌</div>
+            <div class="winner-info">
+              <div class="winner-name">Ortopedik Boyun Yastığı Pro</div>
+              <div class="winner-meta">342 satış bu hafta · ₺1,890 ort.</div>
+            </div>
+            <span class="winner-badge hot">🔥 HOT</span>
+          </div>
+          <div class="winner-row">
+            <div class="winner-rank s">#2</div>
+            <div class="winner-emoji-col">💡</div>
+            <div class="winner-info">
+              <div class="winner-name">RGB LED Ayna Işığı</div>
+              <div class="winner-meta">218 satış · ₺1,240 ort.</div>
+            </div>
+            <span class="winner-badge trend">↑ TREND</span>
+          </div>
+          <div class="winner-row">
+            <div class="winner-rank">#3</div>
+            <div class="winner-emoji-col">🧴</div>
+            <div class="winner-info">
+              <div class="winner-name">Ultrasonik Cilt Cihazı</div>
+              <div class="winner-meta">197 satış · ₺2,100 ort.</div>
+            </div>
+            <span class="winner-badge new">✨ YENİ</span>
+          </div>
+          <div class="winner-row">
+            <div class="winner-rank">#4</div>
+            <div class="winner-emoji-col">🎯</div>
+            <div class="winner-info">
+              <div class="winner-name">Masaj Tabancası Mini</div>
+              <div class="winner-meta">163 satış · ₺1,650 ort.</div>
+            </div>
+            <span class="winner-badge trend">↑ ÇIKIYOR</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI KOÇ -->
+      <div class="coach-bubble">
+        <div class="coach-head">
+          <div class="coach-avatar">🧠</div>
+          <div>
+            <div class="coach-label">AI Koç</div>
+            <div class="coach-status">● Aktif</div>
+          </div>
+        </div>
+        <div class="coach-msg">
+          Bugün <strong>0 aksiyon</strong> aldın. <span class="warn">Bir ürün seçmezsen ilerleyemezsin.</span><br><br>
+          Her gün tek bir ürün analiz etmek seni 30 günde ilk satışa götürür.
+        </div>
+        <div class="coach-actions">
+          <button class="coach-cta primary" onclick="window.location.href='https://mlynrplan.com/urun_bulucu.html'">Ürün Bul →</button>
+          <button class="coach-cta ghost" onclick="openSupportBot()">Soru Sor</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- HAFTALIK GÖREV -->
-  <div class="section" id="weekly-task-section" style="margin-top:20px">
+  <div class="section" id="weekly-task-section" style="margin-top:6px">
     <div class="section-header">
       <span class="section-title">⚡ Mentöründen · Bu Haftanın Görevi</span>
     </div>
@@ -565,7 +788,7 @@ var MODULES=[
    videos:["Inbound Marketingi Anlamak","Kanalları Anlamak","Hook Nedir?","Etkileşim Taktikleri","Viral Video Ortak Özellikleri","Yaratıcılığın Önemi","Ürün Videoları Nasıl Çekilir?","Bizim Viral Video Örnekleri","Organik Videolardaki Başarının Sırrı"]},
   {id:6,name:"Reklam Hesaplarını Hazırlamak",desc:"Meta Business kur, Facebook sayfası ve Instagram hesabını ayarla.",
    videos:["Reklam Öncesi Bilmen Gerekenler","Meta Business Hesap Açılışı","Facebook Sayfası Ayarlamak","Instagram Hesabı Ayarlamak","Meta Reklam Hesabını Isıtmak"]},
-  {id:7,name:"Reklama Veri Tabanlı Hazırlık",desc:"PPE reklamlar, metrikleri anlamak ve KPI üzerinden strateji kurmak.",
+  {id:7,name:"Reklamı Veri Tabanlı Hazırlık",desc:"PPE reklamlar, metrikleri anlamak ve KPI üzerinden strateji kurmak.",
    videos:["PPE Reklam Vermek","Metrikleri Düzenlemek","Metrikleri Anlamak","MLYNR KPI Hesap Makinesi","MLYNR Günlük Karlılık Exceli","KPI Üzerinden Reklam Stratejisi"]},
   {id:8,name:"Reklamları Oluşturmak",desc:"Video ve görsel reklamlar oluştur, Capcut ve Canva kullan.",
    videos:["Reklam Kütüphanesinden Video İndirmek","TikTok ve Instagram'dan Video İndirmek","YouTube Videolarından Faydalanmak","CapCut Kullanımı","Canva ile Görsel Reklam","Canva'nın En Mantıklı Kullanımı","Reklamları Satın Almak"]},
@@ -577,37 +800,34 @@ var MODULES=[
    videos:["Facebook Reklamlarını Ölçekleme","Agentler ile Çalışmak","Dropshipping'den 3PL'e Geçiş"]}
 ];
 
-var _user=null,email='',done=[],metrics=[],meetings=[],taskChecks={},savedProducts=[];
+var _user=null,email='',done=[],taskChecks={};
 var adminTask={title:'',body:'',due:'',checks:[]};
 
 function stK(){return 'mlynr_shop_'+email.replace(/[^a-z0-9]/gi,'_');}
 function saveState(){
   if(!email)return;
-  try{LS.setItem(stK(),JSON.stringify({done:done,metrics:metrics,meetings:meetings,taskChecks:taskChecks,savedProducts:savedProducts}));}catch(e){}
+  try{LS.setItem(stK(),JSON.stringify({done:done,taskChecks:taskChecks}));}catch(e){}
   showSaved();
 }
 function loadState(){
   if(!email)return;
   try{
     var r=LS.getItem(stK());
-    if(r){var d=JSON.parse(r);done=d.done||[];metrics=d.metrics||[];meetings=d.meetings||[];taskChecks=d.taskChecks||{};savedProducts=d.savedProducts||[];}
-    else{done=[];metrics=[];meetings=[];taskChecks={};savedProducts=[];}
-  }catch(e){done=[];metrics=[];meetings=[];taskChecks={};savedProducts=[];}
-  try{
-    var ext=LS.getItem('mlynr_saved_products');
-    if(ext){
-      var extArr=JSON.parse(ext);
-      extArr.forEach(function(ep){
-        var exists=savedProducts.some(function(sp){return sp.name===ep.name;});
-        if(!exists)savedProducts.unshift(ep);
-      });
-      LS.removeItem('mlynr_saved_products');
-      saveState();
-    }
-  }catch(e){}
+    if(r){var d=JSON.parse(r);done=d.done||[];taskChecks=d.taskChecks||{};}
+    else{done=[];taskChecks={};}
+  }catch(e){done=[];taskChecks={};}
+  updateXP();
 }
 
-// AUTH
+function updateXP(){
+  var xp=done.length*30;
+  document.getElementById('mh-xp-val').textContent=xp;
+  var pct=Math.min(100,Math.round(xp/10));
+  document.getElementById('xp-fill-bar').style.width=pct+'%';
+  document.getElementById('mr-test').textContent=done.length;
+}
+
+/* AUTH */
 var _failCount=0,_failLock=0;
 function doAuth(){
   var em=document.getElementById('inp-email').value.trim().toLowerCase();
@@ -661,12 +881,12 @@ function enterApp(em,usr){
 function doLogout(){
   if(_user)_sb.auth.signOut();
   try{localStorage.removeItem('mlynr_cached_email');}catch(e){}
-  _user=null;email='';done=[];metrics=[];meetings=[];taskChecks={};savedProducts=[];
+  _user=null;email='';done=[];taskChecks={};
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
 }
 
-// ADMIN TASK
+/* ADMIN TASK */
 function loadAdminTask(){
   try{var local=LS.getItem('mlynr_shop_admin_task');if(local){adminTask=JSON.parse(local);renderTask();}}catch(e){}
   fetch(SUPABASE_URL+'/rest/v1/settings?key=eq.shopify_weekly_task&select=value',{
@@ -695,7 +915,7 @@ function renderTask(){
   }
 }
 
-// MODÜLLER
+/* MODÜLLER */
 function renderModules(){
   var wrap=document.getElementById('modules-wrap');wrap.innerHTML='';
   var totalDone=0,totalAll=0;
@@ -734,7 +954,7 @@ function renderModules(){
           if(openAcc)openAccId=openAcc.id;
           var pos=done.indexOf(id);
           if(pos>-1)done.splice(pos,1);else{done.push(id);launchMiniConfetti();}
-          saveState();renderModules();
+          saveState();renderModules();updateXP();
           if(openAccId){var el=document.getElementById(openAccId);if(el)el.classList.add('open');}
         });
         grid.appendChild(card);
@@ -758,33 +978,33 @@ function renderAll(){
   try{renderTask();}catch(e){}
   try{renderModules();}catch(e){}
   try{renderTodayContentTask();}catch(e){}
+  updateXP();
 }
 
 function renderTodayContentTask(){
-  var day = new Date().getDay();
-  var todayIdx = day === 0 ? 6 : day - 1;
-  var gunler = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
+  var day=new Date().getDay();
+  var todayIdx=day===0?6:day-1;
+  var gunler=['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
   try{
-    var saved = JSON.parse(LS.getItem('mlynr_calendars')||'[]');
+    var saved=JSON.parse(LS.getItem('mlynr_calendars')||'[]');
     if(!saved.length){document.getElementById('today-content-section').style.display='none';return;}
-    var cal = saved[0]; // en son kaydedilen
-    var takvim = cal.takvim || [];
-    var tracking = cal.tracking || {};
-    var gun = takvim[todayIdx];
+    var cal=saved[0];
+    var takvim=cal.takvim||[];
+    var tracking=cal.tracking||{};
+    var gun=takvim[todayIdx];
     if(!gun||!gun.baslik){document.getElementById('today-content-section').style.display='none';return;}
     document.getElementById('today-content-section').style.display='block';
-    document.getElementById('today-content-day').textContent = gunler[todayIdx] + ' · ' + cal.urun;
-    document.getElementById('today-content-title').textContent = gun.baslik || '';
-    document.getElementById('today-content-desc').textContent = gun.aciklama || '';
-    var hookEl = document.getElementById('today-content-hook');
-    var hookTxt = document.getElementById('today-hook-text');
+    document.getElementById('today-content-day').textContent=gunler[todayIdx]+' · '+cal.urun;
+    document.getElementById('today-content-title').textContent=gun.baslik||'';
+    document.getElementById('today-content-desc').textContent=gun.aciklama||'';
+    var hookEl=document.getElementById('today-content-hook');
+    var hookTxt=document.getElementById('today-hook-text');
     if(gun.hook){hookEl.style.display='block';hookTxt.textContent=gun.hook;}else{hookEl.style.display='none';}
-    document.getElementById('today-format-badge').textContent = gun.format || '';
-    // Takip durumu
-    var t = tracking[todayIdx] || {};
-    var cb = document.getElementById('today-cekildi-btn');
-    var yb = document.getElementById('today-yayinlandi-btn');
-    if(t.cekildi){cb.style.background='rgba(56,189,248,.1)';cb.style.borderColor='rgba(56,189,248,.3)';cb.style.color='var(--blue)';cb.textContent='📹 Çekildi ✓';}
+    document.getElementById('today-format-badge').textContent=gun.format||'';
+    var t=tracking[todayIdx]||{};
+    var cb=document.getElementById('today-cekildi-btn');
+    var yb=document.getElementById('today-yayinlandi-btn');
+    if(t.cekildi){cb.style.background='rgba(56,189,248,.1)';cb.style.borderColor='rgba(56,189,248,.3)';cb.style.color='#38bdf8';cb.textContent='📹 Çekildi ✓';}
     else{cb.style.background='';cb.style.borderColor='';cb.style.color='';cb.textContent='📹 Çek';}
     if(t.yayinlandi){yb.style.background='var(--green-dim)';yb.style.borderColor='var(--green-ln)';yb.style.color='var(--green)';yb.textContent='🚀 Yayınlandı ✓';}
     else{yb.style.background='';yb.style.borderColor='';yb.style.color='';yb.textContent='🚀 Yayınla';}
@@ -813,7 +1033,7 @@ function updateTodayTracking(idx,field){
   }catch(e){}
 }
 
-// THEME
+/* THEME */
 function toggleTheme(){
   var isLight=document.body.classList.toggle('light-mode');
   document.getElementById('theme-toggle').textContent=isLight?'🌙':'☀️';
@@ -823,7 +1043,7 @@ function applyTheme(){
   try{var t=LS.getItem('mlynr_theme');if(t==='light'){document.body.classList.add('light-mode');document.getElementById('theme-toggle').textContent='🌙';}}catch(e){}
 }
 
-// İSİM SİSTEMİ
+/* İSİM */
 function checkUserName(){
   try{
     var n=LS.getItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));
@@ -852,7 +1072,7 @@ function applyUserName(full){
   document.getElementById('uname').textContent=full;
 }
 
-// METOD TOGGLE
+/* METOD TOGGLE */
 function toggleMethod(id,e){
   if(e)e.stopPropagation();
   var card=document.getElementById('mc-'+id);
@@ -861,9 +1081,7 @@ function toggleMethod(id,e){
   if(!isOpen)card.classList.add('open');
 }
 
-// ============================================================
-// AI SUPPORT - DÜZELTİLMİŞ VERSİYON
-// ============================================================
+/* AI SUPPORT */
 function askQuick(btn){document.getElementById('sp-chat-input').value=btn.textContent.trim();sendSupportMsg();}
 
 function openSupportBot(){
@@ -910,39 +1128,21 @@ function removeLoadingMsg(){
   if(el)el.remove();
 }
 
-// Response'dan düz metin çıkar - JSON gösterme
 function extractText(data){
-  // 1. Direkt string alanlar
   var candidates=['sonuc','reply','message','result','content','cevap','text','answer'];
   for(var i=0;i<candidates.length;i++){
     var v=data[candidates[i]];
     if(typeof v==='string'&&v.trim()){
-      // Eğer JSON string ise parse edip içinden metin çıkar
       var cleaned=v.replace(/```json/gi,'').replace(/```/g,'').trim();
-      // JSON gibi görünüyorsa parse et
       if(cleaned.startsWith('{')||cleaned.startsWith('[')){
-        try{
-          var parsed=JSON.parse(cleaned);
-          // Parse edilen objeden metin çıkar
-          var innerText=extractText(parsed);
-          if(innerText)return innerText;
-        }catch(e){}
+        try{var parsed=JSON.parse(cleaned);var innerText=extractText(parsed);if(innerText)return innerText;}catch(e){}
       }
       return cleaned;
     }
-    // Obje ise recursive
-    if(v&&typeof v==='object'&&!Array.isArray(v)){
-      var innerText=extractText(v);
-      if(innerText)return innerText;
-    }
+    if(v&&typeof v==='object'&&!Array.isArray(v)){var innerText=extractText(v);if(innerText)return innerText;}
   }
-  // 2. Hiçbiri yoksa tüm string değerleri birleştir
   var parts=[];
-  Object.keys(data).forEach(function(k){
-    if(typeof data[k]==='string'&&data[k].trim().length>10){
-      parts.push(data[k]);
-    }
-  });
+  Object.keys(data).forEach(function(k){if(typeof data[k]==='string'&&data[k].trim().length>10){parts.push(data[k]);}});
   return parts.join('\n\n')||'';
 }
 
@@ -960,38 +1160,17 @@ function sendSupportMsg(){
 
   fetch(SUPPORT_FN,{
     method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'Authorization':'Bearer '+SUPABASE_KEY,
-      'apikey':SUPABASE_KEY
-    },
-    body:JSON.stringify({
-      prompt: systemPrompt + '\n\nSoru: ' + soru
-    })
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY},
+    body:JSON.stringify({prompt:systemPrompt+'\n\nSoru: '+soru})
   })
   .then(function(r){return r.json();})
   .then(function(data){
     removeLoadingMsg();
     var reply='';
-
-    // Tüm olası formatlari dene
-    if(typeof data==='string'){
-      reply=data;
-    } else if(data){
-      reply=extractText(data);
-    }
-
-    // Hala boşsa
+    if(typeof data==='string'){reply=data;}
+    else if(data){reply=extractText(data);}
     if(!reply){reply='Şu anda cevap alamadım, tekrar dene.';}
-
-    // Markdown temizle
-    reply=reply
-      .replace(/```json[\s\S]*?```/g,'')
-      .replace(/```[\s\S]*?```/g,'')
-      .replace(/\*\*(.*?)\*\*/g,'$1')
-      .replace(/\*(.*?)\*/g,'$1')
-      .trim();
-
+    reply=reply.replace(/```json[\s\S]*?```/g,'').replace(/```[\s\S]*?```/g,'').replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').trim();
     addBotMsg(reply);
     btn.disabled=false;
   })
@@ -1002,7 +1181,7 @@ function sendSupportMsg(){
   });
 }
 
-// CONFETTI
+/* CONFETTI */
 var _cRAF=null;
 function launchMiniConfetti(){
   var c=document.getElementById('confetti-canvas');if(!c)return;
@@ -1022,7 +1201,7 @@ function showSaved(){var el=document.getElementById('saved-dot');el.classList.ad
 var _tt;
 function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(cls?' '+cls:'')+' show';clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);}
 
-// INIT
+/* INIT */
 (function(){
   var entered=false;
   function tryEnter(em,usr){if(entered)return;entered=true;enterApp(em,usr);}
