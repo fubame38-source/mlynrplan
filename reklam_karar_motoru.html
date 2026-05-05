@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MLYNR. — Reklam Karar Motoru</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+  --bg:#080808;--surface:#111;--surface2:#161616;--surface3:#1c1c1c;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --text:#f0f0f0;--text2:#888;--text3:#444;--white:#fff;
+  --green:#22c55e;--green-ln:rgba(34,197,94,.2);--green-dim:rgba(34,197,94,.05);
+  --red:#ef4444;--red-ln:rgba(239,68,68,.2);--red-dim:rgba(239,68,68,.05);
+  --gold:#facc15;--gold-ln:rgba(250,204,21,.2);--gold-dim:rgba(250,204,21,.05);
+  --blue:#38bdf8;--blue-ln:rgba(56,189,248,.2);--blue-dim:rgba(56,189,248,.05);
+  --r:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:48px 48px}
+.bg-glow{position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse,rgba(239,68,68,.04),transparent 70%);pointer-events:none;z-index:0}
+
+.topbar{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(8,8,8,.9);border-bottom:1px solid var(--border);padding:0 clamp(16px,4vw,40px)}
+.topbar-inner{max-width:900px;margin:0 auto;height:52px;display:flex;align-items:center;gap:16px}
+.tl{font-size:11px;font-weight:900;letter-spacing:4px;color:var(--white)}
+.tl-sep{font-size:11px;color:var(--text3)}
+.tl-page{font-size:11px;color:var(--text2);font-family:var(--mono)}
+.back-link{margin-left:auto;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s}
+.back-link:hover{color:var(--text2)}
+
+.hero{padding:clamp(40px,7vw,64px) clamp(20px,5vw,48px) 0;max-width:900px;margin:0 auto;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:16px}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-size:clamp(36px,7vw,72px);font-weight:900;letter-spacing:-3px;line-height:.9;color:var(--white);margin-bottom:10px}
+.hero-title span{color:var(--red)}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.7;max-width:500px}
+
+.wrap{max-width:900px;margin:0 auto;padding:clamp(24px,4vw,40px) clamp(20px,5vw,48px);position:relative;z-index:1}
+
+/* TABS */
+.tab-bar{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;width:fit-content;margin-bottom:24px}
+.tab-btn{padding:9px 20px;border-radius:9px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);cursor:pointer;transition:all .2s;user-select:none;border:none;background:transparent}
+.tab-btn:hover{color:var(--text2)}
+.tab-btn.active{background:var(--surface2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.4)}
+
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed var(--border2);border-radius:18px;padding:48px 32px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.upload-zone:hover,.upload-zone.drag{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.03)}
+.upload-zone.has-file{border-color:var(--green-ln);background:var(--green-dim);border-style:solid}
+.upload-icon{font-size:40px;margin-bottom:14px;opacity:.6}
+.upload-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px}
+.upload-sub{font-size:12px;color:var(--text2);line-height:1.6}
+.upload-input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-badge{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:20px}
+.upload-badge.csv{background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue-ln)}
+.upload-badge.img{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-ln)}
+
+/* FILE INFO */
+.file-info{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface2);border:1px solid var(--green-ln);border-radius:10px;margin-top:12px}
+.file-info-name{font-size:13px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-info-size{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.file-remove{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:0 4px;transition:color .2s}
+.file-remove:hover{color:var(--red)}
+
+/* PREVIEW TABLE */
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:16px}
+.preview-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.preview-title{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.preview-count{font-family:var(--mono);font-size:9px;color:var(--text2);margin-left:auto}
+.table-wrap{overflow-x:auto;max-height:240px;overflow-y:auto}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding:8px 12px;text-align:left;background:var(--surface2);border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0}
+td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text2);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+
+/* SCREENSHOT PREVIEW */
+.img-preview{margin-top:16px;border-radius:12px;overflow:hidden;border:1px solid var(--border);max-height:300px;display:flex;align-items:center;justify-content:center;background:var(--surface2)}
+.img-preview img{max-width:100%;max-height:300px;object-fit:contain}
+
+/* ANALYZE BTN */
+.analyze-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:14px 28px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);width:100%;margin-top:16px}
+.analyze-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,255,255,.18)}
+.analyze-btn:disabled{background:var(--surface2);color:var(--text3);cursor:not-allowed;transform:none;box-shadow:none}
+
+/* LOADING */
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 20px;gap:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:32px;height:32px;border:2.5px solid var(--border2);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite}
+.loading-txt{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.loading-steps{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ls-item{font-size:12px;color:var(--text3);opacity:0;animation:fadeIn .4s ease forwards}
+@keyframes fadeIn{to{opacity:1}}
+
+/* RESULTS */
+.results{display:none;flex-direction:column;gap:14px;animation:slideUp .4s cubic-bezier(.34,1.2,.64,1)}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* VERDICT CARD */
+.verdict-card{border-radius:var(--r);padding:24px 28px;position:relative;overflow:hidden}
+.verdict-card.kapat{background:linear-gradient(135deg,rgba(239,68,68,.1),rgba(239,68,68,.03));border:1px solid var(--red-ln)}
+.verdict-card.bekle{background:linear-gradient(135deg,rgba(250,204,21,.08),rgba(250,204,21,.02));border:1px solid var(--gold-ln)}
+.verdict-card.olcekle{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(34,197,94,.03));border:1px solid var(--green-ln)}
+.verdict-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:14px}
+.kapat .verdict-badge{background:rgba(239,68,68,.15);color:var(--red);border:1px solid var(--red-ln)}
+.bekle .verdict-badge{background:rgba(250,204,21,.15);color:var(--gold);border:1px solid var(--gold-ln)}
+.olcekle .verdict-badge{background:rgba(34,197,94,.15);color:var(--green);border:1px solid var(--green-ln)}
+.verdict-title{font-size:18px;font-weight:800;color:var(--white);margin-bottom:8px;letter-spacing:-.3px}
+.verdict-reason{font-size:13px;color:var(--text2);line-height:1.8}
+
+/* CAMPAIGN CARDS */
+.campaigns-grid{display:flex;flex-direction:column;gap:8px}
+.camp-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;transition:all .2s}
+.camp-card:hover{border-color:var(--border2)}
+.camp-decision{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;font-weight:700;padding:4px 10px;border-radius:6px;flex-shrink:0;text-transform:uppercase}
+.camp-decision.kapat{background:var(--red-dim);color:var(--red);border:1px solid var(--red-ln)}
+.camp-decision.bekle{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-ln)}
+.camp-decision.olcekle{background:var(--green-dim);color:var(--green);border:1px solid var(--green-ln)}
+.camp-name{font-size:13px;font-weight:600;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.camp-meta{font-family:var(--mono);font-size:10px;color:var(--text3);flex-shrink:0}
+.camp-reason{font-size:11px;color:var(--text2);margin-top:4px;line-height:1.5}
+
+/* DETAIL SECTION */
+.detail-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.dc-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.dc-icon{font-size:16px}
+.dc-title{font-size:13px;font-weight:700;color:var(--text)}
+.dc-body{padding:16px 20px}
+.dc-body p,.dc-body li{font-size:13px;color:var(--text2);line-height:1.8}
+.dc-body ul{padding-left:16px}
+.dc-body strong{color:var(--text)}
+
+/* ACTION LIST */
+.action-list{display:flex;flex-direction:column;gap:8px}
+.action-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--surface2);border-radius:10px;font-size:13px;color:var(--text2);line-height:1.6}
+.action-day{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text3);flex-shrink:0;margin-top:2px;min-width:40px}
+.action-txt strong{color:var(--text)}
+
+/* RESET BTN */
+.reset-btn{background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--text3);font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 18px;cursor:pointer;transition:all .2s}
+.reset-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text2)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;color:var(--text);z-index:9100;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.green{border-color:var(--green-ln);color:var(--green)}
+.toast.red{border-color:var(--red-ln);color:var(--red)}
+
+@media(max-width:640px){
+  .tab-bar{width:100%}
+  .tab-btn{flex:1;text-align:center;padding:9px 10px}
+  .camp-card{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <div class="tl">MLYNR.</div>
+    <div class="tl-sep">/</div>
+    <div class="tl-page">Reklam Karar Motoru</div>
+    <a href="https://mlynrplan.com/shopify_portal.html" class="back-link">← Portala Dön</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge"><div class="hero-dot"></div>Meta Ads · AI Analiz</div>
+  <div class="hero-title">REKLAM<br><span>KARAR</span><br>MOTORU</div>
+  <p class="hero-sub">Meta Ads CSV veya ekran görüntüsü yükle. AI her kampanya için karar verir, bir sonraki 7 günün stratejisini yazar.</p>
+</div>
+
+<div class="wrap">
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('csv',this)" id="tab-csv-btn">📊 CSV Yükle</button>
+    <button class="tab-btn" onclick="switchTab('screenshot',this)" id="tab-ss-btn">📸 Screenshot</button>
+  </div>
+
+  <!-- CSV TAB -->
+  <div id="tab-csv">
+    <div class="upload-zone" id="csv-zone" ondragover="dragOver(event,'csv-zone')" ondragleave="dragLeave('csv-zone')" ondrop="dropFile(event,'csv')">
+      <input type="file" class="upload-input" id="csv-input" accept=".csv,.tsv,.xlsx,.xls" onchange="handleCSV(this.files[0])">
+      <div class="upload-icon">📊</div>
+      <div class="upload-title">CSV Dosyasını Buraya Sürükle</div>
+      <div class="upload-sub">Meta Ads Manager → Raporlar → CSV olarak indir<br>Kampanya, Reklam Seti veya Reklam düzeyinde çalışır</div>
+      <div class="upload-badge csv">CSV · TSV · XLSX</div>
+    </div>
+
+    <div id="csv-file-info" style="display:none"></div>
+    <div id="csv-preview" style="display:none"></div>
+
+    <div id="csv-loading" style="display:none">
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <div class="loading-txt">Analiz ediliyor</div>
+        <div class="loading-steps" id="csv-loading-steps"></div>
+      </div>
+    </div>
+
+    <div id="csv-results" class="results"></div>
+  </div>
+
+  <!-- SCREENSHOT TAB -->
+  <div id="tab-screenshot" style="display:none">
+    <div class="upload-zone" id="ss-zone" ondragover="dragOver(event,'ss-zone')" ondragleave="dragLeave('ss-zone')" ondrop="dropFile(event,'screenshot')">
+      <input type="file" class="upload-input" id="ss-input" accept="image/*" onchange="handleScreenshot(this.files[0])">
+      <div class="upload-icon">📸</div>
+      <div class="upload-title">Ekran Görüntüsünü Buraya Sürükle</div>
+      <div class="upload-sub">Meta Ads Manager ekranının fotoğrafı yeterli<br>AI metrik değerlerini görsel olarak okur ve analiz eder</div>
+      <div class="upload-badge img">PNG · JPG · WEBP</div>
+    </div>
+
+    <div id="ss-file-info" style="display:none"></div>
+    <div id="ss-preview" style="display:none"></div>
+
+    <div id="ss-loading" style="display:none">
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <div class="loading-txt">Görsel okunuyor</div>
+        <div class="loading-steps" id="ss-loading-steps"></div>
+      </div>
+    </div>
+
+    <div id="ss-results" class="results"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var API_URL='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/shopify-endpoint';
+var API_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
+
+var csvData = null;
+var ssBase64 = null;
+var ssMediaType = 'image/jpeg';
+
+// TAB
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab-btn').forEach(function(t){t.classList.remove('active');});
+  el.classList.add('active');
+  document.getElementById('tab-csv').style.display = tab==='csv'?'block':'none';
+  document.getElementById('tab-screenshot').style.display = tab==='screenshot'?'block':'none';
+}
+
+// DRAG & DROP
+function dragOver(e, zoneId) {
+  e.preventDefault();
+  document.getElementById(zoneId).classList.add('drag');
+}
+function dragLeave(zoneId) {
+  document.getElementById(zoneId).classList.remove('drag');
+}
+function dropFile(e, type) {
+  e.preventDefault();
+  var zoneId = type==='csv'?'csv-zone':'ss-zone';
+  document.getElementById(zoneId).classList.remove('drag');
+  var file = e.dataTransfer.files[0];
+  if (!file) return;
+  if (type==='csv') handleCSV(file);
+  else handleScreenshot(file);
+}
+
+// FORMAT FILE SIZE
+function fmtSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/(1024*1024)).toFixed(1) + ' MB';
+}
+
+// CSV HANDLER
+function handleCSV(file) {
+  if (!file) return;
+  var ext = file.name.split('.').pop().toLowerCase();
+  if (!['csv','tsv','xlsx','xls'].includes(ext)) { showToast('CSV veya XLSX dosyası seç', 'red'); return; }
+
+  var infoEl = document.getElementById('csv-file-info');
+  infoEl.style.display = 'block';
+  infoEl.innerHTML = '<div class="file-info"><span style="font-size:18px">📄</span><span class="file-info-name">'+file.name+'</span><span class="file-info-size">'+fmtSize(file.size)+'</span><button class="file-remove" onclick="clearCSV()">×</button></div>';
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var text = e.target.result;
+    var rows = parseCSV(text);
+    csvData = rows;
+    renderCSVPreview(rows);
+    renderAnalyzeBtn('csv');
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function clearCSV() {
+  csvData = null;
+  document.getElementById('csv-file-info').style.display='none';
+  document.getElementById('csv-preview').style.display='none';
+  document.getElementById('csv-results').style.display='none';
+  document.getElementById('csv-input').value='';
+  var zone = document.getElementById('csv-zone');
+  zone.classList.remove('has-file');
+}
+
+function parseCSV(text) {
+  var lines = text.trim().split('\n');
+  var sep = text.indexOf('\t') !== -1 ? '\t' : ',';
+  return lines.map(function(line) {
+    var result = [], current = '', inQ = false;
+    for (var i=0;i<line.length;i++) {
+      var ch = line[i];
+      if (ch==='"') { inQ=!inQ; }
+      else if (ch===sep && !inQ) { result.push(current.trim()); current=''; }
+      else { current+=ch; }
+    }
+    result.push(current.trim());
+    return result;
+  });
+}
+
+function renderCSVPreview(rows) {
+  if (!rows || rows.length < 2) return;
+  var prevEl = document.getElementById('csv-preview');
+  prevEl.style.display = 'block';
+  var headers = rows[0];
+  var dataRows = rows.slice(1, 6);
+  var h = '<div class="preview-card"><div class="preview-header"><span class="preview-title">Önizleme</span><span class="preview-count">'+( rows.length-1)+' satır</span></div><div class="table-wrap"><table><thead><tr>';
+  headers.forEach(function(hd){ h+='<th>'+hd+'</th>'; });
+  h+='</tr></thead><tbody>';
+  dataRows.forEach(function(row){ h+='<tr>'; row.forEach(function(cell){ h+='<td>'+cell+'</td>'; }); h+='</tr>'; });
+  h+='</tbody></table></div></div>';
+  prevEl.innerHTML = h;
+  document.getElementById('csv-zone').classList.add('has-file');
+}
+
+function renderAnalyzeBtn(type) {
+  var label = type==='csv' ? '🔍 Reklamları Analiz Et' : '🔍 Görseli Analiz Et';
+  var container = type==='csv' ? document.getElementById('csv-preview') : document.getElementById('ss-preview');
+  var existing = container.querySelector('.analyze-btn');
+  if (existing) existing.remove();
+  var btn = document.createElement('button');
+  btn.className = 'analyze-btn';
+  btn.textContent = label;
+  btn.onclick = function() { type==='csv' ? analyzeCSV() : analyzeScreenshot(); };
+  container.appendChild(btn);
+}
+
+// SCREENSHOT HANDLER
+function handleScreenshot(file) {
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { showToast('Görsel dosyası seç (PNG, JPG)', 'red'); return; }
+  ssMediaType = file.type || 'image/jpeg';
+
+  var infoEl = document.getElementById('ss-file-info');
+  infoEl.style.display = 'block';
+  infoEl.innerHTML = '<div class="file-info"><span style="font-size:18px">🖼️</span><span class="file-info-name">'+file.name+'</span><span class="file-info-size">'+fmtSize(file.size)+'</span><button class="file-remove" onclick="clearSS()">×</button></div>';
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    ssBase64 = e.target.result.split(',')[1];
+    var prevEl = document.getElementById('ss-preview');
+    prevEl.style.display = 'block';
+    prevEl.innerHTML = '<div class="img-preview"><img src="'+e.target.result+'" alt="Screenshot"></div>';
+    document.getElementById('ss-zone').classList.add('has-file');
+    renderAnalyzeBtn('screenshot');
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearSS() {
+  ssBase64 = null;
+  document.getElementById('ss-file-info').style.display='none';
+  document.getElementById('ss-preview').style.display='none';
+  document.getElementById('ss-results').style.display='none';
+  document.getElementById('ss-input').value='';
+  document.getElementById('ss-zone').classList.remove('has-file');
+}
+
+// JSON PARSE
+function tryParse(raw) {
+  if (!raw) return null;
+  raw = raw.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+  try { return JSON.parse(raw); } catch(e) {}
+  try { var m=raw.match(/\{[\s\S]*\}/); if(m) return JSON.parse(m[0]); } catch(e) {}
+  return null;
+}
+
+// LOADING STEPS
+function startLoadingSteps(containerId, steps) {
+  var el = document.getElementById(containerId);
+  el.innerHTML = '';
+  var i = 0;
+  var iv = setInterval(function() {
+    if (i >= steps.length) { clearInterval(iv); return; }
+    var d = document.createElement('div');
+    d.className = 'ls-item';
+    d.textContent = steps[i];
+    d.style.animationDelay = '0s';
+    el.appendChild(d);
+    i++;
+  }, 700);
+  return iv;
+}
+
+// ANALYZE CSV
+function analyzeCSV() {
+  if (!csvData || csvData.length < 2) { showToast('Önce CSV yükle', 'red'); return; }
+
+  document.getElementById('csv-preview').style.display='none';
+  document.getElementById('csv-loading').style.display='block';
+  document.getElementById('csv-results').style.display='none';
+
+  var iv = startLoadingSteps('csv-loading-steps', [
+    'Veri yapısı okunuyor...',
+    'Metrikler hesaplanıyor...',
+    'Kampanyalar değerlendiriliyor...',
+    'Karar üretiliyor...',
+    'Strateji yazılıyor...'
+  ]);
+
+  var headers = csvData[0];
+  var rows = csvData.slice(1).filter(function(r){ return r.some(function(c){ return c.trim(); }); });
+
+  // CSV'yi sade metin formatına dönüştür
+  var csvText = headers.join(' | ') + '\n';
+  rows.slice(0, 30).forEach(function(row) {
+    csvText += row.join(' | ') + '\n';
+  });
+
+  var prompt = 'Sen bir Meta Ads (Facebook/Instagram) reklam uzmanisın. Asagida bir Shopify dropshipping isletmesinin Meta Ads verisi var. Her kampanya/reklam seti icin karar ver ve genel strateji yaz.\n\nVERİ:\n' + csvText + '\n\nSADECE asagidaki JSON formatinda yanit ver, baska hicbir sey yazma:\n{"genel_karar":"KAPAT veya BEKLE veya OLCEKLE","genel_ozet":"2-3 cumle genel durum analizi","kampanyalar":[{"ad":"kampanya adi","karar":"KAPAT","neden":"kisa neden","metrikler":"onemli metrik degerleri"},{"ad":"kampanya2","karar":"BEKLE","neden":"neden","metrikler":"metrikler"},{"ad":"kampanya3","karar":"OLCEKLE","neden":"neden","metrikler":"metrikler"}],"problemler":["tespit edilen sorun 1","sorun 2","sorun 3"],"firsatlar":["firsat 1","firsat 2"],"yedi_gunluk_plan":[{"gun":"1-2","aksiyon":"ne yapilmali","detay":"detay"},{"gun":"3-4","aksiyon":"aksiyon","detay":"detay"},{"gun":"5-7","aksiyon":"aksiyon","detay":"detay"}]}';
+
+  callAI(prompt, null, function(parsed) {
+    clearInterval(iv);
+    document.getElementById('csv-loading').style.display='none';
+    document.getElementById('csv-preview').style.display='block';
+    renderResults('csv', parsed);
+  }, function(err) {
+    clearInterval(iv);
+    document.getElementById('csv-loading').style.display='none';
+    document.getElementById('csv-preview').style.display='block';
+    showToast('Analiz başarısız, tekrar dene', 'red');
+  });
+}
+
+// ANALYZE SCREENSHOT
+function analyzeScreenshot() {
+  if (!ssBase64) { showToast('Önce görsel yükle', 'red'); return; }
+
+  document.getElementById('ss-preview').style.display='none';
+  document.getElementById('ss-loading').style.display='block';
+  document.getElementById('ss-results').style.display='none';
+
+  var iv = startLoadingSteps('ss-loading-steps', [
+    'Görsel okunuyor...',
+    'Metrikler tespit ediliyor...',
+    'Kampanyalar analiz ediliyor...',
+    'Karar üretiliyor...',
+    'Strateji yazılıyor...'
+  ]);
+
+  var prompt = 'Bu gorsel Meta Ads Manager ekran goruntusudur. Goruntudeki tum metrik degerlerini oku (harcama, ROAS, CPA, CPM, CTR, siparis sayisi, gelir vb). Her kampanya veya reklam seti icin KAPAT/BEKLE/OLCEKLE karari ver. SADECE JSON formatinda yanit ver:\n{"genel_karar":"KAPAT veya BEKLE veya OLCEKLE","genel_ozet":"2-3 cumle analiz","kampanyalar":[{"ad":"kampanya adi","karar":"KAPAT","neden":"neden","metrikler":"goruntuden okunan metrikler"}],"problemler":["sorun 1","sorun 2"],"firsatlar":["firsat 1","firsat 2"],"yedi_gunluk_plan":[{"gun":"1-2","aksiyon":"aksiyon","detay":"detay"},{"gun":"3-4","aksiyon":"aksiyon","detay":"detay"},{"gun":"5-7","aksiyon":"aksiyon","detay":"detay"}]}';
+
+  callAI(prompt, ssBase64, function(parsed) {
+    clearInterval(iv);
+    document.getElementById('ss-loading').style.display='none';
+    document.getElementById('ss-preview').style.display='block';
+    renderResults('screenshot', parsed);
+  }, function(err) {
+    clearInterval(iv);
+    document.getElementById('ss-loading').style.display='none';
+    document.getElementById('ss-preview').style.display='block';
+    showToast('Analiz başarısız, tekrar dene', 'red');
+  });
+}
+
+// CALL AI
+function callAI(prompt, imageBase64, onSuccess, onError) {
+  var messages;
+  if (imageBase64) {
+    messages = [{
+      role: 'user',
+      content: [
+        { type: 'image', source: { type: 'base64', media_type: ssMediaType, data: imageBase64 } },
+        { type: 'text', text: prompt }
+      ]
+    }];
+  } else {
+    messages = [{ role: 'user', content: prompt }];
+  }
+
+  fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer '+API_KEY, 'apikey': API_KEY },
+    body: JSON.stringify({
+      prompt: imageBase64 ? null : prompt,
+      messages: imageBase64 ? messages : null,
+      image: imageBase64 ? { base64: imageBase64, media_type: ssMediaType, prompt: prompt } : null,
+      system: 'Sen bir Meta Ads uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hic aciklama, markdown veya ek metin yazma. Sadece ham JSON.'
+    })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    var raw = '';
+    if (data && typeof data.sonuc === 'string') raw = data.sonuc;
+    else if (data && typeof data.reply === 'string') raw = data.reply;
+    else if (typeof data === 'string') raw = data;
+    else raw = JSON.stringify(data);
+    var parsed = tryParse(raw);
+    if (parsed) onSuccess(parsed);
+    else {
+      // Son şans — raw text'ten JSON çıkar
+      var retry = tryParse(raw.replace(/```json/gi,'').replace(/```/g,'').trim());
+      if (retry) onSuccess(retry);
+      else onError(raw);
+    }
+  })
+  .catch(function(e){ onError(e.message); });
+}
+
+// RENDER RESULTS
+function renderResults(type, d) {
+  var el = document.getElementById(type==='csv'?'csv-results':'ss-results');
+  el.style.display = 'flex';
+
+  var genel = (d.genel_karar || 'BEKLE').toUpperCase();
+  var cls = genel==='KAPAT'?'kapat':(genel==='OLCEKLE'?'olcekle':'bekle');
+  var emoji = genel==='KAPAT'?'🛑':(genel==='OLCEKLE'?'🚀':'⏸️');
+  var label = genel==='KAPAT'?'KAPAT':(genel==='OLCEKLE'?'ÖLÇEKLENDİR':'BEKLE');
+
+  var h = '';
+
+  // GENEL KARAR
+  h += '<div class="verdict-card '+cls+'">';
+  h += '<div class="verdict-badge">'+emoji+' GENEL KARAR: '+label+'</div>';
+  h += '<div class="verdict-title">'+(d.genel_ozet||'')+'</div>';
+  h += '</div>';
+
+  // KAMPANYALAR
+  if (d.kampanyalar && d.kampanyalar.length) {
+    h += '<div class="detail-card"><div class="dc-header"><span class="dc-icon">📊</span><div class="dc-title">Kampanya Kararları</div></div><div class="dc-body"><div class="campaigns-grid">';
+    d.kampanyalar.forEach(function(k) {
+      var kCls = (k.karar||'').toUpperCase()==='KAPAT'?'kapat':((k.karar||'').toUpperCase()==='OLCEKLE'?'olcekle':'bekle');
+      var kLabel = (k.karar||'').toUpperCase()==='KAPAT'?'🛑 KAPAT':((k.karar||'').toUpperCase()==='OLCEKLE'?'🚀 ÖLÇEKLENDİR':'⏸️ BEKLE');
+      h += '<div class="camp-card">';
+      h += '<div class="camp-decision '+kCls+'">'+kLabel+'</div>';
+      h += '<div style="flex:1;min-width:0">';
+      h += '<div class="camp-name">'+(k.ad||'Kampanya')+'</div>';
+      if (k.metrikler) h += '<div class="camp-meta">'+k.metrikler+'</div>';
+      if (k.neden) h += '<div class="camp-reason">'+(k.neden||'')+'</div>';
+      h += '</div></div>';
+    });
+    h += '</div></div></div>';
+  }
+
+  // PROBLEMLER & FIRSATLAR
+  if ((d.problemler && d.problemler.length) || (d.firsatlar && d.firsatlar.length)) {
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">';
+    if (d.problemler && d.problemler.length) {
+      h += '<div class="detail-card"><div class="dc-header"><span class="dc-icon">⚠️</span><div class="dc-title">Sorunlar</div></div><div class="dc-body"><ul>';
+      d.problemler.forEach(function(p){ h+='<li>'+p+'</li>'; });
+      h += '</ul></div></div>';
+    }
+    if (d.firsatlar && d.firsatlar.length) {
+      h += '<div class="detail-card"><div class="dc-header"><span class="dc-icon">💡</span><div class="dc-title">Fırsatlar</div></div><div class="dc-body"><ul>';
+      d.firsatlar.forEach(function(f){ h+='<li>'+f+'</li>'; });
+      h += '</ul></div></div>';
+    }
+    h += '</div>';
+  }
+
+  // 7 GÜNLÜK PLAN
+  if (d.yedi_gunluk_plan && d.yedi_gunluk_plan.length) {
+    h += '<div class="detail-card"><div class="dc-header"><span class="dc-icon">📅</span><div class="dc-title">7 Günlük Aksiyon Planı</div></div><div class="dc-body"><div class="action-list">';
+    d.yedi_gunluk_plan.forEach(function(p) {
+      h += '<div class="action-item">';
+      h += '<div class="action-day">Gün '+p.gun+'</div>';
+      h += '<div class="action-txt"><strong>'+p.aksiyon+'</strong><br>'+(p.detay||'')+'</div>';
+      h += '</div>';
+    });
+    h += '</div></div></div>';
+  }
+
+  // RESET
+  h += '<div style="display:flex;gap:8px">';
+  h += '<button class="reset-btn" onclick="resetAnalysis(\''+type+'\')">↺ Yeni Analiz</button>';
+  h += '<button class="reset-btn" style="border-color:var(--blue-ln);color:var(--blue)" onclick="copyResults(\''+type+'\')">📋 Raporu Kopyala</button>';
+  h += '</div>';
+
+  el.innerHTML = h;
+}
+
+function resetAnalysis(type) {
+  if (type==='csv') clearCSV();
+  else clearSS();
+}
+
+function copyResults(type) {
+  var el = document.getElementById(type==='csv'?'csv-results':'ss-results');
+  navigator.clipboard.writeText(el.innerText||el.textContent).then(function(){
+    showToast('✓ Rapor kopyalandı', 'green');
+  });
+}
+
+var _tt;
+function showToast(m, cls) {
+  var t = document.getElementById('toast');
+  t.textContent = m;
+  t.className = 'toast'+(cls?' '+cls:'')+' show';
+  clearTimeout(_tt);
+  _tt = setTimeout(function(){ t.classList.remove('show'); }, 2600);
+}
+</script>
+</body>
+</html>
