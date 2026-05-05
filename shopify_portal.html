@@ -479,6 +479,15 @@ footer p{font-size:12px;color:var(--text3)}
     </div>
   </div>
 
+  <!-- SON REKLAM ANALİZİ -->
+  <div class="section" id="reklam-analiz-section" style="display:none">
+    <div class="section-header">
+      <span class="section-title">🎯 Son Reklam Analizi</span>
+      <a href="https://mlynrplan.com/reklam_karar_motoru.html" style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--text2)'" onmouseout="this.style.color=''">Yeni Analiz →</a>
+    </div>
+    <div id="reklam-analiz-card"></div>
+  </div>
+
   <!-- BUGÜNÜN İÇERİK GÖREVİ -->
   <div class="section" id="today-content-section" style="display:none">
     <div class="section-header">
@@ -836,6 +845,40 @@ function renderAll(){
   try{renderTask();}catch(e){}
   try{renderModules();}catch(e){}
   try{renderTodayContentTask();}catch(e){}
+  try{renderReklamAnaliz();}catch(e){}
+}
+
+function renderReklamAnaliz(){
+  try{
+    var data=JSON.parse(LS.getItem('mlynr_reklam_analizleri')||'[]');
+    var sec=document.getElementById('reklam-analiz-section');
+    var card=document.getElementById('reklam-analiz-card');
+    if(!data||!data.length){if(sec)sec.style.display='none';return;}
+    if(sec)sec.style.display='block';
+    var d=data[0];
+    var genel=(d.genel_karar||'BEKLE').toUpperCase();
+    var clr=genel==='KAPAT'?'var(--red)':(genel==='OLCEKLE'?'var(--green)':'var(--gold)');
+    var clrDim=genel==='KAPAT'?'var(--red-dim)':(genel==='OLCEKLE'?'var(--green-dim)':'var(--gold-dim)');
+    var clrLn=genel==='KAPAT'?'var(--red-ln)':(genel==='OLCEKLE'?'var(--green-ln)':'var(--gold-ln)');
+    var label=genel==='KAPAT'?'🛑 KAPAT':(genel==='OLCEKLE'?'🚀 ÖLÇEKLENDİR':'⏸️ BEKLE');
+    var h='<div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid '+clr+';border-radius:var(--r);padding:20px 24px">';
+    h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">';
+    h+='<span style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:'+clrDim+';color:'+clr+';border:1px solid '+clrLn+'">'+label+'</span>';
+    h+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3)">'+d.tarih+(d.saat?' · '+d.saat:'')+'</span>';
+    h+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:auto">'+d.kampanya_sayisi+' kampanya</span>';
+    h+='</div>';
+    h+='<div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px">'+(d.genel_ozet||'')+'</div>';
+    if(d.kampanyalar&&d.kampanyalar.length){
+      h+='<div style="display:flex;flex-wrap:wrap;gap:6px">';
+      d.kampanyalar.slice(0,4).forEach(function(k){
+        var kc=(k.karar||'').toUpperCase()==='KAPAT'?'var(--red)':(((k.karar||'').toUpperCase()==='OLCEKLE')?'var(--green)':'var(--gold)');
+        h+='<span style="font-size:11px;color:'+kc+';background:rgba(0,0,0,.2);border-radius:6px;padding:3px 8px;font-family:var(--mono)">'+(k.ad||'')+'</span>';
+      });
+      h+='</div>';
+    }
+    h+='</div>';
+    if(card)card.innerHTML=h;
+  }catch(e){}
 }
 
 function renderTodayContentTask(){
