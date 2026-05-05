@@ -363,6 +363,46 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .saved-dot{position:fixed;bottom:24px;left:24px;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:6px;padding:6px 12px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9000}
 .saved-dot.show{opacity:1}
 
+/* REKLAM ANALİZ POPUP */
+#rp-overlay{position:fixed;inset:0;z-index:8100;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
+#rp-overlay.show{opacity:1;pointer-events:auto}
+#rp-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.92) translateY(20px);z-index:8200;width:min(660px,96vw);max-height:88vh;overflow-y:auto;background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:28px 30px;opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.34,1.2,.64,1);box-shadow:0 40px 100px rgba(0,0,0,.8)}
+#rp-popup.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.rp-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:50%;width:28px;height:28px;color:var(--text2);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.rp-close:hover{background:rgba(255,255,255,.12);color:var(--text)}
+.rp-genel{border-radius:12px;padding:18px 22px;margin-bottom:14px}
+.rp-genel.kapat{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3)}
+.rp-genel.bekle{background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.25)}
+.rp-genel.olcekle{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3)}
+.rp-karar{font-size:20px;font-weight:900;letter-spacing:-1px;margin-bottom:6px}
+.rp-karar.kapat{color:var(--red)}.rp-karar.bekle{color:var(--gold)}.rp-karar.olcekle{color:var(--green)}
+.rp-ozet{font-size:12px;color:var(--text2);line-height:1.7}
+.rp-stitle{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin:12px 0 6px}
+.rp-camp{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:5px;border-left-width:3px}
+.rp-camp.kapat{border-left-color:var(--red)}.rp-camp.bekle{border-left-color:var(--gold)}.rp-camp.olcekle{border-left-color:var(--green)}
+.rp-cbadge{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0;margin-top:2px;text-transform:uppercase}
+.rp-cbadge.kapat{background:var(--red-dim);color:var(--red);border:1px solid var(--red-ln)}
+.rp-cbadge.bekle{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-ln)}
+.rp-cbadge.olcekle{background:var(--green-dim);color:var(--green);border:1px solid var(--green-ln)}
+.rp-cname{font-size:12px;font-weight:600;color:var(--text)}
+.rp-cmeta{font-family:var(--mono);font-size:9px;color:var(--text3);margin:2px 0}
+.rp-creason{font-size:11px;color:var(--text2);line-height:1.5}
+.rp-sfgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rp-sf{border-radius:8px;padding:12px 14px}
+.rp-sf.s{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15)}
+.rp-sf.f{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15)}
+.rp-sf-t{font-size:11px;font-weight:700;margin-bottom:6px}
+.rp-sf.s .rp-sf-t{color:var(--red)}.rp-sf.f .rp-sf-t{color:var(--green)}
+.rp-sf-item{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:3px;display:flex;gap:5px}
+.rp-plan-item{display:flex;gap:10px;padding:10px 12px;background:var(--surface2);border-radius:8px;margin-bottom:5px}
+.rp-plan-gun{font-family:var(--mono);font-size:8px;color:var(--text3);flex-shrink:0;min-width:40px;margin-top:2px}
+.rp-plan-ak{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.rp-plan-dt{font-size:11px;color:var(--text2);line-height:1.5}
+body.light-mode #rp-popup{background:#fff;border-color:rgba(0,0,0,.1)}
+body.light-mode .rp-close{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1);color:#555}
+body.light-mode .rp-camp{background:#f7f7f5;border-color:rgba(0,0,0,.07)}
+body.light-mode .rp-plan-item{background:#f7f7f5}
+
 /* CONFETTI */
 #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0;transition:opacity .3s}
 #confetti-canvas.show{opacity:1}
@@ -592,6 +632,13 @@ footer p{font-size:12px;color:var(--text3)}
     <div class="footer-logo">MLYNR.</div>
     <p>Shopify Mentörlük Programı · <a href="https://okul.mlynr.com" target="_blank" style="color:var(--text2);text-decoration:none">okul.mlynr.com</a></p>
   </footer>
+</div>
+
+<!-- REKLAM ANALİZ POPUP -->
+<div id="rp-overlay" onclick="closeRpPopup()"></div>
+<div id="rp-popup">
+  <button class="rp-close" onclick="closeRpPopup()">×</button>
+  <div id="rp-popup-content"></div>
 </div>
 
 <!-- İSİM POPUP -->
@@ -848,6 +895,44 @@ function renderAll(){
   try{renderReklamAnaliz();}catch(e){}
 }
 
+function openRpPopup(d){
+  var genel=(d.genel_karar||'BEKLE').toUpperCase();
+  var cls=genel==='KAPAT'?'kapat':(genel==='OLCEKLE'?'olcekle':'bekle');
+  var label=genel==='KAPAT'?'🛑 KAPAT':(genel==='OLCEKLE'?'🚀 ÖLÇEKLENDİR':'⏸️ BEKLE');
+  var h='';
+  h+='<div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px">'+d.tarih+(d.saat?' · '+d.saat:'')+'</div>';
+  h+='<div class="rp-genel '+cls+'"><div class="rp-karar '+cls+'">'+label+'</div><div class="rp-ozet">'+(d.genel_ozet||'')+'</div></div>';
+  if(d.kampanyalar&&d.kampanyalar.length){
+    h+='<div class="rp-stitle">Kampanya Kararları</div>';
+    d.kampanyalar.forEach(function(k){
+      var kc=(k.karar||'').toUpperCase()==='KAPAT'?'kapat':((k.karar||'').toUpperCase()==='OLCEKLE'?'olcekle':'bekle');
+      var kl=(k.karar||'').toUpperCase()==='KAPAT'?'🛑 KAPAT':((k.karar||'').toUpperCase()==='OLCEKLE'?'🚀 ÖLÇEKLENDİR':'⏸️ BEKLE');
+      h+='<div class="rp-camp '+kc+'"><div class="rp-cbadge '+kc+'">'+kl+'</div><div><div class="rp-cname">'+(k.ad||'')+'</div>';
+      if(k.metrikler)h+='<div class="rp-cmeta">'+k.metrikler+'</div>';
+      if(k.neden)h+='<div class="rp-creason">'+k.neden+'</div>';
+      h+='</div></div>';
+    });
+  }
+  var hasP=d.problemler&&d.problemler.length, hasF=d.firsatlar&&d.firsatlar.length;
+  if(hasP||hasF){
+    h+='<div class="rp-stitle">Analiz</div><div class="rp-sfgrid">';
+    if(hasP){h+='<div class="rp-sf s"><div class="rp-sf-t">⚠️ Sorunlar</div>';d.problemler.forEach(function(p){h+='<div class="rp-sf-item"><span>·</span><span>'+p+'</span></div>';});h+='</div>';}
+    if(hasF){h+='<div class="rp-sf f"><div class="rp-sf-t">💡 Fırsatlar</div>';d.firsatlar.forEach(function(f){h+='<div class="rp-sf-item"><span>·</span><span>'+f+'</span></div>';});h+='</div>';}
+    h+='</div>';
+  }
+  if(d.plan&&d.plan.length){
+    h+='<div class="rp-stitle">7 Günlük Plan</div>';
+    d.plan.forEach(function(p){h+='<div class="rp-plan-item"><div class="rp-plan-gun">Gün '+p.gun+'</div><div><div class="rp-plan-ak">'+p.aksiyon+'</div><div class="rp-plan-dt">'+(p.detay||'')+'</div></div></div>';});
+  }
+  document.getElementById('rp-popup-content').innerHTML=h;
+  document.getElementById('rp-overlay').classList.add('show');
+  document.getElementById('rp-popup').classList.add('show');
+}
+function closeRpPopup(){
+  document.getElementById('rp-overlay').classList.remove('show');
+  document.getElementById('rp-popup').classList.remove('show');
+}
+
 function renderReklamAnaliz(){
   try{
     var data=JSON.parse(LS.getItem('mlynr_reklam_analizleri')||'[]');
@@ -861,21 +946,22 @@ function renderReklamAnaliz(){
     var clrDim=genel==='KAPAT'?'var(--red-dim)':(genel==='OLCEKLE'?'var(--green-dim)':'var(--gold-dim)');
     var clrLn=genel==='KAPAT'?'var(--red-ln)':(genel==='OLCEKLE'?'var(--green-ln)':'var(--gold-ln)');
     var label=genel==='KAPAT'?'🛑 KAPAT':(genel==='OLCEKLE'?'🚀 ÖLÇEKLENDİR':'⏸️ BEKLE');
-    var h='<div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid '+clr+';border-radius:var(--r);padding:20px 24px">';
+    var h='<div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid '+clr+';border-radius:var(--r);padding:20px 24px;cursor:pointer;transition:all .2s" onclick="openRpPopup(JSON.parse(localStorage.getItem(\'mlynr_reklam_analizleri\')||\'[]\')[0])" onmouseover="this.style.borderColor=\'var(--border2)\'" onmouseout="this.style.borderColor=\'var(--border)\'">';
     h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">';
     h+='<span style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:'+clrDim+';color:'+clr+';border:1px solid '+clrLn+'">'+label+'</span>';
     h+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3)">'+d.tarih+(d.saat?' · '+d.saat:'')+'</span>';
     h+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:auto">'+d.kampanya_sayisi+' kampanya</span>';
     h+='</div>';
-    h+='<div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px">'+(d.genel_ozet||'')+'</div>';
+    h+='<div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:10px">'+(d.genel_ozet||'')+'</div>';
     if(d.kampanyalar&&d.kampanyalar.length){
-      h+='<div style="display:flex;flex-wrap:wrap;gap:6px">';
+      h+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">';
       d.kampanyalar.slice(0,4).forEach(function(k){
         var kc=(k.karar||'').toUpperCase()==='KAPAT'?'var(--red)':(((k.karar||'').toUpperCase()==='OLCEKLE')?'var(--green)':'var(--gold)');
         h+='<span style="font-size:11px;color:'+kc+';background:rgba(0,0,0,.2);border-radius:6px;padding:3px 8px;font-family:var(--mono)">'+(k.ad||'')+'</span>';
       });
       h+='</div>';
     }
+    h+='<div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text3);text-transform:uppercase">Tıkla → Tam analizi gör →</div>';
     h+='</div>';
     if(card)card.innerHTML=h;
   }catch(e){}
