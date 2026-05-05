@@ -29,23 +29,35 @@ body.light-mode{
 body.light-mode .bg-grid{background-image:linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px)}
 body.light-mode .bg-glow{background:none}
 body.light-mode .topbar{background:rgba(247,247,245,.92);border-color:rgba(0,0,0,.08)}
+body.light-mode .guide-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .guide-step{background:#f7f7f5;border-color:rgba(0,0,0,.07)}
 body.light-mode .upload-zone{border-color:rgba(0,0,0,.15)}
-body.light-mode .upload-zone:hover{border-color:rgba(220,38,38,.4);background:rgba(220,38,38,.03)}
+body.light-mode .upload-zone:hover,.upload-zone.drag{border-color:rgba(220,38,38,.35);background:rgba(220,38,38,.03)}
 body.light-mode .upload-zone.has-file{border-color:rgba(22,163,74,.3);background:rgba(22,163,74,.05)}
 body.light-mode .preview-card{background:#fff;border-color:rgba(0,0,0,.08)}
 body.light-mode th{background:#f0f0ed}
-body.light-mode .file-info{background:#f0f0ed}
-body.light-mode .guide-card{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light-mode .guide-step{background:#f7f7f5;border-color:rgba(0,0,0,.07)}
-body.light-mode .detail-card{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light-mode .camp-card{background:#fff;border-color:rgba(0,0,0,.07)}
-body.light-mode .action-item{background:#f7f7f5}
-body.light-mode .tab-bar{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light-mode .tab-btn.active{background:#f0f0ed;color:#111}
-body.light-mode .tab-btn{color:#999}
+body.light-mode .file-info{background:#f0f0ed;border-color:rgba(22,163,74,.25)}
 body.light-mode .analyze-btn{background:#111;color:#fff}
 body.light-mode .reset-btn{border-color:rgba(0,0,0,.12);color:#888}
 body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .tab-bar{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .tab-btn.active{background:#f0f0ed;color:#111}
+body.light-mode .tab-btn{color:#999}
+/* result light */
+body.light-mode .genel-karar-card.kapat{background:linear-gradient(135deg,#fef2f2,#fff1f1);border-color:rgba(220,38,38,.3)}
+body.light-mode .genel-karar-card.bekle{background:linear-gradient(135deg,#fffbeb,#fffdf5);border-color:rgba(146,64,14,.25)}
+body.light-mode .genel-karar-card.olcekle{background:linear-gradient(135deg,#f0fdf4,#f7fef9);border-color:rgba(22,163,74,.3)}
+body.light-mode .genel-karar-title{color:#111}
+body.light-mode .camp-big-card{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .camp-big-card:hover{border-color:rgba(0,0,0,.16)}
+body.light-mode .camp-big-card.kapat{border-left-color:var(--red)}
+body.light-mode .camp-big-card.bekle{border-left-color:var(--gold)}
+body.light-mode .camp-big-card.olcekle{border-left-color:var(--green)}
+body.light-mode .sorun-kart{background:#fff5f5;border-color:rgba(220,38,38,.15)}
+body.light-mode .firsat-kart{background:#f0fff4;border-color:rgba(22,163,74,.15)}
+body.light-mode .timeline-item{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .timeline-dot{border-color:#fff}
+body.light-mode .save-banner{background:#f0fdf4;border-color:rgba(22,163,74,.25)}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -72,7 +84,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 .wrap{max-width:900px;margin:0 auto;padding:clamp(24px,4vw,40px) clamp(20px,5vw,48px) 60px;position:relative;z-index:1}
 
-/* GUIDE CARD */
+/* GUIDE */
 .guide-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:20px 24px;margin-bottom:20px;position:relative;overflow:hidden}
 .guide-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent)}
 .guide-title{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
@@ -83,9 +95,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .guide-link{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);text-decoration:none;border:1px solid var(--blue-ln);border-radius:8px;padding:7px 14px;transition:all .2s}
 .guide-link:hover{background:var(--blue-dim)}
 
-/* UPLOAD ZONE */
+/* UPLOAD */
 .upload-zone{border:2px dashed var(--border2);border-radius:18px;padding:48px 32px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
-.upload-zone:hover,.upload-zone.drag{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.03)}
+.upload-zone:hover,.upload-zone.drag{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.04)}
 .upload-zone.has-file{border-color:var(--green-ln);background:var(--green-dim);border-style:solid}
 .upload-icon{font-size:40px;margin-bottom:14px;opacity:.6}
 .upload-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px}
@@ -93,26 +105,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .upload-input{position:absolute;inset:0;opacity:0;cursor:pointer}
 .upload-badge{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:20px;background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue-ln)}
 
-/* FILE INFO */
 .file-info{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface2);border:1px solid var(--green-ln);border-radius:10px;margin-top:12px}
 .file-info-name{font-size:13px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .file-info-size{font-family:var(--mono);font-size:10px;color:var(--text3)}
 .file-remove{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:0 4px;transition:color .2s}
 .file-remove:hover{color:var(--red)}
 
-/* PREVIEW TABLE */
 .preview-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:16px}
 .preview-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
 .preview-title{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
 .preview-count{font-family:var(--mono);font-size:9px;color:var(--text2);margin-left:auto}
-.table-wrap{overflow-x:auto;max-height:240px;overflow-y:auto}
+.table-wrap{overflow-x:auto;max-height:200px;overflow-y:auto}
 table{width:100%;border-collapse:collapse;font-size:11px}
 th{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding:8px 12px;text-align:left;background:var(--surface2);border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0}
 td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text2);white-space:nowrap}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:rgba(255,255,255,.02)}
 
-/* ANALYZE BTN */
 .analyze-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:14px 28px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);width:100%;margin-top:16px}
 .analyze-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,255,255,.18)}
 .analyze-btn:disabled{background:var(--surface2);color:var(--text3);cursor:not-allowed;transform:none;box-shadow:none}
@@ -127,49 +136,88 @@ tr:hover td{background:rgba(255,255,255,.02)}
 @keyframes fadeIn{to{opacity:1}}
 
 /* RESULTS */
-.results{display:none;flex-direction:column;gap:14px;animation:slideUp .4s cubic-bezier(.34,1.2,.64,1)}
-@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.results{display:none;flex-direction:column;gap:20px;animation:slideUp .5s cubic-bezier(.34,1.2,.64,1)}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
-/* VERDICT */
-.verdict-card{border-radius:var(--r);padding:24px 28px;position:relative;overflow:hidden}
-.verdict-card.kapat{background:linear-gradient(135deg,rgba(239,68,68,.1),rgba(239,68,68,.03));border:1px solid var(--red-ln)}
-.verdict-card.bekle{background:linear-gradient(135deg,rgba(250,204,21,.08),rgba(250,204,21,.02));border:1px solid var(--gold-ln)}
-.verdict-card.olcekle{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(34,197,94,.03));border:1px solid var(--green-ln)}
-.verdict-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:14px}
-.kapat .verdict-badge{background:rgba(239,68,68,.15);color:var(--red);border:1px solid var(--red-ln)}
-.bekle .verdict-badge{background:rgba(250,204,21,.15);color:var(--gold);border:1px solid var(--gold-ln)}
-.olcekle .verdict-badge{background:rgba(34,197,94,.15);color:var(--green);border:1px solid var(--green-ln)}
-.verdict-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:6px;letter-spacing:-.3px;line-height:1.5}
+/* GENEL KARAR — BIG */
+.genel-karar-card{border-radius:20px;padding:32px 36px;position:relative;overflow:hidden}
+.genel-karar-card.kapat{background:linear-gradient(135deg,rgba(239,68,68,.15),rgba(239,68,68,.05));border:1px solid rgba(239,68,68,.35)}
+.genel-karar-card.bekle{background:linear-gradient(135deg,rgba(250,204,21,.12),rgba(250,204,21,.04));border:1px solid rgba(250,204,21,.3)}
+.genel-karar-card.olcekle{background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(34,197,94,.05));border:1px solid rgba(34,197,94,.35)}
+.genel-karar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kapat::before{background:linear-gradient(90deg,transparent,var(--red),transparent)}
+.bekle::before{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.olcekle::before{background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.genel-karar-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;opacity:.7}
+.kapat .genel-karar-eyebrow{color:var(--red)}
+.bekle .genel-karar-eyebrow{color:var(--gold)}
+.olcekle .genel-karar-eyebrow{color:var(--green)}
+.genel-karar-label{font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:16px}
+.kapat .genel-karar-label{color:var(--red)}
+.bekle .genel-karar-label{color:var(--gold)}
+.olcekle .genel-karar-label{color:var(--green)}
+.genel-karar-title{font-size:15px;color:var(--text);line-height:1.7;font-weight:400;max-width:600px}
 
-/* CAMPAIGNS */
-.camp-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:8px;transition:all .2s}
-.camp-card:hover{border-color:var(--border2)}
-.camp-top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
-.camp-decision{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;font-weight:700;padding:4px 10px;border-radius:6px;flex-shrink:0;text-transform:uppercase}
-.camp-decision.kapat{background:var(--red-dim);color:var(--red);border:1px solid var(--red-ln)}
-.camp-decision.bekle{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-ln)}
-.camp-decision.olcekle{background:var(--green-dim);color:var(--green);border:1px solid var(--green-ln)}
-.camp-name{font-size:13px;font-weight:600;color:var(--text);flex:1}
-.camp-meta{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:4px}
-.camp-reason{font-size:12px;color:var(--text2);line-height:1.6}
+/* KAMPANYA KARTLARI — BÜYÜK */
+.section-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px}
+.camps-wrap{display:flex;flex-direction:column;gap:10px}
+.camp-big-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0;overflow:hidden;transition:all .2s;border-left-width:4px}
+.camp-big-card:hover{transform:translateX(3px)}
+.camp-big-card.kapat{border-left-color:var(--red)}
+.camp-big-card.bekle{border-left-color:var(--gold)}
+.camp-big-card.olcekle{border-left-color:var(--green)}
+.camp-big-inner{padding:16px 20px;display:flex;align-items:flex-start;gap:14px}
+.camp-big-badge{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;font-weight:700;padding:6px 12px;border-radius:8px;flex-shrink:0;text-transform:uppercase;margin-top:2px}
+.camp-big-badge.kapat{background:var(--red-dim);color:var(--red);border:1px solid var(--red-ln)}
+.camp-big-badge.bekle{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-ln)}
+.camp-big-badge.olcekle{background:var(--green-dim);color:var(--green);border:1px solid var(--green-ln)}
+.camp-big-body{flex:1;min-width:0}
+.camp-big-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
+.camp-big-meta{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:6px}
+.camp-big-reason{font-size:13px;color:var(--text2);line-height:1.6}
 
-/* DETAIL CARD */
-.detail-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.dc-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-.dc-icon{font-size:16px}
-.dc-title{font-size:13px;font-weight:700;color:var(--text)}
-.dc-body{padding:16px 20px}
-.dc-body p,.dc-body li{font-size:13px;color:var(--text2);line-height:1.8}
-.dc-body ul{padding-left:16px}
-.dc-body strong{color:var(--text)}
+/* SORUN & FIRSAT */
+.sf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sorun-kart{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.18);border-radius:14px;padding:20px 24px}
+.firsat-kart{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:14px;padding:20px 24px}
+.sf-title{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sorun-kart .sf-title{color:var(--red)}
+.firsat-kart .sf-title{color:var(--green)}
+.sf-list{display:flex;flex-direction:column;gap:8px}
+.sf-item{font-size:12px;color:var(--text2);line-height:1.6;display:flex;align-items:flex-start;gap:8px}
+.sf-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.sorun-kart .sf-dot{background:var(--red);opacity:.6}
+.firsat-kart .sf-dot{background:var(--green);opacity:.6}
 
-/* ACTION LIST */
-.action-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--surface2);border-radius:10px;margin-bottom:8px;font-size:13px;color:var(--text2);line-height:1.6}
-.action-item:last-child{margin-bottom:0}
-.action-day{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text3);flex-shrink:0;margin-top:2px;min-width:44px}
-.action-txt strong{color:var(--text)}
+/* 7 GÜNLÜK PLAN — TIMELINE */
+.plan-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.plan-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.plan-header-title{font-size:13px;font-weight:700;color:var(--text)}
+.timeline{padding:20px 24px;display:flex;flex-direction:column;gap:0;position:relative}
+.timeline::before{content:'';position:absolute;left:36px;top:24px;bottom:24px;width:1px;background:var(--border2)}
+.timeline-item{display:flex;align-items:flex-start;gap:16px;padding-bottom:24px;position:relative}
+.timeline-item:last-child{padding-bottom:0}
+.timeline-dot-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
+.timeline-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;font-weight:700;border:2px solid var(--bg);color:#000}
+.timeline-dot.d1{background:var(--red)}
+.timeline-dot.d2{background:var(--gold)}
+.timeline-dot.d3{background:var(--green)}
+.timeline-body{flex:1;padding-top:4px}
+.timeline-gun{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+.timeline-aksiyon{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.timeline-detay{font-size:12px;color:var(--text2);line-height:1.6}
 
-/* RESET */
+/* SAVE BANNER */
+.save-banner{background:var(--green-dim);border:1px solid var(--green-ln);border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:14px}
+.save-banner-txt{flex:1}
+.save-banner-title{font-size:13px;font-weight:700;color:var(--green);margin-bottom:2px}
+.save-banner-sub{font-size:12px;color:var(--text2)}
+.save-btn{background:var(--green);color:#000;border:none;border-radius:10px;font-family:var(--font);font-size:12px;font-weight:700;padding:10px 18px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.save-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(34,197,94,.3)}
+.save-btn:disabled{background:var(--surface2);color:var(--text3);cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ACTIONS */
+.action-row{display:flex;gap:8px}
 .reset-btn{background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--text3);font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 18px;cursor:pointer;transition:all .2s}
 .reset-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text2)}
 
@@ -178,6 +226,12 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.green{border-color:var(--green-ln);color:var(--green)}
 .toast.red{border-color:var(--red-ln);color:var(--red)}
+
+@media(max-width:640px){
+  .sf-grid{grid-template-columns:1fr}
+  .genel-karar-card{padding:24px 20px}
+  .camp-big-inner{flex-wrap:wrap}
+}
 </style>
 </head>
 <body>
@@ -203,32 +257,18 @@ tr:hover td{background:rgba(255,255,255,.02)}
 
 <div class="wrap">
 
-  <!-- CSV NASIL İNDİRİLİR REHBERİ -->
   <div class="guide-card">
     <div class="guide-title">📥 CSV Nasıl İndirilir?</div>
     <div class="guide-steps">
-      <div class="guide-step">
-        <span class="guide-num">1</span>
-        <span><strong>Meta Ads Manager'a</strong> gir → Sol menüden <strong>Kampanyalar</strong>'ı seç</span>
-      </div>
-      <div class="guide-step">
-        <span class="guide-num">2</span>
-        <span>Sağ üstteki <strong>İndir (↓)</strong> ikonuna tıkla → <strong>CSV olarak indir</strong> seç</span>
-      </div>
-      <div class="guide-step">
-        <span class="guide-num">3</span>
-        <span>Tarih aralığını seç (son 7-30 gün önerilir) → <strong>Dışa Aktar</strong>'a bas</span>
-      </div>
-      <div class="guide-step">
-        <span class="guide-num">4</span>
-        <span>İnen <strong>.csv</strong> dosyasını aşağıya yükle — AI otomatik okur ve analiz eder</span>
-      </div>
+      <div class="guide-step"><span class="guide-num">1</span><span><strong>Meta Ads Manager'a</strong> gir → Sol menüden <strong>Kampanyalar</strong>'ı seç</span></div>
+      <div class="guide-step"><span class="guide-num">2</span><span>Sağ üstteki <strong>İndir (↓)</strong> ikonuna tıkla → <strong>CSV olarak indir</strong> seç</span></div>
+      <div class="guide-step"><span class="guide-num">3</span><span>Tarih aralığını seç (son 7-30 gün önerilir) → <strong>Dışa Aktar</strong>'a bas</span></div>
+      <div class="guide-step"><span class="guide-num">4</span><span>İnen <strong>.csv</strong> dosyasını aşağıya yükle — AI otomatik okur ve analiz eder</span></div>
     </div>
     <a href="https://www.facebook.com/adsmanager" target="_blank" class="guide-link">→ Meta Ads Manager'ı Aç</a>
   </div>
 
-  <!-- UPLOAD -->
-  <div class="upload-zone" id="csv-zone" ondragover="dragOver(event,'csv-zone')" ondragleave="dragLeave('csv-zone')" ondrop="dropFile(event)">
+  <div class="upload-zone" id="csv-zone" ondragover="dragOver(event)" ondragleave="dragLeave()" ondrop="dropFile(event)">
     <input type="file" class="upload-input" id="csv-input" accept=".csv,.tsv" onchange="handleCSV(this.files[0])">
     <div class="upload-icon">📊</div>
     <div class="upload-title">CSV Dosyasını Buraya Sürükle veya Tıkla</div>
@@ -248,7 +288,6 @@ tr:hover td{background:rgba(255,255,255,.02)}
   </div>
 
   <div id="csv-results" class="results"></div>
-
 </div>
 
 <div class="toast" id="toast"></div>
@@ -256,9 +295,9 @@ tr:hover td{background:rgba(255,255,255,.02)}
 <script>
 var API_URL='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/shopify-endpoint';
 var API_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
-var csvData = null;
+var csvData=null;
+var lastResult=null;
 
-// THEME
 function toggleTheme(){
   var isLight=document.body.classList.toggle('light-mode');
   document.getElementById('theme-toggle').textContent=isLight?'🌙':'☀️';
@@ -274,36 +313,22 @@ function applyTheme(){
 }
 applyTheme();
 
-// DRAG & DROP
-function dragOver(e,zoneId){e.preventDefault();document.getElementById(zoneId).classList.add('drag');}
-function dragLeave(zoneId){document.getElementById(zoneId).classList.remove('drag');}
-function dropFile(e){
-  e.preventDefault();
-  document.getElementById('csv-zone').classList.remove('drag');
-  var file=e.dataTransfer.files[0];
-  if(file)handleCSV(file);
-}
+function dragOver(e){e.preventDefault();document.getElementById('csv-zone').classList.add('drag');}
+function dragLeave(){document.getElementById('csv-zone').classList.remove('drag');}
+function dropFile(e){e.preventDefault();document.getElementById('csv-zone').classList.remove('drag');var f=e.dataTransfer.files[0];if(f)handleCSV(f);}
 
-function fmtSize(bytes){
-  if(bytes<1024)return bytes+' B';
-  if(bytes<1024*1024)return(bytes/1024).toFixed(1)+' KB';
-  return(bytes/(1024*1024)).toFixed(1)+' MB';
-}
+function fmtSize(b){if(b<1024)return b+' B';if(b<1024*1024)return(b/1024).toFixed(1)+' KB';return(b/(1024*1024)).toFixed(1)+' MB';}
 
-// CSV HANDLER
 function handleCSV(file){
   if(!file)return;
   var ext=file.name.split('.').pop().toLowerCase();
   if(!['csv','tsv'].includes(ext)){showToast('CSV veya TSV dosyası seç','red');return;}
-
   var infoEl=document.getElementById('file-info');
   infoEl.style.display='block';
   infoEl.innerHTML='<div class="file-info"><span style="font-size:18px">📄</span><span class="file-info-name">'+file.name+'</span><span class="file-info-size">'+fmtSize(file.size)+'</span><button class="file-remove" onclick="clearCSV()">×</button></div>';
-
   var reader=new FileReader();
   reader.onload=function(e){
-    var text=e.target.result;
-    var rows=parseCSV(text);
+    var rows=parseCSV(e.target.result);
     csvData=rows;
     renderPreview(rows);
     renderAnalyzeBtn();
@@ -312,7 +337,7 @@ function handleCSV(file){
 }
 
 function clearCSV(){
-  csvData=null;
+  csvData=null;lastResult=null;
   document.getElementById('file-info').style.display='none';
   document.getElementById('csv-preview').style.display='none';
   document.getElementById('csv-results').style.display='none';
@@ -327,9 +352,7 @@ function parseCSV(text){
     var result=[],current='',inQ=false;
     for(var i=0;i<line.length;i++){
       var ch=line[i];
-      if(ch==='"'){inQ=!inQ;}
-      else if(ch===sep&&!inQ){result.push(current.trim());current='';}
-      else{current+=ch;}
+      if(ch==='"'){inQ=!inQ;}else if(ch===sep&&!inQ){result.push(current.trim());current='';}else{current+=ch;}
     }
     result.push(current.trim());
     return result;
@@ -340,8 +363,7 @@ function renderPreview(rows){
   if(!rows||rows.length<2)return;
   var prevEl=document.getElementById('csv-preview');
   prevEl.style.display='block';
-  var headers=rows[0];
-  var dataRows=rows.slice(1,6);
+  var headers=rows[0],dataRows=rows.slice(1,5);
   var h='<div class="preview-card"><div class="preview-header"><span class="preview-title">Önizleme</span><span class="preview-count">'+(rows.length-1)+' satır bulundu</span></div><div class="table-wrap"><table><thead><tr>';
   headers.forEach(function(hd){h+='<th>'+hd+'</th>';});
   h+='</tr></thead><tbody>';
@@ -353,16 +375,13 @@ function renderPreview(rows){
 
 function renderAnalyzeBtn(){
   var prevEl=document.getElementById('csv-preview');
-  var existing=prevEl.querySelector('.analyze-btn');
-  if(existing)existing.remove();
+  var ex=prevEl.querySelector('.analyze-btn');if(ex)ex.remove();
   var btn=document.createElement('button');
-  btn.className='analyze-btn';
-  btn.textContent='🎯 Reklamları Analiz Et';
+  btn.className='analyze-btn';btn.textContent='🎯 Reklamları Analiz Et';
   btn.onclick=analyzeCSV;
   prevEl.appendChild(btn);
 }
 
-// JSON PARSE
 function tryParse(raw){
   if(!raw)return null;
   raw=raw.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
@@ -371,9 +390,8 @@ function tryParse(raw){
   return null;
 }
 
-function startLoadingSteps(containerId,steps){
-  var el=document.getElementById(containerId);el.innerHTML='';
-  var i=0;
+function startLoadingSteps(id,steps){
+  var el=document.getElementById(id);el.innerHTML='';var i=0;
   var iv=setInterval(function(){
     if(i>=steps.length){clearInterval(iv);return;}
     var d=document.createElement('div');d.className='ls-item';d.textContent=steps[i];d.style.animationDelay='0s';
@@ -382,34 +400,18 @@ function startLoadingSteps(containerId,steps){
   return iv;
 }
 
-// ANALYZE
 function analyzeCSV(){
   if(!csvData||csvData.length<2){showToast('Önce CSV yükle','red');return;}
-
   document.getElementById('csv-preview').style.display='none';
   document.getElementById('csv-loading').style.display='block';
   document.getElementById('csv-results').style.display='none';
-
-  var iv=startLoadingSteps('csv-loading-steps',[
-    'Veri yapısı okunuyor...',
-    'Metrikler hesaplanıyor...',
-    'Kampanyalar değerlendiriliyor...',
-    'Karar üretiliyor...',
-    'Strateji yazılıyor...'
-  ]);
-
+  var iv=startLoadingSteps('csv-loading-steps',['Veri yapısı okunuyor...','Metrikler hesaplanıyor...','Kampanyalar değerlendiriliyor...','Karar üretiliyor...','Strateji yazılıyor...']);
   var headers=csvData[0];
   var rows=csvData.slice(1).filter(function(r){return r.some(function(c){return c.trim();});});
   var csvText=headers.join(' | ')+'\n';
   rows.slice(0,30).forEach(function(row){csvText+=row.join(' | ')+'\n';});
-
-  var prompt='Sen bir Meta Ads (Facebook/Instagram) reklam uzmanisın. Asagida bir Shopify dropshipping isletmesinin Meta Ads verisi var. Her kampanya/reklam seti icin karar ver ve genel strateji yaz.\n\nVERİ:\n'+csvText+'\n\nSADECE asagidaki JSON formatinda yanit ver, baska hicbir sey yazma:\n{"genel_karar":"KAPAT veya BEKLE veya OLCEKLE","genel_ozet":"2-3 cumle genel durum analizi Turkce","kampanyalar":[{"ad":"kampanya adi","karar":"KAPAT","neden":"kisa neden Turkce","metrikler":"onemli metrik degerleri"}],"problemler":["sorun 1","sorun 2","sorun 3"],"firsatlar":["firsat 1","firsat 2"],"yedi_gunluk_plan":[{"gun":"1-2","aksiyon":"ne yapilmali","detay":"detay Turkce"},{"gun":"3-4","aksiyon":"aksiyon","detay":"detay"},{"gun":"5-7","aksiyon":"aksiyon","detay":"detay"}]}';
-
-  fetch(API_URL,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+API_KEY,'apikey':API_KEY},
-    body:JSON.stringify({prompt:prompt,system:'Sen bir Meta Ads uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hic aciklama, markdown veya ek metin yazma. Sadece ham JSON.'})
-  })
+  var prompt='Sen bir Meta Ads (Facebook/Instagram) reklam uzmanisın. Asagida Shopify dropshipping isletmesinin Meta Ads verisi var. Her kampanya icin karar ver.\n\nVERİ:\n'+csvText+'\n\nSADECE JSON yaz:\n{"genel_karar":"KAPAT veya BEKLE veya OLCEKLE","genel_ozet":"2-3 cumle Turkce analiz","kampanyalar":[{"ad":"kampanya adi","karar":"KAPAT","neden":"kisa neden Turkce","metrikler":"onemli metrik degerleri"}],"problemler":["sorun 1","sorun 2","sorun 3"],"firsatlar":["firsat 1","firsat 2"],"yedi_gunluk_plan":[{"gun":"1-2","aksiyon":"ne yapilmali","detay":"detay Turkce"},{"gun":"3-4","aksiyon":"aksiyon","detay":"detay"},{"gun":"5-7","aksiyon":"aksiyon","detay":"detay"}]}';
+  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+API_KEY,'apikey':API_KEY},body:JSON.stringify({prompt:prompt,system:'Sen bir Meta Ads uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hic aciklama, markdown veya ek metin yazma. Sadece ham JSON.'})})
   .then(function(r){return r.json();})
   .then(function(data){
     clearInterval(iv);
@@ -421,8 +423,8 @@ function analyzeCSV(){
     else if(typeof data==='string')raw=data;
     else raw=JSON.stringify(data);
     var parsed=tryParse(raw);
-    if(parsed)renderResults(parsed);
-    else{showToast('Analiz başarısız, tekrar dene','red');}
+    if(parsed){lastResult=parsed;renderResults(parsed);}
+    else showToast('Analiz başarısız, tekrar dene','red');
   })
   .catch(function(){
     clearInterval(iv);
@@ -432,72 +434,135 @@ function analyzeCSV(){
   });
 }
 
-// RENDER RESULTS
 function renderResults(d){
   var el=document.getElementById('csv-results');
   el.style.display='flex';
-
   var genel=(d.genel_karar||'BEKLE').toUpperCase();
   var cls=genel==='KAPAT'?'kapat':(genel==='OLCEKLE'?'olcekle':'bekle');
-  var emoji=genel==='KAPAT'?'🛑':(genel==='OLCEKLE'?'🚀':'⏸️');
-  var label=genel==='KAPAT'?'KAPAT':(genel==='OLCEKLE'?'ÖLÇEKLENDİR':'BEKLE');
-
+  var label=genel==='KAPAT'?'🛑 KAPAT':(genel==='OLCEKLE'?'🚀 ÖLÇEKLENDİR':'⏸️ BEKLE');
   var h='';
 
   // GENEL KARAR
-  h+='<div class="verdict-card '+cls+'">';
-  h+='<div class="verdict-badge">'+emoji+' GENEL KARAR: '+label+'</div>';
-  h+='<div class="verdict-title">'+(d.genel_ozet||'')+'</div>';
+  h+='<div class="genel-karar-card '+cls+'">';
+  h+='<div class="genel-karar-eyebrow">Genel Karar</div>';
+  h+='<div class="genel-karar-label">'+label+'</div>';
+  h+='<div class="genel-karar-title">'+(d.genel_ozet||'')+'</div>';
   h+='</div>';
 
   // KAMPANYALAR
   if(d.kampanyalar&&d.kampanyalar.length){
-    h+='<div class="detail-card"><div class="dc-header"><span class="dc-icon">📊</span><div class="dc-title">Kampanya Kararları</div></div><div class="dc-body">';
-    d.kampanyalar.forEach(function(k){
+    h+='<div>';
+    h+='<div class="section-label">Kampanya Kararları</div>';
+    h+='<div class="camps-wrap">';
+    d.kampanyalar.forEach(function(k,i){
       var kCls=(k.karar||'').toUpperCase()==='KAPAT'?'kapat':((k.karar||'').toUpperCase()==='OLCEKLE'?'olcekle':'bekle');
       var kLabel=(k.karar||'').toUpperCase()==='KAPAT'?'🛑 KAPAT':((k.karar||'').toUpperCase()==='OLCEKLE'?'🚀 ÖLÇEKLENDİR':'⏸️ BEKLE');
-      h+='<div class="camp-card">';
-      h+='<div class="camp-top"><div class="camp-decision '+kCls+'">'+kLabel+'</div><div style="font-size:13px;font-weight:600;color:var(--text)">'+(k.ad||'Kampanya')+'</div></div>';
-      if(k.metrikler)h+='<div class="camp-meta">'+k.metrikler+'</div>';
-      if(k.neden)h+='<div class="camp-reason">'+k.neden+'</div>';
-      h+='</div>';
+      h+='<div class="camp-big-card '+kCls+'" style="animation-delay:'+(i*0.08)+'s">';
+      h+='<div class="camp-big-inner">';
+      h+='<div class="camp-big-badge '+kCls+'">'+kLabel+'</div>';
+      h+='<div class="camp-big-body">';
+      h+='<div class="camp-big-name">'+(k.ad||'Kampanya')+'</div>';
+      if(k.metrikler)h+='<div class="camp-big-meta">'+k.metrikler+'</div>';
+      if(k.neden)h+='<div class="camp-big-reason">'+k.neden+'</div>';
+      h+='</div></div></div>';
     });
     h+='</div></div>';
   }
 
-  // PROBLEMLER & FIRSATLAR
-  var hasP=d.problemler&&d.problemler.length;
-  var hasF=d.firsatlar&&d.firsatlar.length;
-  if(hasP||hasF){
-    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">';
-    if(hasP){
-      h+='<div class="detail-card"><div class="dc-header"><span class="dc-icon">⚠️</span><div class="dc-title">Sorunlar</div></div><div class="dc-body"><ul>';
-      d.problemler.forEach(function(p){h+='<li>'+p+'</li>';});
-      h+='</ul></div></div>';
+  // SORUNLAR & FIRSATLAR
+  if((d.problemler&&d.problemler.length)||(d.firsatlar&&d.firsatlar.length)){
+    h+='<div class="sf-grid">';
+    if(d.problemler&&d.problemler.length){
+      h+='<div class="sorun-kart"><div class="sf-title">⚠️ Sorunlar</div><div class="sf-list">';
+      d.problemler.forEach(function(p){h+='<div class="sf-item"><div class="sf-dot"></div><span>'+p+'</span></div>';});
+      h+='</div></div>';
     }
-    if(hasF){
-      h+='<div class="detail-card"><div class="dc-header"><span class="dc-icon">💡</span><div class="dc-title">Fırsatlar</div></div><div class="dc-body"><ul>';
-      d.firsatlar.forEach(function(f){h+='<li>'+f+'</li>';});
-      h+='</ul></div></div>';
+    if(d.firsatlar&&d.firsatlar.length){
+      h+='<div class="firsat-kart"><div class="sf-title">💡 Fırsatlar</div><div class="sf-list">';
+      d.firsatlar.forEach(function(f){h+='<div class="sf-item"><div class="sf-dot"></div><span>'+f+'</span></div>';});
+      h+='</div></div>';
     }
     h+='</div>';
   }
 
-  // 7 GÜNLÜK PLAN
+  // 7 GÜNLÜK PLAN — TIMELINE
   if(d.yedi_gunluk_plan&&d.yedi_gunluk_plan.length){
-    h+='<div class="detail-card"><div class="dc-header"><span class="dc-icon">📅</span><div class="dc-title">7 Günlük Aksiyon Planı</div></div><div class="dc-body">';
-    d.yedi_gunluk_plan.forEach(function(p){
-      h+='<div class="action-item"><div class="action-day">Gün '+p.gun+'</div><div><strong>'+p.aksiyon+'</strong><br>'+(p.detay||'')+'</div></div>';
+    var dotCls=['d1','d2','d3'];
+    h+='<div class="plan-card">';
+    h+='<div class="plan-header"><span style="font-size:16px">📅</span><div class="plan-header-title">7 Günlük Aksiyon Planı</div></div>';
+    h+='<div class="timeline">';
+    d.yedi_gunluk_plan.forEach(function(p,i){
+      h+='<div class="timeline-item">';
+      h+='<div class="timeline-dot-wrap"><div class="timeline-dot '+(dotCls[i]||'d3')+'">'+(i+1)+'</div></div>';
+      h+='<div class="timeline-body">';
+      h+='<div class="timeline-gun">Gün '+p.gun+'</div>';
+      h+='<div class="timeline-aksiyon">'+p.aksiyon+'</div>';
+      h+='<div class="timeline-detay">'+(p.detay||'')+'</div>';
+      h+='</div></div>';
     });
     h+='</div></div>';
   }
 
-  h+='<div style="display:flex;gap:8px">';
+  // PORTALA KAYDET BANNER
+  h+='<div class="save-banner">';
+  h+='<div class="save-banner-txt"><div class="save-banner-title">Portala Kaydet</div><div class="save-banner-sub">Bu analizi portala kaydet, sonraki girişte takip et.</div></div>';
+  h+='<button class="save-btn" id="save-portal-btn" onclick="saveToPortal()">💾 Portala Kaydet</button>';
+  h+='</div>';
+
+  // ACTIONS
+  h+='<div class="action-row">';
   h+='<button class="reset-btn" onclick="clearCSV();document.getElementById(\'csv-results\').style.display=\'none\'">↺ Yeni Analiz</button>';
   h+='<button class="reset-btn" style="border-color:var(--blue-ln);color:var(--blue)" onclick="copyResults()">📋 Raporu Kopyala</button>';
   h+='</div>';
 
   el.innerHTML=h;
+}
+
+// PORTALA KAYDET
+function saveToPortal(){
+  if(!lastResult)return;
+  var btn=document.getElementById('save-portal-btn');
+  if(btn)btn.disabled=true;
+  try{
+    var saved={
+      tarih:new Date().toISOString().slice(0,10),
+      saat:new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}),
+      genel_karar:lastResult.genel_karar||'BEKLE',
+      genel_ozet:lastResult.genel_ozet||'',
+      kampanya_sayisi:(lastResult.kampanyalar||[]).length,
+      kampanyalar:lastResult.kampanyalar||[],
+      problemler:lastResult.problemler||[],
+      firsatlar:lastResult.firsatlar||[],
+      plan:lastResult.yedi_gunluk_plan||[]
+    };
+    // Ana portal state key'ini bul
+    var portalKey=null;
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      if(k&&k.startsWith('mlynr_shop_')&&!k.includes('admin')&&!k.includes('fullname')&&!k.includes('theme')){portalKey=k;break;}
+    }
+    if(portalKey){
+      try{
+        var ps=JSON.parse(localStorage.getItem(portalKey)||'{}');
+        if(!ps.reklam_analizleri)ps.reklam_analizleri=[];
+        ps.reklam_analizleri.unshift(saved);
+        if(ps.reklam_analizleri.length>10)ps.reklam_analizleri=ps.reklam_analizleri.slice(0,10);
+        localStorage.setItem(portalKey,JSON.stringify(ps));
+      }catch(ex){}
+    }
+    // Ayrıca global key'e de kaydet
+    try{
+      var global=JSON.parse(localStorage.getItem('mlynr_reklam_analizleri')||'[]');
+      global.unshift(saved);
+      if(global.length>10)global=global.slice(0,10);
+      localStorage.setItem('mlynr_reklam_analizleri',JSON.stringify(global));
+    }catch(ex){}
+    showToast('✓ Portala kaydedildi!','green');
+    if(btn){btn.textContent='✓ Kaydedildi';btn.style.background='var(--surface2)';btn.style.color='var(--text2)';}
+  }catch(ex){
+    showToast('Kaydetme hatası','red');
+    if(btn)btn.disabled=false;
+  }
 }
 
 function copyResults(){
@@ -508,10 +573,8 @@ function copyResults(){
 var _tt;
 function showToast(m,cls){
   var t=document.getElementById('toast');
-  t.textContent=m;
-  t.className='toast'+(cls?' '+cls:'')+' show';
-  clearTimeout(_tt);
-  _tt=setTimeout(function(){t.classList.remove('show');},2600);
+  t.textContent=m;t.className='toast'+(cls?' '+cls:'')+' show';
+  clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);
 }
 </script>
 </body>
