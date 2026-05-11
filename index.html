@@ -716,7 +716,7 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .ot-badge.unseen{color:var(--yellow, #facc15);background:rgba(250,204,21,.08);border-color:rgba(250,204,21,.2)}
 .ot-chevron{font-size:11px;color:var(--text3);transition:transform .25s;flex-shrink:0}
 .onboarding-toggle.open .ot-chevron{transform:rotate(180deg)}
-.onboarding-body{display:none;pointer-events:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:18px;animation:fadeup .3s ease}
+.onboarding-body{display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:18px;animation:fadeup .3s ease}
 @keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .rule-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:flex;align-items:flex-start;gap:12px;transition:border-color .2s}
@@ -738,6 +738,40 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .aw-item.gold{background:rgba(250,204,21,.06);border:1px solid rgba(250,204,21,.15)}
 .aw-item.green{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.12)}
 .aw-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.aw-item strong{color:var(--text);font-weight:600}
+@media(max-width:640px){.rules-grid{grid-template-columns:1fr}}
+
+/* ── BAŞLANGIÇ REHBERİ ── */
+.onboarding-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:20px;position:relative;z-index:1}
+.onboarding-toggle{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;transition:all .2s}
+.onboarding-toggle:hover{border-color:var(--border2)}
+.onboarding-toggle.open{border-radius:12px 12px 0 0;border-bottom-color:transparent}
+.ot-icon{font-size:16px;flex-shrink:0}
+.ot-title{font-size:13px;font-weight:700;color:var(--text);flex:1}
+.ot-badge{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;border-radius:20px;padding:3px 10px;white-space:nowrap}
+.ot-badge.unseen{color:#facc15;background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.2)}
+.ot-badge.read{color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln)}
+.ot-chevron{font-size:11px;color:var(--text3);transition:transform .25s;flex-shrink:0}
+.onboarding-toggle.open .ot-chevron{transform:rotate(180deg)}
+.onboarding-body{display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:18px}
+.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.rule-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px}
+.rule-card.warn{border-color:rgba(248,113,113,.2);background:rgba(248,113,113,.03)}
+.rule-card.ok{border-color:rgba(34,197,94,.15);background:rgba(34,197,94,.03)}
+.rule-card.tip{border-color:rgba(250,204,21,.15);background:rgba(250,204,21,.03)}
+.rule-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.rule-text{font-size:12px;color:var(--text2);line-height:1.6}
+.rule-text strong{color:var(--text)}
+.account-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden}
+.account-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(250,204,21,.5),transparent)}
+.account-card-title{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.account-card-title span{font-size:13px;font-weight:700;color:var(--text)}
+.account-card-badge{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(250,204,21,.7);background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.2);border-radius:20px;padding:3px 10px}
+.account-warnings{display:flex;flex-direction:column;gap:8px}
+.aw-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:8px;font-size:12px;color:var(--text2);line-height:1.65}
+.aw-item.red{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.15)}
+.aw-item.gold{background:rgba(250,204,21,.06);border:1px solid rgba(250,204,21,.15)}
+.aw-icon{font-size:15px;flex-shrink:0;margin-top:1px}
 .aw-item strong{color:var(--text);font-weight:600}
 @media(max-width:640px){.rules-grid{grid-template-columns:1fr}}
 </style>
@@ -808,45 +842,9 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
       <div class="hero-subtitle">4 Haftalık Yol Haritası</div>
       <p class="hero-desc">Eğitimimizin tam akışı önünde. Tamamladıklarını işaretle, nerede olduğunu her zaman bil.</p>
 
-
-
       <!-- ORBITAL BRIEFING -->
       <div id="orbital-inline" style="display:none">
         <div id="orbital-inline-card"></div>
-      </div>
-
-      <!-- BAŞLANGIÇ REHBERİ -->
-      <div class="onboarding-section" style="padding:0;margin-top:0;margin-bottom:20px;max-width:none;position:relative;z-index:1">
-        <div class="onboarding-toggle" id="onboarding-toggle" onclick="toggleOnboarding()">
-          <span class="ot-icon">🚀</span>
-          <span class="ot-title">Başlamadan Önce Bunları Bil</span>
-          <span class="ot-badge unseen" id="onboarding-badge">Okunmadı</span>
-          <span class="ot-chevron">▾</span>
-        </div>
-        <div class="onboarding-body" id="onboarding-body">
-          <div class="rules-grid">
-            <div class="rule-card ok"><div class="rule-icon">🎥</div><div class="rule-text"><strong>Tüm videoları izle</strong><br>Adım atlamadan sırayla izle. Atlanan her video ileride sorun çıkarır.</div></div>
-            <div class="rule-card warn"><div class="rule-icon">🐢</div><div class="rule-text"><strong>Aceleci hareket etme</strong><br>Acele kararlar hesap sorunlarına yol açar. Her adımı anlayarak ilerle.</div></div>
-            <div class="rule-card ok"><div class="rule-icon">💬</div><div class="rule-text"><strong>Destek hattına yaz</strong><br>Takıldığında bekletme, hemen destek hattına yaz. Telegram 10:00–23:00 açık.</div></div>
-            <div class="rule-card warn"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Eksik ve yanlış bilgi girme</strong><br>Hesap bilgilerini eksiksiz ve doğru gir. Yanlış bilgi ileride ciddi sorun olur.</div></div>
-            <div class="rule-card warn"><div class="rule-icon">🔒</div><div class="rule-text"><strong>VPN kullanma</strong><br>eBay'e kesinlikle VPN ile girme. Botlar anlık ülke değişimini risk olarak algılar.</div></div>
-            <div class="rule-card warn"><div class="rule-icon">📄</div><div class="rule-text"><strong>Yanlış belge gönderme</strong><br>Doğrulama sürecinde yanlış veya eksik belge göndermekten kaçın.</div></div>
-            <div class="rule-card tip"><div class="rule-icon">💻</div><div class="rule-text"><strong>Aynı cihazdan gir</strong><br>eBay hesabına hep aynı cihazdan giriş yap. Farklı cihazlar şüphe çekebilir.</div></div>
-            <div class="rule-card tip"><div class="rule-icon">⏳</div><div class="rule-text"><strong>Hızlı hareket etme</strong><br>İlk günlerde botlar her hareketini izler. Sabırlı ve ölçülü adımlar at.</div></div>
-          </div>
-          <div class="account-card" style="margin-top:12px">
-            <div class="account-card-title">
-              <span>🏪 eBay Hesap Açılışında Kritik Noktalar</span>
-              <div class="account-card-badge">Mutlaka Oku</div>
-            </div>
-            <div class="account-warnings">
-              <div class="aw-item red"><div class="aw-icon">📍</div><div><strong>Adres tam ve eksiksiz girilmeli</strong><br>eBay'e girdiğin adres ile Payoneer'deki adres <strong>birebir aynı</strong> olmalı.</div></div>
-              <div class="aw-item red"><div class="aw-icon">🔒</div><div><strong>VPN ile eBay'e girme</strong><br>Botlar anlık ülke değişimini risk olarak algılar, hesabı <strong>suspend</strong> edebilir.</div></div>
-              <div class="aw-item gold"><div class="aw-icon">⏳</div><div><strong>İlk 5 gün ürün listeleme</strong><br>Hesabı açtıktan sonra <strong>ilk 5 gün listeleme yapma.</strong> Sadece ürün araştır, 5. günden sonra listele.</div></div>
-              <div class="aw-item red"><div class="aw-icon">✋</div><div><strong>Bilgileri sonradan değiştirme</strong><br>Adres, telefon, isim — nasıl kaydolduysan <strong>öyle kal.</strong></div></div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="hero-tags">
@@ -883,6 +881,177 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
       </div>
     </div>
   </section>
+
+  <!-- BAŞLANGIÇ REHBERİ -->
+  <!-- BAŞLANGIÇ REHBERİ -->
+  <div class="onboarding-section">
+    <!-- TOGGLE BAŞLIK -->
+    <div class="onboarding-toggle" id="onboarding-toggle" onclick="toggleOnboarding()">
+      <span class="ot-icon">🚀</span>
+      <span class="ot-title">Başlamadan Önce Bunları Bil</span>
+      <span class="ot-badge unseen" id="onboarding-badge">Okunmadı</span>
+      <span class="ot-chevron">▾</span>
+    </div>
+    <div class="onboarding-body" id="onboarding-body">
+  
+    <!-- 8 KURAL KARTI -->
+    <div class="rules-grid">
+      <div class="rule-card ok">
+    <div class="rule-icon">🎥</div>
+    <div class="rule-text"><strong>Tüm videoları izle</strong><br>Adım atlamadan sırayla izle. Atlanan her video ileride sorun çıkarır.</div>
+      </div>
+      <div class="rule-card warn">
+    <div class="rule-icon">🐢</div>
+    <div class="rule-text"><strong>Aceleci hareket etme</strong><br>Acele kararlar hesap sorunlarına yol açar. Her adımı anlayarak ilerle.</div>
+      </div>
+      <div class="rule-card ok">
+    <div class="rule-icon">💬</div>
+    <div class="rule-text"><strong>Destek hattına yaz</strong><br>Takıldığında bekletme, hemen destek hattına yaz. Telegram 10:00–23:00 açık.</div>
+      </div>
+      <div class="rule-card warn">
+    <div class="rule-icon">🚫</div>
+    <div class="rule-text"><strong>Eksik ve yanlış bilgi girme</strong><br>Hesap bilgilerini eksiksiz ve doğru gir. Yanlış bilgi ileride ciddi sorun olur.</div>
+      </div>
+      <div class="rule-card warn">
+    <div class="rule-icon">🔒</div>
+    <div class="rule-text"><strong>VPN kullanma</strong><br>eBay'e kesinlikle VPN ile girme. Botlar anlık ülke değişimini risk olarak algılar.</div>
+      </div>
+      <div class="rule-card warn">
+    <div class="rule-icon">📄</div>
+    <div class="rule-text"><strong>Yanlış belge gönderme</strong><br>Doğrulama sürecinde yanlış veya eksik belge göndermekten kaçın.</div>
+      </div>
+      <div class="rule-card tip">
+    <div class="rule-icon">💻</div>
+    <div class="rule-text"><strong>Aynı cihazdan gir</strong><br>eBay hesabına hep aynı cihazdan giriş yap. Farklı cihazlar şüphe çekebilir.</div>
+      </div>
+      <div class="rule-card tip">
+    <div class="rule-icon">⏳</div>
+    <div class="rule-text"><strong>Hızlı hareket etme</strong><br>İlk günlerde botlar her hareketini izler. Sabırlı ve ölçülü adımlar at.</div>
+      </div>
+    </div>
+  
+    <!-- HESAP AÇILIŞ KARTI -->
+    <div class="account-card">
+      <div class="account-card-title">
+    <span>🏪 eBay Hesap Açılışında Kritik Noktalar</span>
+    <div class="account-card-badge">Mutlaka Oku</div>
+      </div>
+      <div class="account-warnings">
+    <div class="aw-item red">
+      <div class="aw-icon">📍</div>
+      <div><strong>Adres tam ve eksiksiz girilmeli</strong><br>eBay'e girdiğin adres ile Payoneer'deki adres <strong>birebir aynı</strong> olmalı. Küçük bir fark bile doğrulama sorunlarına yol açar. Mahalle, sokak, bina no — hiçbir detayı atlama.</div>
+    </div>
+    <div class="aw-item red">
+      <div class="aw-icon">🔒</div>
+      <div><strong>VPN ile eBay'e girme</strong><br>eBay botları anlık ülke değişimini risk olarak algılar ve hesabı <strong>suspend</strong> edebilir. VPN'i kapat, normal internet bağlantısıyla gir.</div>
+    </div>
+    <div class="aw-item gold">
+      <div class="aw-icon">⏳</div>
+      <div><strong>İlk 5 gün ürün listeleme</strong><br>Hesabı açtıktan sonra <strong>ilk 5 gün ürün listeleme.</strong> Bu sürede sadece ürün araştırması yap ve kaydet. Botlar yeni hesaplarda hızlı listelemeyi risk olarak görebilir. 5. günden sonra listelemeye başla.</div>
+    </div>
+    <div class="aw-item red">
+      <div class="aw-icon">✋</div>
+      <div><strong>Bilgileri sonradan değiştirme</strong><br>Adres, telefon, isim-soyisim — nasıl kaydolduysan <strong>öyle kal.</strong> Kayıt sonrası değişiklikler hesabında şüphe yaratır.</div>
+    </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- DASHBOARD -->
+  <div id="dashboard-overlay" class="overlay" onclick="closeDash()"></div>
+  <div id="dashboard-popup" class="popup">
+    <button class="close-btn" onclick="closeDash()">✕</button>
+    <div class="dash-title">Kişisel Dashboard</div>
+    <div class="dash-sub">İstatistiklerin · Rozetlerin · Seviye</div>
+    <div id="dash-level-card" class="dash-level-card"></div>
+    <div class="dash-stats" id="dash-stats"></div>
+    <div class="dash-badges"><div class="dash-badges-title">Rozetler</div><div class="dash-badge-row" id="dash-badge-row"></div></div>
+    <div id="dash-next" class="dash-next"></div>
+  </div>
+
+  <!-- KAZANÇ HESAPLAYICI -->
+  <div id="earn-overlay" class="overlay" onclick="closeEarn()"></div>
+  <div id="earn-popup" class="popup">
+    <button class="close-btn" onclick="closeEarn()">✕</button>
+    <div class="sp-header">
+      <div class="sp-avatar" style="background:linear-gradient(135deg,rgba(250,204,21,.15),rgba(250,204,21,.05));border-color:rgba(250,204,21,.3)">💰</div>
+      <div><div class="sp-title">Kazanç Hesaplayıcı</div><div class="sp-sub">Hedefini gir, potansiyelini gör</div></div>
+    </div>
+    <div class="earn-inputs">
+      <div class="earn-row">
+        <div><label class="earn-label">Günlük Satış Adedi</label><div class="earn-input-wrap"><span class="earn-unit">📦</span><input id="earn-sales" class="earn-input" type="number" min="1" max="999" value="3" oninput="calcEarn()"></div></div>
+        <div><label class="earn-label">Ürün Başı Kâr ($)</label><div class="earn-input-wrap"><span class="earn-unit">$</span><input id="earn-profit" class="earn-input" type="number" min="1" max="999" value="5" oninput="calcEarn()"></div></div>
+      </div>
+      <div class="earn-row" style="margin-top:12px">
+        <div><label class="earn-label">Günlük Süre</label><div class="earn-input-wrap"><span class="earn-unit">⏱</span><input id="earn-hours" class="earn-input" type="number" min="0.5" max="24" step="0.5" value="2" oninput="calcEarn()"></div></div>
+        <div><label class="earn-label">Aylık Hedef ($)</label><div class="earn-input-wrap"><span class="earn-unit">🎯</span><input id="earn-goal" class="earn-input" type="number" min="100" max="99999" value="1000" oninput="calcEarn()"></div></div>
+      </div>
+    </div>
+    <div id="earn-result" class="earn-result"></div>
+    <div id="earn-plan" style="margin-top:12px"></div>
+    <div id="earn-scenarios" class="earn-scenarios"></div>
+  </div>
+
+  <!-- CANBERK -->
+  <div id="canberk-overlay" class="overlay" onclick="closeCanberk()"></div>
+  <div id="canberk-popup" class="popup">
+    <button class="close-btn" onclick="closeCanberk()">✕</button>
+    <div class="cb-pop-header">
+      <div class="cb-pop-avatar">C</div>
+      <div><div class="cb-pop-name">Canberk Öztürk</div><div class="cb-pop-role">MLYNR. Kurucu · Eğitmen</div></div>
+    </div>
+    <div class="cb-pop-body">
+      <p class="cb-hi" id="cb-hi-text">Merhaba! 👋</p>
+      <div id="cb-dynamic-msg" style="display:none;font-size:14px;line-height:1.7;color:var(--text)"></div>
+      <p>Bu eğitime katıldığın için seni tebrik ederim. Buraya gelen herkesin tek bir amacı var: <strong>online satıştan gerçek para kazanmak.</strong></p>
+      <p>Sana bu süreçte işe yarayan birkaç önemli tavsiye bırakıyorum.</p>
+      <div class="cb-quote">💡 Başarılı olanlar daha <em>zeki</em> olanlar değil, daha <em>hızlı deneyenlerdir.</em><br>İlk satış gelene kadar sabırlı ol.</div>
+      <div class="cb-section-title">🎯 eBay'de İlk Satış İçin</div>
+      <ul class="cb-list"><li>Rekabeti düşük ürün seç</li><li>Rakip fiyatlarından biraz daha ucuz ol</li><li>Hızlı kargo avantajı sun</li></ul>
+      <p class="cb-tip">İlk satış geldikten sonra algoritma seni yukarı taşır. ⚡</p>
+      <div class="cb-section-title">📦 İlk Günlerden Kâr Hedefleme</div>
+      <p>Dropshipping bir <strong>test oyunudur.</strong> Kazananlar 5 ürün test edenler değil — <strong>50 ürün test edenlerdir.</strong></p>
+      <div class="cb-goal">
+        <div class="cb-goal-emoji">🏆</div>
+        <div>
+          <div class="cb-goal-title">İlk Hedefiniz</div>
+          <div class="cb-goal-text">Günde <strong>7 satış</strong> · Ürün başı <strong>$5 kâr</strong><br>= Aylık ilk <strong>$1.050</strong> 🚀</div>
+        </div>
+      </div>
+    </div>
+    <button class="cb-pop-close-btn" onclick="closeCanberk()">Anladım, Başlıyorum! 💪</button>
+  </div>
+
+  <!-- SPİN -->
+  <div id="spin-overlay" class="overlay" onclick="closeSpin()"></div>
+  <div id="spin-popup" class="popup">
+    <button class="close-btn" onclick="closeSpin()">✕</button>
+    <div class="sp-header">
+      <div class="sp-avatar">💵</div>
+      <div><div class="sp-title">Günlük Kategori Tavsiyesi</div><div class="sp-sub">Her gün 5 farklı eBay nişi keşfet · Gece sıfırlanır</div></div>
+    </div>
+    <div class="sp-dots" id="sp-dots"></div>
+    <div class="sp-result" id="sp-result">
+      <div class="sp-idle-emoji">💵</div>
+      <div class="sp-idle-txt">Butona bas, bugünkü kategorini öğren</div>
+    </div>
+    <button class="sp-btn" id="sp-btn" onclick="doSpin()">💵 Kategori Çek</button>
+  </div>
+
+  <div id="motiv-popup">
+    <div class="motiv-emoji" id="motiv-emoji">⚡</div>
+    <div class="motiv-msg" id="motiv-msg"></div>
+    <button class="motiv-close" onclick="closeMotiv()">Teşekkürler</button>
+  </div>
+
+  <div id="success-toast">
+    <div class="st-emoji">🎉</div>
+    <div class="st-msg">Başarılar Dilerim!</div>
+    <div class="st-sub">Canberk Öztürk</div>
+  </div>
+
+
 
   <div class="prog-section">
     <div class="prog-header">
@@ -2225,6 +2394,24 @@ function showPasswordResetUI(session){
     });
   };
 }
+
+function toggleOnboarding(){
+  var t=document.getElementById('onboarding-toggle');
+  var b=document.getElementById('onboarding-body');
+  var badge=document.getElementById('onboarding-badge');
+  var open=t.classList.toggle('open');
+  b.style.display=open?'block':'none';
+  if(open){
+    try{localStorage.setItem('mlynr_onboarding_read','1');}catch(e){}
+    badge.textContent='Okundu ✓';badge.className='ot-badge read';
+  }
+}
+(function(){
+  try{if(localStorage.getItem('mlynr_onboarding_read')==='1'){
+    var b=document.getElementById('onboarding-badge');
+    if(b){b.textContent='Okundu ✓';b.className='ot-badge read';}
+  }}catch(e){}
+})();
 </script>
 </body>
 </html>
