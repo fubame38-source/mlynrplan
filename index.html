@@ -695,9 +695,12 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 #admin-msg-overlay.show{opacity:1;pointer-events:all}
 #admin-msg-box{background:#111;border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:32px;width:min(420px,92vw);position:relative}
 #admin-msg-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);border-radius:20px 20px 0 0;pointer-events:none}
-.amsg-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);border-radius:20px;padding:5px 14px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:#60a5fa;text-transform:uppercase;margin-bottom:14px}
-.amsg-from{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:16px}
-.amsg-from span{color:var(--text2)}
+.amsg-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.amsg-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#e0e0e0,#888);color:#000;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0}
+.amsg-hinfo{flex:1}
+.amsg-hname{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.amsg-hrole{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
+.amsg-ping{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.6);animation:blink 1.5s ease-in-out infinite;flex-shrink:0}
 .amsg-body{font-size:14px;color:var(--text);line-height:1.85;margin-bottom:24px;white-space:pre-wrap}
 .amsg-close{width:100%;background:#fff;color:#000;border:none;border-radius:10px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:1px;padding:14px;cursor:pointer;transition:opacity .2s}
 .amsg-close:hover{opacity:.88}
@@ -1034,8 +1037,14 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 <!-- ADMİN MESAJ POPUP -->
 <div id="admin-msg-overlay">
   <div id="admin-msg-box">
-    <div class="amsg-badge">📩 Mentöründen Mesaj</div>
-    <div class="amsg-from">Gönderen: <span>MLYNR. Admin</span></div>
+    <div class="amsg-header">
+      <div class="amsg-avatar">C</div>
+      <div class="amsg-hinfo">
+        <div class="amsg-hname">Canberk Öztürk</div>
+        <div class="amsg-hrole">MLYNR. Kurucu · Eğitmen</div>
+      </div>
+      <div class="amsg-ping"></div>
+    </div>
     <div class="amsg-body" id="amsg-body"></div>
     <button class="amsg-close" onclick="closeAdminMsg()">Anladım ✓</button>
   </div>
