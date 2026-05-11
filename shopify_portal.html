@@ -778,7 +778,7 @@ function doAuth(){
 function enterApp(em,usr){
   if(email&&email===em)return;
   email=em;_user=usr;
-  try{localStorage.setItem('mlynr_cached_email',em);}catch(e){}
+  // GÜVENLİK: email localStorage'a kaydedilmiyor
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='block';
   var disp=em.split('@')[0];
@@ -794,7 +794,7 @@ function enterApp(em,usr){
 
 function doLogout(){
   if(_user)_sb.auth.signOut();
-  try{localStorage.removeItem('mlynr_cached_email');}catch(e){}
+  // GÜVENLİK: cached email temizleme kaldırıldı
   _user=null;email='';done=[];taskChecks={};
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
@@ -1197,7 +1197,7 @@ function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m
   var entered=false;
   function tryEnter(em,usr){if(entered)return;entered=true;enterApp(em,usr);}
   function showLogin(){if(!entered){document.getElementById('login-screen').style.display='flex';}}
-  try{var ce=localStorage.getItem('mlynr_cached_email');if(ce){tryEnter(ce,null);}}catch(e){}
+  // GÜVENLİK: cached email bypass kaldırıldı
   var loginTimer=setTimeout(function(){if(!entered)showLogin();},2000);
   _sb.auth.getSession().then(function(r){
     clearTimeout(loginTimer);
