@@ -848,6 +848,82 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
     </div>
   </section>
 
+  <!-- BAŞLANGIÇ REHBERİ -->
+  <!-- BAŞLANGIÇ REHBERİ -->
+  <div class="onboarding-section">
+    <!-- TOGGLE BAŞLIK -->
+    <div class="onboarding-toggle" id="onboarding-toggle" onclick="toggleOnboarding()">
+      <span class="ot-icon">🚀</span>
+      <span class="ot-title">Başlamadan Önce Bunları Bil</span>
+      <span class="ot-badge unseen" id="onboarding-badge">Okunmadı</span>
+      <span class="ot-chevron">▾</span>
+    </div>
+    <div class="onboarding-body" id="onboarding-body">
+  
+    <!-- 8 KURAL KARTI -->
+    <div class="rules-grid">
+      <div class="rule-card ok">
+    <div class="rule-icon">🎥</div>
+    <div class="rule-text"><strong>Tüm videoları izle</strong><br>Adım atlamadan sırayla izle. Atlanan her video ileride sorun çıkarır.</div>
+      </div>
+      <div class="rule-card warn">
+    <div class="rule-icon">🐢</div>
+    <div class="rule-text"><strong>Aceleci hareket etme</strong><br>Acele kararlar hesap sorunlarına yol açar. Her adımı anlayarak ilerle.</div>
+      </div>
+      <div class="rule-card ok">
+    <div class="rule-icon">💬</div>
+    <div class="rule-text"><strong>Destek hattına yaz</strong><br>Takıldığında bekletme, hemen destek hattına yaz. Telegram 10:00–23:00 açık.</div>
+      </div>
+      <div class="rule-card warn">
+    <div class="rule-icon">🚫</div>
+    <div class="rule-text"><strong>Eksik ve yanlış bilgi girme</strong><br>Hesap bilgilerini eksiksiz ve doğru gir. Yanlış bilgi ileride ciddi sorun olur.</div>
+      </div>
+      <div class="rule-card warn">
+    <div class="rule-icon">🔒</div>
+    <div class="rule-text"><strong>VPN kullanma</strong><br>eBay'e kesinlikle VPN ile girme. Botlar anlık ülke değişimini risk olarak algılar.</div>
+      </div>
+      <div class="rule-card warn">
+    <div class="rule-icon">📄</div>
+    <div class="rule-text"><strong>Yanlış belge gönderme</strong><br>Doğrulama sürecinde yanlış veya eksik belge göndermekten kaçın.</div>
+      </div>
+      <div class="rule-card tip">
+    <div class="rule-icon">💻</div>
+    <div class="rule-text"><strong>Aynı cihazdan gir</strong><br>eBay hesabına hep aynı cihazdan giriş yap. Farklı cihazlar şüphe çekebilir.</div>
+      </div>
+      <div class="rule-card tip">
+    <div class="rule-icon">⏳</div>
+    <div class="rule-text"><strong>Hızlı hareket etme</strong><br>İlk günlerde botlar her hareketini izler. Sabırlı ve ölçülü adımlar at.</div>
+      </div>
+    </div>
+  
+    <!-- HESAP AÇILIŞ KARTI -->
+    <div class="account-card">
+      <div class="account-card-title">
+    <span>🏪 eBay Hesap Açılışında Kritik Noktalar</span>
+    <div class="account-card-badge">Mutlaka Oku</div>
+      </div>
+      <div class="account-warnings">
+    <div class="aw-item red">
+      <div class="aw-icon">📍</div>
+      <div><strong>Adres tam ve eksiksiz girilmeli</strong><br>eBay'e girdiğin adres ile Payoneer'deki adres <strong>birebir aynı</strong> olmalı. Küçük bir fark bile doğrulama sorunlarına yol açar. Mahalle, sokak, bina no — hiçbir detayı atlama.</div>
+    </div>
+    <div class="aw-item red">
+      <div class="aw-icon">🔒</div>
+      <div><strong>VPN ile eBay'e girme</strong><br>eBay botları anlık ülke değişimini risk olarak algılar ve hesabı <strong>suspend</strong> edebilir. VPN'i kapat, normal internet bağlantısıyla gir.</div>
+    </div>
+    <div class="aw-item gold">
+      <div class="aw-icon">⏳</div>
+      <div><strong>İlk 5 gün ürün listeleme</strong><br>Hesabı açtıktan sonra <strong>ilk 5 gün ürün listeleme.</strong> Bu sürede sadece ürün araştırması yap ve kaydet. Botlar yeni hesaplarda hızlı listelemeyi risk olarak görebilir. 5. günden sonra listelemeye başla.</div>
+    </div>
+    <div class="aw-item red">
+      <div class="aw-icon">✋</div>
+      <div><strong>Bilgileri sonradan değiştirme</strong><br>Adres, telefon, isim-soyisim — nasıl kaydolduysan <strong>öyle kal.</strong> Kayıt sonrası değişiklikler hesabında şüphe yaratır.</div>
+    </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- DASHBOARD -->
   <div id="dashboard-overlay" class="overlay" onclick="closeDash()"></div>
   <div id="dashboard-popup" class="popup">
@@ -942,79 +1018,6 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
   </div>
 
 
-  <!-- BAŞLANGIÇ REHBERİ -->
-  <div class="onboarding-section">
-    <!-- TOGGLE BAŞLIK -->
-    <div class="onboarding-toggle" id="onboarding-toggle" onclick="toggleOnboarding()">
-      <span class="ot-icon">🚀</span>
-      <span class="ot-title">Başlamadan Önce Bunları Bil</span>
-      <span class="ot-badge unseen" id="onboarding-badge">Okunmadı</span>
-      <span class="ot-chevron">▾</span>
-    </div>
-    <div class="onboarding-body" id="onboarding-body">
-
-    <!-- 8 KURAL KARTI -->
-    <div class="rules-grid">
-      <div class="rule-card ok">
-        <div class="rule-icon">🎥</div>
-        <div class="rule-text"><strong>Tüm videoları izle</strong><br>Adım atlamadan sırayla izle. Atlanan her video ileride sorun çıkarır.</div>
-      </div>
-      <div class="rule-card warn">
-        <div class="rule-icon">🐢</div>
-        <div class="rule-text"><strong>Aceleci hareket etme</strong><br>Acele kararlar hesap sorunlarına yol açar. Her adımı anlayarak ilerle.</div>
-      </div>
-      <div class="rule-card ok">
-        <div class="rule-icon">💬</div>
-        <div class="rule-text"><strong>Destek hattına yaz</strong><br>Takıldığında bekletme, hemen destek hattına yaz. Telegram 10:00–23:00 açık.</div>
-      </div>
-      <div class="rule-card warn">
-        <div class="rule-icon">🚫</div>
-        <div class="rule-text"><strong>Eksik ve yanlış bilgi girme</strong><br>Hesap bilgilerini eksiksiz ve doğru gir. Yanlış bilgi ileride ciddi sorun olur.</div>
-      </div>
-      <div class="rule-card warn">
-        <div class="rule-icon">🔒</div>
-        <div class="rule-text"><strong>VPN kullanma</strong><br>eBay'e kesinlikle VPN ile girme. Botlar anlık ülke değişimini risk olarak algılar.</div>
-      </div>
-      <div class="rule-card warn">
-        <div class="rule-icon">📄</div>
-        <div class="rule-text"><strong>Yanlış belge gönderme</strong><br>Doğrulama sürecinde yanlış veya eksik belge göndermekten kaçın.</div>
-      </div>
-      <div class="rule-card tip">
-        <div class="rule-icon">💻</div>
-        <div class="rule-text"><strong>Aynı cihazdan gir</strong><br>eBay hesabına hep aynı cihazdan giriş yap. Farklı cihazlar şüphe çekebilir.</div>
-      </div>
-      <div class="rule-card tip">
-        <div class="rule-icon">⏳</div>
-        <div class="rule-text"><strong>Hızlı hareket etme</strong><br>İlk günlerde botlar her hareketini izler. Sabırlı ve ölçülü adımlar at.</div>
-      </div>
-    </div>
-
-    <!-- HESAP AÇILIŞ KARTI -->
-    <div class="account-card">
-      <div class="account-card-title">
-        <span>🏪 eBay Hesap Açılışında Kritik Noktalar</span>
-        <div class="account-card-badge">Mutlaka Oku</div>
-      </div>
-      <div class="account-warnings">
-        <div class="aw-item red">
-          <div class="aw-icon">📍</div>
-          <div><strong>Adres tam ve eksiksiz girilmeli</strong><br>eBay'e girdiğin adres ile Payoneer'deki adres <strong>birebir aynı</strong> olmalı. Küçük bir fark bile doğrulama sorunlarına yol açar. Mahalle, sokak, bina no — hiçbir detayı atlama.</div>
-        </div>
-        <div class="aw-item red">
-          <div class="aw-icon">🔒</div>
-          <div><strong>VPN ile eBay'e girme</strong><br>eBay botları anlık ülke değişimini risk olarak algılar ve hesabı <strong>suspend</strong> edebilir. VPN'i kapat, normal internet bağlantısıyla gir.</div>
-        </div>
-        <div class="aw-item gold">
-          <div class="aw-icon">⏳</div>
-          <div><strong>İlk 5 gün ürün listeleme</strong><br>Hesabı açtıktan sonra <strong>ilk 5 gün ürün listeleme.</strong> Bu sürede sadece ürün araştırması yap ve kaydet. Botlar yeni hesaplarda hızlı listelemeyi risk olarak görebilir. 5. günden sonra listelemeye başla.</div>
-        </div>
-        <div class="aw-item red">
-          <div class="aw-icon">✋</div>
-          <div><strong>Bilgileri sonradan değiştirme</strong><br>Adres, telefon, isim-soyisim — nasıl kaydolduysan <strong>öyle kal.</strong> Kayıt sonrası değişiklikler hesabında şüphe yaratır.</div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="prog-section">
     <div class="prog-header">
