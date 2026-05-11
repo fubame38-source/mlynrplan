@@ -813,6 +813,175 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
         <div id="orbital-inline-card"></div>
       </div>
 
+      <!-- BAŞLANGIÇ REHBERİ -->
+      <!-- BAŞLANGIÇ REHBERİ -->
+      <div class="onboarding-section">
+        <!-- TOGGLE BAŞLIK -->
+        <div class="onboarding-toggle" id="onboarding-toggle" onclick="toggleOnboarding()">
+          <span class="ot-icon">🚀</span>
+          <span class="ot-title">Başlamadan Önce Bunları Bil</span>
+          <span class="ot-badge unseen" id="onboarding-badge">Okunmadı</span>
+          <span class="ot-chevron">▾</span>
+        </div>
+        <div class="onboarding-body" id="onboarding-body">
+      
+        <!-- 8 KURAL KARTI -->
+        <div class="rules-grid">
+          <div class="rule-card ok">
+        <div class="rule-icon">🎥</div>
+        <div class="rule-text"><strong>Tüm videoları izle</strong><br>Adım atlamadan sırayla izle. Atlanan her video ileride sorun çıkarır.</div>
+          </div>
+          <div class="rule-card warn">
+        <div class="rule-icon">🐢</div>
+        <div class="rule-text"><strong>Aceleci hareket etme</strong><br>Acele kararlar hesap sorunlarına yol açar. Her adımı anlayarak ilerle.</div>
+          </div>
+          <div class="rule-card ok">
+        <div class="rule-icon">💬</div>
+        <div class="rule-text"><strong>Destek hattına yaz</strong><br>Takıldığında bekletme, hemen destek hattına yaz. Telegram 10:00–23:00 açık.</div>
+          </div>
+          <div class="rule-card warn">
+        <div class="rule-icon">🚫</div>
+        <div class="rule-text"><strong>Eksik ve yanlış bilgi girme</strong><br>Hesap bilgilerini eksiksiz ve doğru gir. Yanlış bilgi ileride ciddi sorun olur.</div>
+          </div>
+          <div class="rule-card warn">
+        <div class="rule-icon">🔒</div>
+        <div class="rule-text"><strong>VPN kullanma</strong><br>eBay'e kesinlikle VPN ile girme. Botlar anlık ülke değişimini risk olarak algılar.</div>
+          </div>
+          <div class="rule-card warn">
+        <div class="rule-icon">📄</div>
+        <div class="rule-text"><strong>Yanlış belge gönderme</strong><br>Doğrulama sürecinde yanlış veya eksik belge göndermekten kaçın.</div>
+          </div>
+          <div class="rule-card tip">
+        <div class="rule-icon">💻</div>
+        <div class="rule-text"><strong>Aynı cihazdan gir</strong><br>eBay hesabına hep aynı cihazdan giriş yap. Farklı cihazlar şüphe çekebilir.</div>
+          </div>
+          <div class="rule-card tip">
+        <div class="rule-icon">⏳</div>
+        <div class="rule-text"><strong>Hızlı hareket etme</strong><br>İlk günlerde botlar her hareketini izler. Sabırlı ve ölçülü adımlar at.</div>
+          </div>
+        </div>
+      
+        <!-- HESAP AÇILIŞ KARTI -->
+        <div class="account-card">
+          <div class="account-card-title">
+        <span>🏪 eBay Hesap Açılışında Kritik Noktalar</span>
+        <div class="account-card-badge">Mutlaka Oku</div>
+          </div>
+          <div class="account-warnings">
+        <div class="aw-item red">
+          <div class="aw-icon">📍</div>
+          <div><strong>Adres tam ve eksiksiz girilmeli</strong><br>eBay'e girdiğin adres ile Payoneer'deki adres <strong>birebir aynı</strong> olmalı. Küçük bir fark bile doğrulama sorunlarına yol açar. Mahalle, sokak, bina no — hiçbir detayı atlama.</div>
+        </div>
+        <div class="aw-item red">
+          <div class="aw-icon">🔒</div>
+          <div><strong>VPN ile eBay'e girme</strong><br>eBay botları anlık ülke değişimini risk olarak algılar ve hesabı <strong>suspend</strong> edebilir. VPN'i kapat, normal internet bağlantısıyla gir.</div>
+        </div>
+        <div class="aw-item gold">
+          <div class="aw-icon">⏳</div>
+          <div><strong>İlk 5 gün ürün listeleme</strong><br>Hesabı açtıktan sonra <strong>ilk 5 gün ürün listeleme.</strong> Bu sürede sadece ürün araştırması yap ve kaydet. Botlar yeni hesaplarda hızlı listelemeyi risk olarak görebilir. 5. günden sonra listelemeye başla.</div>
+        </div>
+        <div class="aw-item red">
+          <div class="aw-icon">✋</div>
+          <div><strong>Bilgileri sonradan değiştirme</strong><br>Adres, telefon, isim-soyisim — nasıl kaydolduysan <strong>öyle kal.</strong> Kayıt sonrası değişiklikler hesabında şüphe yaratır.</div>
+        </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- DASHBOARD -->
+      <div id="dashboard-overlay" class="overlay" onclick="closeDash()"></div>
+      <div id="dashboard-popup" class="popup">
+        <button class="close-btn" onclick="closeDash()">✕</button>
+        <div class="dash-title">Kişisel Dashboard</div>
+        <div class="dash-sub">İstatistiklerin · Rozetlerin · Seviye</div>
+        <div id="dash-level-card" class="dash-level-card"></div>
+        <div class="dash-stats" id="dash-stats"></div>
+        <div class="dash-badges"><div class="dash-badges-title">Rozetler</div><div class="dash-badge-row" id="dash-badge-row"></div></div>
+        <div id="dash-next" class="dash-next"></div>
+      </div>
+
+      <!-- KAZANÇ HESAPLAYICI -->
+      <div id="earn-overlay" class="overlay" onclick="closeEarn()"></div>
+      <div id="earn-popup" class="popup">
+        <button class="close-btn" onclick="closeEarn()">✕</button>
+        <div class="sp-header">
+          <div class="sp-avatar" style="background:linear-gradient(135deg,rgba(250,204,21,.15),rgba(250,204,21,.05));border-color:rgba(250,204,21,.3)">💰</div>
+          <div><div class="sp-title">Kazanç Hesaplayıcı</div><div class="sp-sub">Hedefini gir, potansiyelini gör</div></div>
+        </div>
+        <div class="earn-inputs">
+          <div class="earn-row">
+            <div><label class="earn-label">Günlük Satış Adedi</label><div class="earn-input-wrap"><span class="earn-unit">📦</span><input id="earn-sales" class="earn-input" type="number" min="1" max="999" value="3" oninput="calcEarn()"></div></div>
+            <div><label class="earn-label">Ürün Başı Kâr ($)</label><div class="earn-input-wrap"><span class="earn-unit">$</span><input id="earn-profit" class="earn-input" type="number" min="1" max="999" value="5" oninput="calcEarn()"></div></div>
+          </div>
+          <div class="earn-row" style="margin-top:12px">
+            <div><label class="earn-label">Günlük Süre</label><div class="earn-input-wrap"><span class="earn-unit">⏱</span><input id="earn-hours" class="earn-input" type="number" min="0.5" max="24" step="0.5" value="2" oninput="calcEarn()"></div></div>
+            <div><label class="earn-label">Aylık Hedef ($)</label><div class="earn-input-wrap"><span class="earn-unit">🎯</span><input id="earn-goal" class="earn-input" type="number" min="100" max="99999" value="1000" oninput="calcEarn()"></div></div>
+          </div>
+        </div>
+        <div id="earn-result" class="earn-result"></div>
+        <div id="earn-plan" style="margin-top:12px"></div>
+        <div id="earn-scenarios" class="earn-scenarios"></div>
+      </div>
+
+      <!-- CANBERK -->
+      <div id="canberk-overlay" class="overlay" onclick="closeCanberk()"></div>
+      <div id="canberk-popup" class="popup">
+        <button class="close-btn" onclick="closeCanberk()">✕</button>
+        <div class="cb-pop-header">
+          <div class="cb-pop-avatar">C</div>
+          <div><div class="cb-pop-name">Canberk Öztürk</div><div class="cb-pop-role">MLYNR. Kurucu · Eğitmen</div></div>
+        </div>
+        <div class="cb-pop-body">
+          <p class="cb-hi" id="cb-hi-text">Merhaba! 👋</p>
+          <div id="cb-dynamic-msg" style="display:none;font-size:14px;line-height:1.7;color:var(--text)"></div>
+          <p>Bu eğitime katıldığın için seni tebrik ederim. Buraya gelen herkesin tek bir amacı var: <strong>online satıştan gerçek para kazanmak.</strong></p>
+          <p>Sana bu süreçte işe yarayan birkaç önemli tavsiye bırakıyorum.</p>
+          <div class="cb-quote">💡 Başarılı olanlar daha <em>zeki</em> olanlar değil, daha <em>hızlı deneyenlerdir.</em><br>İlk satış gelene kadar sabırlı ol.</div>
+          <div class="cb-section-title">🎯 eBay'de İlk Satış İçin</div>
+          <ul class="cb-list"><li>Rekabeti düşük ürün seç</li><li>Rakip fiyatlarından biraz daha ucuz ol</li><li>Hızlı kargo avantajı sun</li></ul>
+          <p class="cb-tip">İlk satış geldikten sonra algoritma seni yukarı taşır. ⚡</p>
+          <div class="cb-section-title">📦 İlk Günlerden Kâr Hedefleme</div>
+          <p>Dropshipping bir <strong>test oyunudur.</strong> Kazananlar 5 ürün test edenler değil — <strong>50 ürün test edenlerdir.</strong></p>
+          <div class="cb-goal">
+            <div class="cb-goal-emoji">🏆</div>
+            <div>
+              <div class="cb-goal-title">İlk Hedefiniz</div>
+              <div class="cb-goal-text">Günde <strong>7 satış</strong> · Ürün başı <strong>$5 kâr</strong><br>= Aylık ilk <strong>$1.050</strong> 🚀</div>
+            </div>
+          </div>
+        </div>
+        <button class="cb-pop-close-btn" onclick="closeCanberk()">Anladım, Başlıyorum! 💪</button>
+      </div>
+
+      <!-- SPİN -->
+      <div id="spin-overlay" class="overlay" onclick="closeSpin()"></div>
+      <div id="spin-popup" class="popup">
+        <button class="close-btn" onclick="closeSpin()">✕</button>
+        <div class="sp-header">
+          <div class="sp-avatar">💵</div>
+          <div><div class="sp-title">Günlük Kategori Tavsiyesi</div><div class="sp-sub">Her gün 5 farklı eBay nişi keşfet · Gece sıfırlanır</div></div>
+        </div>
+        <div class="sp-dots" id="sp-dots"></div>
+        <div class="sp-result" id="sp-result">
+          <div class="sp-idle-emoji">💵</div>
+          <div class="sp-idle-txt">Butona bas, bugünkü kategorini öğren</div>
+        </div>
+        <button class="sp-btn" id="sp-btn" onclick="doSpin()">💵 Kategori Çek</button>
+      </div>
+
+      <div id="motiv-popup">
+        <div class="motiv-emoji" id="motiv-emoji">⚡</div>
+        <div class="motiv-msg" id="motiv-msg"></div>
+        <button class="motiv-close" onclick="closeMotiv()">Teşekkürler</button>
+      </div>
+
+      <div id="success-toast">
+        <div class="st-emoji">🎉</div>
+        <div class="st-msg">Başarılar Dilerim!</div>
+        <div class="st-sub">Canberk Öztürk</div>
+      </div>
+
       <div class="hero-tags">
         <span class="htag w">eBay · 10 Modül · 90 Video</span>
         <span class="htag g">Shopify · Sonraki Aşama</span>
@@ -847,176 +1016,6 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
       </div>
     </div>
   </section>
-
-  <!-- BAŞLANGIÇ REHBERİ -->
-  <!-- BAŞLANGIÇ REHBERİ -->
-  <div class="onboarding-section">
-    <!-- TOGGLE BAŞLIK -->
-    <div class="onboarding-toggle" id="onboarding-toggle" onclick="toggleOnboarding()">
-      <span class="ot-icon">🚀</span>
-      <span class="ot-title">Başlamadan Önce Bunları Bil</span>
-      <span class="ot-badge unseen" id="onboarding-badge">Okunmadı</span>
-      <span class="ot-chevron">▾</span>
-    </div>
-    <div class="onboarding-body" id="onboarding-body">
-  
-    <!-- 8 KURAL KARTI -->
-    <div class="rules-grid">
-      <div class="rule-card ok">
-    <div class="rule-icon">🎥</div>
-    <div class="rule-text"><strong>Tüm videoları izle</strong><br>Adım atlamadan sırayla izle. Atlanan her video ileride sorun çıkarır.</div>
-      </div>
-      <div class="rule-card warn">
-    <div class="rule-icon">🐢</div>
-    <div class="rule-text"><strong>Aceleci hareket etme</strong><br>Acele kararlar hesap sorunlarına yol açar. Her adımı anlayarak ilerle.</div>
-      </div>
-      <div class="rule-card ok">
-    <div class="rule-icon">💬</div>
-    <div class="rule-text"><strong>Destek hattına yaz</strong><br>Takıldığında bekletme, hemen destek hattına yaz. Telegram 10:00–23:00 açık.</div>
-      </div>
-      <div class="rule-card warn">
-    <div class="rule-icon">🚫</div>
-    <div class="rule-text"><strong>Eksik ve yanlış bilgi girme</strong><br>Hesap bilgilerini eksiksiz ve doğru gir. Yanlış bilgi ileride ciddi sorun olur.</div>
-      </div>
-      <div class="rule-card warn">
-    <div class="rule-icon">🔒</div>
-    <div class="rule-text"><strong>VPN kullanma</strong><br>eBay'e kesinlikle VPN ile girme. Botlar anlık ülke değişimini risk olarak algılar.</div>
-      </div>
-      <div class="rule-card warn">
-    <div class="rule-icon">📄</div>
-    <div class="rule-text"><strong>Yanlış belge gönderme</strong><br>Doğrulama sürecinde yanlış veya eksik belge göndermekten kaçın.</div>
-      </div>
-      <div class="rule-card tip">
-    <div class="rule-icon">💻</div>
-    <div class="rule-text"><strong>Aynı cihazdan gir</strong><br>eBay hesabına hep aynı cihazdan giriş yap. Farklı cihazlar şüphe çekebilir.</div>
-      </div>
-      <div class="rule-card tip">
-    <div class="rule-icon">⏳</div>
-    <div class="rule-text"><strong>Hızlı hareket etme</strong><br>İlk günlerde botlar her hareketini izler. Sabırlı ve ölçülü adımlar at.</div>
-      </div>
-    </div>
-  
-    <!-- HESAP AÇILIŞ KARTI -->
-    <div class="account-card">
-      <div class="account-card-title">
-    <span>🏪 eBay Hesap Açılışında Kritik Noktalar</span>
-    <div class="account-card-badge">Mutlaka Oku</div>
-      </div>
-      <div class="account-warnings">
-    <div class="aw-item red">
-      <div class="aw-icon">📍</div>
-      <div><strong>Adres tam ve eksiksiz girilmeli</strong><br>eBay'e girdiğin adres ile Payoneer'deki adres <strong>birebir aynı</strong> olmalı. Küçük bir fark bile doğrulama sorunlarına yol açar. Mahalle, sokak, bina no — hiçbir detayı atlama.</div>
-    </div>
-    <div class="aw-item red">
-      <div class="aw-icon">🔒</div>
-      <div><strong>VPN ile eBay'e girme</strong><br>eBay botları anlık ülke değişimini risk olarak algılar ve hesabı <strong>suspend</strong> edebilir. VPN'i kapat, normal internet bağlantısıyla gir.</div>
-    </div>
-    <div class="aw-item gold">
-      <div class="aw-icon">⏳</div>
-      <div><strong>İlk 5 gün ürün listeleme</strong><br>Hesabı açtıktan sonra <strong>ilk 5 gün ürün listeleme.</strong> Bu sürede sadece ürün araştırması yap ve kaydet. Botlar yeni hesaplarda hızlı listelemeyi risk olarak görebilir. 5. günden sonra listelemeye başla.</div>
-    </div>
-    <div class="aw-item red">
-      <div class="aw-icon">✋</div>
-      <div><strong>Bilgileri sonradan değiştirme</strong><br>Adres, telefon, isim-soyisim — nasıl kaydolduysan <strong>öyle kal.</strong> Kayıt sonrası değişiklikler hesabında şüphe yaratır.</div>
-    </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- DASHBOARD -->
-  <div id="dashboard-overlay" class="overlay" onclick="closeDash()"></div>
-  <div id="dashboard-popup" class="popup">
-    <button class="close-btn" onclick="closeDash()">✕</button>
-    <div class="dash-title">Kişisel Dashboard</div>
-    <div class="dash-sub">İstatistiklerin · Rozetlerin · Seviye</div>
-    <div id="dash-level-card" class="dash-level-card"></div>
-    <div class="dash-stats" id="dash-stats"></div>
-    <div class="dash-badges"><div class="dash-badges-title">Rozetler</div><div class="dash-badge-row" id="dash-badge-row"></div></div>
-    <div id="dash-next" class="dash-next"></div>
-  </div>
-
-  <!-- KAZANÇ HESAPLAYICI -->
-  <div id="earn-overlay" class="overlay" onclick="closeEarn()"></div>
-  <div id="earn-popup" class="popup">
-    <button class="close-btn" onclick="closeEarn()">✕</button>
-    <div class="sp-header">
-      <div class="sp-avatar" style="background:linear-gradient(135deg,rgba(250,204,21,.15),rgba(250,204,21,.05));border-color:rgba(250,204,21,.3)">💰</div>
-      <div><div class="sp-title">Kazanç Hesaplayıcı</div><div class="sp-sub">Hedefini gir, potansiyelini gör</div></div>
-    </div>
-    <div class="earn-inputs">
-      <div class="earn-row">
-        <div><label class="earn-label">Günlük Satış Adedi</label><div class="earn-input-wrap"><span class="earn-unit">📦</span><input id="earn-sales" class="earn-input" type="number" min="1" max="999" value="3" oninput="calcEarn()"></div></div>
-        <div><label class="earn-label">Ürün Başı Kâr ($)</label><div class="earn-input-wrap"><span class="earn-unit">$</span><input id="earn-profit" class="earn-input" type="number" min="1" max="999" value="5" oninput="calcEarn()"></div></div>
-      </div>
-      <div class="earn-row" style="margin-top:12px">
-        <div><label class="earn-label">Günlük Süre</label><div class="earn-input-wrap"><span class="earn-unit">⏱</span><input id="earn-hours" class="earn-input" type="number" min="0.5" max="24" step="0.5" value="2" oninput="calcEarn()"></div></div>
-        <div><label class="earn-label">Aylık Hedef ($)</label><div class="earn-input-wrap"><span class="earn-unit">🎯</span><input id="earn-goal" class="earn-input" type="number" min="100" max="99999" value="1000" oninput="calcEarn()"></div></div>
-      </div>
-    </div>
-    <div id="earn-result" class="earn-result"></div>
-    <div id="earn-plan" style="margin-top:12px"></div>
-    <div id="earn-scenarios" class="earn-scenarios"></div>
-  </div>
-
-  <!-- CANBERK -->
-  <div id="canberk-overlay" class="overlay" onclick="closeCanberk()"></div>
-  <div id="canberk-popup" class="popup">
-    <button class="close-btn" onclick="closeCanberk()">✕</button>
-    <div class="cb-pop-header">
-      <div class="cb-pop-avatar">C</div>
-      <div><div class="cb-pop-name">Canberk Öztürk</div><div class="cb-pop-role">MLYNR. Kurucu · Eğitmen</div></div>
-    </div>
-    <div class="cb-pop-body">
-      <p class="cb-hi" id="cb-hi-text">Merhaba! 👋</p>
-      <div id="cb-dynamic-msg" style="display:none;font-size:14px;line-height:1.7;color:var(--text)"></div>
-      <p>Bu eğitime katıldığın için seni tebrik ederim. Buraya gelen herkesin tek bir amacı var: <strong>online satıştan gerçek para kazanmak.</strong></p>
-      <p>Sana bu süreçte işe yarayan birkaç önemli tavsiye bırakıyorum.</p>
-      <div class="cb-quote">💡 Başarılı olanlar daha <em>zeki</em> olanlar değil, daha <em>hızlı deneyenlerdir.</em><br>İlk satış gelene kadar sabırlı ol.</div>
-      <div class="cb-section-title">🎯 eBay'de İlk Satış İçin</div>
-      <ul class="cb-list"><li>Rekabeti düşük ürün seç</li><li>Rakip fiyatlarından biraz daha ucuz ol</li><li>Hızlı kargo avantajı sun</li></ul>
-      <p class="cb-tip">İlk satış geldikten sonra algoritma seni yukarı taşır. ⚡</p>
-      <div class="cb-section-title">📦 İlk Günlerden Kâr Hedefleme</div>
-      <p>Dropshipping bir <strong>test oyunudur.</strong> Kazananlar 5 ürün test edenler değil — <strong>50 ürün test edenlerdir.</strong></p>
-      <div class="cb-goal">
-        <div class="cb-goal-emoji">🏆</div>
-        <div>
-          <div class="cb-goal-title">İlk Hedefiniz</div>
-          <div class="cb-goal-text">Günde <strong>7 satış</strong> · Ürün başı <strong>$5 kâr</strong><br>= Aylık ilk <strong>$1.050</strong> 🚀</div>
-        </div>
-      </div>
-    </div>
-    <button class="cb-pop-close-btn" onclick="closeCanberk()">Anladım, Başlıyorum! 💪</button>
-  </div>
-
-  <!-- SPİN -->
-  <div id="spin-overlay" class="overlay" onclick="closeSpin()"></div>
-  <div id="spin-popup" class="popup">
-    <button class="close-btn" onclick="closeSpin()">✕</button>
-    <div class="sp-header">
-      <div class="sp-avatar">💵</div>
-      <div><div class="sp-title">Günlük Kategori Tavsiyesi</div><div class="sp-sub">Her gün 5 farklı eBay nişi keşfet · Gece sıfırlanır</div></div>
-    </div>
-    <div class="sp-dots" id="sp-dots"></div>
-    <div class="sp-result" id="sp-result">
-      <div class="sp-idle-emoji">💵</div>
-      <div class="sp-idle-txt">Butona bas, bugünkü kategorini öğren</div>
-    </div>
-    <button class="sp-btn" id="sp-btn" onclick="doSpin()">💵 Kategori Çek</button>
-  </div>
-
-  <div id="motiv-popup">
-    <div class="motiv-emoji" id="motiv-emoji">⚡</div>
-    <div class="motiv-msg" id="motiv-msg"></div>
-    <button class="motiv-close" onclick="closeMotiv()">Teşekkürler</button>
-  </div>
-
-  <div id="success-toast">
-    <div class="st-emoji">🎉</div>
-    <div class="st-msg">Başarılar Dilerim!</div>
-    <div class="st-sub">Canberk Öztürk</div>
-  </div>
-
 
 
   <div class="prog-section">
