@@ -813,6 +813,43 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
         <div id="orbital-inline-card"></div>
       </div>
 
+      <!-- BAŞLANGIÇ REHBERİ -->
+      <div class="onboarding-section" style="padding:0;margin-top:20px;margin-bottom:0;max-width:none">
+        <div class="onboarding-toggle" id="onboarding-toggle" onclick="toggleOnboarding()">
+          <span class="ot-icon">🚀</span>
+          <span class="ot-title">Başlamadan Önce Bunları Bil</span>
+          <span class="ot-badge unseen" id="onboarding-badge">Okunmadı</span>
+          <span class="ot-chevron">▾</span>
+        </div>
+        <div class="onboarding-body" id="onboarding-body">
+          <div class="rules-grid">
+            <div class="rule-card ok"><div class="rule-icon">🎥</div><div class="rule-text"><strong>Tüm videoları izle</strong><br>Adım atlamadan sırayla izle. Atlanan her video ileride sorun çıkarır.</div></div>
+            <div class="rule-card warn"><div class="rule-icon">🐢</div><div class="rule-text"><strong>Aceleci hareket etme</strong><br>Acele kararlar hesap sorunlarına yol açar. Her adımı anlayarak ilerle.</div></div>
+            <div class="rule-card ok"><div class="rule-icon">💬</div><div class="rule-text"><strong>Destek hattına yaz</strong><br>Takıldığında bekletme, hemen destek hattına yaz. Telegram 10:00–23:00 açık.</div></div>
+            <div class="rule-card warn"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Eksik ve yanlış bilgi girme</strong><br>Hesap bilgilerini eksiksiz ve doğru gir. Yanlış bilgi ileride ciddi sorun olur.</div></div>
+            <div class="rule-card warn"><div class="rule-icon">🔒</div><div class="rule-text"><strong>VPN kullanma</strong><br>eBay'e kesinlikle VPN ile girme. Botlar anlık ülke değişimini risk olarak algılar.</div></div>
+            <div class="rule-card warn"><div class="rule-icon">📄</div><div class="rule-text"><strong>Yanlış belge gönderme</strong><br>Doğrulama sürecinde yanlış veya eksik belge göndermekten kaçın.</div></div>
+            <div class="rule-card tip"><div class="rule-icon">💻</div><div class="rule-text"><strong>Aynı cihazdan gir</strong><br>eBay hesabına hep aynı cihazdan giriş yap. Farklı cihazlar şüphe çekebilir.</div></div>
+            <div class="rule-card tip"><div class="rule-icon">⏳</div><div class="rule-text"><strong>Hızlı hareket etme</strong><br>İlk günlerde botlar her hareketini izler. Sabırlı ve ölçülü adımlar at.</div></div>
+          </div>
+          <div class="account-card" style="margin-top:12px">
+            <div class="account-card-title">
+              <span>🏪 eBay Hesap Açılışında Kritik Noktalar</span>
+              <div class="account-card-badge">Mutlaka Oku</div>
+            </div>
+            <div class="account-warnings">
+              <div class="aw-item red"><div class="aw-icon">📍</div><div><strong>Adres tam ve eksiksiz girilmeli</strong><br>eBay'e girdiğin adres ile Payoneer'deki adres <strong>birebir aynı</strong> olmalı. Küçük bir fark bile doğrulama sorunlarına yol açar.</div></div>
+              <div class="aw-item red"><div class="aw-icon">🔒</div><div><strong>VPN ile eBay'e girme</strong><br>eBay botları anlık ülke değişimini risk olarak algılar ve hesabı <strong>suspend</strong> edebilir.</div></div>
+              <div class="aw-item gold"><div class="aw-icon">⏳</div><div><strong>İlk 5 gün ürün listeleme</strong><br>Hesabı açtıktan sonra <strong>ilk 5 gün ürün listeleme.</strong> Sadece ürün araştırması yap. 5. günden sonra listelemeye başla.</div></div>
+              <div class="aw-item red"><div class="aw-icon">✋</div><div><strong>Bilgileri sonradan değiştirme</strong><br>Adres, telefon, isim — nasıl kaydolduysan <strong>öyle kal.</strong> Kayıt sonrası değişiklikler hesabında şüphe yaratır.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      
+
       <div class="hero-tags">
         <span class="htag w">eBay · 10 Modül · 90 Video</span>
         <span class="htag g">Shopify · Sonraki Aşama</span>
@@ -848,174 +885,1351 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
     </div>
   </section>
 
-<!-- BAŞLANGIÇ REHBERİ -->
-  <!-- BAŞLANGIÇ REHBERİ -->
-  <div class="onboarding-section">
-    <!-- TOGGLE BAŞLIK -->
-    <div class="onboarding-toggle" id="onboarding-toggle" onclick="toggleOnboarding()">
-      <span class="ot-icon">🚀</span>
-      <span class="ot-title">Başlamadan Önce Bunları Bil</span>
-      <span class="ot-badge unseen" id="onboarding-badge">Okunmadı</span>
-      <span class="ot-chevron">▾</span>
+
+  <div class="prog-section">
+    <div class="prog-header">
+      <span class="prog-title">Genel İlerleme</span>
+      <span class="prog-count" id="prog-count">0 / 28</span>
     </div>
-    <div class="onboarding-body" id="onboarding-body">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+  </div>
+
+  <div class="weeks-section" id="weeks"></div>
+
+  <div class="banner-section">
+    <div class="banner">
+      <div class="bicon">⚡</div>
+      <div class="btxt">
+        <h3>eBay'de kazan, Shopify'a sonra geç</h3>
+        <p>Önce eBay'de sistemi kur ve ilk kârını gör. Bu sırayı takip edenler çok daha sağlam ilerliyor.</p>
+        <div class="btip">🎙 EBAY KÂRI GÖRMEDEN SHOPİFY'A GEÇME</div>
+      </div>
+    </div>
+  </div>
+
+
   
-    <!-- 8 KURAL KARTI -->
-    <div class="rules-grid">
-      <div class="rule-card ok">
-    <div class="rule-icon">🎥</div>
-    <div class="rule-text"><strong>Tüm videoları izle</strong><br>Adım atlamadan sırayla izle. Atlanan her video ileride sorun çıkarır.</div>
+  <div class="tg-section">
+    <a href="https://t.me/mlynr_bot" target="_blank" class="tg-btn">
+      <div class="tg-icon">✈️</div>
+      <div class="tg-info"><h3>Canlı Destek Ekibi</h3><p>Takıldığında direkt yaz, ekip cevap verir.</p></div>
+      <div class="tg-time">10:00 – 23:00</div>
+    </a>
+  </div>
+
+  <div class="mentor-section">
+    <div class="mentor-card" onclick="openMentorPopup()">
+      <div class="mentor-icon">👨‍💼</div>
+      <div class="mentor-body">
+        <h3>1-1 Birebir Mentörlük</h3>
+        <p>Shopify Dropshipping'te doğrudan danışmanınla çalış, hızlı ilerle.</p>
+        <div class="mentor-tag">● Özel Program · min. $4.000 Sermaye · Sınırlı Kontenjan</div>
       </div>
-      <div class="rule-card warn">
-    <div class="rule-icon">🐢</div>
-    <div class="rule-text"><strong>Aceleci hareket etme</strong><br>Acele kararlar hesap sorunlarına yol açar. Her adımı anlayarak ilerle.</div>
-      </div>
-      <div class="rule-card ok">
-    <div class="rule-icon">💬</div>
-    <div class="rule-text"><strong>Destek hattına yaz</strong><br>Takıldığında bekletme, hemen destek hattına yaz. Telegram 10:00–23:00 açık.</div>
-      </div>
-      <div class="rule-card warn">
-    <div class="rule-icon">🚫</div>
-    <div class="rule-text"><strong>Eksik ve yanlış bilgi girme</strong><br>Hesap bilgilerini eksiksiz ve doğru gir. Yanlış bilgi ileride ciddi sorun olur.</div>
-      </div>
-      <div class="rule-card warn">
-    <div class="rule-icon">🔒</div>
-    <div class="rule-text"><strong>VPN kullanma</strong><br>eBay'e kesinlikle VPN ile girme. Botlar anlık ülke değişimini risk olarak algılar.</div>
-      </div>
-      <div class="rule-card warn">
-    <div class="rule-icon">📄</div>
-    <div class="rule-text"><strong>Yanlış belge gönderme</strong><br>Doğrulama sürecinde yanlış veya eksik belge göndermekten kaçın.</div>
-      </div>
-      <div class="rule-card tip">
-    <div class="rule-icon">💻</div>
-    <div class="rule-text"><strong>Aynı cihazdan gir</strong><br>eBay hesabına hep aynı cihazdan giriş yap. Farklı cihazlar şüphe çekebilir.</div>
-      </div>
-      <div class="rule-card tip">
-    <div class="rule-icon">⏳</div>
-    <div class="rule-text"><strong>Hızlı hareket etme</strong><br>İlk günlerde botlar her hareketini izler. Sabırlı ve ölçülü adımlar at.</div>
-      </div>
-    </div>
-  
-    <!-- HESAP AÇILIŞ KARTI -->
-    <div class="account-card">
-      <div class="account-card-title">
-    <span>🏪 eBay Hesap Açılışında Kritik Noktalar</span>
-    <div class="account-card-badge">Mutlaka Oku</div>
-      </div>
-      <div class="account-warnings">
-    <div class="aw-item red">
-      <div class="aw-icon">📍</div>
-      <div><strong>Adres tam ve eksiksiz girilmeli</strong><br>eBay'e girdiğin adres ile Payoneer'deki adres <strong>birebir aynı</strong> olmalı. Küçük bir fark bile doğrulama sorunlarına yol açar. Mahalle, sokak, bina no — hiçbir detayı atlama.</div>
-    </div>
-    <div class="aw-item red">
-      <div class="aw-icon">🔒</div>
-      <div><strong>VPN ile eBay'e girme</strong><br>eBay botları anlık ülke değişimini risk olarak algılar ve hesabı <strong>suspend</strong> edebilir. VPN'i kapat, normal internet bağlantısıyla gir.</div>
-    </div>
-    <div class="aw-item gold">
-      <div class="aw-icon">⏳</div>
-      <div><strong>İlk 5 gün ürün listeleme</strong><br>Hesabı açtıktan sonra <strong>ilk 5 gün ürün listeleme.</strong> Bu sürede sadece ürün araştırması yap ve kaydet. Botlar yeni hesaplarda hızlı listelemeyi risk olarak görebilir. 5. günden sonra listelemeye başla.</div>
-    </div>
-    <div class="aw-item red">
-      <div class="aw-icon">✋</div>
-      <div><strong>Bilgileri sonradan değiştirme</strong><br>Adres, telefon, isim-soyisim — nasıl kaydolduysan <strong>öyle kal.</strong> Kayıt sonrası değişiklikler hesabında şüphe yaratır.</div>
-    </div>
-      </div>
+      <div class="mentor-arrow">↗</div>
     </div>
   </div>
 
-
-  <!-- DASHBOARD -->
-  <div id="dashboard-overlay" class="overlay" onclick="closeDash()"></div>
-  <div id="dashboard-popup" class="popup">
-    <button class="close-btn" onclick="closeDash()">✕</button>
-    <div class="dash-title">Kişisel Dashboard</div>
-    <div class="dash-sub">İstatistiklerin · Rozetlerin · Seviye</div>
-    <div id="dash-level-card" class="dash-level-card"></div>
-    <div class="dash-stats" id="dash-stats"></div>
-    <div class="dash-badges"><div class="dash-badges-title">Rozetler</div><div class="dash-badge-row" id="dash-badge-row"></div></div>
-    <div id="dash-next" class="dash-next"></div>
+  <div id="name-overlay"></div>
+  <div id="name-popup">
+    <div class="np-top-bar"><span class="np-logo">MLYNR.</span><span class="np-dot"></span></div>
+    <div class="np-body">
+      <div class="np-icon-wrap">👋</div>
+      <div class="np-title">Aramıza Hoş Geldin</div>
+      <div class="np-sub">Sana özel deneyim için adını gir</div>
+      <div class="np-row">
+        <div class="np-field"><span class="np-label">Ad</span><input class="np-input" id="np-input" type="text" placeholder="Adın" maxlength="30" autocomplete="given-name" onkeydown="if(event.key==='Enter')document.getElementById('np-input2').focus()"></div>
+        <div class="np-field"><span class="np-label">Soyad</span><input class="np-input" id="np-input2" type="text" placeholder="Soyadın" maxlength="30" autocomplete="family-name" onkeydown="if(event.key==='Enter')saveUserName()"></div>
+      </div>
+      <button class="np-btn" onclick="saveUserName()">PLATFORMA GİR →</button>
+      <div class="np-skip" onclick="skipUserName()">Şimdi değil</div>
+    </div>
   </div>
 
-  <!-- KAZANÇ HESAPLAYICI -->
-  <div id="earn-overlay" class="overlay" onclick="closeEarn()"></div>
-  <div id="earn-popup" class="popup">
-    <button class="close-btn" onclick="closeEarn()">✕</button>
+  <div id="welcome-toast">👋 Hoş geldin, <span class="wt-name" id="wt-name-span"></span>!</div>
+
+  <div id="mentor-overlay" onclick="closeMentorPopup()"></div>
+  <div id="mentor-popup">
+    <div class="mp-header">
+      <button class="mp-close" onclick="closeMentorPopup()">✕</button>
+      <div class="mp-badge">● Shopify Dropshipping · Birebir Mentörlük</div>
+      <div class="mp-title">Danışmanına<br>Mesaj At</div>
+      <div class="mp-desc">Programa başlamak veya detaylı bilgi almak için danışmanına direkt ulaş.</div>
+    </div>
+    <div class="mp-body">
+      <div class="mp-features-title">Programa Dahil Olanlar</div>
+      <div class="mp-features">
+        <div class="mp-feature"><span class="mpf-icon">🎥</span><span>Shopify Dropshipping eğitim videolarına tam erişim</span></div>
+        <div class="mp-feature"><span class="mpf-icon">💬</span><span>Danışmanınla birebir özel WhatsApp iletişimi</span></div>
+        <div class="mp-feature"><span class="mpf-icon">📹</span><span>Haftada 1 saat birebir video görüşme (6 hafta)</span></div>
+        <div class="mp-feature"><span class="mpf-icon">📋</span><span>Kişiselleştirilmiş görev planı ve ödevler</span></div>
+        <div class="mp-feature"><span class="mpf-icon">🏪</span><span>Mağaza kurulumu ve ürün seçim sürecinde rehberlik</span></div>
+        <div class="mp-feature"><span class="mpf-icon">👥</span><span>Öğrenci topluluğuna ve özel gruba erişim</span></div>
+        <div class="mp-feature"><span class="mpf-icon">🔄</span><span>Program sonu uzatılabilir danışmanlık opsiyonu</span></div>
+      </div>
+      <div class="mp-divider"></div>
+      <div class="mp-contact-label">İletişim Kanalı Seç</div>
+      <div class="mp-buttons">
+        <a href="https://t.me/mlynr_bot" target="_blank" class="mp-btn-primary">✈️ &nbsp;Telegram'dan Mesaj At</a>
+        <a href="https://instagram.com/canberkreels" target="_blank" class="mp-btn-secondary">📸 &nbsp;Instagram'dan Ulaş</a>
+      </div>
+      <div class="mp-note">Gerekli sermaye: min. $4.000 · Ön görüşme zorunludur · Kontenjan sınırlıdır</div>
+    </div>
+  </div>
+
+  <div class="cert-section" id="cert-section">
+    <div class="cert-locked" id="cert-locked">
+      <div class="cert-locked-icon">🔒</div>
+      <div class="cert-locked-body">
+        <h3>E-Ticaret Uzmanı Sertifikası</h3>
+        <p>28 günlük programı tamamladığında sertifikan hazır olacak.</p>
+        <div class="cert-locked-tag">● 28/28 gün gerekli · Kilitli</div>
+      </div>
+    </div>
+    <div class="cert-card" id="cert-unlocked" style="display:none" onclick="openCert()">
+      <div class="cert-card-icon">🏆</div>
+      <div class="cert-card-body">
+        <h3>E-Ticaret Uzmanı Sertifikası</h3>
+        <p>Programı başarıyla tamamladın. Sertifikanı indir ve paylaş.</p>
+        <div class="cert-card-tag">● Sertifikan hazır · İndir & Paylaş</div>
+      </div>
+      <div class="cert-card-arrow">↗</div>
+    </div>
+  </div>
+
+  <div id="cert-overlay" onclick="closeCert()"></div>
+  <div id="cert-popup">
+    <div class="cert-popup-wrap"><canvas id="cert-canvas"></canvas></div>
+    <div class="cert-popup-actions">
+      <button class="cert-dl-btn" onclick="certDownload()">⬇ Sertifikayı İndir</button>
+      <button class="cert-close-btn" onclick="closeCert()">✕ Kapat</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-logo">MLYNR.</div>
+    <h2>Her şey <em>başlamakla</em> başlar.</h2>
+    <p class="footer-sub">Eğitim panelinize giriş yaparak tüm içeriklere ulaşabilirsiniz.</p>
+    <a href="https://okul.mlynr.com/login" class="footer-btn">Eğitime Giriş Yap →</a>
+    <p class="footer-disclaimer">Bu yol haritasındaki kategori önerileri yalnızca fikir vermek amacıyla sunulmaktadır.</p>
+  </footer>
+</div>
+
+
+<!-- ADMİN MESAJ POPUP -->
+<div id="admin-msg-overlay">
+  <div id="admin-msg-box">
+    <div class="amsg-header">
+      <div class="amsg-avatar">C</div>
+      <div class="amsg-hinfo">
+        <div class="amsg-hname">Canberk Öztürk</div>
+        <div class="amsg-hrole">MLYNR. Kurucu · Eğitmen</div>
+      </div>
+      <div class="amsg-ping"></div>
+    </div>
+    <div class="amsg-body" id="amsg-body"></div>
+    <button class="amsg-close" onclick="closeAdminMsg()">Anladım ✓</button>
+  </div>
+</div>
+
+<div class="saved-dot" id="saved-dot">✓ KAYDEDİLDİ</div>
+<div class="toast" id="toast"></div>
+
+
+
+<!-- AI KOÇ FAB -->
+<div id="ai-fab" onclick="openSupportBot()">
+  <div class="fab-icon">🤖</div>
+  <div class="fab-txt">
+    <div class="fab-title">AI Koç</div>
+    <div class="fab-sub">Kişisel Cevap</div>
+  </div>
+  <div class="fab-dot"></div>
+</div>
+
+<!-- AI KOÇ PANEL -->
+<div id="support-overlay">
+  <div id="support-popup">
     <div class="sp-header">
-      <div class="sp-avatar" style="background:linear-gradient(135deg,rgba(250,204,21,.15),rgba(250,204,21,.05));border-color:rgba(250,204,21,.3)">💰</div>
-      <div><div class="sp-title">Kazanç Hesaplayıcı</div><div class="sp-sub">Hedefini gir, potansiyelini gör</div></div>
-    </div>
-    <div class="earn-inputs">
-      <div class="earn-row">
-        <div><label class="earn-label">Günlük Satış Adedi</label><div class="earn-input-wrap"><span class="earn-unit">📦</span><input id="earn-sales" class="earn-input" type="number" min="1" max="999" value="3" oninput="calcEarn()"></div></div>
-        <div><label class="earn-label">Ürün Başı Kâr ($)</label><div class="earn-input-wrap"><span class="earn-unit">$</span><input id="earn-profit" class="earn-input" type="number" min="1" max="999" value="5" oninput="calcEarn()"></div></div>
+      <div class="sp-avatar">
+        <span style="font-size:10px;font-weight:900;color:#000;letter-spacing:-0.3px;font-family:Arial,sans-serif;white-space:nowrap;line-height:1;display:block">MLYNR.</span>
       </div>
-      <div class="earn-row" style="margin-top:12px">
-        <div><label class="earn-label">Günlük Süre</label><div class="earn-input-wrap"><span class="earn-unit">⏱</span><input id="earn-hours" class="earn-input" type="number" min="0.5" max="24" step="0.5" value="2" oninput="calcEarn()"></div></div>
-        <div><label class="earn-label">Aylık Hedef ($)</label><div class="earn-input-wrap"><span class="earn-unit">🎯</span><input id="earn-goal" class="earn-input" type="number" min="100" max="99999" value="1000" oninput="calcEarn()"></div></div>
+      <div class="sp-header-txt">
+        <div class="sp-header-title">AI Koç</div>
+        <div class="sp-header-sub">MLYNR · Sana özel cevap</div>
       </div>
+      <a href="https://t.me/mlynr_bot" target="_blank" style="border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.45);border-radius:7px;padding:5px 10px;font-family:var(--mono);font-size:9px;letter-spacing:1px;text-decoration:none;white-space:nowrap;margin-right:8px;text-transform:uppercase">TG</a>
+      <button class="sp-close-btn" onclick="closeSupportBot()">×</button>
     </div>
-    <div id="earn-result" class="earn-result"></div>
-    <div id="earn-plan" style="margin-top:12px"></div>
-    <div id="earn-scenarios" class="earn-scenarios"></div>
-  </div>
-
-  <!-- CANBERK -->
-  <div id="canberk-overlay" class="overlay" onclick="closeCanberk()"></div>
-  <div id="canberk-popup" class="popup">
-    <button class="close-btn" onclick="closeCanberk()">✕</button>
-    <div class="cb-pop-header">
-      <div class="cb-pop-avatar">C</div>
-      <div><div class="cb-pop-name">Canberk Öztürk</div><div class="cb-pop-role">MLYNR. Kurucu · Eğitmen</div></div>
-    </div>
-    <div class="cb-pop-body">
-      <p class="cb-hi" id="cb-hi-text">Merhaba! 👋</p>
-      <div id="cb-dynamic-msg" style="display:none;font-size:14px;line-height:1.7;color:var(--text)"></div>
-      <p>Bu eğitime katıldığın için seni tebrik ederim. Buraya gelen herkesin tek bir amacı var: <strong>online satıştan gerçek para kazanmak.</strong></p>
-      <p>Sana bu süreçte işe yarayan birkaç önemli tavsiye bırakıyorum.</p>
-      <div class="cb-quote">💡 Başarılı olanlar daha <em>zeki</em> olanlar değil, daha <em>hızlı deneyenlerdir.</em><br>İlk satış gelene kadar sabırlı ol.</div>
-      <div class="cb-section-title">🎯 eBay'de İlk Satış İçin</div>
-      <ul class="cb-list"><li>Rekabeti düşük ürün seç</li><li>Rakip fiyatlarından biraz daha ucuz ol</li><li>Hızlı kargo avantajı sun</li></ul>
-      <p class="cb-tip">İlk satış geldikten sonra algoritma seni yukarı taşır. ⚡</p>
-      <div class="cb-section-title">📦 İlk Günlerden Kâr Hedefleme</div>
-      <p>Dropshipping bir <strong>test oyunudur.</strong> Kazananlar 5 ürün test edenler değil — <strong>50 ürün test edenlerdir.</strong></p>
-      <div class="cb-goal">
-        <div class="cb-goal-emoji">🏆</div>
-        <div>
-          <div class="cb-goal-title">İlk Hedefiniz</div>
-          <div class="cb-goal-text">Günde <strong>7 satış</strong> · Ürün başı <strong>$5 kâr</strong><br>= Aylık ilk <strong>$1.050</strong> 🚀</div>
-        </div>
+    <div class="sp-messages" id="sp-messages"></div>
+    <div class="sp-quick-section">
+      <div class="sp-quick-label">Sık sorulan</div>
+      <div>
+        <button onclick="askQuick(this)" class="sp-quick-btn">Ship from address ne olmalı?</button>
+        <button onclick="askQuick(this)" class="sp-quick-btn">Ürünler AutoDS'de görünmüyor</button>
+        <button onclick="askQuick(this)" class="sp-quick-btn">Payoneer doğrulama isteği gelmiyor</button>
+        <button onclick="askQuick(this)" class="sp-quick-btn">İade süreci nasıl işliyor?</button>
+        <button onclick="askQuick(this)" class="sp-quick-btn">Siparişleri nasıl geçmeliyim?</button>
+        <button onclick="askQuick(this)" class="sp-quick-btn">AutoDS API modu nedir?</button>
+        <button onclick="askQuick(this)" class="sp-quick-btn">Farklı ağlardan giriş sorun olur mu?</button>
+        <button onclick="askQuick(this)" class="sp-quick-btn">eBay dropshipping kazandırır mı?</button>
       </div>
     </div>
-    <button class="cb-pop-close-btn" onclick="closeCanberk()">Anladım, Başlıyorum! 💪</button>
-  </div>
-
-  <!-- SPİN -->
-  <div id="spin-overlay" class="overlay" onclick="closeSpin()"></div>
-  <div id="spin-popup" class="popup">
-    <button class="close-btn" onclick="closeSpin()">✕</button>
-    <div class="sp-header">
-      <div class="sp-avatar">💵</div>
-      <div><div class="sp-title">Günlük Kategori Tavsiyesi</div><div class="sp-sub">Her gün 5 farklı eBay nişi keşfet · Gece sıfırlanır</div></div>
+    <div class="sp-input-area">
+      <textarea class="sp-input" id="sp-input" rows="1" placeholder="Sorunuzu yazın..."></textarea>
+      <button class="sp-send" id="sp-send-btn" onclick="sendSupportMsg()">➤</button>
     </div>
-    <div class="sp-dots" id="sp-dots"></div>
-    <div class="sp-result" id="sp-result">
-      <div class="sp-idle-emoji">💵</div>
-      <div class="sp-idle-txt">Butona bas, bugünkü kategorini öğren</div>
+  </div>
+</div>
+
+<!-- VİDEO POPUP -->
+<div id="video-overlay">
+  <div id="video-popup">
+    <button class="vp-close" onclick="closeVideoPopup()">×</button>
+    <div class="vp-title" id="vp-title"></div>
+    <div class="vp-desc" id="vp-desc"></div>
+    <a id="vp-watch-btn" class="vp-btn-watch" href="#" target="_blank">▶ Dersi İzle</a>
+    <button id="vp-done-btn" class="vp-btn-done" onclick="toggleVideoDone()">✓ Tamamlandı Olarak İşaretle</button>
+  </div>
+</div>
+
+<!-- AI ARAÇLARI POPUP -->
+<div id="aitool-overlay" class="overlay" onclick="closeAiTool()"></div>
+<div id="aitool-popup" class="popup" style="width:min(520px,96vw);max-height:88vh;overflow-y:auto">
+  <button class="close-btn" onclick="closeAiTool()">✕</button>
+  <div class="sp-header">
+    <div class="sp-avatar" id="aitool-avatar" style="font-size:20px">🔍</div>
+    <div><div class="sp-title" id="aitool-title">Urun Analizi</div><div class="sp-sub" id="aitool-sub">MLYNR · eBay Ürün Analizi</div></div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:8px">
+    <input id="aitool-input" style="flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:13px 16px;outline:none" placeholder="Urun adi yaz..."/>
+    <button id="aitool-go" onclick="runAiTool()" style="background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-weight:700;font-size:13px;padding:13px 20px;cursor:pointer;white-space:nowrap">Analiz Et</button>
+  </div>
+  <div id="aitool-body" style="min-height:100px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px">Urun adi yazıp butona bas.</div>
+  <div id="aitool-actions" style="display:none;gap:8px;margin-top:12px">
+    <button onclick="copyAiTool()" id="aitool-copy" style="flex:1;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--text2);font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:11px;cursor:pointer">📋 Kopyala</button>
+    <button onclick="openAiTool(currentAiTool)" style="flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:10px;color:var(--text2);font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:11px;cursor:pointer">↺ Yeni</button>
+  </div>
+</div>
+
+<!-- İLK SATIŞ -->
+<div id="firstsale-overlay" class="overlay" onclick="closeFirstSale()"></div>
+<div id="firstsale-popup" class="popup" style="width:min(340px,82vw);padding:0;background:transparent;border:none;box-shadow:none;max-height:85vh;overflow-y:auto">
+  <div class="fs2-wrap">
+    <button class="fs2-close" onclick="closeFirstSale()">✕</button>
+    <div class="fs2-canvas-wrap"><canvas id="fs-canvas" width="1080" height="1920"></canvas></div>
+    <div class="fs2-actions">
+      <button id="fs-dl-btn" class="fs2-btn-primary" style="grid-column:1/-1" onclick="fsDownloadCard()">⬇ Kartı İndir</button>
+      <a id="fs-insta-btn" class="fs2-btn-insta" href="https://www.instagram.com/canberkreels/?hl=en" target="_blank" rel="noopener" style="grid-column:1/-1;display:none">📸 @canberkreels ile Paylaş</a>
     </div>
-    <button class="sp-btn" id="sp-btn" onclick="doSpin()">💵 Kategori Çek</button>
   </div>
+</div>
 
-  <div id="motiv-popup">
-    <div class="motiv-emoji" id="motiv-emoji">⚡</div>
-    <div class="motiv-msg" id="motiv-msg"></div>
-    <button class="motiv-close" onclick="closeMotiv()">Teşekkürler</button>
+<!-- VERSİYON BANNER -->
+<div id="ver-banner">
+  <div class="vb-emoji">🚀</div>
+  <div class="vb-text">
+    <div class="vb-title">Güncelleme: <span id="ver-tag">v2.1</span></div>
+    <div class="vb-sub" id="ver-desc">AI Koç + Canlı satış bildirimleri!</div>
   </div>
+  <button class="vb-close" onclick="dismissVer()">Tamam</button>
+</div>
 
-  <div id="success-toast">
-    <div class="st-emoji">🎉</div>
-    <div class="st-msg">Başarılar Dilerim!</div>
-    <div class="st-sub">Canberk Öztürk</div>
-  </div>
+<script>
+var LS;try{LS=localStorage;}catch(e){LS={getItem:function(){return null;},setItem:function(){},removeItem:function(){}};}
+var _sb=supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co','sb_publishable_fBqoPGz-1qHl1HU1PpbBTA_gBVZoodL');
+_sb.auth.onAuthStateChange(function(event,session){if(event==='PASSWORD_RECOVERY'){_user=null;showPasswordResetUI(session);}});
+var _user=null,_userName='';
+
+// ── CONFETTI ──────────────────────────────────────────────────
+var _confettiRAF=null;
+function stopConfetti(){if(_confettiRAF){cancelAnimationFrame(_confettiRAF);_confettiRAF=null;}var c=document.getElementById('confetti-canvas');if(c){c.classList.remove('show');c.getContext('2d').clearRect(0,0,c.width,c.height);}}
+function launchConfetti(){
+  stopConfetti();var c=document.getElementById('confetti-canvas');c.width=window.innerWidth;c.height=window.innerHeight;c.classList.add('show');
+  var ctx=c.getContext('2d'),cols=['#fff','#22c55e','#facc15','#f472b6','#38bdf8'],pieces=[];
+  for(var i=0;i<120;i++)pieces.push({x:Math.random()*c.width,y:-10,vx:(Math.random()-0.5)*4,vy:Math.random()*4+2,rot:Math.random()*360,vr:(Math.random()-0.5)*8,w:Math.random()*8+4,h:Math.random()*4+2,col:cols[Math.floor(Math.random()*cols.length)],o:1});
+  var f=0;
+  function run(){ctx.clearRect(0,0,c.width,c.height);f++;var alive=false;for(var i=0;i<pieces.length;i++){var p=pieces[i];p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;if(f>70)p.o-=.022;if(p.o>0){alive=true;ctx.save();ctx.globalAlpha=Math.max(0,p.o);ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.col;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();}}if(alive)_confettiRAF=requestAnimationFrame(run);else{c.classList.remove('show');ctx.clearRect(0,0,c.width,c.height);_confettiRAF=null;}}
+  _confettiRAF=requestAnimationFrame(run);
+}
+
+// ── MOTİVASYON ────────────────────────────────────────────────
+var MM=[{e:'⚡',m:'Bir adım daha attın. Bu küçük görünür ama birikim büyük güçtür.'},{e:'🎯',m:'Çoğu insan başlamaz. Sen başladın. Bu fark her şeydir.'},{e:'🔑',m:'Doğru yoldasın. Sistemi anlayan kazanır — sen anlıyorsun.'},{e:'📈',m:'Her tamamlanan adım seni rakiplerinden bir adım öne taşıyor.'},{e:'🏆',m:'Başarı bir gün gelmiyor. Her gün, bu anlardaki kararlarla geliyor.'},{e:'💡',m:'Bugün öğrendiğin şey, yarın kazancına dönüşecek. Devam et.'},{e:'🔭',m:'En iyi yatırım kendineyken yapılandır. Şu an tam onu yapıyorsun.'},{e:'⚙️',m:'Fark yaratan detaylardır. Sen detaylara dikkat eden birisin.'}];
+var lm=-1;
+function showMotiv(){var i;do{i=Math.floor(Math.random()*MM.length);}while(i===lm);lm=i;document.getElementById('motiv-emoji').textContent=MM[i].e;document.getElementById('motiv-msg').textContent=MM[i].m;document.getElementById('motiv-popup').classList.add('show');}
+function closeMotiv(){document.getElementById('motiv-popup').classList.remove('show');}
+
+// ── CANBERK ───────────────────────────────────────────────────
+function openCanberk(){
+  document.getElementById('canberk-overlay').classList.add('show');
+  document.getElementById('canberk-popup').classList.add('show');
+  var uname=getUserName(),hiEl=document.getElementById('cb-hi-text');
+  if(hiEl&&uname)hiEl.textContent='Merhaba, '+uname.split(' ')[0]+'! 👋';
+  fetch('https://xrelhozqawdseobxqbju.supabase.co/rest/v1/settings?key=eq.canberk_message&select=value',{headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU'}}).then(function(r){return r.json();}).then(function(d){var msg=d&&d[0]&&d[0].value?d[0].value:null;if(msg){var bodyEl=document.getElementById('cb-dynamic-msg');if(bodyEl){bodyEl.style.display='block';bodyEl.innerHTML=msg.replace(/\n/g,'<br>');}}}).catch(function(){});
+}
+function closeCanberk(){
+  document.getElementById('canberk-overlay').classList.remove('show');
+  document.getElementById('canberk-popup').classList.remove('show');
+  launchConfetti();
+  setTimeout(function(){var t=document.getElementById('success-toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3200);},400);
+}
+
+// ── SPIN ──────────────────────────────────────────────────────
+var CATS=[{e:'🐾',n:'Evcil Hayvan Ürünleri',h:'Bugün evcil hayvan aksesuarlarını araştır. Tasma, köpek yatağı, kedi oyuncakları.',tip:'Pet Supplies kategorisinde repeat purchase çok yüksek.'},{e:'🌿',n:'Ev & Bahçe',h:'Bugün Home & Garden kategorisini araştır. Sulama seti, bahçe aksesuarı.',tip:'En hacimli eBay kategorilerinden biri.'},{e:'🧸',n:'Oyuncak & Çocuk',h:'Bugün Toys & Hobbies kategorisini araştır. STEM oyuncakları, puzzle.',tip:'Doğum günü ve tatil sezonunda 3x satış.'},{e:'⚽',n:'Spor & Fitness',h:'Bugün Sporting Goods kategorisini araştır. Direnç bandı, yoga mat.',tip:'Ocak ayı yeni yıl kararlarıyla zirveye çıkar.'},{e:'🎨',n:'Sanat & El Sanatları',h:'Bugün Crafts kategorisini araştır. Akrilik boya seti, tuval.',tip:'Crafts eBay\'de yıldan yıla büyüyor.'},{e:'🍳',n:'Mutfak Gadget',h:'Bugün Kitchen kategorisini araştır. Spiral kesici, yumurta pişirici.',tip:'Video ile satılması çok kolay.'},{e:'🚗',n:'Araç Aksesuarları',h:'Bugün eBay Motors > Accessories kategorisini araştır.',tip:'eBay Motors muazzam büyüklükte.'},{e:'🏠',n:'Ev Organizasyon',h:'Bugün Home Storage kategorisini araştır. Çekmece organizer.',tip:'Set ürünler çok daha iyi paketleniyor.'},{e:'🎭',n:'Kostüm & Cosplay',h:'Bugün Costumes & Reenactment kategorisini araştır.',tip:'Cosplay kitlesi yıl boyu aktif.'},{e:'🏕️',n:'Kamp & Outdoor',h:'Bugün Outdoor Sports kategorisini araştır. Kamp feneri, survival kit.',tip:'Doğal afet haberleriyle bu kategori patlıyor.'},{e:'🧵',n:'Dikiş & Tekstil',h:'Bugün Crafts > Sewing kategorisini araştır.',tip:'Dikiş yapan kitle sadık.'},{e:'🎸',n:'Müzik Aksesuarları',h:'Bugün Musical Instruments > Accessories kategorisini araştır.',tip:'Müzisyenler aksesuar için sürekli harcıyor.'},{e:'🚲',n:'Bisiklet & Scooter',h:'Bugün Sporting Goods > Cycling kategorisini araştır.',tip:'Elektrikli scooter patlamasıyla ilgi arttı.'},{e:'🌸',n:'Düğün & Özel Gün',h:'Bugün Wedding Supplies kategorisini araştır.',tip:'Düğün alışverişlerinde fiyat duyarlılığı düşük.'},{e:'🐟',n:'Balıkçılık',h:'Bugün Sporting Goods > Fishing kategorisini araştır.',tip:'Repeat purchase oranı çok yüksek.'},{e:'🧩',n:'Masa Oyunları',h:'Bugün Toys > Games kategorisini araştır.',tip:'Kasım-Aralık hediye sezonu için Ekim\'de listele.'}];
+var MAX_SPIN=5;
+function spinKey(){return 'mlynr6_sp_'+email.replace(/[^a-z0-9]/gi,'_');}
+function todayStr(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function dayIndex(){var d=new Date(),start=new Date(d.getFullYear(),0,0),diff=d-start,oneDay=1000*60*60*24;return Math.floor(diff/oneDay);}
+function getSpinSt(){try{var r=LS.getItem(spinKey());if(r){var p=JSON.parse(r);if(p.date===todayStr())return p;}}catch(e){}return{date:todayStr(),used:0,last:null,hist:[]};}
+function saveSpinSt(st){try{LS.setItem(spinKey(),JSON.stringify(st));}catch(e){}if(_user){_sb.from('progress').upsert({user_id:_user.id,spin:st,updated_at:new Date().toISOString()},{onConflict:'user_id'}).then(function(){});}}
+function openSpin(){renderSpin();document.getElementById('spin-overlay').classList.add('show');document.getElementById('spin-popup').classList.add('show');}
+function closeSpin(){document.getElementById('spin-overlay').classList.remove('show');document.getElementById('spin-popup').classList.remove('show');}
+function renderSpin(){
+  var s=getSpinSt(),hak=MAX_SPIN-s.used;
+  var dotsEl=document.getElementById('sp-dots');
+  if(dotsEl){dotsEl.innerHTML='';for(var i=0;i<MAX_SPIN;i++){var d=document.createElement('div');d.className='sp-dot'+(i<s.used?'':' active');dotsEl.appendChild(d);}}
+  var ra=document.getElementById('sp-result');
+  if(ra){
+    if(s.last==='ai'&&s.aiLast){renderSpinCard(s.aiLast,s);}
+    else if(s.last!==null&&s.last!=='ai'&&CATS[s.last]){var cat=CATS[s.last];ra.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span></div>';}
+    else if(hak===0){ra.innerHTML='<div class="sp-empty-emoji">😴</div><div class="sp-empty-txt">Bugünkü 5 hakkını kullandın.<br>Yarın yeni kategoriler seni bekliyor!</div>';}
+    else{ra.innerHTML='<div class="sp-idle-emoji">💵</div><div class="sp-idle-txt">Butona bas, bugünkü kategorini öğren</div>';}
+  }
+  var btn=document.getElementById('sp-btn');
+  if(btn){btn.disabled=(hak<=0);btn.innerHTML=hak>0?'💵 Kategori Çek · '+hak+' hak kaldı':'Bugün tamamlandı ✓';}
+  var prev=document.getElementById('spin-trigger-preview');if(prev)prev.textContent=hak>0?'Tıkla ve Seç → Keşfet':'Yarın yeni kategoriler';
+  var ping=document.getElementById('spin-ping');if(ping){if(hak<=0)ping.classList.add('spin-ping-off');else ping.classList.remove('spin-ping-off');}
+}
+function doSpin(){
+  var s=getSpinSt();if(s.used>=MAX_SPIN)return;
+  if(!s.hist)s.hist=[];
+  s.used++;saveSpinSt(s);
+  var ra=document.getElementById('sp-result');if(ra)ra.innerHTML='<div class="sp-spin-emoji">💵</div><div style="margin-top:8px;font-size:12px;color:var(--text3)">AI düşünüyor...</div>';
+  var btn=document.getElementById('sp-btn');if(btn){btn.disabled=true;btn.textContent='Yükleniyor...';}
+  var excluded=s.aiHist||[];
+  fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'category',excluded:excluded,seed:(email||'').length+dayIndex()})})
+    .then(function(r){return r.json();}).then(function(cat){
+      if(cat.error)throw new Error(cat.error);
+      if(!s.aiHist)s.aiHist=[];s.aiHist.push(cat.kategori);
+      if(!s.aiHistory)s.aiHistory=[];s.aiHistory.push({e:cat.emoji,n:cat.kategori,h:cat.aciklama,tip:cat.ipucu});
+      s.aiHistIdx=s.aiHistory.length-1;s.aiLast={e:cat.emoji,n:cat.kategori,h:cat.aciklama,tip:cat.ipucu};s.last='ai';saveSpinSt(s);
+      renderSpinCard(s.aiLast,s);
+      var hak=MAX_SPIN-s.used;if(btn){btn.disabled=(hak<=0);btn.innerHTML=hak>0?'💵 Kategori Çek · '+hak+' hak kaldı':'Bugün tamamlandı ✓';}
+      var de=document.getElementById('sp-dots');if(de){de.innerHTML='';for(var i=0;i<MAX_SPIN;i++){var d=document.createElement('div');d.className='sp-dot'+(i<s.used?'':' active');de.appendChild(d);}}
+      var pv=document.getElementById('spin-trigger-preview');if(pv)pv.textContent=hak>0?'Tıkla ve Seç → Keşfet':'Yarın yeni kategoriler';
+      var pg=document.getElementById('spin-ping');if(pg){if(hak<=0)pg.classList.add('spin-ping-off');else pg.classList.remove('spin-ping-off');}
+    }).catch(function(){
+      var fi=Math.floor(Math.random()*CATS.length),cat=CATS[fi];s.last=fi;saveSpinSt(s);
+      if(ra)ra.innerHTML='<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span></div>';
+      var hak=MAX_SPIN-s.used;if(btn){btn.disabled=(hak<=0);btn.innerHTML=hak>0?'💵 Kategori Çek · '+hak+' hak kaldı':'Bugün tamamlandı ✓';}
+      var de=document.getElementById('sp-dots');if(de){de.innerHTML='';for(var i=0;i<MAX_SPIN;i++){var d=document.createElement('div');d.className='sp-dot'+(i<s.used?'':' active');de.appendChild(d);}}
+    });
+}
+function renderSpinCard(cat,s){
+  var ra=document.getElementById('sp-result');if(!ra)return;
+  var hist=s.aiHistory||[],idx=typeof s.aiHistIdx==='number'?s.aiHistIdx:hist.length-1;
+  var hasPrev=idx>0,hasNext=idx<hist.length-1,nav='';
+  if(hist.length>1){nav='<div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px"><button onclick="spinNav(-1)" '+(hasPrev?'':'disabled')+' style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;padding:5px 12px;cursor:'+(hasPrev?'pointer':'default')+';opacity:'+(hasPrev?'1':'.3')+'">&#8592;</button><span style="font-family:var(--mono);font-size:10px;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px">'+(idx+1)+' / '+hist.length+'</span><button onclick="spinNav(1)" '+(hasNext?'':'disabled')+' style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:11px;padding:5px 12px;cursor:'+(hasNext?'pointer':'default')+';opacity:'+(hasNext?'1':'.3')+'">&#8594;</button></div>';}
+  var analyzeBtn='<button onclick="quickAnalyze(\''+cat.n+'\')" style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);border-radius:8px;color:#818cf8;font-size:11px;font-weight:600;padding:7px 14px;cursor:pointer">🔍 Analiz Et</button>';
+  ra.innerHTML=nav+'<div class="sp-done"><div class="sp-cat-row"><span class="sp-cat-emoji">'+cat.e+'</span><span class="sp-cat-name">'+cat.n+'</span></div><div class="sp-cat-hint">'+cat.h+'</div><span class="sp-cat-tip">💡 '+cat.tip+'</span>'+analyzeBtn+'</div>';
+}
+function spinNav(dir){
+  var s=getSpinSt();if(!s.aiHistory||s.aiHistory.length===0)return;
+  var idx=(typeof s.aiHistIdx==='number'?s.aiHistIdx:s.aiHistory.length-1)+dir;
+  if(idx<0||idx>=s.aiHistory.length)return;
+  s.aiHistIdx=idx;s.aiLast=s.aiHistory[idx];saveSpinSt(s);renderSpinCard(s.aiLast,s);
+}
+function quickAnalyze(urunAdi){closeSpin();setTimeout(function(){openAiTool('analyze');setTimeout(function(){document.getElementById('aitool-input').value=urunAdi;runAiTool();},350);},200);}
+
+// ── AI ARAÇLARI ───────────────────────────────────────────────
+var currentAiTool='analyze',AI_EP='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',lastAiText='';
+function openAiTool(tool){
+  currentAiTool=tool;var isL=tool==='listing';
+  document.getElementById('aitool-avatar').textContent=isL?'📝':'🔍';
+  document.getElementById('aitool-title').textContent=isL?'Listing Yazici':'Urun Analizi';
+  document.getElementById('aitool-sub').textContent=isL?'eBay basligi + aciklama AI yazar':'MLYNR · eBay Urun Analizi';
+  document.getElementById('aitool-go').textContent=isL?'Yaz':'Analiz Et';
+  document.getElementById('aitool-input').value='';
+  document.getElementById('aitool-input').placeholder=isL?'Urun adi yaz... (ornek: Foam Roller Set)':'Urun adi yaz...';
+  document.getElementById('aitool-body').textContent='Urun adi yazıp butona bas.';
+  document.getElementById('aitool-body').style.cssText='min-height:100px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px';
+  document.getElementById('aitool-actions').style.display='none';
+  lastAiText='';
+  document.getElementById('aitool-overlay').classList.add('show');
+  document.getElementById('aitool-popup').classList.add('show');
+  setTimeout(function(){document.getElementById('aitool-input').focus();},300);
+}
+function closeAiTool(){document.getElementById('aitool-overlay').classList.remove('show');document.getElementById('aitool-popup').classList.remove('show');}
+function runAiTool(){
+  var urun=document.getElementById('aitool-input').value.trim();
+  if(!urun){document.getElementById('aitool-body').textContent='Urun adi yaziniz.';return;}
+  var bodyEl=document.getElementById('aitool-body'),goBtn=document.getElementById('aitool-go');
+  bodyEl.style.cssText='min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px';
+  bodyEl.innerHTML='<div class="ai-spinner"></div><div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:12px">🤖 AI analiz ediyor...</div>';
+  document.getElementById('aitool-actions').style.display='none';goBtn.disabled=true;
+  fetch(AI_EP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:currentAiTool,urun:urun})})
+    .then(function(r){return r.json();}).then(function(data){
+      if(data.error)throw new Error(data.error);
+      lastAiText=data.sonuc||'';renderAiCards(lastAiText);goBtn.disabled=false;
+    }).catch(function(e){
+      bodyEl.style.cssText='min-height:80px;padding:16px;color:#f87171;font-size:13px;display:flex;align-items:center;justify-content:center';
+      bodyEl.textContent='Hata: '+e.message;goBtn.disabled=false;
+    });
+}
+function renderAiCards(txt){
+  var bodyEl=document.getElementById('aitool-body');bodyEl.style.cssText='';
+  var isL=currentAiTool==='listing';
+  var secs=isL?[{k:'BASLIK',i:'🏷️'},{k:'ACIKLAMA',i:'📄'},{k:'ANAHTAR KELIMELER',i:'🔍'},{k:'KATEGORI ONERISI',i:'📁'}]:[{k:'PAZAR POTANSIYELI',i:'📈'},{k:'HEDEF KITLE',i:'🎯'},{k:'FIYAT ARALIGI',i:'💰'},{k:'REKABET',i:'⚔️'},{k:'FIRSATLAR',i:'✨'},{k:'TAVSIYE',i:'🏁'}];
+  var html='<div style="display:flex;flex-direction:column;gap:8px">';
+  for(var i=0;i<secs.length;i++){
+    var s=secs[i],nk=i<secs.length-1?secs[i+1].k:'~~~',si=txt.indexOf(s.k+':');if(si<0)continue;
+    si+=s.k.length+1;var ei=txt.indexOf(nk+':');if(ei<0)ei=txt.length;
+    var bTxt=txt.slice(si,ei).trim(),badge='';
+    if(s.k==='TAVSIYE')badge=bTxt.toUpperCase().indexOf('SATMA')>-1?'<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">SATMA</span>':'<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">SAT</span>';
+    if(s.k==='PAZAR POTANSIYELI'){var up=bTxt.toUpperCase();if(up.indexOf('YUKSEK')>-1)badge='<span style="background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">YUKSEK</span>';else if(up.indexOf('DUSUK')>-1)badge='<span style="background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">DUSUK</span>';else badge='<span style="background:rgba(250,204,21,.12);color:#ca8a04;border:1px solid rgba(250,204,21,.25);border-radius:4px;font-size:9px;padding:2px 8px;font-weight:700">ORTA</span>';}
+    var cardId='aicard'+i,cpBtn=isL?'<button onclick="copyCardEl(this,\''+cardId+'\')" style="background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);font-size:11px;padding:3px 10px;cursor:pointer">📋</button>':'';
+    html+='<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;overflow:hidden"><div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border)"><span style="font-size:14px">'+s.i+'</span><span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;flex:1">'+s.k+'</span>'+badge+cpBtn+'</div><div id="'+cardId+'" style="padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.8">'+bTxt+'</div></div>';
+  }
+  html+='</div>';bodyEl.innerHTML=html;
+  document.getElementById('aitool-actions').style.display='flex';
+}
+function copyCardEl(btn,id){var el=document.getElementById(id);if(!el)return;navigator.clipboard.writeText(el.textContent).then(function(){var o=btn.textContent;btn.textContent='✓';btn.style.color='#22c55e';setTimeout(function(){btn.textContent=o;btn.style.color='';},2000);});}
+function copyAiTool(){var btn=document.getElementById('aitool-copy');if(!lastAiText||!btn)return;navigator.clipboard.writeText(lastAiText).then(function(){btn.textContent='✓ Kopyalandi';setTimeout(function(){btn.textContent='📋 Kopyala';},2000);});}
+
+// ── REALTIME SATIŞ BİLDİRİMİ ─────────────────────────────────
+function initRealtimeSales(){
+  try{
+    _sb.channel('mlynr-sales-v2')
+      .on('postgres_changes',{event:'UPDATE',schema:'public',table:'progress'},function(payload){
+        try{
+          var n=payload.new,o=payload.old;
+          if(!n||!o)return;
+          if(n.first_sale===true&&!o.first_sale){
+            var ad=(n.full_name||'Bir kursiyer').split(' ')[0];
+            if(_user&&n.user_id===_user.id)return;
+            showSalesBanner(ad);
+          }
+        }catch(e){console.warn('rt payload:',e);}
+      })
+      .subscribe(function(status,err){
+        console.log('[Realtime]',status,err||'');
+      });
+  }catch(e){console.warn('[Realtime] init err:',e);}
+}
+function showSalesBanner(ad){
+  playMoneySound();
+  var el=document.createElement('div');
+  el.style.cssText='position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-120px);z-index:9800;background:linear-gradient(135deg,#0d1f0d,#111);border:1px solid rgba(34,197,94,.5);border-radius:16px;padding:14px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(34,197,94,.25);transition:transform .4s cubic-bezier(.34,1.2,.64,1),opacity .4s;white-space:nowrap;pointer-events:none';
+  el.innerHTML='<span style="font-size:22px">🎉</span><div><div style="font-size:14px;font-weight:700;color:#fff"><span style="color:#22c55e">'+ad+'</span> az önce ilk satışını yaptı!</div><div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:2px">MLYNR Kursiyer Programı 💰</div></div>';
+  document.body.appendChild(el);
+  setTimeout(function(){el.style.transform='translateX(-50%) translateY(0)';},50);
+  setTimeout(function(){el.style.transform='translateX(-50%) translateY(-120px)';el.style.opacity='0';setTimeout(function(){if(el.parentNode)el.remove();},400);},5000);
+}
+
+// ── AI KOÇ + DESTEK BOT ───────────────────────────────────────
+function askQuick(btn){var soru=btn.textContent.trim();var inp=document.getElementById('sp-input');if(inp)inp.value=soru;sendSupportMsg();}
+function openSupportBot(){
+  var msgs=document.getElementById('sp-messages');
+  if(msgs&&msgs.children.length===0){
+    var gunSayisi=done.length,ad=getUserName()?getUserName().split(' ')[0]:'';
+    var karsilama=ad?'Merhaba '+ad+'! 👋 ':'Merhaba! 👋 ';
+    var durum=gunSayisi===0?'Yeni başlıyorsun, her sorun için buradayım.':gunSayisi+'. gündeydin — nerede takıldın?';
+    addBotMsg(karsilama+durum+' eBay dropshipping hakkında her şeyi sorabilirsin.');
+  }
+  document.getElementById('support-overlay').classList.add('show');
+  setTimeout(function(){var inp=document.getElementById('sp-input');if(inp)inp.focus();},300);
+}
+function closeSupportBot(){document.getElementById('support-overlay').classList.remove('show');}
+function addBotMsg(txt){
+  var msgs=document.getElementById('sp-messages');if(!msgs)return;
+  var div=document.createElement('div');div.className='sp-msg bot';
+  div.textContent=txt.replace(/\*\*/g,'').replace(/t\.me\/mlynr_bot/g,'👉 Canlı Destek Ekibi');
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+}
+function addUserMsg(txt){var msgs=document.getElementById('sp-messages');if(!msgs)return;var div=document.createElement('div');div.className='sp-msg user';div.textContent=txt;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function addLoadingMsg(){var msgs=document.getElementById('sp-messages');if(!msgs)return;var div=document.createElement('div');div.className='sp-msg bot loading';div.id='sp-loading';div.textContent='AI Koç düşünüyor...';msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function removeLoadingMsg(){var el=document.getElementById('sp-loading');if(el)el.remove();}
+function sendSupportMsg(){
+  var inp=document.getElementById('sp-input'),btn=document.getElementById('sp-send-btn');
+  if(!inp)return;var soru=inp.value.trim();if(!soru)return;
+
+  var sorularKey='mlynr6_support_sorular_'+email.replace(/[^a-z0-9]/gi,'_')+'_'+new Date().toISOString().slice(0,10);
+  var gecmisSorular=[];
+  try{var sg=LS.getItem(sorularKey);if(sg)gecmisSorular=JSON.parse(sg);}catch(e){}
+  var soruNorm=soru.trim().toLowerCase();
+  var kacKezSoruldu=gecmisSorular.filter(function(s){return s===soruNorm;}).length;
+
+  if(kacKezSoruldu>=2){
+    inp.value='';
+    addUserMsg(soru);
+    setTimeout(function(){
+      addBotMsg('Bu konuyu birkaç kez görüştük ve sana elimden geleni anlattım 🙏 Daha iyi yardım alman için şu an en doğrusu destek ekibimize geçmek. Sağ üstteki "+ Telegram" butonuna tıkla, ekibimiz 10:00–23:00 arasında seninle birebir ilgilenecek.');
+    },400);
+    return;
+  }
+
+  gecmisSorular.push(soruNorm);
+  try{LS.setItem(sorularKey,JSON.stringify(gecmisSorular));}catch(e){}
+
+  inp.value='';btn.disabled=true;addUserMsg(soru);addLoadingMsg();
+  var gunSayisi=done.length,hafta=Math.min(4,Math.ceil((gunSayisi+1)/7))||1;
+  fetch(AI_EP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'coach',soru:soru,gunSayisi:gunSayisi,hafta:hafta,tamamlananGunler:gunSayisi})})
+    .then(function(r){return r.json();}).then(function(data){removeLoadingMsg();addBotMsg(data.sonuc||'Bir hata olustu, tekrar dene.');btn.disabled=false;})
+    .catch(function(){
+      fetch(AI_EP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'support',soru:soru})})
+        .then(function(r){return r.json();}).then(function(data){removeLoadingMsg();addBotMsg(data.sonuc||'Baglanti hatasi.');btn.disabled=false;})
+        .catch(function(){removeLoadingMsg();addBotMsg('Baglanti hatasi. Lutfen tekrar dene.');btn.disabled=false;});
+    });
+}
+document.addEventListener('DOMContentLoaded',function(){var inp=document.getElementById('sp-input');if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendSupportMsg();}});});
+
+// ── VİDEO POPUP ───────────────────────────────────────────────
+var _vpCurrentId='',_vpIsS=false,_vpWi=0;
+function openVideoPopup(title,desc,videoUrl,id,isS,wi){
+  _vpCurrentId=id;_vpIsS=isS;_vpWi=wi;
+  document.getElementById('vp-title').textContent=title;
+  document.getElementById('vp-desc').textContent=desc;
+  document.getElementById('vp-watch-btn').href=videoUrl;
+  var isDone=done.indexOf(id)>-1,doneBtn=document.getElementById('vp-done-btn');
+  doneBtn.textContent=isDone?'✓ Tamamlandı':'✓ Tamamlandı Olarak İşaretle';
+  doneBtn.className=isDone?'vp-btn-done done-active':'vp-btn-done';
+  document.getElementById('video-overlay').classList.add('show');
+}
+function closeVideoPopup(){document.getElementById('video-overlay').classList.remove('show');}
+function toggleVideoDone(){
+  var id=_vpCurrentId,isS=_vpIsS,wi=_vpWi,pos=done.indexOf(id);
+  if(pos>-1)done.splice(pos,1);else{done.push(id);showToast('✓ Tamamlandı!',isS);}
+  var isDone=done.indexOf(id)>-1,doneBtn=document.getElementById('vp-done-btn');
+  doneBtn.textContent=isDone?'✓ Tamamlandı':'✓ Tamamlandı Olarak İşaretle';
+  doneBtn.className=isDone?'vp-btn-done done-active':'vp-btn-done';
+  saveState();render();checkWk(wi);
+}
+
+// ── STATE ─────────────────────────────────────────────────────
+var TOTAL=28,email='',done=[],mc={},CW={};
+function stK(){return 'mlynr6_'+email.replace(/[^a-z0-9]/gi,'_');}
+function saveState(){
+  if(!email)return;
+  try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
+  if(_user){
+    var fsVal=false;try{fsVal=LS.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
+    var spVal={};try{var sr=LS.getItem('mlynr6_sp_'+email);if(sr)spVal=JSON.parse(sr);}catch(e){}
+    _sb.from('progress').update({done:done,mc:mc,first_sale:fsVal,spin:spVal,updated_at:new Date().toISOString()}).eq('user_id',_user.id)
+      .then(function(r){if(r.error)_sb.from('progress').upsert({user_id:_user.id,done:done,mc:mc,first_sale:fsVal,spin:spVal,updated_at:new Date().toISOString()}).then(function(){});});
+  }
+  showSaved();
+}
+function loadState(){if(!email)return;try{var r=LS.getItem(stK());if(r){var d=JSON.parse(r);done=d.done||[];mc=d.mc||{};}else{done=[];mc={};}}catch(e){done=[];mc={};}}
+function loadStateFromDB(){
+  if(!_user){loadState();showApp();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);return;}
+  _sb.from('progress').select('done,mc,spin,first_sale,earn_opened,full_name').eq('user_id',_user.id).limit(1)
+    .then(function(r){
+      if(r.error){console.warn('DB load error:',r.error);loadState();showApp();return;}
+      if(r.data&&r.data.length>0)r.data=r.data[0];else r.data=null;
+      if(!r.data){
+        done=[];mc={};
+        _sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,earn_opened:false,updated_at:new Date().toISOString()}).then(function(){showApp();setTimeout(function(){openNamePopup();},400);});
+        return;
+      }
+      var raw=r.data.done;
+      if(Array.isArray(raw))done=raw;else if(typeof raw==='string'){try{done=JSON.parse(raw);}catch(e){done=[];}}else done=[];
+      var rawMc=r.data.mc;
+      if(rawMc&&typeof rawMc==='object'&&!Array.isArray(rawMc))mc=rawMc;else if(typeof rawMc==='string'){try{mc=JSON.parse(rawMc);}catch(e){mc={};}}else mc={};
+      if(r.data.first_sale)try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){}
+      if(r.data.spin&&typeof r.data.spin==='object')try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(r.data.spin));}catch(e){}
+      try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
+      if(r.data.full_name)try{LS.setItem('mlynr6_name_'+email,r.data.full_name);}catch(e){}
+      showApp();
+      setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);
+    }).catch(function(err){console.warn('DB load failed:',err);loadState();showApp();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);});
+}
+
+// ── AUTH ──────────────────────────────────────────────────────
+var _failCount=0,_failLock=0;
+function doAuth(){
+  var em=document.getElementById('inp-email').value.trim().toLowerCase();
+  var code=document.getElementById('inp-invite').value.trim();
+  var er=document.getElementById('login-err');er.textContent='';er.style.color='';
+  if(!em||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){er.textContent='Gecerli bir e-posta adresi gir.';return;}
+  if(!code){er.textContent='Kursiyer kodunu gir.';return;}
+  if(_failLock>Date.now()){er.textContent=Math.ceil((_failLock-Date.now())/1000)+' saniye bekle.';return;}
+  var btn=document.getElementById('login-btn');btn.disabled=true;er.textContent='Dogrulanıyor...';
+  fetch(AI_EP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'verify-invite',code:code,email:em})})
+    .then(function(r){return r.json();}).then(function(res){
+      if(!res.valid){_failCount++;if(_failCount>=5){_failLock=Date.now()+30000;_failCount=0;er.textContent='Cok fazla hatali deneme. 30 saniye bekle.';btn.disabled=false;return;}er.style.color='';er.textContent='Gecersiz kursiyer kodu. ('+_failCount+'/5)';btn.disabled=false;return;}
+      er.textContent='Giris yapiliyor...';
+      var pw='MLYNRsec_'+code.toUpperCase();
+      _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r){
+        if(r.error){
+          _sb.auth.signUp({email:em,password:pw}).then(function(r2){
+            if(r2.error&&r2.error.message.toLowerCase().indexOf('already')<0&&r2.error.status!==400){er.style.color='';er.textContent='Hata: '+r2.error.message;btn.disabled=false;return;}
+            _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r3){
+              if(r3.error){er.style.color='';er.textContent='Giris hatasi.';btn.disabled=false;return;}
+              _user=r3.data.user;email=_user.email;er.style.color='#4ade80';er.textContent='Hos geldin!';btn.disabled=false;
+              _sb.from('progress').select('user_id').eq('user_id',_user.id).limit(1).then(function(chk){if(!chk.data||chk.data.length===0)_sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,earn_opened:false,updated_at:new Date().toISOString()}).then(function(){loadStateFromDB();});else loadStateFromDB();});
+            });
+          });
+        }else{_user=r.data.user;email=_user.email;btn.disabled=false;loadStateFromDB();}
+      });
+    }).catch(function(){er.style.color='';er.textContent='Baglanti hatasi. Tekrar dene.';btn.disabled=false;});
+}
+function doLogin(){doAuth();}
+function doLogout(){
+  _sb.auth.signOut();try{LS.removeItem('mlynr6_sess');}catch(x){}
+  _user=null;email='';done=[];mc={};CW={};
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('inp-email').value='';
+  document.getElementById('login-err').textContent='';
+  closeMenu();
+}
+function showApp(){
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('app').style.display='block';
+  var sn=getUserName(),disp=sn||email.split('@')[0];
+  document.getElementById('uav').textContent=disp.charAt(0).toUpperCase();
+  document.getElementById('uname').textContent=disp;
+  render();renderSpin();checkVersion();
+  initRealtimeSales();
+  initBriefing();
+  setTimeout(initScrollAnim,50);
+  setTimeout(checkAdminMessages,1500);
+}
+// ── ADMİN MESAJ ──────────────────────────────────────────────
+var _adminMsgId=null;
+function checkAdminMessages(){
+  if(!_user)return;
+  _sb.from('admin_messages')
+    .select('id,message')
+    .eq('user_id',_user.id)
+    .eq('read',false)
+    .order('created_at',{ascending:false})
+    .limit(1)
+    .then(function(r){
+      if(r.error||!r.data||r.data.length===0)return;
+      var msg=r.data[0];
+      _adminMsgId=msg.id;
+      document.getElementById('amsg-body').textContent=msg.message;
+      document.getElementById('admin-msg-overlay').classList.add('show');
+    });
+}
+function closeAdminMsg(){
+  document.getElementById('admin-msg-overlay').classList.remove('show');
+  if(_adminMsgId){
+    _sb.from('admin_messages')
+      .update({read:true})
+      .eq('id',_adminMsgId)
+      .then(function(){});
+    _adminMsgId=null;
+  }
+}
+
+
+// ── RENDER HELPERS ────────────────────────────────────────────
+function ck(col){return '<svg viewBox="0 0 24 24" fill="none" stroke="'+col+'" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';}
+function mkMC(chk,wi){
+  var key='w'+wi;if(!mc[key])mc[key]=[];
+  var c2=mc[key],isS=!!chk.isS,tot=chk.items.length,cnt=c2.length,pct=Math.round(cnt/tot*100),cls=isS?' sc':'';
+  var h='<div class="module-check'+cls+'"><div class="mc-top"><div class="mc-q">'+chk.q+'</div></div><div class="mc-hint">'+chk.hint+'</div><div class="mc-checks">';
+  for(var i=0;i<chk.items.length;i++){var ic=c2.indexOf(i)>-1;h+='<div class="mc-item'+(ic?' ck':'')+'" data-wi="'+wi+'" data-i="'+i+'"><div class="mc-box">'+ck('#000')+'</div><span class="mc-text">'+chk.items[i]+'</span></div>';}
+  h+='</div><div class="mc-footer"><div class="mc-bar-wrap"><div class="mc-bar-fill" style="width:'+pct+'%"></div></div><div class="mc-ratio">'+cnt+' / '+tot+'</div></div></div>';
+  var wrap=document.createElement('div');wrap.innerHTML=h;var card=wrap.firstChild;if(!card)return document.createElement('div');
+  card.addEventListener('click',function(e){var el=e.target.closest('.mc-item');if(!el)return;var w2=parseInt(el.dataset.wi),i2=parseInt(el.dataset.i),k2='w'+w2;if(!mc[k2])mc[k2]=[];var pos=mc[k2].indexOf(i2);if(pos>-1)mc[k2].splice(pos,1);else mc[k2].push(i2);saveState();render();});
+  return card;
+}
+function checkWk(wi){var w=WEEKS[wi],ok=true;for(var d2=0;d2<w.days.length;d2++){if(done.indexOf(wi+'-'+d2)<0){ok=false;break;}}if(ok&&!CW[wi]){CW[wi]=true;setTimeout(function(){launchConfetti();setTimeout(showMotiv,500);},200);}}
+
+// ── WEEKS DATA ────────────────────────────────────────────────
+var WEEKS=[
+  {n:1,t:'e',lbl:'Hafta 01',name:'Hesap Kurulumu & Sistemi Anlamak',desc:'eBay hesabı aç, platformu tanı, yol haritasını kavra ve ilk ürünleri listele.',
+    days:[
+      {t:'eBay Hesap Açılışı',d:'Hesabı doğru kur: adres, vergi, panel ayarları.',tag:'Kurulum',video:'https://okul.mlynr.com/products/start-scale-e-ticaret/categories/2157346777/posts/2186324402'},
+      {t:'Yol Haritasını Anlamak',d:'Sistem tanıtımı, neden Amazon tedarik, ilk 90 gün planı.',tag:'Temel'},
+      {t:'Ürün Araştırma: Temel',d:'Sıfırdan ürün bulma, fiyat analizi, rakip mağaza incelemesi.',tag:'Araştırma'},
+      {t:'Ürün Araştırma: İleri',d:'Yapay zeka ile ürün bulma, pratik araştırma teknikleri.',tag:'Araştırma'},
+      {t:'VeRO & Markalı Ürün Riski',d:'Listeleme yasağı olan markaları tanı, VeRO listesini öğren.',tag:'Risk'},
+      {t:'İlk Ürünleri Listele',d:'Manuel listeleme adımları, Amazon\'dan ürün çekme.',tag:'Listeleme'},
+      {t:'Fiyat & Stok Kontrolü',d:'Günlük rutin kur: fiyat takibi, envanter yönetimi.',tag:'Yönetim'}
+    ],
+    chk:{q:'eBay Modül 1, 2 ve 3\'ü tamamladın mı?',hint:'Hesap açılışı, yol haritası ve ürün araştırma modüllerini bitir.',items:['eBay Modül 1 — Motivasyon ve Hesap Açma','eBay Modül 2 — Yol Haritasını Anlamak','eBay Modül 3 — Ana Yöntemde Ürün Bulmak']}},
+  {n:2,t:'e',lbl:'Hafta 02',name:'Otomasyon & Sipariş Yönetimi',desc:'AutoDS ile sistemi otomatize et, ilk siparişleri al ve yönet.',
+    days:[
+      {t:'AutoDS Kurulumu',d:'AutoDS hesap aç, paneli tanı, Non-API bağlantısı yap.',tag:'Otomasyon'},
+      {t:'AutoDS Ürün & Envanter',d:'Ürün ekle, envanter ayarları, auto order kur.',tag:'Otomasyon'},
+      {t:'Listeleme: Detaylar',d:'İspanyolca listeleme, varyasyon oluşturma.',tag:'Listeleme'},
+      {t:'İlk Sipariş Geldi!',d:'Amazon\'dan manuel sipariş geç, tracking ID gir.',tag:'Sipariş'},
+      {t:'Sipariş Sorunları',d:'Out of stock, Trackerbot kurulumu.',tag:'Sipariş'},
+      {t:'Wholesale Dropshipping',d:'Wholesale nedir, hangi supplier\'ları kullanabilirsin?',tag:'Tedarik'},
+      {t:'eBay 2.0 Kârlılık Hesabı',d:'Satış sonrası net kâr hesaplama, Payoneer fees.',tag:'Finans'}
+    ],
+    chk:{q:'eBay Modül 4, 5 ve 6\'yı tamamladın mı?',hint:'Otomasyon, listeleme ve sipariş modüllerini bitir.',items:['eBay Modül 4 — Otomasyon (AutoDS)','eBay Modül 5 — Listeleme','eBay Modül 6 — Sipariş Yönetimi']}},
+  {n:3,t:'e',lbl:'Hafta 03',name:'Hesap Sağlığı & Ölçekleme',desc:'Hesabı koru, satış limitini artır ve sistemi büyüt.',
+    days:[
+      {t:'Hesap Yönetimi',d:'Excel gelir-gider tablosu, satış analizi, feedbackler.',tag:'Yönetim'},
+      {t:'Müşteri İletişimi',d:'Mesaj şablonları, iade yönetimi.',tag:'Müşteri'},
+      {t:'Hesap Sağlığı',d:'Flagged olmak, MC011, suspend ile nasıl başa çıkılır?',tag:'Sağlık'},
+      {t:'Suspend Çözümleri',d:'İlk suspend, itiraz süreci, tüm çözüm yolları.',tag:'Sağlık'},
+      {t:'Taktikler & 5 Altın Kural',d:'80/20 kuralı, rekabette öne çıkma, cashback.',tag:'Taktik'},
+      {t:'Satış Limiti & Watches',d:'Limiti nasıl artırırsın, views & watches stratejisi.',tag:'Büyüme'},
+      {t:'Reklam & Satılmayan Ürün',d:'eBay reklam stratejisi, satılmayan ürünler için plan.',tag:'Optimize'}
+    ],
+    chk:{q:'eBay Modül 7, 8, 9 ve 10\'u tamamladın mı?',hint:'Wholesale, hesap yönetimi, taktikler ve hesap sağlığı modüllerini bitir.',items:['eBay Modül 7 — Wholesale Dropshipping','eBay Modül 8 — Hesap Yönetimi','eBay Modül 9 — Taktikler ve Ölçekleme','eBay Modül 10 — Hesap Sağlığı']}},
+  {n:4,t:'s',lbl:'Hafta 04',name:'Shopify\'a Geçiş',desc:'eBay\'de kâr gördükten sonra Shopify ile kendi mağazanı kur.',
+    days:[
+      {t:'Shopify\'a Geçiş Kararı',d:'eBay kârı gördükten sonra geçiş zamanı. Neden Shopify?',tag:'Strateji'},
+      {t:'Dropshipping\'i Anlamak',d:'Shopify dropshipping modeli, süreci kavra.',tag:'Temel'},
+      {t:'Mağaza Kurulumu',d:'Tema, domain, temel sayfalar ve mağaza ayarları.',tag:'Kurulum'},
+      {t:'Ürün Sayfası & Tasarım',d:'Dönüşüm odaklı ürün sayfası: başlık, görsel, açıklama.',tag:'Tasarım'},
+      {t:'Ödeme & Kargo Altyapısı',d:'Ödeme sistemi, kargo entegrasyonu.',tag:'Altyapı'},
+      {t:'İlk Ürünü Yayınla',d:'Shopify mağazanda ilk ürün canlıda.',tag:'Aksiyon'},
+      {t:'Reklam & Trafik',d:'Facebook/Instagram reklamları ile ilk trafiği getir.',tag:'Reklam'},
+      {t:'Analiz & Optimizasyon',d:'Mağaza verilerini oku, dönüşüm oranını iyileştir.',tag:'Analiz'},
+      {t:'Sonraki 30 Günü Planla',d:'Hedefleri yaz, ölçekleme planını netleştir.',tag:'Hedef'}
+    ],
+    chk:{q:'Eğitimi tamamlayıp notlarını aldın mı?',hint:'Shopify modülüne geçmeden önce eBay eğitiminin tamamını bitir.',isS:true,items:['eBay eğitiminin tüm 10 modülünü tamamladım','Her modülden notlar aldım ve tekrar ettim','eBay mağazamda aktif listing\'lerim var','En az bir satış yaptım veya satışa çok yakınım','Shopify\'a geçmeye hazır olduğuma karar verdim']}}
+];
+
+// ── ANA RENDER ────────────────────────────────────────────────
+function render(){
+  var wrap=document.getElementById('weeks');wrap.innerHTML='';
+  for(var wi=0;wi<WEEKS.length;wi++){
+    var w=WEEKS[wi],isS=w.t==='s',sec=document.createElement('section');sec.className='week-block';
+    var wDone=true;for(var dd=0;dd<w.days.length;dd++){if(done.indexOf(wi+'-'+dd)<0){wDone=false;break;}}
+    if(wDone)sec.classList.add('week-done');
+    var stampHtml=wDone?'<div class="week-complete-stamp"><span class="stamp-icon">✓</span><span class="stamp-text">Tamamlandı</span></div>':'';
+    var h='<div class="week-label-row"><div class="week-label'+(isS?' g':'')+'">'+w.lbl+'</div>'+stampHtml+'</div>';
+    h+='<div class="week-title-row"><div class="week-num">0'+w.n+'</div><div class="week-name">'+w.name+'</div></div>';
+    h+='<div class="week-desc">'+w.desc+'</div>';
+    h+='<div class="days" id="wd'+wi+'"></div><div id="mc'+wi+'"></div>';
+    sec.innerHTML=h;wrap.appendChild(sec);
+    var grid=document.getElementById('wd'+wi);
+    for(var di=0;di<w.days.length;di++){
+      (function(wi2,di2,day){
+        var id=wi2+'-'+di2,isDone=done.indexOf(id)>-1,card=document.createElement('div');
+        card.className='day'+(isDone?' done'+(isS?' g-done':''):'');
+        var ch='<div class="day-top"><div class="dn">'+(di2<9?'0':'')+(di2+1)+'</div><div class="tick">'+ck(isDone?'#000':'transparent')+'</div></div>';
+        ch+='<div class="dtitle">'+day.t+'</div><div class="dbody">'+day.d+'</div><span class="dtag">'+day.tag+'</span>';
+        card.innerHTML=ch;
+        card.addEventListener('click',function(){if(day.video){openVideoPopup(day.t,day.d,day.video,id,isS,wi2);}else{var pos=done.indexOf(id);if(pos>-1)done.splice(pos,1);else{done.push(id);showToast('✓ '+day.t,isS);}saveState();render();checkWk(wi2);}});
+        grid.appendChild(card);
+      })(wi,di,w.days[di]);
+    }
+    var cols=3,rem=w.days.length%cols;
+    var aiCard=document.createElement('div');aiCard.className='day-link-card support';aiCard.style.cursor='pointer';
+    aiCard.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow" style="color:#4ade80">● MLYNR · AI Koç</div><div class="dlc-title">Sorun mu var? AI Koç\'una sor, kişisel cevap al</div></div><div class="dlc-arrow">✦</div>';
+    aiCard.addEventListener('click',function(){openSupportBot();});
+    var eduCard=document.createElement('a');eduCard.href='https://okul.mlynr.com/products/start-scale-e-ticaret';eduCard.target='_blank';eduCard.className='day-link-card';
+    eduCard.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow">Eğitim Paneli</div><div class="dlc-title">Tüm modüllere erişmek için paneli aç</div></div><div class="dlc-arrow">↗</div>';
+    if(rem===0){grid.appendChild(aiCard);grid.appendChild(eduCard);}
+    else if(rem===1){grid.appendChild(aiCard);grid.appendChild(eduCard);}
+    else if(rem===2){grid.appendChild(aiCard);}
+    if(w.chk)document.getElementById('mc'+wi).appendChild(mkMC(w.chk,wi));
+  }
+  var cnt=done.length,fill=document.getElementById('prog-fill');
+  fill.style.width=(cnt/TOTAL*100)+'%';
+  if(cnt>0)fill.classList.add('active');else fill.classList.remove('active');
+  document.getElementById('prog-count').textContent=cnt+' / '+TOTAL;
+  updateLevelBadge();updateCertSection();
+}
+
+// ── UTILS ─────────────────────────────────────────────────────
+var _st;function showSaved(){var el=document.getElementById('saved-dot');el.classList.add('show');clearTimeout(_st);_st=setTimeout(function(){el.classList.remove('show');},1600);}
+var _tt;function showToast(m,isS){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(isS?' green':'')+' show';clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2600);}
+
+// ── SES ───────────────────────────────────────────────────────
+var _shopifyAudio=null;
+function playMoneySound(){try{if(!_shopifyAudio)_shopifyAudio=new Audio('data:audio/mp3;base64,SUQzAwAAAAA=');_shopifyAudio.currentTime=0;_shopifyAudio.volume=0.8;_shopifyAudio.play();}catch(e){}}
+
+// ── HAMBURGER ─────────────────────────────────────────────────
+function scrollToTop(){window.scrollTo({top:0,behavior:"smooth"});}
+function toggleMenu(){var btn=document.getElementById('hamburger-btn'),menu=document.getElementById('hamburger-menu');if(btn)btn.classList.toggle('open');if(menu)menu.classList.toggle('open');}
+function closeMenu(){var btn=document.getElementById('hamburger-btn'),menu=document.getElementById('hamburger-menu');if(btn)btn.classList.remove('open');if(menu)menu.classList.remove('open');}
+
+// ── LEVELS ────────────────────────────────────────────────────
+var LEVELS=[{min:0,max:3,emoji:'🌱',name:'Çaylak'},{min:4,max:7,emoji:'📦',name:'Listeleyici'},{min:8,max:13,emoji:'⚡',name:'Satıcı'},{min:14,max:19,emoji:'🔥',name:'Pro Satıcı'},{min:20,max:24,emoji:'💎',name:'Uzman'},{min:25,max:27,emoji:'🏆',name:'Elite'},{min:28,max:28,emoji:'👑',name:'Dropship King'}];
+var BADGES=[{emoji:'🚀',name:'İlk Adım',req:'İlk günü tamamla',check:function(){return done.length>=1;}},{emoji:'📅',name:'Bir Hafta',req:'Hafta 1 bitti',check:function(){var w=WEEKS[0];for(var i=0;i<w.days.length;i++){if(done.indexOf('0-'+i)<0)return false;}return true;}},{emoji:'💪',name:'Yarı Yolda',req:'14 gün tamamla',check:function(){return done.length>=14;}},{emoji:'🔥',name:'Streak',req:'7 gün üst üste giriş yap',check:function(){return false;}},{emoji:'💰',name:'Hesap Uzmanı',req:'Kazanç hesabı aç',check:function(){return !!earnOpened;}},{emoji:'👑',name:'Tamamlandı',req:'28 günü bitir',check:function(){return done.length>=28;}}];
+var earnOpened=false;
+function getLevel(){var n=done.length;for(var i=LEVELS.length-1;i>=0;i--){if(n>=LEVELS[i].min)return i;}return 0;}
+function updateLevelBadge(){var li=getLevel(),lv=LEVELS[li];var el=document.getElementById('level-emoji'),nl=document.getElementById('level-name');if(el)el.textContent=lv.emoji;if(nl)nl.textContent=lv.name;var hle=document.getElementById('hmenu-level-emoji'),hln=document.getElementById('hmenu-level-name');if(hle)hle.textContent=lv.emoji;if(hln)hln.textContent=lv.name;}
+function openDash(){renderDash();document.getElementById('dashboard-overlay').classList.add('show');document.getElementById('dashboard-popup').classList.add('show');}
+function closeDash(){document.getElementById('dashboard-overlay').classList.remove('show');document.getElementById('dashboard-popup').classList.remove('show');}
+function renderDash(){
+  var li=getLevel(),lv=LEVELS[li],n=done.length;
+  var nextLv=LEVELS[Math.min(li+1,LEVELS.length-1)];
+  var progress=li>=LEVELS.length-1?100:Math.round((n-lv.min)/(nextLv.min-lv.min)*100);
+  var lc=document.getElementById('dash-level-card');
+  if(lc){var toNext=li<LEVELS.length-1?nextLv.min-n:0;lc.innerHTML='<div class="dash-level-emoji">'+lv.emoji+'</div><div class="dash-level-info"><div class="dash-level-tag">Mevcut Seviye</div><div class="dash-level-name">'+lv.name+'</div><div class="dash-level-bar-wrap"><div class="dash-level-bar" style="width:'+Math.max(4,progress)+'%"></div></div><div class="dash-level-hint">'+(toNext>0?toNext+' gün daha → '+nextLv.emoji+' '+nextLv.name:'🏆 En üst seviyeye ulaştın!')+'</div></div>';}
+  var ds=document.getElementById('dash-stats');
+  if(ds){var wDone2=0;for(var wi=0;wi<WEEKS.length;wi++){var wok=true;for(var di=0;di<WEEKS[wi].days.length;di++){if(done.indexOf(wi+'-'+di)<0){wok=false;break;}}if(wok)wDone2++;}var cats_seen=0;try{var ss=getSpinSt();cats_seen=ss.hist?ss.hist.length:0;}catch(e){}ds.innerHTML='<div class="dash-stat"><div class="dash-stat-val">'+n+'</div><div class="dash-stat-lbl">Gün Tamam</div></div><div class="dash-stat"><div class="dash-stat-val">'+wDone2+'</div><div class="dash-stat-lbl">Hafta Bitti</div></div><div class="dash-stat"><div class="dash-stat-val">'+cats_seen+'</div><div class="dash-stat-lbl">Kategori</div></div>';}
+  var br=document.getElementById('dash-badge-row');if(br){var html='';BADGES.forEach(function(b){var earned=b.check();html+='<div class="dbadge '+(earned?'earned':'locked')+'"><span class="dbadge-emoji">'+b.emoji+'</span><div class="dbadge-info"><div class="dbadge-name">'+b.name+'</div><div class="dbadge-req">'+b.req+'</div></div></div>';});br.innerHTML=html;}
+  var dn=document.getElementById('dash-next');
+  if(dn){var found=false;for(var wi2=0;wi2<WEEKS.length&&!found;wi2++)for(var di2=0;di2<WEEKS[wi2].days.length&&!found;di2++)if(done.indexOf(wi2+'-'+di2)<0){dn.innerHTML='<span class="dash-next-emoji">📌</span><div><div class="dash-next-label">Sıradaki Adımın</div><div class="dash-next-text"><strong>'+WEEKS[wi2].lbl+' · '+WEEKS[wi2].days[di2].t+'</strong><br>'+WEEKS[wi2].days[di2].d+'</div></div>';found=true;}if(!found)dn.innerHTML='<span class="dash-next-emoji">👑</span><div><div class="dash-next-label">Durum</div><div class="dash-next-text"><strong>Programı tamamladın!</strong><br>Tebrikler, artık bir eBay uzmanısın.</div></div>';}
+}
+
+// ── TEMA ──────────────────────────────────────────────────────
+function toggleTheme(){if(!document.body||!document.body.classList)return;var isLight=document.body.classList.toggle('light');var btn=document.getElementById('theme-toggle');if(btn)btn.textContent=isLight?'☀️':'🌙';try{LS.setItem('mlynr6_theme',isLight?'light':'dark');}catch(e){}}
+function initTheme(){try{var t=LS.getItem('mlynr6_theme');if(t==='light'){if(document.body)document.body.classList.add('light');var btn=document.getElementById('theme-toggle');if(btn)btn.textContent='☀️';}}catch(e){}}
+
+// ── KAZANÇ HESAPLAYICI ────────────────────────────────────────
+function openEarn(){earnOpened=true;calcEarn();document.getElementById('earn-overlay').classList.add('show');document.getElementById('earn-popup').classList.add('show');}
+function closeEarn(){document.getElementById('earn-overlay').classList.remove('show');document.getElementById('earn-popup').classList.remove('show');}
+function calcEarn(){
+  var sales=Math.max(1,parseInt(document.getElementById('earn-sales').value)||3);
+  var profit=Math.max(1,parseFloat(document.getElementById('earn-profit').value)||5);
+  var hours=Math.max(0.5,parseFloat(document.getElementById('earn-hours').value)||2);
+  var goal=Math.max(100,parseInt(document.getElementById('earn-goal').value)||1000);
+  var daily=sales*profit,monthly=daily*30,yearly=daily*365;
+  document.getElementById('earn-result').innerHTML='<div class="earn-main-label">Mevcut Hedefin</div><div class="earn-grid"><div class="earn-stat"><div class="earn-stat-val">$'+daily.toFixed(0)+'</div><div class="earn-stat-lbl">Günlük</div></div><div class="earn-stat"><div class="earn-stat-val">$'+monthly.toFixed(0)+'</div><div class="earn-stat-lbl">Aylık</div></div><div class="earn-stat"><div class="earn-stat-val">$'+yearly.toFixed(0)+'</div><div class="earn-stat-lbl">Yıllık</div></div></div>';
+  var neededSales=Math.ceil(goal/profit/30),neededProducts=Math.ceil(neededSales*10),monthsToGoal=Math.ceil(neededProducts/Math.max(1,hours*2)/30);
+  var planEl=document.getElementById('earn-plan');
+  if(planEl){var goalStatus=monthly>=goal?'✅ Hedefe ulaştın!':'🎯 Hedefe ulaşmak için plan:';var planHtml='<div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.15);border-radius:12px;padding:14px 16px"><div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:#4ade80;text-transform:uppercase;margin-bottom:10px">'+goalStatus+'</div>';if(monthly<goal)planHtml+='<div style="font-size:12px;color:var(--text);line-height:1.8">📦 Aylık <strong>$'+goal+'</strong> için günde <strong>'+neededSales+' satış</strong> gerekli<br>🗂 Bunun için portföyünde <strong>~'+neededProducts+' ürün</strong> olmalı<br>⏱ ~<strong>'+monthsToGoal+' ayda</strong> bu hedefe ulaşırsın</div>';else planHtml+='<div style="font-size:12px;color:var(--text)">Mevcut hızınla aylık <strong>$'+monthly.toFixed(0)+'</strong> kazanıyorsun. Hedefini yükselt! 💪</div>';planHtml+='</div>';planEl.innerHTML=planHtml;}
+  var html='<div class="earn-sc-label">Büyüme Senaryoları</div>';
+  [[2,'Kucuk optimizasyonla'],[5,'Portfoyu 5x genisletmek'],[10,'Otomasyon ve olcekleme ile']].forEach(function(m){html+='<div class="earn-sc-item"><div class="earn-sc-left">'+m[1]+' — <strong>'+Math.round(sales*m[0])+' satis/gun</strong></div><div class="earn-sc-right">$'+Math.round(monthly*m[0]).toLocaleString()+'/ay</div></div>';});
+  document.getElementById('earn-scenarios').innerHTML=html;
+}
+
+// ── USER NAME ─────────────────────────────────────────────────
+function getUserName(){if(_userName)return _userName;try{var n=LS.getItem('mlynr6_name_'+email);if(n)return n;}catch(e){}return '';}
+function setUserName(name){_userName=name.trim();try{LS.setItem('mlynr6_name_'+email,_userName);}catch(e){}if(_user)_sb.from('progress').upsert({user_id:_user.id,full_name:_userName,updated_at:new Date().toISOString()},{onConflict:'user_id'}).then(function(){});}
+function openNamePopup(){document.getElementById('name-overlay').classList.add('show');document.getElementById('name-popup').classList.add('show');setTimeout(function(){document.getElementById('np-input').focus();},350);}
+function closeNamePopup(){document.getElementById('name-overlay').classList.remove('show');document.getElementById('name-popup').classList.remove('show');}
+function saveUserName(){var first=document.getElementById('np-input').value.trim(),last=document.getElementById('np-input2')?document.getElementById('np-input2').value.trim():'';if(!first){document.getElementById('np-input').focus();return;}var full=last?first+' '+last:first;setUserName(full);closeNamePopup();showWelcomeToast(first);updateNameUI();}
+function skipUserName(){closeNamePopup();}
+function showWelcomeToast(name){var toast=document.getElementById('welcome-toast'),span=document.getElementById('wt-name-span');if(!toast||!span)return;span.textContent=name.toUpperCase();toast.classList.add('show');setTimeout(function(){toast.classList.remove('show');},3500);}
+function updateNameUI(){var name=getUserName();if(!name)return;var firstName=name.split(' ')[0];var av=document.getElementById('uav');if(av)av.textContent=firstName.charAt(0).toUpperCase();var un=document.getElementById('uname');if(un)un.textContent=firstName;}
+
+// ── SERTİFİKA ─────────────────────────────────────────────────
+function updateCertSection(){var total=0;for(var wi=0;wi<WEEKS.length;wi++)total+=WEEKS[wi].days.length;var completed=done.length>=total;var locked=document.getElementById('cert-locked'),unlocked=document.getElementById('cert-unlocked');if(!locked||!unlocked)return;if(completed){locked.style.display='none';unlocked.style.display='flex';}else{locked.style.display='flex';unlocked.style.display='none';}}
+function openCert(){document.getElementById('cert-overlay').classList.add('show');document.getElementById('cert-popup').classList.add('show');setTimeout(certDraw,80);}
+function closeCert(){document.getElementById('cert-overlay').classList.remove('show');document.getElementById('cert-popup').classList.remove('show');}
+function certDownload(){try{var c=document.getElementById('cert-canvas'),a=document.createElement('a');a.download='mlynr-eticaret-uzman-sertifikasi.png';a.href=c.toDataURL('image/png');a.click();}catch(e){}}
+function certDraw(){
+  try{
+    var c=document.getElementById('cert-canvas');if(!c)return;
+    var W=2480,H=1754;c.width=W;c.height=H;var ctx=c.getContext('2d');
+    var now=new Date(),months2=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+    var recipientName=getUserName()||email.split('@')[0];
+    ctx.fillStyle='#080a09';ctx.fillRect(0,0,W,H);
+    var M=60;ctx.strokeStyle='rgba(250,204,21,0.55)';ctx.lineWidth=1.5;ctx.strokeRect(M,M,W-M*2,H-M*2);
+    var logoY=M+148;ctx.fillStyle='#ffffff';ctx.font='900 64px Arial, sans-serif';ctx.textAlign='center';ctx.fillText('MLYNR.',W/2,logoY);
+    var hr1Y=logoY+50;var hrg=ctx.createLinearGradient(M+60,0,W-M-60,0);hrg.addColorStop(0,'rgba(250,204,21,0)');hrg.addColorStop(0.5,'rgba(250,204,21,0.5)');hrg.addColorStop(1,'rgba(250,204,21,0)');ctx.strokeStyle=hrg;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(M+60,hr1Y);ctx.lineTo(W-M-60,hr1Y);ctx.stroke();
+    var labY=hr1Y+78;ctx.fillStyle='rgba(250,204,21,0.5)';ctx.font='600 22px monospace';ctx.textAlign='center';ctx.fillText('S E R T İ F İ K A',W/2,labY);
+    var titleY=labY+126;ctx.shadowColor='rgba(250,204,21,0.3)';ctx.shadowBlur=70;ctx.fillStyle='#facc15';ctx.font='900 128px Arial, sans-serif';ctx.textAlign='center';ctx.fillText('E-TİCARET UZMANI',W/2,titleY);ctx.shadowBlur=0;ctx.shadowColor='transparent';
+    var preY=titleY+148;ctx.fillStyle='rgba(255,255,255,0.28)';ctx.font='400 27px monospace';ctx.textAlign='center';ctx.fillText('Bu sertifika,',W/2,preY);
+    var nameY=preY+122;ctx.fillStyle='#ffffff';ctx.font='800 104px Arial, sans-serif';ctx.textAlign='center';ctx.fillText(recipientName,W/2,nameY);
+    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='400 27px monospace';ctx.textAlign='center';ctx.fillText('adına verilmiştir.',W/2,nameY+72);
+    var descY=nameY+148;ctx.fillStyle='rgba(255,255,255,0.36)';ctx.font='400 28px Arial, sans-serif';ctx.textAlign='center';ctx.fillText('Start & Scale Dropshipping programını başarıyla tamamlayarak',W/2,descY);ctx.fillText('eBay & Shopify e-ticaret alanında uzman seviyeye ulaşmıştır.',W/2,descY+44);
+    var sigY=descY+160;var LX=W/2-380,RX=W/2+380,LW=300;
+    ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(LX-LW/2,sigY+56);ctx.lineTo(LX+LW/2,sigY+56);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.85)';ctx.font='italic 700 38px Georgia, serif';ctx.textAlign='center';ctx.fillText('Canberk Öztürk',LX,sigY+48);
+    ctx.fillStyle='rgba(250,204,21,0.5)';ctx.font='600 19px monospace';ctx.textAlign='center';ctx.fillText('KURUCU · MLYNR.',LX,sigY+90);
+    var ds2=now.getDate()+' '+months2[now.getMonth()]+' '+now.getFullYear();
+    ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(RX-LW/2,sigY+56);ctx.lineTo(RX+LW/2,sigY+56);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.85)';ctx.font='700 38px Arial, sans-serif';ctx.textAlign='center';ctx.fillText(ds2,RX,sigY+48);
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='600 19px monospace';ctx.textAlign='center';ctx.fillText('TAMAMLANMA TARİHİ',RX,sigY+90);
+    var ftY=H-M-50;ctx.fillStyle='rgba(255,255,255,0.09)';ctx.font='400 18px monospace';ctx.textAlign='center';ctx.fillText('mlynr.com  ·  okul.mlynr.com',W/2,ftY);
+  }catch(e){console.error('certDraw error',e);}
+}
+
+// ── MENTOR ────────────────────────────────────────────────────
+function openMentorPopup(){document.getElementById('mentor-overlay').classList.add('show');document.getElementById('mentor-popup').classList.add('show');}
+function closeMentorPopup(){document.getElementById('mentor-overlay').classList.remove('show');document.getElementById('mentor-popup').classList.remove('show');}
+
+// ── İLK SATIŞ ─────────────────────────────────────────────────
+function openFirstSale(){
+  document.getElementById('firstsale-overlay').classList.add('show');
+  document.getElementById('firstsale-popup').classList.add('show');
+  var dlBtn=document.getElementById('fs-dl-btn'),instaBtn=document.getElementById('fs-insta-btn');
+  if(dlBtn)dlBtn.style.display='flex';if(instaBtn)instaBtn.style.display='none';
+  try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){}
+  if(_user)_sb.from('progress').upsert({user_id:_user.id,first_sale:true,updated_at:new Date().toISOString()},{onConflict:'user_id'}).then(function(){});
+  launchConfetti();playMoneySound();setTimeout(fsDrawCard,80);
+}
+function closeFirstSale(){document.getElementById('firstsale-overlay').classList.remove('show');document.getElementById('firstsale-popup').classList.remove('show');stopConfetti();}
+function fsShowShare(){var dlBtn=document.getElementById('fs-dl-btn'),instaBtn=document.getElementById('fs-insta-btn');if(dlBtn)dlBtn.style.display='none';if(instaBtn)instaBtn.style.display='flex';}
+function fsDownloadCard(){try{var c=document.getElementById('fs-canvas'),a=document.createElement('a');a.download='mlynr-ilk-satis.png';a.href=c.toDataURL('image/png');a.click();setTimeout(function(){fsShowShare();},400);}catch(e){}}
+function fsDrawCard(){
+  try{
+    var c=document.getElementById('fs-canvas');if(!c)return;
+    var W=1080,H=1920;c.width=W;c.height=H;
+    var ctx=c.getContext('2d');
+    var fsName=getUserName()||'Kursiyer';
+    var now2=new Date();
+    var ay=['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
+    var tarih=now2.getDate()+' '+ay[now2.getMonth()]+' '+now2.getFullYear();
+
+    // ARKAPLAN TAM SİYAH
+    ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+
+    // BEYAZ ÜST KUTU - H'nin tam yarısı
+    var BY=H/2;
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,W,BY);
+
+    // --- BEYAZ ALAN İÇERİĞİ ---
+
+    // MLYNR. logosu - sol üst, büyük ve belirgin
+    ctx.fillStyle='#000';
+    ctx.font='900 48px Arial,sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText('MLYNR.',72,90);
+
+    // Tarih sağ üst
+    ctx.fillStyle='rgba(0,0,0,0.25)';
+    ctx.font='400 26px monospace';
+    ctx.textAlign='right';
+    ctx.fillText(tarih,W-72,90);
+
+    // İnce çizgi logo altı
+    ctx.strokeStyle='rgba(0,0,0,0.08)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(72,112);ctx.lineTo(W-72,112);ctx.stroke();
+
+    // "İLK" - beyaz alanda, sol hizalı, alanı dolduruyor
+    ctx.fillStyle='#000';
+    ctx.font='900 340px Arial Black,Arial,sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText('İLK',56,BY-56);
+
+    // --- SİYAH ALAN ---
+    // "SATIŞ!" - sol hizalı, outline
+    ctx.save();
+    ctx.strokeStyle='#fff';
+    ctx.lineWidth=6;
+    ctx.lineJoin='round';
+    ctx.font='900 210px Arial Black,Arial,sans-serif';
+    ctx.textAlign='left';
+    ctx.strokeText('SATIŞ!',48,BY+230);
+    ctx.fillStyle='rgba(255,255,255,0.04)';
+    ctx.fillText('SATIŞ!',48,BY+230);
+    ctx.restore();
+
+    // AYIRICI
+    ctx.strokeStyle='rgba(255,255,255,0.15)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(72,BY+270);ctx.lineTo(W-72,BY+270);ctx.stroke();
+
+    // KAZANAN + İSİM
+    ctx.fillStyle='rgba(255,255,255,0.28)';
+    ctx.font='500 22px monospace';
+    ctx.textAlign='left';
+    ctx.fillText('KAZANAN',72,BY+330);
+
+    ctx.fillStyle='#fff';
+    var fSize=78;
+    ctx.font='700 '+fSize+'px Arial,sans-serif';
+    while(ctx.measureText(fsName.toUpperCase()).width>W-144&&fSize>36){
+      fSize-=3;ctx.font='700 '+fSize+'px Arial,sans-serif';
+    }
+    ctx.fillText(fsName.toUpperCase(),72,BY+420);
+
+    // AYIRICI 2
+    ctx.strokeStyle='rgba(255,255,255,0.08)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(72,BY+460);ctx.lineTo(W-72,BY+460);ctx.stroke();
+
+    // QUOTE - sol accent
+    ctx.fillStyle='rgba(255,255,255,0.15)';
+    ctx.fillRect(72,BY+485,2,148);
+
+    ctx.fillStyle='rgba(255,255,255,0.48)';
+    ctx.font='400 34px Arial,sans-serif';
+    ctx.textAlign='left';
+    var qlines=['"Basari bir gunde gelmiyor.','Her gun, bu anlardaki','kararlarda gizlidir."'];
+    var qy=BY+508;
+    for(var qi=0;qi<qlines.length;qi++){ctx.fillText(qlines[qi],96,qy);qy+=46;}
+
+    ctx.fillStyle='rgba(255,255,255,0.2)';
+    ctx.font='400 22px monospace';
+    ctx.fillText('Canberk Ozturk / MLYNR.',96,qy+16);
+
+    // ALT BAR
+    ctx.strokeStyle='rgba(255,255,255,0.1)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(72,H-96);ctx.lineTo(W-72,H-96);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.55)';
+    ctx.font='700 26px monospace';
+    ctx.textAlign='left';
+    ctx.fillText('mlynr.com',72,H-58);
+    ctx.fillStyle='rgba(255,255,255,0.2)';
+    ctx.font='400 26px monospace';
+    ctx.textAlign='right';
+    ctx.fillText('@canberkreels',W-72,H-58);
+
+  }catch(e){console.error('fsDrawCard:',e);}
+}
+
+// ── VERSİYON ──────────────────────────────────────────────────
+var APP_VERSION='2.1',VER_DESC='AI Koç eklendi + Canlı satış bildirimleri aktif!',VER_KEY='mlynr6_ver';
+function checkVersion(){try{var seen=LS.getItem(VER_KEY);if(seen!==APP_VERSION){var tag=document.getElementById('ver-tag'),desc=document.getElementById('ver-desc');if(tag)tag.textContent='v'+APP_VERSION;if(desc)desc.textContent=VER_DESC;setTimeout(function(){var b=document.getElementById('ver-banner');if(b)b.classList.add('show');},1200);}}catch(e){}}
+function dismissVer(){try{LS.setItem(VER_KEY,APP_VERSION);}catch(e){}var b=document.getElementById('ver-banner');if(b)b.classList.remove('show');}
+
+// ── SCROLL ANİMASYON ──────────────────────────────────────────
+var _animDone=false;
+function initScrollAnim(){
+  if(_animDone)return;_animDone=true;
+  var blocks=document.querySelectorAll('.week-block');if(!blocks.length)return;
+  if(!window.IntersectionObserver)return;
+  blocks.forEach(function(b,i){b.classList.add('anim-ready');b.style.transitionDelay=(i*0.12)+'s';});
+  var obs=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.remove('anim-ready');entry.target.classList.add('visible');obs.unobserve(entry.target);}});},{threshold:0.05});
+  blocks.forEach(function(b){obs.observe(b);});
+  setTimeout(function(){blocks.forEach(function(b){b.classList.remove('anim-ready');b.classList.add('visible');});},2000);
+}
+
+
+// ── ORBITAL BRİEFİNG ──────────────────────────────────────
+var _orbData=null,_orbTasks=[],_orbActive=-1,_orbRAF=null;
+
+function orbKey(){return 'mlynr6_orb4_'+email.replace(/[^a-z0-9]/gi,'_')+'_'+new Date().toISOString().slice(0,10);}
+function orbTaskKey(){return orbKey()+'_t';}
+function loadOrbCache(){try{var r=localStorage.getItem(orbKey());if(r)return JSON.parse(r);}catch(e){}return null;}
+function saveOrbCache(d){try{localStorage.setItem(orbKey(),JSON.stringify(d));}catch(e){}}
+function loadOrbTasks(){try{var r=localStorage.getItem(orbTaskKey());if(r)return JSON.parse(r);}catch(e){}return [];}
+function saveOrbTasks(t){try{localStorage.setItem(orbTaskKey(),JSON.stringify(t));}catch(e){}}
+
+function getOrbTasks(){
+  if(!_orbData)return[];
+  return[_orbData.gorev1,_orbData.gorev2,_orbData.gorev3,_orbData.gorev4,_orbData.gorev5].filter(function(t){return t&&t.length>0;});
+}
+
+function initBriefing(){
+  var cached=loadOrbCache();
+  if(cached){_orbData=cached;_orbTasks=loadOrbTasks();renderOrbInline();}
+  else{
+    var wrap=document.getElementById('orbital-inline');
+    if(wrap){
+      wrap.style.display='block';
+      var card=document.getElementById('orbital-inline-card');
+      if(card)card.innerHTML='<div class="orb-card-wrap"><div class="orb-skel-box"><div class="orb-sk" style="height:14px;width:55%"></div><div class="orb-sk" style="height:12px;width:80%"></div><div class="orb-sk" style="height:220px;width:100%;border-radius:12px;margin-top:4px"></div></div></div>';
+    }
+    var ad=getUserName()||'',gs=done.length,hf=Math.min(4,Math.ceil((gs+1)/7))||1;
+    var fs=false;try{fs=localStorage.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
+    fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({tool:'briefing',ad:ad.split(' ')[0],gunSayisi:gs,hafta:hf,ilkSatis:fs})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.error)throw new Error(d.error);
+      _orbData=d;_orbTasks=loadOrbTasks();saveOrbCache(d);renderOrbInline();
+    }).catch(function(){
+      var w=document.getElementById('orbital-inline');if(w)w.style.display='none';
+    });
+  }
+}
+
+function renderOrbInline(){
+  var wrap=document.getElementById('orbital-inline');
+  var card=document.getElementById('orbital-inline-card');
+  if(!wrap||!card||!_orbData)return;
+  wrap.style.display='block';
+  var now=new Date();
+  var G=['Pazar','Pazartesi','Sali','Carsamba','Persembe','Cuma','Cumartesi'];
+  var A=['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
+  var tarih=G[now.getDay()]+', '+now.getDate()+' '+A[now.getMonth()];
+  var tasks=getOrbTasks();
+  var tamamlanan=_orbTasks.length;
+  var dotsHtml='';tasks.forEach(function(_,i){dotsHtml+='<div class="orb-cdot'+(_orbTasks.indexOf(i)>-1?' done':'')+'"></div>';});
+
+  // Collapsed kart
+  card.innerHTML=
+    '<div class="orb-collapsed" id="orb-collapsed-btn" onclick="toggleOrbExpand()">'
+    +'<div class="orb-collapsed-av">C</div>'
+    +'<div class="orb-collapsed-info">'
+    +'<div class="orb-collapsed-title">Canberk’ten bugünkü görevlerin</div>'
+    +'<div class="orb-collapsed-sub" id="orb-collapsed-sub-el">'+tarih+' · '+tamamlanan+'/'+tasks.length+' tamamlandı</div>'
+    +'</div>'
+    +'<div class="orb-collapsed-dots" id="orb-collapsed-dots-el">'+dotsHtml+'</div>'
+    +'<span class="orb-collapsed-arrow">›</span>'
+    +'</div>'
+    +'<div id="orb-expanded" style="display:none">'
+    +'<div class="orb-card-wrap">'
+    +'<div class="orb-header">'
+    +'<div class="orb-av">C</div>'
+    +'<div class="orb-hinfo"><div class="orb-hname">Canberk Ozturk</div><div class="orb-hdate">'+tarih+'</div></div>'
+    +'<div class="orb-hbadge">Gunun Gorevleri</div>'
+    +'</div>'
+    +'<div class="orb-selamlama">'+_orbData.selamlama+'</div>'
+    +'<div class="orb-stage-wrap" id="orb-stage-wrap"></div>'
+    +'<div class="orb-footer-bar">'
+    +'<div class="orb-footer-tip"><strong>Ipucu:</strong> '+_orbData.pazar_ipucu+'</div>'
+    +'<div class="orb-footer-progress" id="orb-prog-dots">'+dotsHtml.replace(/orb-cdot/g,'orb-pdot')+'</div>'
+    +'</div>'
+    +'<div class="orb-motiv-bar">"'+_orbData.motivasyon+'"</div>'
+    +'</div>'
+    +'</div>';
+}
+
+function toggleOrbExpand(){
+  var exp=document.getElementById('orb-expanded');
+  var btn=document.getElementById('orb-collapsed-btn');
+  if(!exp)return;
+  var isOpen=exp.style.display!=='none';
+  if(isOpen){
+    exp.style.display='none';
+    if(btn)btn.classList.remove('open');
+    if(_orbRAF){cancelAnimationFrame(_orbRAF);_orbRAF=null;}
+  } else {
+    exp.style.display='block';
+    if(btn)btn.classList.add('open');
+    setTimeout(function(){buildOrbStage(getOrbTasks());},50);
+  }
+}
+
+
+function buildOrbStage(tasks){
+  var wrap=document.getElementById('orb-stage-wrap');if(!wrap)return;
+  wrap.innerHTML='';
+  var W=wrap.offsetWidth||600,H=320,cx=W/2,cy=H/2;
+  var R=Math.min(W*0.34,H*0.34);
+
+  // SVG bağlantı çizgileri
+  var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1';
+  tasks.forEach(function(_,i){
+    var a=(i/tasks.length)*Math.PI*2-(Math.PI/2);
+    var nx=cx+R*Math.cos(a),ny=cy+R*Math.sin(a);
+    var isDone=_orbTasks.indexOf(i)>-1;
+    var line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',cx);line.setAttribute('y1',cy);
+    line.setAttribute('x2',nx);line.setAttribute('y2',ny);
+    line.setAttribute('stroke',isDone?'rgba(34,197,94,0.35)':'rgba(255,255,255,0.07)');
+    line.setAttribute('stroke-width','1');line.setAttribute('stroke-dasharray','4,6');
+    line.id='orb-svgline-'+i;
+    svg.appendChild(line);
+  });
+  wrap.appendChild(svg);
+
+  // Orbit çemberi
+  var oc=document.createElement('div');
+  oc.className='orb-orbit-circle';
+  oc.style.cssText='width:'+(R*2)+'px;height:'+(R*2)+'px';
+  wrap.appendChild(oc);
+
+  // Merkez
+  var cent=document.createElement('div');
+  cent.style.cssText='position:absolute;top:'+cy+'px;left:'+cx+'px;transform:translate(-50%,-50%);z-index:5';
+  cent.innerHTML='<div class="orb-stage-center"><div class="orb-center-glow"></div><div class="orb-center-ring-outer"></div><div class="orb-center-ring-mid"></div><div class="orb-center-dot"><div class="orb-center-inner-dot"></div></div></div>';
+  wrap.appendChild(cent);
+
+  // Node'lar
+  tasks.forEach(function(t,i){
+    var a=(i/tasks.length)*Math.PI*2-(Math.PI/2);
+    var nx=cx+R*Math.cos(a),ny=cy+R*Math.sin(a);
+    var isDone=_orbTasks.indexOf(i)>-1;
+    var node=document.createElement('div');
+    node.className='orb-node-el';
+    node.id='orb-node-el-'+i;
+    node.style.cssText='left:'+nx+'px;top:'+ny+'px';
+    var auraSize=isDone?80:60;
+    var shortTitle=t.length>28?t.slice(0,28)+'…':t;
+    node.innerHTML=
+      '<div class="orb-node-tooltip">'+shortTitle+'</div>'
+      +'<div class="orb-node-aura" style="width:'+auraSize+'px;height:'+auraSize+'px"></div>'
+      +'<div class="orb-node-btn'+(isDone?' done-node':'')+((_orbActive===i)?' active':'')+'" id="orb-nb-'+i+'">'
+      +'<span class="orb-node-num" id="orb-nn-'+i+'">'+(isDone?'✓':(i+1))+'</span>'
+      +'</div>'
+      +'<div class="orb-node-lbl">Görev '+(i+1)+'</div>';
+    (function(idx,taskTxt){
+      node.addEventListener('click',function(e){
+        e.stopPropagation();
+        if(_orbActive===idx){_orbActive=-1;removeOrbCard();}
+        else{_orbActive=idx;showOrbTaskCard(idx,taskTxt,nx,ny,W,wrap);}
+        updateOrbNodeStyles(tasks);
+      });
+    })(i,t);
+    wrap.appendChild(node);
+  });
+
+  // Dışa tıklayınca kapat
+  wrap.addEventListener('click',function(){_orbActive=-1;removeOrbCard();updateOrbNodeStyles(tasks);});
+
+  // Orbit dönüş animasyonu
+  if(_orbRAF)cancelAnimationFrame(_orbRAF);
+  var ang=0;
+  var oring=oc;
+  function spin(){
+    if(_orbActive===-1){ang+=0.25;oring.style.transform='translate(-50%,-50%) rotate('+ang+'deg)';}
+    _orbRAF=requestAnimationFrame(spin);
+  }
+  _orbRAF=requestAnimationFrame(spin);
+}
+
+function updateOrbNodeStyles(tasks){
+  tasks.forEach(function(_,i){
+    var nb=document.getElementById('orb-nb-'+i);
+    var nn=document.getElementById('orb-nn-'+i);
+    if(!nb)return;
+    var isDone=_orbTasks.indexOf(i)>-1,isAct=_orbActive===i;
+    nb.className='orb-node-btn'+(isDone?' done-node':'')+(isAct?' active':'');
+    if(nn)nn.textContent=isDone?'✓':(i+1)+'';
+    var line=document.getElementById('orb-svgline-'+i);
+    if(line)line.setAttribute('stroke',isDone?'rgba(34,197,94,0.35)':'rgba(255,255,255,0.07)');
+  });
+}
+
+function showOrbTaskCard(idx,taskTxt,nx,ny,stageW,wrap){
+  removeOrbCard();
+  var isDone=_orbTasks.indexOf(idx)>-1;
+  var card=document.createElement('div');
+  card.className='orb-task-card';card.id='orb-tc-'+idx;
+  card.innerHTML=
+    '<div class="orb-tc-header">'
+    +'<div class="orb-tc-num">Görev '+(idx+1)+' / '+getOrbTasks().length+'</div>'
+    +'<div class="orb-tc-title">'+taskTxt+'</div>'
+    +'</div>'
+    +'<div class="orb-tc-footer">'
+    +'<div class="orb-tc-status '+(isDone?'done':'pending')+'">'+(isDone?'✓ Tamamlandı':'Bekliyor')+'</div>'
+    +'<button class="orb-tc-btn'+(isDone?' done':'')+'" onclick="toggleOrbTask('+idx+')">'+(isDone?'✓ Tamamlandı':'Tamamla →')+'</button>'
+    +'</div>';
+  var cardW=210;
+  var leftX=Math.max(8, Math.min(nx-cardW/2, stageW-cardW-8));
+  var cardTop=ny>140?ny-170:ny+54;
+  cardTop=Math.max(4, Math.min(cardTop, 260-160));
+  card.style.cssText='position:absolute;left:'+leftX+'px;top:'+cardTop+'px;width:'+cardW+'px';
+  wrap.appendChild(card);
+}
+
+function removeOrbCard(){
+  var els=document.querySelectorAll('[id^="orb-tc-"]');
+  els.forEach(function(el){el.remove();});
+}
+
+function toggleOrbTask(idx){
+  var pos=_orbTasks.indexOf(idx);
+  var wasNew=(pos===-1);
+  if(pos>-1)_orbTasks.splice(pos,1);else _orbTasks.push(idx);
+  saveOrbTasks(_orbTasks);
+  var tasks=getOrbTasks();
+
+  // Progress dots (açık panel)
+  var pd=document.getElementById('orb-prog-dots');
+  if(pd){var h='';tasks.forEach(function(_,i){h+='<div class="orb-pdot'+(_orbTasks.indexOf(i)>-1?' done':'')+'"></div>';});pd.innerHTML=h;}
+
+  // Collapsed kart dots - querySelector ile bul
+  var cd=document.getElementById('orb-collapsed-dots-el')||document.querySelector('.orb-collapsed-dots');
+  if(cd){var h2='';tasks.forEach(function(_,i){h2+='<div class="orb-cdot'+(_orbTasks.indexOf(i)>-1?' done':'')+'"></div>';});cd.innerHTML=h2;}
+
+  // Collapsed kart alt yazı
+  var cs=document.getElementById('orb-collapsed-sub-el')||document.querySelector('.orb-collapsed-sub');
+  if(cs){
+    var now2=new Date();
+    var G2=['Pazar','Pazartesi','Sali','Carsamba','Persembe','Cuma','Cumartesi'];
+    var A2=['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
+    cs.textContent=G2[now2.getDay()]+', '+now2.getDate()+' '+A2[now2.getMonth()]+' \xb7 '+_orbTasks.length+'/'+tasks.length+' tamamland\u0131';
+  }
+
+  // Node'ları güncelle
+  updateOrbNodeStyles(tasks);
+  // Kartı kapat
+  _orbActive=-1;removeOrbCard();
+
+  // Yeni tamamlandıysa mini confetti
+  if(wasNew){
+    launchMiniConfetti();
+    if(_orbTasks.length>=tasks.length){
+      setTimeout(showOrbComplete,400);
+    }
+  }
+}
+
+function launchMiniConfetti(){
+  var stage=document.getElementById('orb-stage-wrap');if(!stage)return;
+  var colors=['#22c55e','#fff','#86efac','#4ade80'];
+  for(var i=0;i<18;i++){
+    (function(){
+      var el=document.createElement('div');
+      var tx=(Math.random()-0.5)*120,ty=-(40+Math.random()*60);
+      el.style.cssText='position:absolute;width:5px;height:5px;border-radius:50%;pointer-events:none;z-index:400;'
+        +'background:'+colors[Math.floor(Math.random()*colors.length)]+';'
+        +'left:50%;top:45%;transition:transform .7s ease-out,opacity .7s ease-out;opacity:1;transform:translate(0,0)';
+      stage.appendChild(el);
+      requestAnimationFrame(function(){
+        el.style.transform='translate('+tx+'px,'+ty+'px)';
+        el.style.opacity='0';
+      });
+      setTimeout(function(){el.remove();},800);
+    })();
+  }
+}
+
+function showOrbComplete(){
+  var stage=document.getElementById('orb-stage-wrap');if(!stage)return;
+  if(document.getElementById('orb-complete-banner'))return;
+  var banner=document.createElement('div');
+  banner.id='orb-complete-banner';
+  banner.innerHTML='<div class="orb-complete-emoji">\uD83D\uDD25</div>'
+    +'<div class="orb-complete-title">Bug\u00fcn\u00fc <span>Ezdin!</span></div>'
+    +'<div class="orb-complete-sub">5 / 5 G\u00f6rev Tamamland\u0131</div>'
+    +'<div class="orb-complete-quote">"Bug\u00fcn att\u0131\u011f\u0131n ad\u0131m yar\u0131n 100 sat\u0131\u015f\u0131n temelidir."</div>';
+  stage.appendChild(banner);
+  setTimeout(function(){banner.classList.add('show');},50);
+  launchConfetti();
+}
+
+
+// ── ONBOARDING TOGGLE ────────────────────────────────────────
+function toggleOnboarding(){
+  var toggle = document.getElementById('onboarding-toggle');
+  var body = document.getElementById('onboarding-body');
+  var badge = document.getElementById('onboarding-badge');
+  var isOpen = toggle.classList.contains('open');
+  toggle.classList.toggle('open', !isOpen);
+  body.style.display = isOpen ? 'none' : 'block';
+  // Açıldıysa "okundu" olarak işaretle
+  if(!isOpen){
+    try{ localStorage.setItem('mlynr6_onboarding_read','1'); }catch(e){}
+    if(badge){ badge.textContent='Okundu ✓'; badge.classList.remove('unseen'); }
+  }
+}
+// Daha önce okuduysa badge güncelle
+(function(){
+  try{
+    if(localStorage.getItem('mlynr6_onboarding_read')==='1'){
+      var badge = document.getElementById('onboarding-badge');
+      if(badge){ badge.textContent='Okundu ✓'; badge.classList.remove('unseen'); }
+    }
+  }catch(e){}
+})();
+// ── INIT ──────────────────────────────────────────────────────
+document.getElementById('login-btn').addEventListener('click',doLogin);
+document.getElementById('inp-email').addEventListener('keydown',function(e){if(e.key==='Enter')doAuth();});
+document.getElementById('inp-invite').addEventListener('keydown',function(e){if(e.key==='Enter')doAuth();});
+document.getElementById('logout-btn').addEventListener('click',doLogout);
+initTheme();
+document.addEventListener('click',function(e){var menu=document.getElementById('hamburger-menu'),btn=document.getElementById('hamburger-btn');if(menu&&menu.classList.contains('open')&&!menu.contains(e.target)&&btn&&!btn.contains(e.target))closeMenu();});
+
+// ── OTOMATİK GİRİŞ ────────────────────────────────────────────
+(function(){
+  var hash=window.location.hash||'',params={};
+  hash.replace(/^#/,'').split('&').forEach(function(p){var kv=p.split('=');if(kv[0])params[decodeURIComponent(kv[0])]=decodeURIComponent(kv[1]||'');});
+  if(params['type']==='recovery'&&params['access_token']){
+    history.replaceState(null,'',window.location.pathname);
+    _sb.auth.setSession({access_token:params['access_token'],refresh_token:params['refresh_token']||''}).then(function(r){if(r.data&&r.data.session)showPasswordResetUI(r.data.session);else{document.getElementById('login-screen').classList.remove('hidden');document.getElementById('login-err').textContent='Bağlantı süresi dolmuş.';}});
+  }else{
+    _sb.auth.getSession().then(function(r){if(r.data&&r.data.session&&r.data.session.user){_user=r.data.session.user;email=_user.email;loadStateFromDB();}else document.getElementById('login-screen').classList.remove('hidden');});
+  }
+})();
+
+function showPasswordResetUI(session){
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.querySelector('.login-logo-sub').textContent='Yeni Şifre Belirle';
+  document.getElementById('inp-email').style.display='none';
+  document.querySelector('label[for="inp-email"]').style.display='none';
+  document.getElementById('inp-invite').placeholder='Yeni şifren (min 6 karakter)';
+  document.getElementById('login-err').style.color='#4ade80';
+  document.getElementById('login-err').textContent='Yeni şifreni gir.';
+  document.getElementById('login-btn').textContent='ŞİFREYİ GÜNCELLE →';
+  document.getElementById('login-btn').onclick=function(){
+    var pw=document.getElementById('inp-invite').value;
+    if(pw.length<6){document.getElementById('login-err').style.color='';document.getElementById('login-err').textContent='Şifre en az 6 karakter olmalı.';return;}
+    document.getElementById('login-btn').textContent='Güncelleniyor...';
+    _sb.auth.updateUser({password:pw}).then(function(r){
+      if(r.error){document.getElementById('login-err').style.color='';document.getElementById('login-err').textContent=r.error.message;document.getElementById('login-btn').textContent='ŞİFREYİ GÜNCELLE →';return;}
+      document.getElementById('login-err').style.color='#4ade80';document.getElementById('login-err').textContent='✓ Şifre güncellendi!';
+      if(session){_user=session.user;email=_user.email;}setTimeout(function(){loadStateFromDB();},1200);
+    });
+  };
+}
+</script>
+</body>
+</html>
 
   <div class="prog-section">
     <div class="prog-header">
