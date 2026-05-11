@@ -94,6 +94,26 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .mbtn-del{background:var(--red);color:#fff}
 .mbtn-del:hover{opacity:.88}
 
+
+/* ── TOPLU MESAJ ── */
+.bulk-section{max-width:1260px;margin:0 auto 28px;padding:0 0 28px;border-bottom:1px solid var(--border)}
+.bulk-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;font-family:var(--mono)}
+.quick-msgs{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.qmsg-item{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
+.qmsg-item:hover{border-color:var(--border2);background:rgba(255,255,255,.04)}
+.qmsg-item.selected{border-color:var(--green);background:rgba(34,197,94,.05)}
+.qmsg-emoji{font-size:18px;flex-shrink:0}
+.qmsg-text{font-size:12px;color:var(--text2);flex:1;line-height:1.5}
+.qmsg-item.selected .qmsg-text{color:var(--text)}
+.qmsg-check{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.qmsg-item.selected .qmsg-check{background:var(--green);border-color:var(--green)}
+.bulk-custom{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:13px;padding:12px 14px;outline:none;resize:none;min-height:80px;margin-bottom:12px;box-sizing:border-box}
+.bulk-custom:focus{border-color:rgba(255,255,255,.25)}
+.bulk-footer{display:flex;align-items:center;gap:10px}
+.bulk-count{font-family:var(--mono);font-size:10px;color:var(--text3);flex:1}
+.bulk-send-btn{background:#fff;color:#000;border:none;border-radius:8px;padding:11px 22px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:opacity .2s;white-space:nowrap}
+.bulk-send-btn:hover{opacity:.88}
+.bulk-send-btn:disabled{background:var(--border2);color:var(--text3);cursor:not-allowed}
 /* Toast */
 .toast{position:fixed;bottom:24px;right:24px;background:#1a1a1a;border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:13px;z-index:2000;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none}
 .toast.show{opacity:1;transform:translateY(0)}
@@ -127,7 +147,61 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
     </div>
   </div>
 
-  <div class="sgrid" id="sgrid"><div class="sc"><span class="spin"></span>Yükleniyor...</div></div>
+  
+  <!-- TOPLU MESAJ -->
+  <div class="bulk-section" id="bulk-section">
+    <div class="bulk-title">📢 Toplu Mesaj Gönder</div>
+    <div class="quick-msgs" id="quick-msgs">
+      <div class="qmsg-item" onclick="selectQuickMsg(this, '📦 Bugün en az 3 ürün listele. Her ürün için rakip fiyatlarını kontrol et ve %5 daha ucuz fiyatla gir. Başarılar! 💪')">
+        <div class="qmsg-emoji">📦</div>
+        <div class="qmsg-text">Bugün en az 3 ürün listele. Rakip fiyatlarını kontrol et, %5 daha ucuz gir.</div>
+        <div class="qmsg-check">✓</div>
+      </div>
+      <div class="qmsg-item" onclick="selectQuickMsg(this, '🔍 Bugünkü görevin: AutoDS üzerindeki tüm ürünlerinin fiyatlarını kontrol et. Fiyatı düşmüş rakip varsa hemen güncelle. Fiyat takibi kâr demektir!')">
+        <div class="qmsg-emoji">🔍</div>
+        <div class="qmsg-text">AutoDS'teki tüm ürün fiyatlarını kontrol et. Rakip düşürmüş mü? Hemen güncelle.</div>
+        <div class="qmsg-check">✓</div>
+      </div>
+      <div class="qmsg-item" onclick="selectQuickMsg(this, '⭐ Bugün geçmiş siparişlerini incele ve feedback almadığın alıcılara nazik bir hatırlatma mesajı gönder. Feedback = Güven = Daha fazla satış!')">
+        <div class="qmsg-emoji">⭐</div>
+        <div class="qmsg-text">Feedback almadığın alıcılara nazik hatırlatma gönder. Feedback = Güven = Satış.</div>
+        <div class="qmsg-check">✓</div>
+      </div>
+      <div class="qmsg-item" onclick="selectQuickMsg(this, '📊 Haftalık satış analizini yap. Hangi ürünler satıldı, hangileri satılmadı? Satılmayanları güncelle veya kaldır. Kârlı ürünlere benzerlerini ekle.')">
+        <div class="qmsg-emoji">📊</div>
+        <div class="qmsg-text">Haftalık satış analizi: satılmayanları kaldır, kazananlara benzer ürün ekle.</div>
+        <div class="qmsg-check">✓</div>
+      </div>
+      <div class="qmsg-item" onclick="selectQuickMsg(this, '🚀 Bugün yeni bir kategori dene! Şimdiye kadar listelediğin kategorilerin dışında bir alan araştır. Yeni niş = yeni fırsat. AutoDS Amerika deposunu tara.')">
+        <div class="qmsg-emoji">🚀</div>
+        <div class="qmsg-text">Yeni kategori dene! Hiç listelemedin bir niş araştır. Yeni niş = yeni fırsat.</div>
+        <div class="qmsg-check">✓</div>
+      </div>
+      <div class="qmsg-item" onclick="selectQuickMsg(this, '💰 Bugün kâr hesabını yap. Son 7 günde kaç satış? Toplam kâr ne kadar? Hedefine ne kadar kaldı? Rakamları bilmeden büyüyemezsin!')">
+        <div class="qmsg-emoji">💰</div>
+        <div class="qmsg-text">Kâr hesabı: son 7 gün kaç satış, toplam kâr ne kadar? Rakamları bil!</div>
+        <div class="qmsg-check">✓</div>
+      </div>
+      <div class="qmsg-item" onclick="selectQuickMsg(this, '🎯 Bugün satış limitini artırma talebinde bulun. eBay hesabına gir → Account → Selling Limits → Request higher selling limits. Her ay yapman gereken bir rutin!')">
+        <div class="qmsg-emoji">🎯</div>
+        <div class="qmsg-text">Satış limiti artırma talebi gönder: Account → Selling Limits → Request higher.</div>
+        <div class="qmsg-check">✓</div>
+      </div>
+      <div class="qmsg-item" onclick="selectQuickMsg(this, '📸 Bugün en iyi satan ürününün görselini güncelle. Beyaz arka plan, net fotoğraf ve infografik ekle. Görsel kalitesi = Dönüşüm oranı!')">
+        <div class="qmsg-emoji">📸</div>
+        <div class="qmsg-text">En iyi ürününün görselini güncelle. Beyaz arka plan + infografik = daha fazla satış.</div>
+        <div class="qmsg-check">✓</div>
+      </div>
+    </div>
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">veya özel mesaj yaz</div>
+    <textarea class="bulk-custom" id="bulk-custom" placeholder="Tüm kursiyerlere göndermek istediğin özel mesajı yaz..."></textarea>
+    <div class="bulk-footer">
+      <div class="bulk-count" id="bulk-count">0 kursiyer seçili</div>
+      <button class="bulk-send-btn" id="bulk-send-btn" onclick="sendBulkMessage()" disabled>📢 Herkese Gönder</button>
+    </div>
+  </div>
+
+<div class="sgrid" id="sgrid"><div class="sc"><span class="spin"></span>Yükleniyor...</div></div>
 
   <div class="toolbar">
     <input class="sinput" id="srch" placeholder="İsim ara..." oninput="renderTable()">
@@ -239,6 +313,7 @@ async function loadData(){
     });
     renderStats();
     renderTable();
+    updateBulkBtn();
     document.getElementById('lupd').textContent=new Date().toLocaleTimeString('tr-TR');
   } catch(e){
     document.getElementById('tbody').innerHTML='<div class="erow" style="color:var(--red)">Hata: '+e.message+'</div>';
@@ -316,6 +391,68 @@ function renderTable(){
   document.getElementById('tbody').innerHTML=html;
 }
 
+
+/* ── TOPLU MESAJ JS ── */
+var _selectedQuickMsg = '';
+
+function selectQuickMsg(el, msg){
+  // Önceki seçimi kaldır
+  document.querySelectorAll('.qmsg-item.selected').forEach(function(i){ i.classList.remove('selected'); });
+  el.classList.add('selected');
+  _selectedQuickMsg = msg;
+  document.getElementById('bulk-custom').value = '';
+  updateBulkBtn();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  var ta = document.getElementById('bulk-custom');
+  if(ta) ta.addEventListener('input', function(){
+    if(this.value.trim()) {
+      document.querySelectorAll('.qmsg-item.selected').forEach(function(i){ i.classList.remove('selected'); });
+      _selectedQuickMsg = '';
+    }
+    updateBulkBtn();
+  });
+});
+
+function updateBulkBtn(){
+  var msg = _selectedQuickMsg || (document.getElementById('bulk-custom') ? document.getElementById('bulk-custom').value.trim() : '');
+  var cnt = users.length;
+  var countEl = document.getElementById('bulk-count');
+  var btn = document.getElementById('bulk-send-btn');
+  if(countEl) countEl.textContent = cnt + ' kursiyer alacak';
+  if(btn) btn.disabled = (!msg || cnt === 0);
+}
+
+async function sendBulkMessage(){
+  var msg = _selectedQuickMsg || document.getElementById('bulk-custom').value.trim();
+  if(!msg){ showToast('Mesaj seçin veya yazın','err'); return; }
+  if(users.length === 0){ showToast('Kursiyer listesi boş','err'); return; }
+
+  var btn = document.getElementById('bulk-send-btn');
+  btn.disabled = true;
+  btn.textContent = 'Gönderiliyor...';
+
+  var success = 0, fail = 0;
+  for(var i = 0; i < users.length; i++){
+    try {
+      var d = await api('admin-message', { userId: users[i].user_id, message: msg });
+      if(d.error) fail++; else success++;
+    } catch(e){ fail++; }
+  }
+
+  btn.textContent = '📢 Herkese Gönder';
+  btn.disabled = false;
+
+  // Seçimi temizle
+  document.querySelectorAll('.qmsg-item.selected').forEach(function(i){ i.classList.remove('selected'); });
+  _selectedQuickMsg = '';
+  document.getElementById('bulk-custom').value = '';
+  updateBulkBtn();
+
+  showToast(success + ' kursiyere gönderildi' + (fail > 0 ? ' (' + fail + ' hata)' : '') + ' ✓', 'ok');
+}
+
 /* ── MESAJ ── */
 function openMsg(uid, name){
   activeUserId = uid; activeUserName = name;
@@ -381,7 +518,8 @@ function showToast(msg, type){
   t.className = 'toast show '+(type||'ok');
   setTimeout(function(){ t.className='toast'; }, 3000);
 }
-function esc(s){ return String(s).replace(/'/g,"\\'").replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
+function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
 </script>
 </body>
 </html>
