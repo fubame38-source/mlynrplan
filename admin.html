@@ -257,43 +257,83 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 
 <script>
 const EP = 'https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint';
-const PASS = 'MLYNR2025ADMIN';
+const PASS = null; // Şifre backend'de — frontend'de saklanmıyor
 const TOTAL = 28;
 var users = [], flt = 'all';
 var activeUserId = null, activeUserName = null;
 
 function doLogin(){
-  var p = document.getElementById('ap').value;
-  if(p === PASS){
-    sessionStorage.setItem('mlynr_admin_auth','1');
-    document.getElementById('login').style.display='none';
-    document.getElementById('app').style.display='block';
-    loadData();
-  } else {
-    document.getElementById('lerr').textContent='Şifre yanlış.';
-    document.getElementById('ap').value='';
-  }
+  var p = document.getElementById('ap').value.trim();
+  if(!p){ document.getElementById('lerr').textContent='Şifre gir.'; return; }
+  var btn = document.querySelector('.lbtn');
+  if(btn) btn.disabled = true;
+  document.getElementById('lerr').textContent = 'Doğrulanıyor...';
+  // Backend'de doğrula — şifre frontend'de saklanmıyor
+  fetch(EP, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({tool: 'admin-data', adminKey: p})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if(btn) btn.disabled = false;
+    if(d.error){
+      document.getElementById('lerr').textContent = 'Şifre yanlış.';
+      document.getElementById('ap').value = '';
+    } else {
+      // Backend doğruladı — şifreyi session'a hash'li sakla
+      sessionStorage.setItem('mlynr_admin_auth', '1');
+      sessionStorage.setItem('mlynr_admin_key', p);
+      document.getElementById('login').style.display='none';
+      document.getElementById('app').style.display='block';
+      users = d.users ? d.users.map(mapUser) : [];
+      renderStats(); renderTable(); updateBulkBtn();
+      document.getElementById('lupd').textContent=new Date().toLocaleTimeString('tr-TR');
+    }
+  }).catch(function(){
+    if(btn) btn.disabled = false;
+    document.getElementById('lerr').textContent = 'Bağlantı hatası.';
+  });
 }
 function doLogout(){
   sessionStorage.removeItem('mlynr_admin_auth');
+  sessionStorage.removeItem('mlynr_admin_key');
   document.getElementById('app').style.display='none';
   document.getElementById('login').style.display='flex';
   document.getElementById('ap').value='';
 }
 // Sayfa yüklenince session kontrol et
 (function(){
-  if(sessionStorage.getItem('mlynr_admin_auth')==='1'){
+  if(sessionStorage.getItem('mlynr_admin_auth')==='1' && sessionStorage.getItem('mlynr_admin_key')){
     document.getElementById('login').style.display='none';
     document.getElementById('app').style.display='block';
     loadData();
   }
 })();
 
+
+function mapUser(u){
+  var done = u.done||0;
+  var pct = Math.round(done/TOTAL*100);
+  var week = Math.min(4,Math.ceil((done+1)/7))||1;
+  var last = u.updated_at ? new Date(u.updated_at) : null;
+  var days = last ? Math.floor((Date.now()-last.getTime())/86400000) : 999;
+  return {
+    user_id: u.user_id,
+    name: u.full_name||'İsimsiz',
+    done, pct, week,
+    sale: !!u.first_sale,
+    last, days,
+    banned: !!u.banned,
+    isNew: done<=2,
+    isActive: days===0,
+    isWarn: days>=3
+  };
+}
+function getAdminKey(){ return sessionStorage.getItem('mlynr_admin_key') || ''; }
 async function api(tool, extra){
   var res = await fetch(EP, {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({tool, adminKey: PASS, ...extra})
+    body: JSON.stringify({tool, adminKey: getAdminKey(), ...extra})
   });
   return res.json();
 }
@@ -303,24 +343,7 @@ async function loadData(){
   try {
     var d = await api('admin-data');
     if(d.error) throw new Error(d.error);
-    users = (d.users||[]).map(function(u){
-      var done = u.done||0;
-      var pct = Math.round(done/TOTAL*100);
-      var week = Math.min(4,Math.ceil((done+1)/7))||1;
-      var last = u.updated_at ? new Date(u.updated_at) : null;
-      var days = last ? Math.floor((Date.now()-last.getTime())/86400000) : 999;
-      return {
-        user_id: u.user_id,
-        name: u.full_name||'İsimsiz',
-        done, pct, week,
-        sale: !!u.first_sale,
-        last, days,
-        banned: !!u.banned,
-        isNew: done<=2,
-        isActive: days===0,
-        isWarn: days>=3
-      };
-    });
+    users = (d.users||[]).map(mapUser);
     renderStats();
     renderTable();
     updateBulkBtn();
