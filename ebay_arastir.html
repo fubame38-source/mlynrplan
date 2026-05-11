@@ -289,7 +289,7 @@ function renderAmazonResults(results, query){
     if(item.price_raw){ h += '<div class="ac-price">' + item.price_raw + ' <span>Amazon fiyatı</span></div>'; }
     else { h += '<div class="ac-price" style="color:var(--text3);font-size:13px">Fiyat bulunamadı</div>'; }
     if(item.rating){ h += '<div class="ac-meta"><span class="ac-rating">★ ' + item.rating + '</span><span>' + (item.reviews ? item.reviews + ' yorum' : '') + '</span></div>'; }
-    h += '<button class="ac-btn">eBay'de Analiz Et →</button>';
+    h += "<button class='ac-btn'>eBay'de Analiz Et →</button>";
     h += '</div>';
   });
 
@@ -421,7 +421,7 @@ function renderAnalizKarti(amazon, amazonFiyat, ebay, ai, query){
   // eBay rakipler
   if(ebay.top_sellers && ebay.top_sellers.length){
     h += '<div class="rakip-list">';
-    h += '<div class="rakip-label">eBay\'de Rakipler</div>';
+  h += "<div class='rakip-label'>eBay'de Rakipler</div>";
     ebay.top_sellers.forEach(function(s, i){
       var ebayLink = s.link || 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(query);
       h += '<a class="rakip-row" href="' + ebayLink + '" target="_blank">';
