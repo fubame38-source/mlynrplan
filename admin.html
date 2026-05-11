@@ -265,6 +265,7 @@ var activeUserId = null, activeUserName = null;
 function doLogin(){
   var p = document.getElementById('ap').value;
   if(p === PASS){
+    sessionStorage.setItem('mlynr_admin_auth','1');
     document.getElementById('login').style.display='none';
     document.getElementById('app').style.display='block';
     loadData();
@@ -274,10 +275,19 @@ function doLogin(){
   }
 }
 function doLogout(){
+  sessionStorage.removeItem('mlynr_admin_auth');
   document.getElementById('app').style.display='none';
   document.getElementById('login').style.display='flex';
   document.getElementById('ap').value='';
 }
+// Sayfa yüklenince session kontrol et
+(function(){
+  if(sessionStorage.getItem('mlynr_admin_auth')==='1'){
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').style.display='block';
+    loadData();
+  }
+})();
 
 async function api(tool, extra){
   var res = await fetch(EP, {
