@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MLYNR. — eBay Ürün Araştırma</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#080808;--surface:#111;--surface2:#161616;--surface3:#1c1c1c;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);--border3:rgba(255,255,255,.2);
+  --text:#f0f0f0;--text2:#888;--text3:#444;--white:#fff;
+  --green:#22c55e;--green-ln:rgba(34,197,94,.25);--green-dim:rgba(34,197,94,.08);
+  --gold:#facc15;--gold-ln:rgba(250,204,21,.25);--gold-dim:rgba(250,204,21,.07);
+  --red:#ef4444;--red-ln:rgba(239,68,68,.25);--red-dim:rgba(239,68,68,.07);
+  --blue:#38bdf8;--blue-ln:rgba(56,189,248,.25);--blue-dim:rgba(56,189,248,.07);
+  --font:'Geist',sans-serif;--mono:'Geist Mono',monospace;--r:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* BG */
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:48px 48px}
+.bg-glow{position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(56,189,248,.04),transparent 70%);pointer-events:none;z-index:0}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(8,8,8,.9);border-bottom:1px solid var(--border);padding:0 clamp(16px,4vw,40px)}
+.topbar-inner{max-width:1000px;margin:0 auto;height:54px;display:flex;align-items:center;gap:12px}
+.back-link{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s}
+.back-link:hover{color:var(--text2)}
+.tb-sep{color:var(--text3);font-size:10px}
+.tb-title{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--text2)}
+.tb-badge{margin-left:auto;font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);background:var(--blue-dim);border:1px solid var(--blue-ln);border-radius:20px;padding:4px 10px}
+
+/* HERO */
+.hero{padding:clamp(40px,6vw,64px) clamp(20px,5vw,48px) 32px;max-width:1000px;margin:0 auto;position:relative;z-index:1}
+.hero-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.hero-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(56,189,248,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(56,189,248,0)}}
+.hero-title{font-size:clamp(32px,6vw,56px);font-weight:900;letter-spacing:-2px;line-height:1;color:var(--white);margin-bottom:8px}
+.hero-title span{color:var(--blue)}
+.hero-sub{font-size:14px;color:var(--text2);max-width:500px;line-height:1.6}
+
+/* SEARCH */
+.search-wrap{padding:0 clamp(20px,5vw,48px);max-width:1000px;margin:0 auto 32px;position:relative;z-index:1}
+.search-box{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:20px 24px;display:flex;gap:12px;align-items:center;transition:border-color .2s}
+.search-box:focus-within{border-color:var(--border3)}
+.search-icon{font-size:20px;flex-shrink:0}
+.search-input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--font);font-size:15px;font-weight:500}
+.search-input::placeholder{color:var(--text3)}
+.search-btn{background:var(--white);color:var(--bg);border:none;border-radius:10px;padding:12px 24px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.search-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,255,255,.15)}
+.search-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.search-hint{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text3);margin-top:10px;text-align:center}
+
+/* MAIN LAYOUT */
+.main{padding:0 clamp(20px,5vw,48px);max-width:1000px;margin:0 auto;position:relative;z-index:1;padding-bottom:80px}
+
+/* STATES */
+.state-empty{text-align:center;padding:80px 20px;color:var(--text3)}
+.state-empty .big-icon{font-size:48px;margin-bottom:16px;display:block}
+.state-empty h3{font-size:16px;font-weight:600;color:var(--text2);margin-bottom:8px}
+.state-empty p{font-size:13px;line-height:1.6}
+.state-loading{text-align:center;padding:60px 20px}
+.loading-ring{width:40px;height:40px;border:2px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+
+/* STEP INDICATOR */
+.step-bar{display:flex;align-items:center;gap:0;margin-bottom:28px}
+.step-item{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
+.step-item.active{color:var(--blue)}
+.step-item.done{color:var(--green)}
+.step-num{width:22px;height:22px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+.step-item.active .step-num{border-color:var(--blue);color:var(--blue);background:var(--blue-dim)}
+.step-item.done .step-num{border-color:var(--green);color:var(--green);background:var(--green-dim)}
+.step-line{flex:1;height:1px;background:var(--border);margin:0 12px}
+
+/* AMAZON RESULTS */
+.section-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.amazon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:32px}
+.amazon-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
+.amazon-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.amazon-card.selected{border-color:var(--blue);background:var(--blue-dim)}
+.amazon-card.selected::before{content:'✓ SEÇİLDİ';position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:7px;letter-spacing:1px;color:var(--blue);background:var(--blue-dim);border:1px solid var(--blue-ln);border-radius:4px;padding:2px 6px}
+.ac-img{width:100%;height:120px;object-fit:contain;border-radius:8px;background:rgba(255,255,255,.04);margin-bottom:12px}
+.ac-img-placeholder{width:100%;height:120px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px}
+.ac-title{font-size:12px;font-weight:500;color:var(--text);line-height:1.5;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ac-price{font-size:18px;font-weight:800;color:var(--white);letter-spacing:-0.5px;margin-bottom:6px}
+.ac-price span{font-size:12px;font-weight:400;color:var(--text3);margin-left:4px}
+.ac-meta{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:9px;color:var(--text3)}
+.ac-rating{color:var(--gold)}
+.ac-btn{width:100%;margin-top:12px;background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:8px;padding:10px;font-family:var(--font);font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s}
+.ac-btn:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.amazon-card.selected .ac-btn{background:var(--blue-dim);border-color:var(--blue-ln);color:var(--blue)}
+
+/* KAR ANALİZ KARTI */
+.analiz-wrap{margin-bottom:32px}
+.analiz-card{background:var(--surface);border:1px solid var(--border2);border-radius:16px;overflow:hidden;position:relative}
+.analiz-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent)}
+
+/* KARAR BANNER */
+.karar-banner{padding:24px 28px;display:flex;align-items:center;gap:20px}
+.karar-banner.green{background:var(--green-dim);border-bottom:1px solid var(--green-ln)}
+.karar-banner.yellow{background:var(--gold-dim);border-bottom:1px solid var(--gold-ln)}
+.karar-banner.red{background:var(--red-dim);border-bottom:1px solid var(--red-ln)}
+.karar-icon{font-size:32px;flex-shrink:0}
+.karar-text{}
+.karar-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+.karar-val{font-size:24px;font-weight:900;letter-spacing:-1px}
+.karar-val.green{color:var(--green)}
+.karar-val.yellow{color:var(--gold)}
+.karar-val.red{color:var(--red)}
+.karar-ozet{font-size:13px;color:var(--text2);line-height:1.6;margin-left:auto;max-width:380px;text-align:right}
+
+/* FİYAT KARŞILAŞTIRMA */
+.fiyat-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:center;padding:28px}
+.fiyat-box{text-align:center;padding:20px;border-radius:12px}
+.fiyat-box.amazon{background:rgba(255,153,0,.06);border:1px solid rgba(255,153,0,.2)}
+.fiyat-box.ebay{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.2)}
+.fiyat-platform{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.fiyat-platform.amazon{color:rgba(255,153,0,.8)}
+.fiyat-platform.ebay{color:var(--blue)}
+.fiyat-val{font-size:32px;font-weight:900;letter-spacing:-2px;color:var(--white);line-height:1;margin-bottom:4px}
+.fiyat-sub{font-size:11px;color:var(--text3)}
+.fiyat-arrow{text-align:center;padding:0 16px}
+.arrow-line{width:60px;height:2px;background:linear-gradient(90deg,rgba(255,153,0,.5),var(--green));margin:0 auto 6px}
+.arrow-kar{font-size:13px;font-weight:800;color:var(--green)}
+.arrow-pct{font-family:var(--mono);font-size:9px;color:var(--text3)}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border)}
+.stat-box{background:var(--surface);padding:18px 20px;text-align:center}
+.stat-label{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.stat-val{font-size:18px;font-weight:800;letter-spacing:-0.5px;color:var(--white)}
+.stat-val.green{color:var(--green)}
+.stat-val.red{color:var(--red)}
+.stat-val.yellow{color:var(--gold)}
+
+/* DETAY */
+.detay-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px 28px;border-top:1px solid var(--border)}
+.detay-box{background:var(--surface2);border-radius:10px;padding:14px 16px}
+.detay-title{font-size:11px;font-weight:600;margin-bottom:4px}
+.detay-title.green{color:var(--green)}
+.detay-title.red{color:var(--red)}
+.detay-text{font-size:12px;color:var(--text2);line-height:1.5}
+
+/* EBAY RAKIPLER */
+.rakip-list{padding:0 28px 24px}
+.rakip-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.rakip-row{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--surface2);border-radius:8px;margin-bottom:6px;cursor:pointer;transition:background .2s;text-decoration:none}
+.rakip-row:hover{background:var(--surface3)}
+.rakip-num{font-family:var(--mono);font-size:9px;color:var(--text3);min-width:20px}
+.rakip-title{flex:1;font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rakip-price{font-size:13px;font-weight:700;color:var(--white);flex-shrink:0}
+.rakip-cond{font-family:var(--mono);font-size:8px;color:var(--text3);flex-shrink:0}
+
+/* ACTIONS */
+.action-bar{display:flex;gap:10px;padding:20px 28px;border-top:1px solid var(--border)}
+.action-btn{flex:1;padding:14px;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px}
+.action-btn.primary{background:var(--white);color:var(--bg)}
+.action-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,255,255,.15)}
+.action-btn.ghost{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.action-btn.ghost:hover{border-color:var(--border3);color:var(--text)}
+.action-btn.ebay{background:var(--blue-dim);border:1px solid var(--blue-ln);color:var(--blue)}
+.action-btn.ebay:hover{background:rgba(56,189,248,.15)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;color:var(--text);z-index:9000;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.green{border-color:var(--green-ln);color:var(--green)}
+
+@media(max-width:640px){
+  .amazon-grid{grid-template-columns:1fr 1fr}
+  .fiyat-grid{grid-template-columns:1fr;gap:12px}
+  .fiyat-arrow{transform:rotate(90deg);padding:12px 0}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .detay-grid{grid-template-columns:1fr}
+  .action-bar{flex-direction:column}
+  .karar-banner{flex-direction:column;text-align:center}
+  .karar-ozet{text-align:center;margin-left:0}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="back-link">← Portal</a>
+    <span class="tb-sep">/</span>
+    <span class="tb-title">MLYNR.</span>
+    <div class="tb-badge">eBay Araştırma</div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow"><div class="hero-dot"></div>Amazon → eBay Kar Analizi</div>
+  <div class="hero-title">Ürün Ara,<br><span>Kar Hesapla</span></div>
+  <div class="hero-sub">Amazon'da ürünü bul, eBay'de ne kadara satıldığını gör, net kar ve rakip analizi al.</div>
+</div>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="search-input" type="text" placeholder="Ürün adı gir... (örn: posture corrector, knee brace, dog harness)" autocomplete="off">
+    <button class="search-btn" id="search-btn" onclick="doSearch()">Amazon'da Ara →</button>
+  </div>
+  <div class="search-hint">İngilizce veya Türkçe yazabilirsin · Enter ile ara</div>
+</div>
+
+<div class="main" id="main">
+  <div class="state-empty" id="state-empty">
+    <span class="big-icon">📦</span>
+    <h3>Ürün aramaya başla</h3>
+    <p>Amazon'da aradığın ürünü bul,<br>eBay'deki fiyatlarla karşılaştır ve kar hesapla.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var EP = 'https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint';
+var selectedProduct = null;
+
+document.getElementById('search-input').addEventListener('keydown', function(e){
+  if(e.key === 'Enter') doSearch();
+});
+
+function showToast(msg, cls){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (cls ? ' ' + cls : '') + ' show';
+  setTimeout(function(){ t.classList.remove('show'); }, 2800);
+}
+
+function setMain(html){
+  document.getElementById('main').innerHTML = html;
+}
+
+function doSearch(){
+  var q = document.getElementById('search-input').value.trim();
+  if(!q){ showToast('Ürün adı gir'); return; }
+  var btn = document.getElementById('search-btn');
+  btn.disabled = true;
+  btn.textContent = 'Aranıyor...';
+
+  setMain('<div class="state-loading"><div class="loading-ring"></div><div class="loading-text">Amazon\'da aranıyor...</div></div>');
+
+  fetch(EP, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({tool: 'amazon-search', query: q})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    btn.disabled = false;
+    btn.textContent = 'Amazon\'da Ara →';
+    if(d.error){ showToast('Hata: ' + d.error); setMain('<div class="state-empty"><span class="big-icon">⚠️</span><h3>Sonuç alınamadı</h3><p>Tekrar dene veya farklı bir ürün yaz.</p></div>'); return; }
+    if(!d.results || !d.results.length){ showToast('Sonuç bulunamadı'); setMain('<div class="state-empty"><span class="big-icon">🔍</span><h3>Sonuç bulunamadı</h3><p>Farklı bir ürün adı dene.</p></div>'); return; }
+    renderAmazonResults(d.results, q);
+  }).catch(function(e){
+    btn.disabled = false;
+    btn.textContent = 'Amazon\'da Ara →';
+    showToast('Bağlantı hatası');
+    setMain('<div class="state-empty"><span class="big-icon">⚠️</span><h3>Bağlantı hatası</h3><p>Tekrar dene.</p></div>');
+  });
+}
+
+function renderAmazonResults(results, query){
+  var h = '';
+  h += '<div class="step-bar">';
+  h += '<div class="step-item done"><div class="step-num">1</div>Amazon Sonuçları</div>';
+  h += '<div class="step-line"></div>';
+  h += '<div class="step-item active"><div class="step-num">2</div>eBay Analizi</div>';
+  h += '<div class="step-line"></div>';
+  h += '<div class="step-item"><div class="step-num">3</div>Kar Raporu</div>';
+  h += '</div>';
+
+  h += '<div class="section-label">Amazon Sonuçları — Analiz etmek istediğin ürünü seç</div>';
+  h += '<div class="amazon-grid">';
+
+  results.forEach(function(item, i){
+    var priceNum = item.price_raw ? parseFloat((item.price_raw + '').replace(/[^0-9.]/g,'')) : null;
+    h += '<div class="amazon-card" id="ac-' + i + '" onclick="selectProduct(' + i + ', ' + JSON.stringify(JSON.stringify(item)).slice(1,-1) + ', \'' + (item.title||'').replace(/'/g,"\\'").slice(0,50) + '\')">';
+    if(item.image){ h += '<img class="ac-img" src="' + item.image + '" alt="" onerror="this.style.display=\'none\'">'; }
+    else { h += '<div class="ac-img-placeholder">📦</div>'; }
+    h += '<div class="ac-title">' + (item.title || '').slice(0, 80) + '</div>';
+    if(item.price_raw){ h += '<div class="ac-price">' + item.price_raw + ' <span>Amazon fiyatı</span></div>'; }
+    else { h += '<div class="ac-price" style="color:var(--text3);font-size:13px">Fiyat bulunamadı</div>'; }
+    if(item.rating){ h += '<div class="ac-meta"><span class="ac-rating">★ ' + item.rating + '</span><span>' + (item.reviews ? item.reviews + ' yorum' : '') + '</span></div>'; }
+    h += '<button class="ac-btn">eBay\'de Analiz Et →</button>';
+    h += '</div>';
+  });
+
+  h += '</div>';
+  h += '<div id="analiz-section"></div>';
+
+  document.getElementById('main').innerHTML = h;
+  window._amazonResults = results;
+}
+
+function selectProduct(idx, itemJson, titleShort){
+  // Tüm seçimleri temizle
+  document.querySelectorAll('.amazon-card').forEach(function(c){ c.classList.remove('selected'); });
+  document.getElementById('ac-' + idx).classList.add('selected');
+
+  var item = window._amazonResults[idx];
+  selectedProduct = item;
+
+  var priceNum = null;
+  if(item.price_raw){
+    var raw = (item.price_raw + '').replace(/[^0-9.]/g,'');
+    priceNum = parseFloat(raw);
+  }
+
+  // eBay araması için İngilizce başlık kullan
+  var ebayQuery = item.title ? item.title.split(' ').slice(0, 5).join(' ') : titleShort;
+
+  // Analiz bölümüne loading göster
+  var sec = document.getElementById('analiz-section');
+  sec.innerHTML = '<div class="state-loading" style="padding:40px 0"><div class="loading-ring"></div><div class="loading-text">eBay fiyatları çekiliyor...</div></div>';
+  sec.scrollIntoView({behavior:'smooth', block:'start'});
+
+  // eBay'de ara
+  fetch(EP, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({tool: 'ebay-search', query: ebayQuery})
+  }).then(function(r){ return r.json(); }).then(function(ebay){
+    if(ebay.error){ sec.innerHTML = '<div class="state-empty"><span class="big-icon">⚠️</span><h3>eBay verisi alınamadı</h3><p>' + ebay.error + '</p></div>'; return; }
+
+    // AI kar analizi al
+    sec.innerHTML = '<div class="state-loading" style="padding:40px 0"><div class="loading-ring"></div><div class="loading-text">AI kar analizi yapılıyor...</div></div>';
+
+    fetch(EP, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        tool: 'kar-analiz',
+        urun_adi: item.title || ebayQuery,
+        amazon_fiyat: priceNum || 0,
+        ebay_avg: ebay.avg_price || 0,
+        ebay_min: ebay.min_price || 0,
+        ebay_max: ebay.max_price || 0,
+        rakip_sayisi: ebay.seller_count || 0
+      })
+    }).then(function(r){ return r.json(); }).then(function(ai){
+      renderAnalizKarti(item, priceNum, ebay, ai, ebayQuery);
+    }).catch(function(){
+      renderAnalizKarti(item, priceNum, ebay, null, ebayQuery);
+    });
+
+  }).catch(function(){
+    sec.innerHTML = '<div class="state-empty"><span class="big-icon">⚠️</span><h3>Bağlantı hatası</h3><p>Tekrar dene.</p></div>';
+  });
+}
+
+function renderAnalizKarti(amazon, amazonFiyat, ebay, ai, query){
+  var sec = document.getElementById('analiz-section');
+
+  var ebayAvg = parseFloat(ebay.avg_price || 0);
+  var ebayMin = parseFloat(ebay.min_price || 0);
+  var kar = amazonFiyat && ebayAvg ? (ebayAvg - amazonFiyat - (ebayAvg * 0.13) - 4).toFixed(2) : null;
+  var karPct = amazonFiyat && kar ? ((parseFloat(kar) / amazonFiyat) * 100).toFixed(0) : null;
+
+  var karar = ai ? ai.karar : (kar && parseFloat(kar) > 5 ? 'SAT' : kar && parseFloat(kar) > 0 ? 'DİKKAT' : 'SATMA');
+  var kararRenk = ai ? ai.karar_renk : (karar === 'SAT' ? 'green' : karar === 'DİKKAT' ? 'yellow' : 'red');
+  var kararIcon = karar === 'SAT' ? '🚀' : karar === 'DİKKAT' ? '⚠️' : '🛑';
+
+  // Step bar güncelle
+  document.querySelector('.step-bar').innerHTML = 
+    '<div class="step-item done"><div class="step-num">1</div>Amazon Sonuçları</div>' +
+    '<div class="step-line"></div>' +
+    '<div class="step-item done"><div class="step-num">2</div>eBay Analizi</div>' +
+    '<div class="step-line"></div>' +
+    '<div class="step-item active"><div class="step-num">3</div>Kar Raporu</div>';
+
+  var h = '<div class="section-label" style="margin-bottom:14px">Kar Analizi — ' + (amazon.title || query).slice(0,60) + '</div>';
+  h += '<div class="analiz-card analiz-wrap">';
+
+  // Karar banner
+  h += '<div class="karar-banner ' + kararRenk + '">';
+  h += '<div class="karar-icon">' + kararIcon + '</div>';
+  h += '<div class="karar-text"><div class="karar-label">AI Kararı</div><div class="karar-val ' + kararRenk + '">' + karar + '</div></div>';
+  if(ai && ai.ozet){ h += '<div class="karar-ozet">' + ai.ozet + '</div>'; }
+  h += '</div>';
+
+  // Fiyat karşılaştırma
+  h += '<div class="fiyat-grid">';
+  h += '<div class="fiyat-box amazon"><div class="fiyat-platform amazon">📦 Amazon (Maliyet)</div>';
+  h += '<div class="fiyat-val">' + (amazonFiyat ? '$' + amazonFiyat.toFixed(2) : 'N/A') + '</div>';
+  h += '<div class="fiyat-sub">Satın alma fiyatı</div></div>';
+
+  h += '<div class="fiyat-arrow"><div class="arrow-line"></div>';
+  h += '<div class="arrow-kar">' + (kar ? '+$' + kar : 'N/A') + '</div>';
+  h += '<div class="arrow-pct">' + (karPct ? '%' + karPct + ' kâr' : '') + '</div></div>';
+
+  h += '<div class="fiyat-box ebay"><div class="fiyat-platform ebay">🛒 eBay (Ortalama Satış)</div>';
+  h += '<div class="fiyat-val">' + (ebayAvg ? '$' + ebayAvg : 'N/A') + '</div>';
+  h += '<div class="fiyat-sub">' + (ebay.min_price && ebay.max_price ? '$' + ebay.min_price + ' – $' + ebay.max_price : 'Fiyat aralığı') + '</div></div>';
+  h += '</div>';
+
+  // Stats
+  h += '<div class="stats-grid">';
+  h += '<div class="stat-box"><div class="stat-label">Net Kar</div><div class="stat-val ' + (kar && parseFloat(kar) > 0 ? 'green' : 'red') + '">' + (ai && ai.net_kar ? ai.net_kar : (kar ? '$' + kar : 'N/A')) + '</div></div>';
+  h += '<div class="stat-box"><div class="stat-label">Kar Marjı</div><div class="stat-val ' + (karPct && parseInt(karPct) > 20 ? 'green' : 'yellow') + '">' + (ai && ai.kar_marji ? ai.kar_marji : (karPct ? '%' + karPct : 'N/A')) + '</div></div>';
+  h += '<div class="stat-box"><div class="stat-label">Rakip Sayısı</div><div class="stat-val ' + (ebay.seller_count < 20 ? 'green' : ebay.seller_count < 50 ? 'yellow' : 'red') + '">' + (ebay.seller_count || '—') + '</div></div>';
+  h += '<div class="stat-box"><div class="stat-label">Tavsiye Satış</div><div class="stat-val">' + (ai && ai.tavsiye_satis_fiyati ? ai.tavsiye_satis_fiyati : (ebayAvg ? '$' + (ebayAvg * 0.95).toFixed(2) : 'N/A')) + '</div></div>';
+  h += '</div>';
+
+  // Güçlü / Risk
+  if(ai && (ai.guclu || ai.risk)){
+    h += '<div class="detay-grid">';
+    if(ai.guclu){ h += '<div class="detay-box"><div class="detay-title green">✓ Güçlü Yön</div><div class="detay-text">' + ai.guclu + '</div></div>'; }
+    if(ai.risk){ h += '<div class="detay-box"><div class="detay-title red">⚠️ Risk</div><div class="detay-text">' + ai.risk + '</div></div>'; }
+    h += '</div>';
+  }
+
+  // eBay rakipler
+  if(ebay.top_sellers && ebay.top_sellers.length){
+    h += '<div class="rakip-list">';
+    h += '<div class="rakip-label">eBay\'de Rakipler</div>';
+    ebay.top_sellers.forEach(function(s, i){
+      var ebayLink = s.link || 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(query);
+      h += '<a class="rakip-row" href="' + ebayLink + '" target="_blank">';
+      h += '<span class="rakip-num">' + (i+1) + '</span>';
+      h += '<span class="rakip-title">' + (s.title || '').slice(0,60) + '</span>';
+      if(s.condition){ h += '<span class="rakip-cond">' + s.condition + '</span>'; }
+      h += '<span class="rakip-price">' + (s.price || '—') + '</span>';
+      h += '</a>';
+    });
+    h += '</div>';
+  }
+
+  // Action bar
+  h += '<div class="action-bar">';
+  h += '<a class="action-btn ebay" href="https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(query) + '" target="_blank">🛒 eBay\'de Gör</a>';
+  if(amazon.link){ h += '<a class="action-btn ghost" href="' + amazon.link + '" target="_blank">📦 Amazon\'da Gör</a>'; }
+  h += '<button class="action-btn primary" onclick="copyAnaliz()">📋 Analizi Kopyala</button>';
+  h += '</div>';
+
+  h += '</div>'; // analiz-card
+
+  sec.innerHTML = h;
+  sec.scrollIntoView({behavior:'smooth', block:'start'});
+
+  // Kopyalanacak veri sakla
+  window._lastAnaliz = {
+    urun: amazon.title || query,
+    amazon: amazonFiyat ? '$' + amazonFiyat.toFixed(2) : 'N/A',
+    ebay_avg: ebayAvg ? '$' + ebayAvg : 'N/A',
+    net_kar: ai && ai.net_kar ? ai.net_kar : (kar ? '$' + kar : 'N/A'),
+    kar_marji: ai && ai.kar_marji ? ai.kar_marji : (karPct ? '%' + karPct : 'N/A'),
+    karar: karar,
+    rakip: ebay.seller_count || 0
+  };
+}
+
+function copyAnaliz(){
+  if(!window._lastAnaliz){ return; }
+  var a = window._lastAnaliz;
+  var txt = '📦 ' + a.urun + '\n\nAmazon: ' + a.amazon + '\neBay Ort: ' + a.ebay_avg + '\nNet Kar: ' + a.net_kar + '\nKar Marjı: ' + a.kar_marji + '\nRakip: ' + a.rakip + '\nKarar: ' + a.karar;
+  navigator.clipboard.writeText(txt).then(function(){ showToast('Analiz kopyalandı ✓', 'green'); }).catch(function(){ showToast('Kopyalanamadı'); });
+}
+</script>
+</body>
+</html>
