@@ -704,6 +704,33 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .amsg-body{font-size:14px;color:var(--text);line-height:1.85;margin-bottom:24px;white-space:pre-wrap}
 .amsg-close{width:100%;background:#fff;color:#000;border:none;border-radius:10px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:1px;padding:14px;cursor:pointer;transition:opacity .2s}
 .amsg-close:hover{opacity:.88}
+
+/* ── BAŞLANGIÇ REHBERİ ── */
+.onboarding-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:28px;position:relative;z-index:1}
+.onboarding-title{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.onboarding-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.rule-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:flex;align-items:flex-start;gap:12px;transition:border-color .2s}
+.rule-card:hover{border-color:var(--border2)}
+.rule-card.warn{border-color:rgba(248,113,113,.18);background:rgba(248,113,113,.03)}
+.rule-card.ok{border-color:rgba(34,197,94,.15);background:rgba(34,197,94,.03)}
+.rule-card.tip{border-color:rgba(250,204,21,.15);background:rgba(250,204,21,.03)}
+.rule-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.rule-text{font-size:12px;color:var(--text2);line-height:1.65}
+.rule-text strong{color:var(--text);font-weight:600}
+.account-card{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:22px 26px;position:relative;overflow:hidden}
+.account-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(250,204,21,.5),transparent)}
+.account-card-title{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.account-card-title span{font-size:14px;font-weight:700;color:var(--text)}
+.account-card-badge{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(250,204,21,.7);background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.2);border-radius:20px;padding:3px 10px}
+.account-warnings{display:flex;flex-direction:column;gap:8px}
+.aw-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:10px;font-size:12px;color:var(--text2);line-height:1.7}
+.aw-item.red{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.15)}
+.aw-item.gold{background:rgba(250,204,21,.06);border:1px solid rgba(250,204,21,.15)}
+.aw-item.green{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.12)}
+.aw-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.aw-item strong{color:var(--text);font-weight:600}
+@media(max-width:640px){.rules-grid{grid-template-columns:1fr}}
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -903,6 +930,74 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
     <div class="st-emoji">🎉</div>
     <div class="st-msg">Başarılar Dilerim!</div>
     <div class="st-sub">Canberk Öztürk</div>
+  </div>
+
+
+  <!-- BAŞLANGIÇ REHBERİ -->
+  <div class="onboarding-section">
+    <div class="onboarding-title">🚀 Başlamadan Önce Bunları Bil</div>
+
+    <!-- 8 KURAL KARTI -->
+    <div class="rules-grid">
+      <div class="rule-card ok">
+        <div class="rule-icon">🎥</div>
+        <div class="rule-text"><strong>Tüm videoları izle</strong><br>Adım atlamadan sırayla izle. Atlanan her video ileride sorun çıkarır.</div>
+      </div>
+      <div class="rule-card warn">
+        <div class="rule-icon">🐢</div>
+        <div class="rule-text"><strong>Aceleci hareket etme</strong><br>Acele kararlar hesap sorunlarına yol açar. Her adımı anlayarak ilerle.</div>
+      </div>
+      <div class="rule-card ok">
+        <div class="rule-icon">💬</div>
+        <div class="rule-text"><strong>Destek hattına yaz</strong><br>Takıldığında bekletme, hemen destek hattına yaz. Telegram 10:00–23:00 açık.</div>
+      </div>
+      <div class="rule-card warn">
+        <div class="rule-icon">🚫</div>
+        <div class="rule-text"><strong>Eksik ve yanlış bilgi girme</strong><br>Hesap bilgilerini eksiksiz ve doğru gir. Yanlış bilgi ileride ciddi sorun olur.</div>
+      </div>
+      <div class="rule-card warn">
+        <div class="rule-icon">🔒</div>
+        <div class="rule-text"><strong>VPN kullanma</strong><br>eBay'e kesinlikle VPN ile girme. Botlar anlık ülke değişimini risk olarak algılar.</div>
+      </div>
+      <div class="rule-card warn">
+        <div class="rule-icon">📄</div>
+        <div class="rule-text"><strong>Yanlış belge gönderme</strong><br>Doğrulama sürecinde yanlış veya eksik belge göndermekten kaçın.</div>
+      </div>
+      <div class="rule-card tip">
+        <div class="rule-icon">💻</div>
+        <div class="rule-text"><strong>Aynı cihazdan gir</strong><br>eBay hesabına hep aynı cihazdan giriş yap. Farklı cihazlar şüphe çekebilir.</div>
+      </div>
+      <div class="rule-card tip">
+        <div class="rule-icon">⏳</div>
+        <div class="rule-text"><strong>Hızlı hareket etme</strong><br>İlk günlerde botlar her hareketini izler. Sabırlı ve ölçülü adımlar at.</div>
+      </div>
+    </div>
+
+    <!-- HESAP AÇILIŞ KARTI -->
+    <div class="account-card">
+      <div class="account-card-title">
+        <span>🏪 eBay Hesap Açılışında Kritik Noktalar</span>
+        <div class="account-card-badge">Mutlaka Oku</div>
+      </div>
+      <div class="account-warnings">
+        <div class="aw-item red">
+          <div class="aw-icon">📍</div>
+          <div><strong>Adres tam ve eksiksiz girilmeli</strong><br>eBay'e girdiğin adres ile Payoneer'deki adres <strong>birebir aynı</strong> olmalı. Küçük bir fark bile doğrulama sorunlarına yol açar. Mahalle, sokak, bina no — hiçbir detayı atlama.</div>
+        </div>
+        <div class="aw-item red">
+          <div class="aw-icon">🔒</div>
+          <div><strong>VPN ile eBay'e girme</strong><br>eBay botları anlık ülke değişimini risk olarak algılar ve hesabı <strong>suspend</strong> edebilir. VPN'i kapat, normal internet bağlantısıyla gir.</div>
+        </div>
+        <div class="aw-item gold">
+          <div class="aw-icon">⏳</div>
+          <div><strong>İlk 5 gün ürün listeleme</strong><br>Hesabı açtıktan sonra <strong>ilk 5 gün ürün listeleme.</strong> Bu sürede sadece ürün araştırması yap ve kaydet. Botlar yeni hesaplarda hızlı listelemeyi risk olarak görebilir. 5. günden sonra listelemeye başla.</div>
+        </div>
+        <div class="aw-item red">
+          <div class="aw-icon">✋</div>
+          <div><strong>Bilgileri sonradan değiştirme</strong><br>Adres, telefon, isim-soyisim — nasıl kaydolduysan <strong>öyle kal.</strong> Kayıt sonrası değişiklikler hesabında şüphe yaratır.</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="prog-section">
