@@ -282,15 +282,14 @@ function renderAmazonResults(results, query){
   h += '<div class="amazon-grid">';
 
   results.forEach(function(item, i){
-    var priceNum = item.price_raw ? parseFloat((item.price_raw + '').replace(/[^0-9.]/g,'')) : null;
-    h += '<div class="amazon-card" id="ac-' + i + '" onclick="selectProduct(' + i + ', ' + JSON.stringify(JSON.stringify(item)).slice(1,-1) + ', \'' + (item.title||'').replace(/'/g,"\\'").slice(0,50) + '\')">';
-    if(item.image){ h += '<img class="ac-img" src="' + item.image + '" alt="" onerror="this.style.display=\'none\'">'; }
+    h += '<div class="amazon-card" id="ac-' + i + '" data-idx="' + i + '" onclick="selectProduct(' + i + ')">';
+    if(item.image){ h += '<img class="ac-img" src="' + item.image + '" alt="" onerror="this.style.display=\'none\">'; }
     else { h += '<div class="ac-img-placeholder">📦</div>'; }
     h += '<div class="ac-title">' + (item.title || '').slice(0, 80) + '</div>';
     if(item.price_raw){ h += '<div class="ac-price">' + item.price_raw + ' <span>Amazon fiyatı</span></div>'; }
     else { h += '<div class="ac-price" style="color:var(--text3);font-size:13px">Fiyat bulunamadı</div>'; }
     if(item.rating){ h += '<div class="ac-meta"><span class="ac-rating">★ ' + item.rating + '</span><span>' + (item.reviews ? item.reviews + ' yorum' : '') + '</span></div>'; }
-    h += '<button class="ac-btn">eBay\'de Analiz Et →</button>';
+    h += '<button class="ac-btn">eBay'de Analiz Et →</button>';
     h += '</div>';
   });
 
@@ -301,12 +300,13 @@ function renderAmazonResults(results, query){
   window._amazonResults = results;
 }
 
-function selectProduct(idx, itemJson, titleShort){
+function selectProduct(idx){
   // Tüm seçimleri temizle
   document.querySelectorAll('.amazon-card').forEach(function(c){ c.classList.remove('selected'); });
   document.getElementById('ac-' + idx).classList.add('selected');
 
   var item = window._amazonResults[idx];
+  if(!item){ return; }
   selectedProduct = item;
 
   var priceNum = null;
@@ -316,7 +316,7 @@ function selectProduct(idx, itemJson, titleShort){
   }
 
   // eBay araması için İngilizce başlık kullan
-  var ebayQuery = item.title ? item.title.split(' ').slice(0, 5).join(' ') : titleShort;
+  var ebayQuery = item.title ? item.title.split(' ').slice(0, 6).join(' ') : 'product';
 
   // Analiz bölümüne loading göster
   var sec = document.getElementById('analiz-section');
