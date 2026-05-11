@@ -716,7 +716,7 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .ot-badge.unseen{color:var(--yellow, #facc15);background:rgba(250,204,21,.08);border-color:rgba(250,204,21,.2)}
 .ot-chevron{font-size:11px;color:var(--text3);transition:transform .25s;flex-shrink:0}
 .onboarding-toggle.open .ot-chevron{transform:rotate(180deg)}
-.onboarding-body{display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:18px;animation:fadeup .3s ease}
+.onboarding-body{display:none;pointer-events:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:18px;animation:fadeup .3s ease}
 @keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .rule-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:flex;align-items:flex-start;gap:12px;transition:border-color .2s}
@@ -816,7 +816,7 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
       </div>
 
       <!-- BAŞLANGIÇ REHBERİ -->
-      <div class="onboarding-section" style="padding:0;margin-top:0;margin-bottom:20px;max-width:none">
+      <div class="onboarding-section" style="padding:0;margin-top:0;margin-bottom:20px;max-width:none;position:relative;z-index:1">
         <div class="onboarding-toggle" id="onboarding-toggle" onclick="toggleOnboarding()">
           <span class="ot-icon">🚀</span>
           <span class="ot-title">Başlamadan Önce Bunları Bil</span>
