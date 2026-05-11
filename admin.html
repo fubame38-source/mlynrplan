@@ -18,7 +18,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .lbtn{width:100%;background:#fff;color:#000;border:none;border-radius:10px;padding:13px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase}
 .lbtn:hover{opacity:.88}
 .lerr{color:var(--red);font-size:12px;margin-top:10px;text-align:center;min-height:18px}
-#app{display:none;max-width:1200px;margin:0 auto;padding:28px 24px}
+#app{display:none;max-width:1260px;margin:0 auto;padding:28px 24px}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
 .hlogo{font-size:18px;font-weight:900;letter-spacing:-1px}
 .hbadge{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:6px;padding:4px 10px;margin-left:10px}
@@ -40,13 +40,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .fbtn.act{border-color:var(--green);color:var(--green)}
 .cbadge{font-size:10px;color:var(--text3);margin-left:auto}
 .tw{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.thead{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;padding:12px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}
+.thead{display:grid;grid-template-columns:2fr 1.2fr 0.6fr 0.6fr 1fr 0.7fr 1.2fr;padding:12px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}
 .th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
 .tbody{max-height:580px;overflow-y:auto}
-.row{display:grid;grid-template-columns:2fr 1.2fr 0.8fr 0.8fr 1fr 0.8fr;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center}
+.row{display:grid;grid-template-columns:2fr 1.2fr 0.6fr 0.6fr 1fr 0.7fr 1.2fr;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;transition:background .15s}
 .row:hover{background:rgba(255,255,255,.02)}
 .row:last-child{border-bottom:none}
 .row.wr{background:rgba(248,113,113,.03)}
+.row.banned-row{opacity:.5}
 .nm{font-size:13px;font-weight:600}
 .cp{display:flex;flex-direction:column;gap:5px}
 .pb{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
@@ -60,9 +61,44 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .bs{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
 .ba{background:rgba(96,165,250,.1);color:var(--blue);border:1px solid rgba(96,165,250,.2)}
 .bn{background:rgba(250,204,21,.1);color:var(--yellow);border:1px solid rgba(250,204,21,.2)}
+.bb{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.2)}
 .erow{padding:40px;text-align:center;color:var(--text3);font-size:13px}
 .spin{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:sp .8s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes sp{to{transform:rotate(360deg)}}
+
+/* Action buttons */
+.actions{display:flex;gap:5px}
+.abtn{border:none;border-radius:6px;padding:5px 9px;font-size:10px;font-family:var(--font);cursor:pointer;font-weight:600;letter-spacing:.5px;transition:all .15s}
+.abtn-msg{background:rgba(96,165,250,.12);color:var(--blue);border:1px solid rgba(96,165,250,.2)}
+.abtn-msg:hover{background:rgba(96,165,250,.25)}
+.abtn-ban{background:rgba(250,204,21,.1);color:var(--yellow);border:1px solid rgba(250,204,21,.2)}
+.abtn-ban:hover{background:rgba(250,204,21,.25)}
+.abtn-unban{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.abtn-unban:hover{background:rgba(34,197,94,.25)}
+.abtn-del{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.2)}
+.abtn-del:hover{background:rgba(248,113,113,.25)}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px)}
+.modal-overlay.hidden{display:none}
+.modal{background:#161616;border:1px solid var(--border2);border-radius:16px;padding:28px;width:100%;max-width:440px;position:relative}
+.modal-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--text2);margin-bottom:20px}
+.modal textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:13px;padding:12px 14px;outline:none;resize:vertical;min-height:100px}
+.modal textarea:focus{border-color:rgba(255,255,255,.3)}
+.modal-actions{display:flex;gap:8px;margin-top:14px;justify-content:flex-end}
+.mbtn{border:none;border-radius:8px;padding:9px 18px;font-size:12px;font-family:var(--font);font-weight:600;cursor:pointer;letter-spacing:.5px}
+.mbtn-cancel{background:rgba(255,255,255,.07);color:var(--text2)}
+.mbtn-send{background:#fff;color:#000}
+.mbtn-send:hover{opacity:.88}
+.mbtn-del{background:var(--red);color:#fff}
+.mbtn-del:hover{opacity:.88}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;background:#1a1a1a;border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:13px;z-index:2000;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.ok{border-color:rgba(34,197,94,.3);color:var(--green)}
+.toast.err{border-color:rgba(248,113,113,.3);color:var(--red)}
 </style>
 </head>
 <body>
@@ -99,6 +135,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
     <button class="fbtn" id="f-active" onclick="sf('active')">Bugün Aktif</button>
     <button class="fbtn" id="f-warn" onclick="sf('warn')">3+ Gün Yok ⚠️</button>
     <button class="fbtn" id="f-sale" onclick="sf('sale')">İlk Satış ✅</button>
+    <button class="fbtn" id="f-banned" onclick="sf('banned')" style="border-color:rgba(248,113,113,.2);color:var(--red)">Engelliler 🚫</button>
     <span class="cbadge" id="cbadge"></span>
   </div>
 
@@ -110,16 +147,46 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <div class="th">Gün</div>
       <div class="th">Son Giriş</div>
       <div class="th">Durum</div>
+      <div class="th">İşlemler</div>
     </div>
     <div class="tbody" id="tbody"><div class="erow"><span class="spin"></span>Yükleniyor...</div></div>
   </div>
 </div>
+
+<!-- Mesaj Modal -->
+<div class="modal-overlay hidden" id="msgModal">
+  <div class="modal">
+    <div class="modal-title">📩 Mesaj Gönder</div>
+    <div class="modal-sub" id="msgTarget">—</div>
+    <textarea id="msgText" placeholder="Mesajınızı yazın..."></textarea>
+    <div class="modal-actions">
+      <button class="mbtn mbtn-cancel" onclick="closeModal('msgModal')">İptal</button>
+      <button class="mbtn mbtn-send" onclick="sendMessage()">Gönder →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Silme Onay Modal -->
+<div class="modal-overlay hidden" id="delModal">
+  <div class="modal">
+    <div class="modal-title">🗑️ Kullanıcıyı Sil</div>
+    <div class="modal-sub" id="delTarget">Bu kullanıcı kalıcı olarak silinecek. Emin misin?</div>
+    <div class="modal-actions">
+      <button class="mbtn mbtn-cancel" onclick="closeModal('delModal')">İptal</button>
+      <button class="mbtn mbtn-del" onclick="confirmDelete()">Evet, Sil</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
 <script>
 const EP = 'https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint';
 const PASS = 'MLYNR2025ADMIN';
 const TOTAL = 28;
 var users = [], flt = 'all';
+var activeUserId = null, activeUserName = null;
 
 function doLogin(){
   var p = document.getElementById('ap').value;
@@ -138,25 +205,37 @@ function doLogout(){
   document.getElementById('ap').value='';
 }
 
+async function api(tool, extra){
+  var res = await fetch(EP, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({tool, adminKey: PASS, ...extra})
+  });
+  return res.json();
+}
+
 async function loadData(){
   document.getElementById('tbody').innerHTML='<div class="erow"><span class="spin"></span>Yükleniyor...</div>';
   try {
-    var res = await fetch(EP, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({tool:'admin-data', adminKey: PASS})
-    });
-    var d = await res.json();
-    if(d.error){ throw new Error(d.error); }
+    var d = await api('admin-data');
+    if(d.error) throw new Error(d.error);
     users = (d.users||[]).map(function(u){
       var done = u.done||0;
       var pct = Math.round(done/TOTAL*100);
       var week = Math.min(4,Math.ceil((done+1)/7))||1;
       var last = u.updated_at ? new Date(u.updated_at) : null;
       var days = last ? Math.floor((Date.now()-last.getTime())/86400000) : 999;
-      return {name:u.full_name||'İsimsiz',done:done,pct:pct,week:week,
-        sale:!!u.first_sale,last:last,days:days,
-        isNew:done<=2,isActive:days===0,isWarn:days>=3};
+      return {
+        user_id: u.user_id,
+        name: u.full_name||'İsimsiz',
+        done, pct, week,
+        sale: !!u.first_sale,
+        last, days,
+        banned: !!u.banned,
+        isNew: done<=2,
+        isActive: days===0,
+        isWarn: days>=3
+      };
     });
     renderStats();
     renderTable();
@@ -167,17 +246,23 @@ async function loadData(){
 }
 
 function renderStats(){
-  var t=users.length,a=0,w=0,s=0,pts=0;
-  users.forEach(function(u){if(u.isActive)a++;if(u.isWarn)w++;if(u.sale)s++;pts+=u.pct;});
+  var t=users.length,a=0,w=0,s=0,b=0,pts=0;
+  users.forEach(function(u){
+    if(u.isActive)a++;
+    if(u.isWarn)w++;
+    if(u.sale)s++;
+    if(u.banned)b++;
+    pts+=u.pct;
+  });
   var avg=t>0?Math.round(pts/t):0;
   document.getElementById('sgrid').innerHTML=
-    sc('','Toplam',t)+sc('sg','Bugün Aktif',a)+sc('sr','3+ Gün Yok',w)+sc('sy','İlk Satış',s)+sc('sb','Ort. İlerleme','%'+avg);
+    sc('','Toplam',t)+sc('sg','Bugün Aktif',a)+sc('sr','3+ Gün Yok',w)+sc('sy','İlk Satış',s)+sc('sb','Ort. İlerleme','%'+avg)+sc('sr','Engelliler',b);
 }
 function sc(cls,l,v){return'<div class="sc '+cls+'"><div class="sv">'+v+'</div><div class="sl">'+l+'</div></div>';}
 
 function sf(f){
   flt=f;
-  ['all','active','warn','sale'].forEach(function(id){
+  ['all','active','warn','sale','banned'].forEach(function(id){
     var el=document.getElementById('f-'+id);
     if(el)el.classList.toggle('act',id===f);
   });
@@ -191,6 +276,7 @@ function renderTable(){
     if(flt==='active')return u.isActive;
     if(flt==='warn')return u.isWarn;
     if(flt==='sale')return u.sale;
+    if(flt==='banned')return u.banned;
     return true;
   });
   document.getElementById('cbadge').textContent=list.length+' kursiyer';
@@ -204,21 +290,98 @@ function renderTable(){
     else if(u.days>=3){ts=u.days+' gün önce';tc='tw2';}
     else{ts=u.days+' gün önce';}
     var bgs='';
-    if(u.sale)bgs+='<span class="bg bs">Satış</span>';
-    if(u.isActive)bgs+='<span class="bg ba">Aktif</span>';
-    if(u.isNew)bgs+='<span class="bg bn">Yeni</span>';
-    html+='<div class="row'+(u.isWarn&&!u.isActive?' wr':'')+'">'+
+    if(u.banned) bgs+='<span class="bg bb">Engelli</span>';
+    if(u.sale) bgs+='<span class="bg bs">Satış</span>';
+    if(u.isActive) bgs+='<span class="bg ba">Aktif</span>';
+    if(u.isNew) bgs+='<span class="bg bn">Yeni</span>';
+
+    var banBtn = u.banned
+      ? '<button class="abtn abtn-unban" onclick="unbanUser(\''+u.user_id+'\',\''+esc(u.name)+'\')">Aç</button>'
+      : '<button class="abtn abtn-ban" onclick="banUser(\''+u.user_id+'\',\''+esc(u.name)+'\')">Engelle</button>';
+
+    html+='<div class="row'+(u.isWarn&&!u.isActive?' wr':'')+(u.banned?' banned-row':'')+'">'+
       '<div class="nm">'+esc(u.name)+'</div>'+
       '<div class="cp"><div class="pb"><div class="pf" style="width:'+u.pct+'%"></div></div><div class="pp">%'+u.pct+' · '+u.done+'/'+TOTAL+'</div></div>'+
       '<div class="cw">H.'+u.week+'</div>'+
       '<div class="cd">'+u.done+'</div>'+
       '<div class="'+tc+'">'+ts+'</div>'+
       '<div class="bgs">'+bgs+'</div>'+
+      '<div class="actions">'+
+        '<button class="abtn abtn-msg" onclick="openMsg(\''+u.user_id+'\',\''+esc(u.name)+'\')">Mesaj</button>'+
+        banBtn+
+        '<button class="abtn abtn-del" onclick="openDel(\''+u.user_id+'\',\''+esc(u.name)+'\')">Sil</button>'+
+      '</div>'+
     '</div>';
   });
   document.getElementById('tbody').innerHTML=html;
 }
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+/* ── MESAJ ── */
+function openMsg(uid, name){
+  activeUserId = uid; activeUserName = name;
+  document.getElementById('msgTarget').textContent = name + ' kullanıcısına mesaj';
+  document.getElementById('msgText').value = '';
+  document.getElementById('msgModal').classList.remove('hidden');
+}
+async function sendMessage(){
+  var msg = document.getElementById('msgText').value.trim();
+  if(!msg){ showToast('Mesaj boş olamaz','err'); return; }
+  try {
+    var d = await api('admin-message', {userId: activeUserId, message: msg});
+    if(d.error) throw new Error(d.error);
+    closeModal('msgModal');
+    showToast(activeUserName+' kullanıcısına mesaj gönderildi ✓','ok');
+  } catch(e){ showToast('Hata: '+e.message,'err'); }
+}
+
+/* ── ENGELLE ── */
+async function banUser(uid, name){
+  try {
+    var d = await api('admin-ban', {userId: uid});
+    if(d.error) throw new Error(d.error);
+    var u = users.find(function(x){return x.user_id===uid;});
+    if(u) u.banned = true;
+    renderTable(); renderStats();
+    showToast(name+' engellendi','ok');
+  } catch(e){ showToast('Hata: '+e.message,'err'); }
+}
+async function unbanUser(uid, name){
+  try {
+    var d = await api('admin-unban', {userId: uid});
+    if(d.error) throw new Error(d.error);
+    var u = users.find(function(x){return x.user_id===uid;});
+    if(u) u.banned = false;
+    renderTable(); renderStats();
+    showToast(name+' engeli kaldırıldı','ok');
+  } catch(e){ showToast('Hata: '+e.message,'err'); }
+}
+
+/* ── SİL ── */
+function openDel(uid, name){
+  activeUserId = uid; activeUserName = name;
+  document.getElementById('delTarget').textContent = '"'+name+'" kullanıcısı kalıcı olarak silinecek. Emin misin?';
+  document.getElementById('delModal').classList.remove('hidden');
+}
+async function confirmDelete(){
+  try {
+    var d = await api('admin-delete', {userId: activeUserId});
+    if(d.error) throw new Error(d.error);
+    users = users.filter(function(u){return u.user_id!==activeUserId;});
+    closeModal('delModal');
+    renderTable(); renderStats();
+    showToast(activeUserName+' silindi','ok');
+  } catch(e){ showToast('Hata: '+e.message,'err'); }
+}
+
+/* ── YARDIMCILAR ── */
+function closeModal(id){ document.getElementById(id).classList.add('hidden'); }
+function showToast(msg, type){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show '+(type||'ok');
+  setTimeout(function(){ t.className='toast'; }, 3000);
+}
+function esc(s){ return String(s).replace(/'/g,"\\'").replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 </script>
 </body>
 </html>
