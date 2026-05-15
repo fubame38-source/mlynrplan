@@ -384,6 +384,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .rm-cta-sec{display:inline-flex;align-items:center;gap:6px;background:transparent;color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px 18px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
 .rm-cta-sec:hover{border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7)}
 .rm-cta-sec:disabled{opacity:.4;cursor:not-allowed;transform:none}
+/* Mission card */
+.rm-mission-card{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:14px;padding:18px 20px;margin-bottom:16px;position:relative;overflow:hidden}
+.rm-mission-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.rm-mission-title{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:6px;line-height:1.3}
+.rm-mission-body{font-size:13px;color:rgba(255,255,255,.55);line-height:1.75;margin-bottom:12px}
+.rm-mission-steps{display:flex;flex-direction:column;gap:6px}
+.rm-mission-step{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(255,255,255,.5);line-height:1.5}
+.rm-mission-step-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:5px}
+/* Check-in seçim */
+#ci-submit-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
 .mp-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:6px}
 .mp-input,.mp-textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 14px;outline:none;transition:border-color .2s}
 .mp-input:focus,.mp-textarea:focus{border-color:rgba(255,255,255,.3)}
@@ -585,7 +595,7 @@ footer p{font-size:12px;color:var(--text3)}
     </div>
   </section>
 
-  <!-- KİŞİSEL YOL HARİTASI -->
+  <!-- MENTOR COMPANION KARTI -->
   <div class="section" style="margin-top:20px">
     <div id="roadmap-card">
       <div class="rm-outer">
@@ -594,7 +604,7 @@ footer p{font-size:12px;color:var(--text3)}
         <!-- Header -->
         <div class="rm-header">
           <div class="rm-eyebrow">
-            <div class="rm-eye-badge"><div class="rm-eye-dot"></div>MLYNR ANALİZ</div>
+            <div class="rm-eye-badge"><div class="rm-eye-dot"></div>MLYNR · KİŞİSEL MENTOR</div>
             <div class="rm-eye-line"></div>
             <div class="rm-eye-time" id="rm-timestamp"></div>
           </div>
@@ -605,31 +615,77 @@ footer p{font-size:12px;color:var(--text3)}
 
         <div class="rm-divider"></div>
 
-        <!-- Timeline -->
+        <!-- Günlük Görev -->
         <div class="rm-timeline">
-          <div class="rm-tl-label">4 Haftalık Yol Haritası</div>
+          <div class="rm-tl-label" id="rm-section-label">Bugünün Görevi</div>
+          <div id="rm-today-mission" style="display:none">
+            <div class="rm-mission-card" id="rm-mission-card"></div>
+          </div>
           <div class="rm-weeks" id="rm-weeks"></div>
         </div>
 
-        <!-- Kritik uyarı -->
+        <!-- Mentor mesajı -->
         <div class="rm-alert" id="rm-alert">
-          <div class="rm-alert-icon">⚡</div>
+          <div class="rm-alert-icon" id="rm-alert-icon">⚡</div>
           <div class="rm-alert-txt" id="rm-alert-txt"></div>
         </div>
 
         <!-- CTA -->
         <div class="rm-cta-row">
-          <button class="rm-cta-main" onclick="document.getElementById('modules-wrap').scrollIntoView({behavior:'smooth'})">
-            İlk Modüle Başla →
+          <button class="rm-cta-main" id="rm-cta-main-btn" onclick="document.getElementById('modules-wrap').scrollIntoView({behavior:'smooth'})">
+            Göreve Başla →
           </button>
           <button class="rm-cta-sec" onclick="openSupportBot()">
-            🤖 AI Koça Sor
+            💬 Mentöre Sor
           </button>
-          <button class="rm-cta-sec" onclick="refreshRoadmap()" id="rm-refresh-btn" style="margin-left:auto">
-            ↺ Yeni Plan
+          <button class="rm-cta-sec" onclick="openCheckin()" id="rm-refresh-btn" style="margin-left:auto">
+            📊 Durumu Güncelle
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- CHECK-IN POPUP -->
+  <div id="checkin-overlay" class="overlay" onclick="closeCheckin()"></div>
+  <div id="checkin-popup" class="popup" style="width:min(460px,96vw);padding:0;overflow:hidden">
+    <div style="padding:24px 26px 20px;border-bottom:1px solid var(--border)">
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:8px">● MLYNR · HAFTALIK CHECK-IN</div>
+      <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.4px" id="checkin-greeting">Nasıl gidiyor?</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:4px">Sana bu haftaya özel bir plan yapayım.</div>
+    </div>
+    <div style="padding:20px 26px 26px;display:flex;flex-direction:column;gap:14px">
+
+      <div>
+        <label class="mp-label">Bu hafta kaç modül tamamladın?</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap" id="ci-q1">
+          <button class="ob-choice" style="flex:1;min-width:80px" data-val="0" onclick="ciSelect(this,'ci-q1')"><span class="ob-choice-icon" style="font-size:16px">😴</span><div><div class="ob-choice-title">Hiç</div></div></button>
+          <button class="ob-choice" style="flex:1;min-width:80px" data-val="1-2" onclick="ciSelect(this,'ci-q1')"><span class="ob-choice-icon" style="font-size:16px">⚡</span><div><div class="ob-choice-title">1-2</div></div></button>
+          <button class="ob-choice" style="flex:1;min-width:80px" data-val="3+" onclick="ciSelect(this,'ci-q1')"><span class="ob-choice-icon" style="font-size:16px">🔥</span><div><div class="ob-choice-title">3+</div></div></button>
+        </div>
+      </div>
+
+      <div>
+        <label class="mp-label">Şu an nerede takıldın?</label>
+        <div style="display:flex;flex-direction:column;gap:6px" id="ci-q2">
+          <button class="ob-choice" data-val="hicbir" onclick="ciSelect(this,'ci-q2')"><span class="ob-choice-icon">✅</span><div><div class="ob-choice-title">Takılmadım, akış iyi</div></div></button>
+          <button class="ob-choice" data-val="urun" onclick="ciSelect(this,'ci-q2')"><span class="ob-choice-icon">🔍</span><div><div class="ob-choice-title">Ürün bulamıyorum</div></div></button>
+          <button class="ob-choice" data-val="teknik" onclick="ciSelect(this,'ci-q2')"><span class="ob-choice-icon">⚙️</span><div><div class="ob-choice-title">Teknik bir şeyde sıkıştım</div></div></button>
+          <button class="ob-choice" data-val="motivasyon" onclick="ciSelect(this,'ci-q2')"><span class="ob-choice-icon">🧠</span><div><div class="ob-choice-title">Motivasyon düşük</div></div></button>
+        </div>
+      </div>
+
+      <div>
+        <label class="mp-label">Bu hafta hedefin ne?</label>
+        <div style="display:flex;flex-direction:column;gap:6px" id="ci-q3">
+          <button class="ob-choice" data-val="modul" onclick="ciSelect(this,'ci-q3')"><span class="ob-choice-icon">📚</span><div><div class="ob-choice-title">Modülleri bitirmek</div></div></button>
+          <button class="ob-choice" data-val="urun-bul" onclick="ciSelect(this,'ci-q3')"><span class="ob-choice-icon">🎯</span><div><div class="ob-choice-title">Kazanan ürün bulmak</div></div></button>
+          <button class="ob-choice" data-val="magaza" onclick="ciSelect(this,'ci-q3')"><span class="ob-choice-icon">🛍️</span><div><div class="ob-choice-title">Mağazamı açmak</div></div></button>
+          <button class="ob-choice" data-val="ilk-satis" onclick="ciSelect(this,'ci-q3')"><span class="ob-choice-icon">🏆</span><div><div class="ob-choice-title">İlk satışı yapmak</div></div></button>
+        </div>
+      </div>
+
+      <button class="mp-save" onclick="submitCheckin()" id="ci-submit-btn" disabled>Planımı Güncelle ✨</button>
     </div>
   </div>
 
@@ -1409,15 +1465,7 @@ function obFinish(){
   }).then(function(r){return r.json();})
   .then(function(data){
     clearInterval(interval);
-    // shopify-endpoint'in cevap formatını handle et
-    var text='';
-    if(typeof data==='string'){text=data;}
-    else if(data.reply){text=data.reply;}
-    else if(data.content){text=data.content;}
-    else if(data.message){text=data.message;}
-    else if(data.result){text=data.result;}
-    else{text=JSON.stringify(data);}
-    // JSON'ı temizle
+    var text=extractApiText(data);
     text=text.replace(/```json/gi,'').replace(/```/g,'').trim();
     var match=text.match(/\{[\s\S]*\}/);
     if(!match)throw new Error('JSON yok');
@@ -1557,62 +1605,160 @@ function renderRoadmap(data){
   setTimeout(function(){card.scrollIntoView({behavior:'smooth',block:'nearest'});},300);
 }
 
-function refreshRoadmap(){
-  var btn=document.getElementById('rm-refresh-btn');
-  if(btn){btn.disabled=true;btn.textContent='⏳ Üretiyor...';}
+// API cevabından metin çıkar — shopify-endpoint data.sonuc döndürüyor
+function extractApiText(data){
+  if(typeof data==='string')return data;
+  if(data.sonuc)return data.sonuc;
+  if(data.reply)return data.reply;
+  if(data.content)return data.content;
+  if(data.message)return data.message;
+  if(data.result)return data.result;
+  return JSON.stringify(data);
+}
 
-  // Yenile animasyonu
-  var card=document.getElementById('roadmap-card');
-  if(card)card.style.opacity='.5';
+/* CHECK-IN SİSTEMİ */
+var ciAnswers={ci1:null,ci2:null,ci3:null};
+
+function ciSelect(btn,groupId){
+  var group=document.getElementById(groupId);
+  if(!group)return;
+  group.querySelectorAll('.ob-choice').forEach(function(b){b.classList.remove('selected');});
+  btn.classList.add('selected');
+  var qMap={'ci-q1':'ci1','ci-q2':'ci2','ci-q3':'ci3'};
+  ciAnswers[qMap[groupId]]=btn.getAttribute('data-val');
+  // 3 soru da cevaplandıysa butonu aktifleştir
+  if(ciAnswers.ci1&&ciAnswers.ci2&&ciAnswers.ci3){
+    var sb=document.getElementById('ci-submit-btn');
+    if(sb)sb.disabled=false;
+  }
+}
+
+function openCheckin(){
+  var fn=obFirstName||(email?email.split('@')[0]:'');
+  fn=fn.charAt(0).toUpperCase()+fn.slice(1).toLowerCase();
+  var greet=document.getElementById('checkin-greeting');
+  var h=new Date().getHours();
+  var timeGreet=h<12?'Günaydın':(h<18?'İyi günler':'İyi akşamlar');
+  if(greet)greet.textContent=timeGreet+', '+fn+' — nasıl gidiyor?';
+  // Reset
+  ciAnswers={ci1:null,ci2:null,ci3:null};
+  document.querySelectorAll('#checkin-popup .ob-choice').forEach(function(b){b.classList.remove('selected');});
+  var sb=document.getElementById('ci-submit-btn');
+  if(sb){sb.disabled=true;sb.textContent='Planımı Güncelle ✨';}
+  document.getElementById('checkin-overlay').classList.add('show');
+  document.getElementById('checkin-popup').classList.add('show');
+}
+
+function closeCheckin(){
+  document.getElementById('checkin-overlay').classList.remove('show');
+  document.getElementById('checkin-popup').classList.remove('show');
+}
+
+function submitCheckin(){
+  var sb=document.getElementById('ci-submit-btn');
+  if(sb){sb.disabled=true;sb.textContent='⏳ Hazırlanıyor...';}
 
   var fn=obFirstName||(email?email.split('@')[0]:'');
   fn=fn.charAt(0).toUpperCase()+fn.slice(1).toLowerCase();
 
-  var expMap={beginner:'Hiç tecrübesi yok, sıfırdan başlıyor',some:'Biraz eBay/e-ticaret deneyimi var',experienced:'Deneyimli ama ölçekleyemiyor'};
-  var timeMap={low:'Haftada 1-5 saat (part-time)',mid:'Haftada 5-15 saat',high:'Haftada 15+ saat (full-time)'};
-  var budgetMap={none:'$500 altı, bootstrap',mid:'$500-$2000',high:'$2000+'};
-  var fearMap={product:'Kazanan ürün bulamıyor',ads:'Meta reklamları karmaşık',store:'Shopify teknik kurulum',scale:'Satış var büyüyemiyor'};
+  // İlerleme bilgisi
+  var completedCount=done?done.length:0;
+  var totalCount=0;
+  if(typeof MODULES!=='undefined')MODULES.forEach(function(m){totalCount+=m.videos.length;});
 
-  var systemPrompt='Sen MLYNR\'ın kişisel Shopify koçusun. Önceki plandan tamamen farklı, çok daha spesifik ve sürpriz bir strateji üret. Herkesin bilmediği trickler ver.';
+  var modMap={'0':'Hiç modül tamamlamadı bu hafta','1-2':'1-2 modül tamamladı','3+':'3 veya daha fazla modül tamamladı'};
+  var stuckMap={'hicbir':'Takılmadım, iyi gidiyor','urun':'Kazanan ürün bulmakta zorlanıyor','teknik':'Teknik bir konuda sıkıştı','motivasyon':'Motivasyon düşük, zorlanıyor'};
+  var goalMap={'modul':'Modülleri bitirmek','urun-bul':'Kazanan ürün bulmak','magaza':'Mağaza açmak','ilk-satis':'İlk satışı yapmak'};
 
-  var userPrompt=fn+' için ALTERNATİF 4 haftalık plan — öncekinden farklı açıdan yaklaş:\n\n'
-    +'Profil: '+expMap[obAnswers.q1]+' | '+timeMap[obAnswers.q2]+' | '+budgetMap[obAnswers.q3]+' | Sorun: '+fearMap[obAnswers.q4]+'\n\n'
-    +'Bu sefer:\n'
-    +'- Herkesin bilmediği, mentörlerin gizli tuttuğu 1 özel trick ekle\n'
-    +'- Rakiplerin kullanmadığı bir açıdan yaklaş\n'
-    +'- Bu kişinin profiline göre çoğunun atlayıp zarar gördüğü 1 hatayı öne çıkar\n'
-    +'- Her hafta için çok spesifik eylem (modül adı + ne yapacak + kaç gün)\n\n'
+  var systemPrompt='Sen MLYNR Shopify mentörlük programının kişisel koçusun. Adın yok — sadece kursiyerin yanında olan biri gibi konuşuyorsun. SICAK, DOĞRUDAN ve CESARET VERİCİ bir ton kullan. Sanki yıllardır tanıdığın bir arkadaşına mentörlük yapıyorsun. Robotik veya resmi olma. JSON formatında yanıt ver.';
+
+  var userPrompt=fn+' adlı kursiyerin haftalık durumu:\n\n'
+    +'Bu hafta: '+modMap[ciAnswers.ci1]+'\n'
+    +'Takılma noktası: '+stuckMap[ciAnswers.ci2]+'\n'
+    +'Bu haftaki hedefi: '+goalMap[ciAnswers.ci3]+'\n'
+    +'Toplam ilerleme: '+completedCount+' / '+totalCount+' ders tamamlandı\n\n'
+    +'Görev:\n'
+    +'1. BUGÜN yapması gereken tek bir somut aksiyon (çok spesifik, 1 cümle)\n'
+    +'2. Bu haftaki 3 adım (her biri kısa ve aksiyon odaklı)\n'
+    +'3. Durumuna özel sıcak bir mentor mesajı (2-3 cümle, sanki arkadaşın gibi, cesaret ver veya uyar)\n'
+    +'4. Takıldığı konuya özel 1 somut ipucu\n\n'
     +'SADECE JSON dön:\n'
-    +'{"baslik":"'+fn+' için alternatif başlık","ozet":"Öncekinden farklı strateji neden daha iyi — 2 güçlü cümle","adimlar":[{"baslik":"Hafta 1","detay":"Spesifik eylem + modül + süre"},{"baslik":"Hafta 2","detay":"..."},{"baslik":"Hafta 3","detay":"..."},{"baslik":"Hafta 4","detay":"..."}],"odak":"Herkesin bilmediği 1 özel trick veya rakiplerin görmezden geldiği fırsat"}';
+    +'{"bugun":"Bugün tek yapman gereken şu: [somut aksiyon]","haftaAdimlari":["adım 1","adım 2","adım 3"],"mentorMesaj":"[sıcak, samimi, kişisel mesaj]","ipucu":"[takıldığı konuya özel trick]"}';
 
   fetch(SUPPORT_FN,{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY},
-    body:JSON.stringify({prompt:systemPrompt+'\n\n'+userPrompt})
+    body:JSON.stringify({prompt:userPrompt, system:systemPrompt})
   }).then(function(r){return r.json();})
   .then(function(data){
-    var text='';
-    if(typeof data==='string'){text=data;}
-    else if(data.reply){text=data.reply;}
-    else if(data.content){text=data.content;}
-    else if(data.message){text=data.message;}
-    else if(data.result){text=data.result;}
+    var text=extractApiText(data);
     text=text.replace(/```json/gi,'').replace(/```/g,'').trim();
     var match=text.match(/\{[\s\S]*\}/);
     if(!match)throw new Error('JSON yok');
     var parsed=JSON.parse(match[0]);
-    if(!parsed.baslik||!parsed.adimlar)throw new Error('Eksik');
-    try{LS.setItem(obRmKey(),JSON.stringify(parsed));}catch(e){}
-    if(card)card.style.opacity='1';
-    if(btn){btn.disabled=false;btn.textContent='↺ Yeni Plan';}
-    renderRoadmap(parsed);
-    showToast('Yeni plan hazır — farklı bir açıdan baktık 🎯','green');
+    closeCheckin();
+    // Planı kaydet
+    var existingRm=null;
+    try{existingRm=JSON.parse(LS.getItem(obRmKey())||'null');}catch(e){}
+    var updated=existingRm||{};
+    updated.checkin=parsed;
+    updated.checkinDate=new Date().toISOString();
+    try{LS.setItem(obRmKey(),JSON.stringify(updated));}catch(e){}
+    // Kartı güncelle
+    renderCheckinResult(parsed,fn);
+    showToast('Plan güncellendi — hadi başlayalım! 💪','green');
   }).catch(function(){
-    if(card)card.style.opacity='1';
-    if(btn){btn.disabled=false;btn.textContent='↺ Yeni Plan';}
-    showToast('Şu an bağlanamadım, tekrar dene.','');
+    closeCheckin();
+    if(sb){sb.disabled=false;sb.textContent='Planımı Güncelle ✨';}
+    showToast('Bağlanamadım, tekrar dene.','');
   });
 }
+
+function renderCheckinResult(ci,fn){
+  // Başlık güncelle
+  var heroTitle=document.getElementById('rm-hero-title');
+  if(heroTitle)heroTitle.innerHTML='<span class="rm-name">'+fn+'</span>, bugün tek hedef var.';
+
+  var heroSub=document.getElementById('rm-hero-sub');
+  if(heroSub)heroSub.textContent=ci.mentorMesaj||'';
+
+  // Mission card göster
+  var missionWrap=document.getElementById('rm-today-mission');
+  var missionCard=document.getElementById('rm-mission-card');
+  var sectionLabel=document.getElementById('rm-section-label');
+  if(sectionLabel)sectionLabel.textContent='Bugünün Görevi';
+
+  if(missionWrap&&missionCard){
+    missionWrap.style.display='block';
+    missionCard.innerHTML=
+      '<div class="rm-mission-title">'+escapeHtml(ci.bugun||'')+'</div>'
+      +(ci.ipucu?'<div class="rm-mission-body">💡 '+escapeHtml(ci.ipucu)+'</div>':'')
+      +(ci.haftaAdimlari&&ci.haftaAdimlari.length?
+        '<div class="rm-mission-steps">'+ci.haftaAdimlari.map(function(s){
+          return '<div class="rm-mission-step"><div class="rm-mission-step-dot"></div><span>'+escapeHtml(s)+'</span></div>';
+        }).join('')+'</div>':'');
+  }
+
+  // Hafta kartlarını gizle (artık günlük görev var)
+  var weeksEl=document.getElementById('rm-weeks');
+  if(weeksEl)weeksEl.style.display='none';
+
+  // Alert güncelle
+  var alertIcon=document.getElementById('rm-alert-icon');
+  var alertTxt=document.getElementById('rm-alert-txt');
+  if(alertIcon)alertIcon.textContent='🎯';
+  if(alertTxt)alertTxt.innerHTML='<strong>Bu hafta önceliğin:</strong> '+escapeHtml(ci.haftaAdimlari&&ci.haftaAdimlari[0]||'Modüllere devam et');
+
+  // CTA butonu güncelle
+  var ctaBtn=document.getElementById('rm-cta-main-btn');
+  if(ctaBtn){ctaBtn.textContent='Göreve Başla →';}
+}
+
+function escapeHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function refreshRoadmap(){} // eski referans için boş bırak
 function saveUserName(){
   // Eski compat — artık obFinish üzerinden gidiyor
   var fn=document.getElementById('inp-firstname').value.trim();
