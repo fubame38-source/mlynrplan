@@ -301,7 +301,9 @@ footer p{font-size:12px;color:var(--text3)}
   <p>MLYNR. İçerik Stüdyosu · <a href="https://mlynrplan.com/shopify_portal.html" style="color:var(--text2);text-decoration:none">Portala Dön</a></p>
 </footer>
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
+var _sb=supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU');
 var API_URL='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/shopify-endpoint';
 // URL'den kullanıcı email'ini al
 var _userEmail=(function(){try{var p=new URLSearchParams(window.location.search);var u=p.get('u');return u?decodeURIComponent(u):'';}catch(e){return '';}}());
@@ -882,6 +884,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Kullanıcı etiketini göster
   var lbl=document.getElementById('cal-user-label');
   if(lbl&&_userEmail){lbl.textContent=_userEmail.split('@')[0].toUpperCase();}
+  // Supabase session'ı canlı tut - portala dönerken login çıkmasın
+  try{_sb.auth.getSession().then(function(r){if(r.data&&r.data.session){_sb.auth.setSession(r.data.session);}});}catch(e){}
   var fi = document.getElementById('format-input');
   if (fi) fi.addEventListener('keydown', function(e) { if (e.key === 'Enter') doFormat(); });
   var si = document.getElementById('script-input');
