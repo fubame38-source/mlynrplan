@@ -624,12 +624,14 @@ footer p{font-size:12px;color:var(--text3)}
             <div class="rm-eye-badge"><div class="rm-eye-dot"></div>MLYNR · KİŞİSEL MENTOR</div>
             <div class="rm-eye-line"></div>
             <div class="rm-eye-time" id="rm-timestamp"></div>
+            <button onclick="toggleRoadmap()" id="rm-collapse-btn" style="background:transparent;border:none;color:rgba(255,255,255,.3);font-size:18px;cursor:pointer;padding:0 0 0 12px;line-height:1;transition:color .2s;flex-shrink:0" title="Küçült">⌃</button>
           </div>
           <div class="rm-profile" id="rm-profile-tags"></div>
           <div class="rm-hero-title" id="rm-hero-title"></div>
           <div class="rm-hero-sub" id="rm-hero-sub"></div>
         </div>
 
+        <div id="rm-card-body">
         <div class="rm-divider"></div>
 
         <!-- Günlük Görev -->
@@ -659,11 +661,10 @@ footer p{font-size:12px;color:var(--text3)}
             📊 Durumu Güncelle
           </button>
         </div>
+        </div><!-- /rm-card-body -->
       </div>
     </div>
   </div>
-
-  <!-- CHECK-IN POPUP -->
   <div id="checkin-overlay" class="overlay" onclick="closeCheckin()"></div>
   <div id="checkin-popup" class="popup" style="width:min(460px,96vw);padding:0;overflow-y:auto;max-height:88vh;overscroll-behavior:contain">
     <div style="padding:24px 26px 20px;border-bottom:1px solid var(--border)">
@@ -1642,6 +1643,13 @@ function renderRoadmap(data){
   }
 
   card.style.display='block';
+  // Collapse state restore
+  var wasCollapsed=false;
+  try{wasCollapsed=LS.getItem('mlynr_rm_collapsed')==='1';}catch(e){}
+  var body=document.getElementById('rm-card-body');
+  var btn=document.getElementById('rm-collapse-btn');
+  if(body&&wasCollapsed){body.style.display='none';}
+  if(btn){btn.style.transform=wasCollapsed?'rotate(180deg)':'rotate(0deg)';btn.style.transition='transform .3s';}
   setTimeout(function(){card.scrollIntoView({behavior:'smooth',block:'nearest'});},300);
 }
 
@@ -1862,6 +1870,16 @@ function highlightAndScrollToModule(modId){
 
 function escapeHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function toggleRoadmap(){
+  var body=document.getElementById('rm-card-body');
+  var btn=document.getElementById('rm-collapse-btn');
+  if(!body)return;
+  var collapsed=body.style.display==='none';
+  body.style.display=collapsed?'block':'none';
+  if(btn)btn.style.transform=collapsed?'rotate(0deg)':'rotate(180deg)';
+  try{LS.setItem('mlynr_rm_collapsed',collapsed?'0':'1');}catch(e){}
 }
 
 function refreshRoadmap(){} // eski referans için boş bırak
