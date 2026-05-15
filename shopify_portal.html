@@ -475,7 +475,7 @@ footer p{font-size:12px;color:var(--text3)}
           <div class="qc-sub">Ürün adı veya link gir, SAT / SATMA kararı + tam rapor al.</div>
           <div class="qc-badge green"><span>●</span> Hemen Başla</div>
         </div>
-        <div class="quick-card purple-accent" onclick="window.location.href='https://mlynrplan.com/icerik_studyosu.html?u='+encodeURIComponent(email)">
+        <div class="quick-card purple-accent" onclick="window.location.href='https://mlynrplan.com/icerik_studyosu.html?u='+encodeURIComponent(window.email||'')">
           <div class="qc-icon">🎬</div>
           <div class="qc-title">İçerik Stüdyosu</div>
           <div class="qc-sub">Viral format analizi, hook & script, haftalık içerik planı.</div>
@@ -535,7 +535,7 @@ footer p{font-size:12px;color:var(--text3)}
   <div class="section" id="today-content-section" style="display:none">
     <div class="section-header">
       <span class="section-title">🎬 Bugünün İçerik Görevi</span>
-      <a href="javascript:void(0)" onclick="window.location.href='https://mlynrplan.com/icerik_studyosu.html?u='+encodeURIComponent(email)" style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--text2)'" onmouseout="this.style.color=''">Stüdyoya Git →</a>
+      <a href="javascript:void(0)" onclick="window.location.href='https://mlynrplan.com/icerik_studyosu.html?u='+encodeURIComponent(window.email||'')" style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--text2)'" onmouseout="this.style.color=''">Stüdyoya Git →</a>
     </div>
     <div id="today-content-card" style="background:var(--purple-dim);border:1px solid var(--purple-ln);border-radius:var(--r);padding:20px 24px;position:relative;overflow:hidden">
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--purple),transparent)"></div>
