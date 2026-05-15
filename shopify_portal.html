@@ -409,8 +409,12 @@ body.light-mode .rm-week.active{background:rgba(34,197,94,.1);border-color:rgba(
 .rm-mission-steps{display:flex;flex-direction:column;gap:6px}
 .rm-mission-step{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(255,255,255,.5);line-height:1.5}
 .rm-mission-step-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:5px}
-/* Check-in seçim */
-#ci-submit-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+/* Check-in butonları */
+.ci-btn{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:9px;color:rgba(255,255,255,.5);font-family:var(--font);font-size:12px;font-weight:600;padding:10px 14px;cursor:pointer;transition:all .18s;text-align:center;letter-spacing:-.01em}
+.ci-btn:hover{background:rgba(255,255,255,.09);color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.16)}
+.ci-btn.selected{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:var(--green)}
+#ci-submit-btn:not(:disabled){opacity:1;cursor:pointer}
+#ci-submit-btn:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(34,197,94,.25)}
 .mp-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:6px}
 .mp-input,.mp-textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 14px;outline:none;transition:border-color .2s}
 .mp-input:focus,.mp-textarea:focus{border-color:rgba(255,255,255,.3)}
@@ -666,44 +670,49 @@ footer p{font-size:12px;color:var(--text3)}
     </div>
   </div>
   <div id="checkin-overlay" class="overlay" onclick="closeCheckin()"></div>
-  <div id="checkin-popup" class="popup" style="width:min(460px,96vw);padding:0;overflow-y:auto;max-height:88vh;overscroll-behavior:contain">
-    <div style="padding:24px 26px 20px;border-bottom:1px solid var(--border)">
-      <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:8px">● MLYNR · HAFTALIK CHECK-IN</div>
-      <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.4px" id="checkin-greeting">Nasıl gidiyor?</div>
-      <div style="font-size:13px;color:var(--text2);margin-top:4px">Sana bu haftaya özel bir plan yapayım.</div>
+  <div id="checkin-popup" class="popup" style="width:min(480px,96vw);padding:0;overflow-y:auto;max-height:88vh;overscroll-behavior:contain;background:#0a0e1a;border-color:rgba(255,255,255,.1)">
+
+    <div style="padding:24px 28px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:flex-start;justify-content:space-between">
+      <div>
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:6px"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block"></span>MLYNR · HAFTALIK CHECK-IN</div>
+        <div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1.15" id="checkin-greeting">Nasıl gidiyor?</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.3);margin-top:5px">Cevaplarına göre bu haftanı planlayayım.</div>
+      </div>
+      <button onclick="closeCheckin()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:rgba(255,255,255,.4);width:30px;height:30px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .2s">✕</button>
     </div>
-    <div style="padding:20px 26px 26px;display:flex;flex-direction:column;gap:14px">
+
+    <div style="padding:24px 28px 28px;display:flex;flex-direction:column;gap:22px">
 
       <div>
-        <label class="mp-label">Bu hafta kaç modül tamamladın?</label>
-        <div style="display:flex;gap:8px;flex-wrap:wrap" id="ci-q1">
-          <button class="ob-choice" style="flex:1;min-width:80px" data-val="0" onclick="ciSelect(this,'ci-q1')"><span class="ob-choice-icon" style="font-size:16px">😴</span><div><div class="ob-choice-title">Hiç</div></div></button>
-          <button class="ob-choice" style="flex:1;min-width:80px" data-val="1-2" onclick="ciSelect(this,'ci-q1')"><span class="ob-choice-icon" style="font-size:16px">⚡</span><div><div class="ob-choice-title">1-2</div></div></button>
-          <button class="ob-choice" style="flex:1;min-width:80px" data-val="3+" onclick="ciSelect(this,'ci-q1')"><span class="ob-choice-icon" style="font-size:16px">🔥</span><div><div class="ob-choice-title">3+</div></div></button>
+        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px">Bu hafta kaç modül tamamladın?</div>
+        <div style="display:flex;gap:6px" id="ci-q1">
+          <button class="ci-btn" data-val="0" onclick="ciSelect(this,'ci-q1')">Hiç</button>
+          <button class="ci-btn" data-val="1-2" onclick="ciSelect(this,'ci-q1')">1–2 modül</button>
+          <button class="ci-btn" data-val="3+" onclick="ciSelect(this,'ci-q1')">3+ modül</button>
         </div>
       </div>
 
       <div>
-        <label class="mp-label">Şu an nerede takıldın?</label>
-        <div style="display:flex;flex-direction:column;gap:6px" id="ci-q2">
-          <button class="ob-choice" data-val="hicbir" onclick="ciSelect(this,'ci-q2')"><span class="ob-choice-icon">✅</span><div><div class="ob-choice-title">Takılmadım, akış iyi</div></div></button>
-          <button class="ob-choice" data-val="urun" onclick="ciSelect(this,'ci-q2')"><span class="ob-choice-icon">🔍</span><div><div class="ob-choice-title">Ürün bulamıyorum</div></div></button>
-          <button class="ob-choice" data-val="teknik" onclick="ciSelect(this,'ci-q2')"><span class="ob-choice-icon">⚙️</span><div><div class="ob-choice-title">Teknik bir şeyde sıkıştım</div></div></button>
-          <button class="ob-choice" data-val="motivasyon" onclick="ciSelect(this,'ci-q2')"><span class="ob-choice-icon">🧠</span><div><div class="ob-choice-title">Motivasyon düşük</div></div></button>
+        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px">Şu an nerede takıldın?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="ci-q2">
+          <button class="ci-btn" data-val="hicbir" onclick="ciSelect(this,'ci-q2')">Takılmadım</button>
+          <button class="ci-btn" data-val="urun" onclick="ciSelect(this,'ci-q2')">Ürün bulamıyorum</button>
+          <button class="ci-btn" data-val="teknik" onclick="ciSelect(this,'ci-q2')">Teknik sorun</button>
+          <button class="ci-btn" data-val="motivasyon" onclick="ciSelect(this,'ci-q2')">Motivasyon düşük</button>
         </div>
       </div>
 
       <div>
-        <label class="mp-label">Bu hafta hedefin ne?</label>
-        <div style="display:flex;flex-direction:column;gap:6px" id="ci-q3">
-          <button class="ob-choice" data-val="modul" onclick="ciSelect(this,'ci-q3')"><span class="ob-choice-icon">📚</span><div><div class="ob-choice-title">Modülleri bitirmek</div></div></button>
-          <button class="ob-choice" data-val="urun-bul" onclick="ciSelect(this,'ci-q3')"><span class="ob-choice-icon">🎯</span><div><div class="ob-choice-title">Kazanan ürün bulmak</div></div></button>
-          <button class="ob-choice" data-val="magaza" onclick="ciSelect(this,'ci-q3')"><span class="ob-choice-icon">🛍️</span><div><div class="ob-choice-title">Mağazamı açmak</div></div></button>
-          <button class="ob-choice" data-val="ilk-satis" onclick="ciSelect(this,'ci-q3')"><span class="ob-choice-icon">🏆</span><div><div class="ob-choice-title">İlk satışı yapmak</div></div></button>
+        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px">Bu hafta ne yapmak istiyorsun?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="ci-q3">
+          <button class="ci-btn" data-val="modul" onclick="ciSelect(this,'ci-q3')">Modülleri bitirmek</button>
+          <button class="ci-btn" data-val="urun-bul" onclick="ciSelect(this,'ci-q3')">Kazanan ürün bulmak</button>
+          <button class="ci-btn" data-val="magaza" onclick="ciSelect(this,'ci-q3')">Mağazamı açmak</button>
+          <button class="ci-btn" data-val="ilk-satis" onclick="ciSelect(this,'ci-q3')">İlk satışı yapmak</button>
         </div>
       </div>
 
-      <button class="mp-save" onclick="submitCheckin()" id="ci-submit-btn" disabled>Planımı Güncelle ✨</button>
+      <button id="ci-submit-btn" onclick="submitCheckin()" disabled style="width:100%;background:var(--green);color:#000;border:none;border-radius:10px;padding:14px;font-family:var(--font);font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;letter-spacing:-.02em;opacity:.3">Planımı Güncelle →</button>
     </div>
   </div>
 
@@ -1657,14 +1666,13 @@ var ciAnswers={ci1:null,ci2:null,ci3:null};
 function ciSelect(btn,groupId){
   var group=document.getElementById(groupId);
   if(!group)return;
-  group.querySelectorAll('.ob-choice').forEach(function(b){b.classList.remove('selected');});
+  group.querySelectorAll('.ci-btn,.ob-choice').forEach(function(b){b.classList.remove('selected');});
   btn.classList.add('selected');
   var qMap={'ci-q1':'ci1','ci-q2':'ci2','ci-q3':'ci3'};
   ciAnswers[qMap[groupId]]=btn.getAttribute('data-val');
-  // 3 soru da cevaplandıysa butonu aktifleştir
+  var sb=document.getElementById('ci-submit-btn');
   if(ciAnswers.ci1&&ciAnswers.ci2&&ciAnswers.ci3){
-    var sb=document.getElementById('ci-submit-btn');
-    if(sb)sb.disabled=false;
+    if(sb){sb.disabled=false;sb.style.opacity='1';}
   }
 }
 
@@ -1684,9 +1692,9 @@ function openCheckin(){
   if(greet)greet.textContent=timeGreet+', '+fn+' — nasıl gidiyor?';
   // Reset
   ciAnswers={ci1:null,ci2:null,ci3:null};
-  document.querySelectorAll('#checkin-popup .ob-choice').forEach(function(b){b.classList.remove('selected');});
+  document.querySelectorAll('#checkin-popup .ci-btn,.ob-choice').forEach(function(b){b.classList.remove('selected');});
   var sb=document.getElementById('ci-submit-btn');
-  if(sb){sb.disabled=true;sb.textContent='Planımı Güncelle ✨';}
+  if(sb){sb.disabled=true;sb.textContent='Planımı Güncelle →';sb.style.opacity='.3';}
   document.getElementById('checkin-overlay').classList.add('show');
   document.getElementById('checkin-popup').classList.add('show');
   document.body.style.overflow='hidden';
