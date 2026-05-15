@@ -303,6 +303,18 @@ footer p{font-size:12px;color:var(--text3)}
 
 <script>
 var API_URL='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/shopify-endpoint';
+// URL'den kullanıcı email'ini al
+var _userEmail=(function(){try{var p=new URLSearchParams(window.location.search);var u=p.get('u');return u?decodeURIComponent(u):'';}catch(e){return '';}}());
+var _calKey='mlynr_calendars'+((_userEmail)?'_'+_userEmail.replace(/[^a-z0-9]/gi,'_'):'');
+// Portala Dön linkini güncelle
+(function(){
+  // Tüm "Portala Dön" linklerini güncelle
+  if(_userEmail){
+    document.querySelectorAll('a[href*="shopify_portal"]').forEach(function(a){
+      a.href='https://mlynrplan.com/shopify_portal.html?restore='+encodeURIComponent(_userEmail);
+    });
+  }
+})();
 var API_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
 var selectedPlatform='tiktok';
 
@@ -643,7 +655,7 @@ function saveCalendarLocal() {
   var inputTxt = document.getElementById('takvim-input').value || 'Ürün';
   try {
     var weekStart = getWeekStart();
-    var saved = JSON.parse(localStorage.getItem('mlynr_calendars') || '[]');
+    var saved = JSON.parse(localStorage.getItem(_calKey) || '[]');
     saved = saved.filter(function(c) { return c.week_start !== weekStart; });
     saved.unshift({
       week_start: weekStart,
@@ -652,7 +664,7 @@ function saveCalendarLocal() {
       tracking: {} // gun_index -> { cekildi, yayinlandi, goruntulenme, begeni, not }
     });
     if (saved.length > 8) saved = saved.slice(0, 8);
-    localStorage.setItem('mlynr_calendars', JSON.stringify(saved));
+    localStorage.setItem(_calKey, JSON.stringify(saved));
     currentWeekStart = weekStart;
     showToast('✓ Portala kaydedildi!', 'purple');
     loadSavedCalendarsLocal();
@@ -660,7 +672,7 @@ function saveCalendarLocal() {
 }
 
 function getCalendars() {
-  try { return JSON.parse(localStorage.getItem('mlynr_calendars') || '[]'); } catch(e) { return []; }
+  try { return JSON.parse(localStorage.getItem(_calKey) || '[]'); } catch(e) { return []; }
 }
 
 function saveTracking(weekStart, tracking) {
@@ -669,7 +681,7 @@ function saveTracking(weekStart, tracking) {
     var cal = saved.find(function(c) { return c.week_start === weekStart; });
     if (cal) {
       cal.tracking = tracking;
-      localStorage.setItem('mlynr_calendars', JSON.stringify(saved));
+      localStorage.setItem(_calKey, JSON.stringify(saved));
     }
   } catch(e) {}
 }
@@ -730,7 +742,7 @@ function deleteCalendarLocal(weekStart, e) {
   if (!confirm('Silinsin mi?')) return;
   try {
     var saved = getCalendars().filter(function(c) { return c.week_start !== weekStart; });
-    localStorage.setItem('mlynr_calendars', JSON.stringify(saved));
+    localStorage.setItem(_calKey, JSON.stringify(saved));
     loadSavedCalendarsLocal();
   } catch(e) {}
 }
@@ -867,6 +879,9 @@ function showToast(m, cls) {
 
 document.addEventListener('DOMContentLoaded', function() {
   applyTheme();
+  // Kullanıcı etiketini göster
+  var lbl=document.getElementById('cal-user-label');
+  if(lbl&&_userEmail){lbl.textContent=_userEmail.split('@')[0].toUpperCase();}
   var fi = document.getElementById('format-input');
   if (fi) fi.addEventListener('keydown', function(e) { if (e.key === 'Enter') doFormat(); });
   var si = document.getElementById('script-input');
