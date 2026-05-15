@@ -1202,24 +1202,39 @@ function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m
   function showLogin(){
     if(!entered){
       document.getElementById('login-screen').style.display='flex';
-      // Stüdyodan geliyorsa email'i otomatik doldur
       try{
         var p=new URLSearchParams(window.location.search);
         var re=p.get('restore');
         if(re){
           var inp=document.getElementById('inp-email');
-          if(inp){inp.value=decodeURIComponent(re);inp.dispatchEvent(new Event('input'));}
+          if(inp){inp.value=decodeURIComponent(re);}
         }
       }catch(e){}
     }
   }
-  var hasRestore=!!(new URLSearchParams(window.location.search).get('restore'));
-  var loginTimer=setTimeout(function(){if(!entered)showLogin();},hasRestore?5000:2000);
+  // Stüdyodan geliyorsa Supabase session'ı yenile ve direkt gir
+  var restoreEmail=null;
+  try{var rp=new URLSearchParams(window.location.search);restoreEmail=rp.get('restore');}catch(e){}
+  
+  var loginTimer=setTimeout(function(){if(!entered)showLogin();},2000);
+  
   _sb.auth.getSession().then(function(r){
     clearTimeout(loginTimer);
-    if(r.data&&r.data.session&&r.data.session.user){tryEnter(r.data.session.user.email,r.data.session.user);}
-    else{if(!entered)showLogin();}
-  }).catch(function(){clearTimeout(loginTimer);if(!entered)showLogin();});
+    if(r.data&&r.data.session&&r.data.session.user){
+      tryEnter(r.data.session.user.email,r.data.session.user);
+    } else if(restoreEmail) {
+      // Session yok ama stüdyodan geliyoruz - session refresh dene
+      _sb.auth.refreshSession().then(function(r2){
+        if(r2.data&&r2.data.session&&r2.data.session.user){
+          tryEnter(r2.data.session.user.email,r2.data.session.user);
+        } else {
+          showLogin();
+        }
+      }).catch(function(){showLogin();});
+    } else {
+      showLogin();
+    }
+  }).catch(function(){clearTimeout(loginTimer);showLogin();});
 })();
 
 document.addEventListener('DOMContentLoaded',function(){
