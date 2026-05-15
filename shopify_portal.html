@@ -323,19 +323,67 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .ob-choice-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
 .ob-choice-sub{font-size:11px;color:var(--text2);line-height:1.4}
 .ob-choice.selected .ob-choice-title{color:var(--green)}
-/* YOL HARİTASI KARTI */
-#roadmap-card{background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(34,197,94,.02));border:1px solid var(--green-ln);border-radius:var(--r);padding:22px 26px;position:relative;overflow:hidden;margin-bottom:14px;display:none}
-#roadmap-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
-.rm-badge{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.rm-title{font-size:16px;font-weight:800;color:var(--text);margin-bottom:8px;letter-spacing:-.3px;line-height:1.3}
-.rm-body{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:16px}
-.rm-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.rm-step{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px}
-.rm-step-num{width:22px;height:22px;border-radius:50%;background:var(--green-dim);border:1px solid var(--green-ln);color:var(--green);font-family:var(--mono);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.rm-step-text{font-size:12px;color:var(--text2);line-height:1.6}
-.rm-step-text strong{color:var(--text)}
-.rm-focus{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(250,204,21,.06);border:1px solid var(--gold-ln);border-radius:10px;font-size:12px;color:var(--text2)}
-.rm-focus strong{color:var(--gold)}
+
+/* YOL HARİTASI — SİNEMATİK */
+@keyframes rmReveal{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes rmScan{0%{transform:translateX(-100%)}100%{transform:translateX(400%)}}
+@keyframes rmPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.92)}}
+@keyframes rmTimeline{from{height:0;opacity:0}to{height:100%;opacity:1}}
+@keyframes rmWeekIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+#roadmap-card{display:none;position:relative;overflow:hidden;margin-bottom:0;animation:rmReveal .6s cubic-bezier(.16,1,.3,1)}
+.rm-outer{background:linear-gradient(160deg,#050a14 0%,#080d1a 40%,#0a0612 100%);border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;position:relative}
+.rm-outer::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(34,197,94,.06),transparent),radial-gradient(ellipse 60% 40% at 100% 100%,rgba(99,102,241,.05),transparent);pointer-events:none}
+/* Scan line efekti */
+.rm-scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.4),transparent);animation:rmScan 3s ease-in-out infinite;pointer-events:none;z-index:2}
+/* Header */
+.rm-header{padding:28px 32px 0;position:relative;z-index:1}
+.rm-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.rm-eye-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:6px;padding:4px 10px;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green)}
+.rm-eye-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:rmPulse 2s ease-in-out infinite}
+.rm-eye-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(34,197,94,.2),transparent)}
+.rm-eye-time{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px}
+/* Profile strip */
+.rm-profile{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.rm-profile-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:-.01em}
+.rm-profile-tag.speed{background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.18);color:#facc15}
+.rm-profile-tag.risk{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.18);color:#a78bfa}
+.rm-profile-tag.weak{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.18);color:#f87171}
+/* Ana başlık */
+.rm-hero-title{font-size:clamp(22px,4vw,34px);font-weight:900;letter-spacing:-.06em;color:#fff;line-height:1.05;margin-bottom:10px}
+.rm-hero-title .rm-name{color:var(--green)}
+.rm-hero-sub{font-size:14px;color:rgba(255,255,255,.4);line-height:1.7;max-width:52ch;margin-bottom:28px}
+/* Divider */
+.rm-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);margin:0 32px}
+/* Timeline */
+.rm-timeline{padding:28px 32px 0;position:relative;z-index:1}
+.rm-tl-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.rm-tl-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.rm-weeks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:28px}
+@media(max-width:640px){.rm-weeks{grid-template-columns:1fr 1fr}}
+.rm-week{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:16px;position:relative;overflow:hidden;transition:all .2s;animation:rmWeekIn .5s cubic-bezier(.16,1,.3,1) both}
+.rm-week:nth-child(1){animation-delay:.1s}
+.rm-week:nth-child(2){animation-delay:.2s}
+.rm-week:nth-child(3){animation-delay:.3s}
+.rm-week:nth-child(4){animation-delay:.4s}
+.rm-week.active{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.25)}
+.rm-week.active::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.rm-week-num{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.rm-week.active .rm-week-num{color:var(--green)}
+.rm-week-title{font-size:12px;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:4px;line-height:1.3}
+.rm-week.active .rm-week-title{color:#fff}
+.rm-week-mod{font-family:var(--mono);font-size:9px;color:var(--text3)}
+.rm-week-now{position:absolute;top:10px;right:10px;background:var(--green);color:#000;font-family:var(--mono);font-size:7px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:4px}
+/* Kritik uyarı */
+.rm-alert{margin:0 32px 28px;background:rgba(250,204,21,.05);border:1px solid rgba(250,204,21,.15);border-radius:12px;padding:14px 18px;display:flex;align-items:flex-start;gap:12px}
+.rm-alert-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.rm-alert-txt{font-size:12px;color:rgba(255,255,255,.55);line-height:1.7}
+.rm-alert-txt strong{color:#facc15;font-weight:700}
+/* CTA */
+.rm-cta-row{padding:0 32px 28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rm-cta-main{display:flex;align-items:center;gap:8px;background:var(--green);color:#000;border:none;border-radius:10px;padding:12px 22px;font-family:var(--font);font-size:13px;font-weight:800;letter-spacing:-.02em;cursor:pointer;transition:all .2s}
+.rm-cta-main:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(34,197,94,.3)}
+.rm-cta-sec{display:flex;align-items:center;gap:6px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.rm-cta-sec:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
 .mp-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:6px}
 .mp-input,.mp-textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 14px;outline:none;transition:border-color .2s}
 .mp-input:focus,.mp-textarea:focus{border-color:rgba(255,255,255,.3)}
@@ -538,13 +586,47 @@ footer p{font-size:12px;color:var(--text3)}
   </section>
 
   <!-- KİŞİSEL YOL HARİTASI -->
-  <div class="section" style="margin-top:14px">
+  <div class="section" style="margin-top:20px">
     <div id="roadmap-card">
-      <div class="rm-badge"><span>●</span> <span id="rm-name-label">Senin Yol Haritanı</span></div>
-      <div class="rm-title" id="rm-title"></div>
-      <div class="rm-body" id="rm-body"></div>
-      <div class="rm-steps" id="rm-steps"></div>
-      <div class="rm-focus" id="rm-focus" style="display:none"></div>
+      <div class="rm-outer">
+        <div class="rm-scan"></div>
+
+        <!-- Header -->
+        <div class="rm-header">
+          <div class="rm-eyebrow">
+            <div class="rm-eye-badge"><div class="rm-eye-dot"></div>MLYNR ANALİZ</div>
+            <div class="rm-eye-line"></div>
+            <div class="rm-eye-time" id="rm-timestamp"></div>
+          </div>
+          <div class="rm-profile" id="rm-profile-tags"></div>
+          <div class="rm-hero-title" id="rm-hero-title"></div>
+          <div class="rm-hero-sub" id="rm-hero-sub"></div>
+        </div>
+
+        <div class="rm-divider"></div>
+
+        <!-- Timeline -->
+        <div class="rm-timeline">
+          <div class="rm-tl-label">4 Haftalık Yol Haritası</div>
+          <div class="rm-weeks" id="rm-weeks"></div>
+        </div>
+
+        <!-- Kritik uyarı -->
+        <div class="rm-alert" id="rm-alert">
+          <div class="rm-alert-icon">⚡</div>
+          <div class="rm-alert-txt" id="rm-alert-txt"></div>
+        </div>
+
+        <!-- CTA -->
+        <div class="rm-cta-row">
+          <button class="rm-cta-main" onclick="document.getElementById('modules-wrap').scrollIntoView({behavior:'smooth'})">
+            İlk Modüle Başla →
+          </button>
+          <button class="rm-cta-sec" onclick="openSupportBot()">
+            🤖 AI Koça Sor
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1305,21 +1387,17 @@ function obFinish(){
   var budgetMap={none:'$500 altı sermaye, organikle başlamak zorunda',mid:'$500-$2000 sermaye, sınırlı reklam yapabilir',high:'$2000+ sermaye, agresif test yapabilir'};
   var fearMap={product:'Kazanan ürün bulamıyor — en büyük engel bu',ads:'Meta/Facebook reklamları çok karmaşık geliyor',store:'Shopify kurulum ve teknik kısımlar korkutuyor',scale:'Satış geliyor ama büyüyemiyor, tıkandı'};
 
-  var systemPrompt='Sen MLYNR Shopify Dropshipping programının AI koçusun. Kursiyere ÇOK KİŞİSEL ve SOMUT bir yol haritası çiziyorsun. Genel laflar etme, tam olarak ne yapacağını söyle. Sert ve net ol.';
+  var systemPrompt='Sen MLYNR Shopify Dropshipping programının elit AI koçusun. Kursiyere ÇOK KİŞİSEL ve SOMUT 4 haftalık yol haritası çiziyorsun. Genel laflar etme. Sert, net, aksiyon odaklı ol.';
 
-  var userPrompt='Aşağıdaki kursiyer için Shopify dropshipping yol haritası oluştur:\n\n'
+  var userPrompt='Aşağıdaki kursiyer için 4 haftalık Shopify dropshipping yol haritası oluştur:\n\n'
     +'İsim: '+fn+'\n'
     +'Deneyim: '+expMap[obAnswers.q1]+'\n'
     +'Haftalık süre: '+timeMap[obAnswers.q2]+'\n'
     +'Sermaye: '+budgetMap[obAnswers.q3]+'\n'
     +'En büyük endişe: '+fearMap[obAnswers.q4]+'\n\n'
     +'Eğitim 11 modül: 1-Dropshipping Temelleri, 2-Şirket/LLC, 3-Shopify Kurulum, 4-Ürün Bulma, 5-Organik Pazarlama, 6-Reklam Hesapları, 7-Veri Tabanlı Reklam, 8-Reklam Kreatifleri, 9-Reklam Yayınlama, 10-Markalaşma, 11-Ölçekleme\n\n'
-    +'Bu kursiyerin profiline göre:\n'
-    +'- Hangi 3 modüle ÖNCE odaklanmalı ve neden (spesifik)\n'
-    +'- İlk 7 günde TAM OLARAK ne yapmalı (somut eylemler)\n'
-    +'- Onun özel durumuna göre 1 kritik uyarı (başkasına söylemeyeceğin şey)\n\n'
-    +'SADECE JSON dön, kesinlikle başka bir şey yazma:\n'
-    +'{"baslik":"'+fn+' için kişisel başlık (max 6 kelime)","ozet":"2 güçlü cümle — neden bu sıra, neden bu strateji","adimlar":[{"num":"1","baslik":"somut başlık","detay":"tam olarak ne yapacak, hangi araç, kaç gün"},{"num":"2","baslik":"...","detay":"..."},{"num":"3","baslik":"...","detay":"..."}],"odak":"Bu kişiye özel, başkasına söylemeyeceğin 1 kritik uyarı"}';
+    +'SADECE şu JSON formatında dön, başka hiçbir şey yazma:\n'
+    +'{"baslik":"'+fn+' için güçlü kişisel başlık (max 6 kelime, ismiyle başla)","ozet":"Bu kişinin profiline göre neden bu sıra ve strateji — 2 güçlü cümle, somut","adimlar":[{"baslik":"Hafta 1 ana odak (kısa)","detay":"Hangi modüller, spesifik eylem"},{"baslik":"Hafta 2 ana odak","detay":"Hangi modüller, spesifik eylem"},{"baslik":"Hafta 3 ana odak","detay":"Hangi modüller, spesifik eylem"},{"baslik":"Hafta 4 ana odak","detay":"Hangi modüller, spesifik eylem"}],"odak":"Bu kişiye özel, başkasına söylemeyeceğin 1 kritik uyarı — sert ve net"}';
 
   fetch(SUPPORT_FN,{
     method:'POST',
@@ -1394,25 +1472,78 @@ function buildFallbackRoadmap(a,fn){
 function renderRoadmap(data){
   var card=document.getElementById('roadmap-card');
   if(!card)return;
-  var lbl=document.getElementById('rm-name-label');
-  var title=document.getElementById('rm-title');
-  var body=document.getElementById('rm-body');
-  var steps=document.getElementById('rm-steps');
-  var focus=document.getElementById('rm-focus');
-  if(lbl)lbl.textContent='Senin Yol Haritanı';
-  if(title)title.textContent=data.baslik||'Kişisel Yol Haritanı';
-  if(body)body.textContent=data.ozet||'';
-  if(steps&&data.adimlar){
-    steps.innerHTML=data.adimlar.map(function(s){
-      return '<div class="rm-step"><div class="rm-step-num">'+s.num+'</div><div class="rm-step-text"><strong>'+s.baslik+'</strong><br>'+s.detay+'</div></div>';
+
+  // Timestamp
+  var ts=document.getElementById('rm-timestamp');
+  if(ts){
+    var now=new Date();
+    ts.textContent=now.toLocaleDateString('tr-TR',{day:'numeric',month:'short'})+' · '+now.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+  }
+
+  // Profil tag'leri — cevaplara göre
+  var profileTags=document.getElementById('rm-profile-tags');
+  if(profileTags){
+    var expLabel={beginner:'🌱 Başlangıç',some:'⚡ Gelişmekte',experienced:'🔥 Deneyimli'};
+    var timeLabel={low:'🌙 Part-Time',mid:'☀️ Ciddi',high:'🚀 Full-Time'};
+    var budgetLabel={none:'🪙 Bootstrap',mid:'💵 Orta Bütçe',high:'💎 Agresif'};
+    var fearLabel={product:'🔍 Ürün Odaklı',ads:'📣 Reklam Odaklı',store:'🛍️ Kurulum Odaklı',scale:'📈 Ölçek Odaklı'};
+    var a=obAnswers;
+    profileTags.innerHTML=
+      (a.q1?'<div class="rm-profile-tag speed">'+expLabel[a.q1]+'</div>':'')+
+      (a.q2?'<div class="rm-profile-tag risk">'+timeLabel[a.q2]+'</div>':'')+
+      (a.q3?'<div class="rm-profile-tag risk">'+budgetLabel[a.q3]+'</div>':'')+
+      (a.q4?'<div class="rm-profile-tag weak">'+fearLabel[a.q4]+'</div>':'');
+  }
+
+  // Ana başlık — ismi yeşil yap
+  var heroTitle=document.getElementById('rm-hero-title');
+  if(heroTitle){
+    var baslik=data.baslik||'Kişisel Yol Haritanı';
+    // İsim varsa yeşil yap
+    var fn=obFirstName||(email?email.split('@')[0]:'');
+    if(fn&&baslik.toLowerCase().includes(fn.toLowerCase())){
+      baslik=baslik.replace(new RegExp('('+fn+')', 'i'),'<span class="rm-name">$1</span>');
+    }
+    heroTitle.innerHTML=baslik;
+  }
+
+  // Özet
+  var heroSub=document.getElementById('rm-hero-sub');
+  if(heroSub)heroSub.textContent=data.ozet||'';
+
+  // 4 haftalık timeline
+  var weeksEl=document.getElementById('rm-weeks');
+  if(weeksEl&&data.adimlar){
+    var weekLabels=['Hafta 1','Hafta 2','Hafta 3','Hafta 4'];
+    var weeks=data.adimlar.slice(0,4);
+    // Eksik hafta varsa doldur
+    var defaults=[
+      {baslik:'Temeller & Kurulum',detay:'Mod. 1-3'},
+      {baslik:'Ürün Araştırması',detay:'Mod. 4-5'},
+      {baslik:'Reklam & Test',detay:'Mod. 6-9'},
+      {baslik:'Ölçekleme',detay:'Mod. 10-11'}
+    ];
+    while(weeks.length<4)weeks.push(defaults[weeks.length]);
+
+    weeksEl.innerHTML=weeks.map(function(w,i){
+      var isActive=i===0;
+      return '<div class="rm-week'+(isActive?' active':'')+'">'
+        +(isActive?'<div class="rm-week-now">ŞİMDİ</div>':'')
+        +'<div class="rm-week-num">'+weekLabels[i]+'</div>'
+        +'<div class="rm-week-title">'+(w.baslik||w.title||defaults[i].baslik)+'</div>'
+        +'<div class="rm-week-mod">'+(w.detay||w.detail||defaults[i].detay)+'</div>'
+        +'</div>';
     }).join('');
   }
-  if(focus&&data.odak){
-    focus.style.display='flex';
-    focus.innerHTML='⚡ <span><strong>Odak noktanı:</strong> '+data.odak+'</span>';
+
+  // Kritik uyarı
+  var alertTxt=document.getElementById('rm-alert-txt');
+  if(alertTxt&&data.odak){
+    alertTxt.innerHTML='<strong>Kritik Uyarı:</strong> '+data.odak;
   }
+
   card.style.display='block';
-  card.scrollIntoView({behavior:'smooth',block:'start'});
+  setTimeout(function(){card.scrollIntoView({behavior:'smooth',block:'nearest'});},300);
 }
 
 function saveUserName(){
