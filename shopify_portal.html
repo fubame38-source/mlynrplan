@@ -249,7 +249,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .two-col.asymm{grid-template-columns:3fr 2fr}
 
 /* MODÜLLER */
-.module-accordion{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all .2s}
+.module-accordion{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1)}
 .module-accordion.open{border-color:rgba(255,255,255,.15);background:var(--surface2)}
 .module-accordion-header{display:flex;align-items:center;gap:0;padding:0;cursor:pointer;user-select:none}
 .ma-num-big{font-size:clamp(48px,7vw,72px);font-weight:900;letter-spacing:-4px;line-height:1;color:var(--surface2);padding:20px 16px 20px 24px;flex-shrink:0;transition:color .2s;user-select:none}
@@ -1520,13 +1520,23 @@ function buildFallbackRoadmap(a,fn){
   return {baslik:baslik,ozet:ozet,adimlar:adimlar,odak:odak};
 }
 
+function getDisplayName(){
+  var fn=obFirstName;
+  if(!fn&&email){
+    try{
+      var saved=LS.getItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));
+      if(saved)fn=saved.split(' ')[0];
+    }catch(e){}
+  }
+  if(!fn)fn=email?email.split('@')[0]:'';
+  return fn.charAt(0).toUpperCase()+fn.slice(1).toLowerCase();
+}
+
 function renderRoadmap(data){
   var card=document.getElementById('roadmap-card');
   if(!card)return;
 
-  // isim büyük harf
-  var fn=obFirstName||(email?email.split('@')[0]:'');
-  fn=fn.charAt(0).toUpperCase()+fn.slice(1).toLowerCase();
+  var fn=getDisplayName();
 
   // Timestamp
   var ts=document.getElementById('rm-timestamp');
@@ -1692,7 +1702,8 @@ function submitCheckin(){
     +'3. Durumuna özel sıcak bir mentor mesajı (2-3 cümle, sanki arkadaşın gibi, cesaret ver veya uyar)\n'
     +'4. Takıldığı konuya özel 1 somut ipucu\n\n'
     +'SADECE JSON dön:\n'
-    +'{"bugun":"Bugün tek yapman gereken şu: [somut aksiyon]","haftaAdimlari":["adım 1","adım 2","adım 3"],"mentorMesaj":"[sıcak, samimi, kişisel mesaj]","ipucu":"[takıldığı konuya özel trick]"}';
+    +'{"bugun":"Bugün tek yapman gereken şu: [somut aksiyon]","modulNo":4,"haftaAdimlari":["adım 1","adım 2","adım 3"],"mentorMesaj":"[sıcak, samimi, kişisel mesaj]","ipucu":"[takıldığı konuya özel trick]"}\n\n'
+    +'modulNo: Bugün odaklanması gereken modül numarası (1-11 arası integer). Görevle en alakalı modülü seç.';
 
   fetch(SUPPORT_FN,{
     method:'POST',
@@ -1724,6 +1735,8 @@ function submitCheckin(){
 }
 
 function renderCheckinResult(ci,fn){
+  fn=getDisplayName(); // localStorage'dan doğru ismi al
+
   // Başlık güncelle
   var heroTitle=document.getElementById('rm-hero-title');
   if(heroTitle)heroTitle.innerHTML='<span class="rm-name">'+fn+'</span>, bugün tek hedef var.';
@@ -1748,7 +1761,7 @@ function renderCheckinResult(ci,fn){
         }).join('')+'</div>':'');
   }
 
-  // Hafta kartlarını gizle (artık günlük görev var)
+  // Hafta kartlarını gizle
   var weeksEl=document.getElementById('rm-weeks');
   if(weeksEl)weeksEl.style.display='none';
 
@@ -1758,9 +1771,53 @@ function renderCheckinResult(ci,fn){
   if(alertIcon)alertIcon.textContent='🎯';
   if(alertTxt)alertTxt.innerHTML='<strong>Bu hafta önceliğin:</strong> '+escapeHtml(ci.haftaAdimlari&&ci.haftaAdimlari[0]||'Modüllere devam et');
 
-  // CTA butonu güncelle
+  // Hedef modül numarası
+  var targetModId=ci.modulNo?parseInt(ci.modulNo):null;
+
+  // CTA butonu — hedef modüle scroll et ve highlight yap
   var ctaBtn=document.getElementById('rm-cta-main-btn');
-  if(ctaBtn){ctaBtn.textContent='Göreve Başla →';}
+  if(ctaBtn){
+    ctaBtn.textContent='Göreve Başla →';
+    ctaBtn.onclick=function(){
+      highlightAndScrollToModule(targetModId);
+    };
+  }
+
+  // Modülü önceden highlight et (hafif)
+  if(targetModId)highlightModule(targetModId);
+}
+
+function highlightModule(modId){
+  // Tüm accordion'lardan highlight kaldır
+  document.querySelectorAll('.module-accordion').forEach(function(a){
+    a.style.borderColor='';
+    a.style.boxShadow='';
+  });
+  if(!modId)return;
+  var acc=document.getElementById('acc-'+modId);
+  if(acc){
+    acc.style.borderColor='rgba(34,197,94,.4)';
+    acc.style.boxShadow='0 0 0 1px rgba(34,197,94,.15)';
+  }
+}
+
+function highlightAndScrollToModule(modId){
+  highlightModule(modId);
+  var target=modId?document.getElementById('acc-'+modId):document.getElementById('modules-wrap');
+  if(!target)target=document.getElementById('modules-wrap');
+  if(target){
+    // Accordion'ı aç
+    if(modId){
+      var acc=document.getElementById('acc-'+modId);
+      if(acc&&!acc.classList.contains('open')){
+        document.querySelectorAll('.module-accordion.open').forEach(function(a){a.classList.remove('open');});
+        acc.classList.add('open');
+      }
+    }
+    setTimeout(function(){
+      target.scrollIntoView({behavior:'smooth',block:'start'});
+    },100);
+  }
 }
 
 function escapeHtml(s){
