@@ -331,6 +331,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 @keyframes rmWeekIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 #roadmap-card{display:none;position:relative;overflow:hidden;margin-bottom:0;animation:rmReveal .6s cubic-bezier(.16,1,.3,1)}
 .rm-outer{background:linear-gradient(160deg,#050a14 0%,#080d1a 40%,#0a0612 100%);border:1px solid rgba(255,255,255,.09);border-radius:20px;overflow:hidden;position:relative}
+body.light-mode .rm-outer{background:linear-gradient(160deg,#0c1a2e 0%,#0f2040 40%,#0d1030 100%)}
+body.light-mode .rm-hero-title{color:#fff}
+body.light-mode .rm-hero-sub{color:rgba(255,255,255,.5)}
+body.light-mode .rm-week-title{color:rgba(255,255,255,.65)}
+body.light-mode .rm-week.active .rm-week-title{color:#fff}
+body.light-mode .rm-week-mod{color:rgba(255,255,255,.3)}
+body.light-mode .rm-week.active .rm-week-mod{color:rgba(255,255,255,.55)}
+body.light-mode .rm-alert-txt{color:rgba(255,255,255,.55)}
+body.light-mode .rm-cta-sec{color:rgba(255,255,255,.45);border-color:rgba(255,255,255,.15)}
+body.light-mode .rm-cta-sec:hover{color:rgba(255,255,255,.8)}
+body.light-mode .rm-mission-title{color:#fff}
+body.light-mode .rm-mission-body{color:rgba(255,255,255,.6)}
+body.light-mode .rm-mission-step{color:rgba(255,255,255,.55)}
+body.light-mode .rm-tl-label{color:rgba(255,255,255,.3)}
+body.light-mode .rm-eye-time{color:rgba(255,255,255,.3)}
+body.light-mode .rm-week{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
+body.light-mode .rm-week.active{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.35)}
 .rm-outer::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(34,197,94,.07),transparent),radial-gradient(ellipse 60% 40% at 100% 100%,rgba(99,102,241,.05),transparent);pointer-events:none}
 .rm-scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.5),transparent);animation:rmScan 3s ease-in-out infinite;pointer-events:none;z-index:2}
 /* Header */
@@ -1359,10 +1376,23 @@ function checkUserName(){
     if(!n){
       openNamePopup();
     } else {
+      // obFirstName'i set et — her yerde kullanılıyor
+      obFirstName=n.split(' ')[0];
       applyUserName(n);
       // Yol haritası kayıtlıysa göster
       var rm=LS.getItem(obRmKey());
-      if(rm){try{renderRoadmap(JSON.parse(rm));}catch(e){}}
+      if(rm){
+        try{
+          var parsed=JSON.parse(rm);
+          // Check-in sonucu varsa onu göster
+          if(parsed.checkin){
+            renderRoadmap(parsed);
+            renderCheckinResult(parsed.checkin, obFirstName);
+          } else {
+            renderRoadmap(parsed);
+          }
+        }catch(e){}
+      }
     }
   }catch(e){}
 }
@@ -1717,6 +1747,10 @@ function submitCheckin(){
     if(!match)throw new Error('JSON yok');
     var parsed=JSON.parse(match[0]);
     closeCheckin();
+    // ismi güncelle
+    var savedName=null;
+    try{savedName=LS.getItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));}catch(e){}
+    if(savedName&&!obFirstName)obFirstName=savedName.split(' ')[0];
     // Planı kaydet
     var existingRm=null;
     try{existingRm=JSON.parse(LS.getItem(obRmKey())||'null');}catch(e){}
