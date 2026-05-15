@@ -648,7 +648,7 @@ footer p{font-size:12px;color:var(--text3)}
 
   <!-- CHECK-IN POPUP -->
   <div id="checkin-overlay" class="overlay" onclick="closeCheckin()"></div>
-  <div id="checkin-popup" class="popup" style="width:min(460px,96vw);padding:0;overflow:hidden">
+  <div id="checkin-popup" class="popup" style="width:min(460px,96vw);padding:0;overflow-y:auto;max-height:88vh;overscroll-behavior:contain">
     <div style="padding:24px 26px 20px;border-bottom:1px solid var(--border)">
       <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:8px">● MLYNR · HAFTALIK CHECK-IN</div>
       <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.4px" id="checkin-greeting">Nasıl gidiyor?</div>
@@ -1634,7 +1634,14 @@ function ciSelect(btn,groupId){
 }
 
 function openCheckin(){
-  var fn=obFirstName||(email?email.split('@')[0]:'');
+  var fn=obFirstName;
+  if(!fn){
+    try{
+      var saved=LS.getItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));
+      if(saved)fn=saved.split(' ')[0];
+    }catch(e){}
+  }
+  if(!fn)fn=email?email.split('@')[0]:'';
   fn=fn.charAt(0).toUpperCase()+fn.slice(1).toLowerCase();
   var greet=document.getElementById('checkin-greeting');
   var h=new Date().getHours();
@@ -1647,11 +1654,13 @@ function openCheckin(){
   if(sb){sb.disabled=true;sb.textContent='Planımı Güncelle ✨';}
   document.getElementById('checkin-overlay').classList.add('show');
   document.getElementById('checkin-popup').classList.add('show');
+  document.body.style.overflow='hidden';
 }
 
 function closeCheckin(){
   document.getElementById('checkin-overlay').classList.remove('show');
   document.getElementById('checkin-popup').classList.remove('show');
+  document.body.style.overflow='';
 }
 
 function submitCheckin(){
