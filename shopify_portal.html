@@ -1299,39 +1299,56 @@ function obFinish(){
     if(el&&txts[ti])el.textContent=txts[ti];
   },900);
 
-  // Anthropic API ile yol haritası üret
+  // shopify-endpoint üzerinden yol haritası üret (CORS yok, key güvenli)
   var expMap={beginner:'Hiç tecrübesi yok, sıfırdan başlıyor',some:'Biraz eBay/e-ticaret deneyimi var',experienced:'Deneyimli ama ölçekleyemiyor'};
-  var timeMap={low:'Haftada 1-5 saat',mid:'Haftada 5-15 saat',high:'Haftada 15+ saat (full-time)'};
-  var budgetMap={none:'$500 altı sermaye, organikle başlayacak',mid:'$500-$2000 sermaye',high:'$2000+ sermaye'};
-  var fearMap={product:'Doğru ürün bulamıyor',ads:'Meta/FB reklamları karmaşık geliyor',store:'Shopify kurulum ve teknik kısımlar',scale:'Satış var ama ölçekleyemiyor'};
+  var timeMap={low:'Haftada 1-5 saat (part-time)',mid:'Haftada 5-15 saat (ciddi)',high:'Haftada 15+ saat (full-time)'};
+  var budgetMap={none:'$500 altı sermaye, organikle başlamak zorunda',mid:'$500-$2000 sermaye, sınırlı reklam yapabilir',high:'$2000+ sermaye, agresif test yapabilir'};
+  var fearMap={product:'Kazanan ürün bulamıyor — en büyük engel bu',ads:'Meta/Facebook reklamları çok karmaşık geliyor',store:'Shopify kurulum ve teknik kısımlar korkutuyor',scale:'Satış geliyor ama büyüyemiyor, tıkandı'};
 
-  var prompt='Shopify dropshipping kursiyer için kişiselleştirilmiş yol haritası oluştur.\n\nKursiyer profili:\n- İsim: '+fn+'\n- Deneyim: '+expMap[obAnswers.q1]+'\n- Zaman: '+timeMap[obAnswers.q2]+'\n- Sermaye: '+budgetMap[obAnswers.q3]+'\n- En büyük endişe: '+fearMap[obAnswers.q4]+'\n\nEğitim 11 modülden oluşuyor: 1-Dropshipping Temelleri, 2-Şirket Kurulumu, 3-Website, 4-Ürün, 5-Organik Pazarlama, 6-Reklam Hesapları, 7-Veri Tabanlı Reklam, 8-Reklam Oluşturma, 9-Reklam Yayınlama, 10-Markalaşma, 11-Ölçekleme.\n\nBu kursiyer için:\n1. Hangi modüllere önce odaklanmalı (en önemli 3-4 modül)\n2. İlk 2 haftada ne yapmalı (somut adımlar)\n3. Onun profiline özel 1 kritik uyarı\n\nJSON formatında dön: {"baslik":"kısa başlık","ozet":"2 cümle özet","adimlar":[{"num":"1","baslik":"adım başlığı","detay":"detay"},{"num":"2","baslik":"...","detay":"..."},{"num":"3","baslik":"...","detay":"..."}],"odak":"kritik uyarı veya öncelik"}\n\nSadece JSON dön, başka hiçbir şey yazma.';
+  var systemPrompt='Sen MLYNR Shopify Dropshipping programının AI koçusun. Kursiyere ÇOK KİŞİSEL ve SOMUT bir yol haritası çiziyorsun. Genel laflar etme, tam olarak ne yapacağını söyle. Sert ve net ol.';
 
-  fetch('https://api.anthropic.com/v1/messages',{
+  var userPrompt='Aşağıdaki kursiyer için Shopify dropshipping yol haritası oluştur:\n\n'
+    +'İsim: '+fn+'\n'
+    +'Deneyim: '+expMap[obAnswers.q1]+'\n'
+    +'Haftalık süre: '+timeMap[obAnswers.q2]+'\n'
+    +'Sermaye: '+budgetMap[obAnswers.q3]+'\n'
+    +'En büyük endişe: '+fearMap[obAnswers.q4]+'\n\n'
+    +'Eğitim 11 modül: 1-Dropshipping Temelleri, 2-Şirket/LLC, 3-Shopify Kurulum, 4-Ürün Bulma, 5-Organik Pazarlama, 6-Reklam Hesapları, 7-Veri Tabanlı Reklam, 8-Reklam Kreatifleri, 9-Reklam Yayınlama, 10-Markalaşma, 11-Ölçekleme\n\n'
+    +'Bu kursiyerin profiline göre:\n'
+    +'- Hangi 3 modüle ÖNCE odaklanmalı ve neden (spesifik)\n'
+    +'- İlk 7 günde TAM OLARAK ne yapmalı (somut eylemler)\n'
+    +'- Onun özel durumuna göre 1 kritik uyarı (başkasına söylemeyeceğin şey)\n\n'
+    +'SADECE JSON dön, kesinlikle başka bir şey yazma:\n'
+    +'{"baslik":"'+fn+' için kişisel başlık (max 6 kelime)","ozet":"2 güçlü cümle — neden bu sıra, neden bu strateji","adimlar":[{"num":"1","baslik":"somut başlık","detay":"tam olarak ne yapacak, hangi araç, kaç gün"},{"num":"2","baslik":"...","detay":"..."},{"num":"3","baslik":"...","detay":"..."}],"odak":"Bu kişiye özel, başkasına söylemeyeceğin 1 kritik uyarı"}';
+
+  fetch(SUPPORT_FN,{
     method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:1000,
-      messages:[{role:'user',content:prompt}]
-    })
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY},
+    body:JSON.stringify({prompt: systemPrompt+'\n\n'+userPrompt})
   }).then(function(r){return r.json();})
   .then(function(data){
     clearInterval(interval);
-    var text=(data.content&&data.content[0]&&data.content[0].text)||'';
+    // shopify-endpoint'in cevap formatını handle et
+    var text='';
+    if(typeof data==='string'){text=data;}
+    else if(data.reply){text=data.reply;}
+    else if(data.content){text=data.content;}
+    else if(data.message){text=data.message;}
+    else if(data.result){text=data.result;}
+    else{text=JSON.stringify(data);}
+    // JSON'ı temizle
+    text=text.replace(/```json/gi,'').replace(/```/g,'').trim();
     var match=text.match(/\{[\s\S]*\}/);
     if(!match)throw new Error('JSON yok');
     var parsed=JSON.parse(match[0]);
-    // Kaydet
+    if(!parsed.baslik||!parsed.adimlar)throw new Error('Eksik alan');
     try{LS.setItem(obRmKey(),JSON.stringify(parsed));}catch(e){}
-    // Popup kapat
     document.getElementById('name-overlay').classList.remove('show');
     document.getElementById('name-popup').classList.remove('show');
     showToast('Hoş geldin, '+fn+'! Yol haritanı hazırladım 🎯','green');
     renderRoadmap(parsed);
   }).catch(function(){
     clearInterval(interval);
-    // Fallback: profil bazlı statik yol haritası
     var fallback=buildFallbackRoadmap(obAnswers,fn);
     try{LS.setItem(obRmKey(),JSON.stringify(fallback));}catch(e){}
     document.getElementById('name-overlay').classList.remove('show');
