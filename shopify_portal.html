@@ -312,6 +312,30 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .popup.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
 .close-btn{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:50%;width:30px;height:30px;color:var(--text2);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1}
 .close-btn:hover{background:rgba(255,255,255,.12);color:var(--text)}
+/* ONBOARDING */
+@keyframes obSpin{to{transform:rotate(360deg)}}
+@keyframes obFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ob-step{animation:obFadeIn .3s cubic-bezier(.4,0,.2,1)}
+.ob-choice{display:flex;align-items:center;gap:14px;width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s;text-align:left;font-family:var(--font)}
+.ob-choice:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.07);transform:translateY(-1px)}
+.ob-choice.selected{border-color:var(--green);background:var(--green-dim);box-shadow:0 0 0 1px var(--green-ln)}
+.ob-choice-icon{font-size:22px;flex-shrink:0;width:36px;text-align:center}
+.ob-choice-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.ob-choice-sub{font-size:11px;color:var(--text2);line-height:1.4}
+.ob-choice.selected .ob-choice-title{color:var(--green)}
+/* YOL HARİTASI KARTI */
+#roadmap-card{background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(34,197,94,.02));border:1px solid var(--green-ln);border-radius:var(--r);padding:22px 26px;position:relative;overflow:hidden;margin-bottom:14px;display:none}
+#roadmap-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.rm-badge{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.rm-title{font-size:16px;font-weight:800;color:var(--text);margin-bottom:8px;letter-spacing:-.3px;line-height:1.3}
+.rm-body{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:16px}
+.rm-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.rm-step{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px}
+.rm-step-num{width:22px;height:22px;border-radius:50%;background:var(--green-dim);border:1px solid var(--green-ln);color:var(--green);font-family:var(--mono);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.rm-step-text{font-size:12px;color:var(--text2);line-height:1.6}
+.rm-step-text strong{color:var(--text)}
+.rm-focus{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(250,204,21,.06);border:1px solid var(--gold-ln);border-radius:10px;font-size:12px;color:var(--text2)}
+.rm-focus strong{color:var(--gold)}
 .mp-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:6px}
 .mp-input,.mp-textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 14px;outline:none;transition:border-color .2s}
 .mp-input:focus,.mp-textarea:focus{border-color:rgba(255,255,255,.3)}
@@ -513,6 +537,17 @@ footer p{font-size:12px;color:var(--text3)}
     </div>
   </section>
 
+  <!-- KİŞİSEL YOL HARİTASI -->
+  <div class="section" style="margin-top:14px">
+    <div id="roadmap-card">
+      <div class="rm-badge"><span>●</span> <span id="rm-name-label">Senin Yol Haritanı</span></div>
+      <div class="rm-title" id="rm-title"></div>
+      <div class="rm-body" id="rm-body"></div>
+      <div class="rm-steps" id="rm-steps"></div>
+      <div class="rm-focus" id="rm-focus" style="display:none"></div>
+    </div>
+  </div>
+
 
 
   <!-- HAFTALIK GÖREV -->
@@ -644,15 +679,147 @@ footer p{font-size:12px;color:var(--text3)}
   <div id="rp-popup-content"></div>
 </div>
 
-<!-- İSİM POPUP -->
+<!-- ONBOARDİNG POPUP -->
 <div id="name-overlay" class="overlay"></div>
-<div id="name-popup" class="popup" style="width:min(420px,94vw)">
-  <div style="font-size:22px;font-weight:900;color:var(--text);margin-bottom:6px;letter-spacing:-.5px">Hoş geldin! 👋</div>
-  <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:24px">Seni tanıyalım</div>
-  <div style="display:flex;flex-direction:column;gap:12px">
-    <div><label class="mp-label">Adın</label><input class="mp-input" type="text" id="inp-firstname" placeholder="Adın..." autocomplete="given-name"></div>
-    <div><label class="mp-label">Soyadın</label><input class="mp-input" type="text" id="inp-lastname" placeholder="Soyadın..." autocomplete="family-name"></div>
-    <button class="mp-save" onclick="saveUserName()" style="margin-top:4px">PLATFORMA GİR →</button>
+<div id="name-popup" class="popup" style="width:min(480px,96vw);padding:0;overflow:hidden;max-height:92vh;overflow-y:auto">
+
+  <!-- Progress bar -->
+  <div style="position:sticky;top:0;z-index:10;background:var(--surface);padding:20px 28px 0">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:900;letter-spacing:3px;color:var(--text3)">MLYNR.</div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text3)" id="ob-step-label">1 / 5</div>
+    </div>
+    <div style="height:2px;background:var(--border2);border-radius:2px;overflow:hidden;margin-bottom:0">
+      <div id="ob-progress-bar" style="height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1);width:20%"></div>
+    </div>
+  </div>
+
+  <!-- Steps container -->
+  <div style="padding:24px 28px 28px">
+
+    <!-- STEP 1: İsim -->
+    <div id="ob-step-1" class="ob-step">
+      <div style="font-size:24px;margin-bottom:12px">👋</div>
+      <div style="font-size:20px;font-weight:900;color:var(--text);margin-bottom:6px;letter-spacing:-.5px">Hoş geldin!</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.6">Sana özel bir yol haritası oluşturmak için birkaç sorum var. 2 dakika sürer.</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div><label class="mp-label">Adın</label><input class="mp-input" type="text" id="inp-firstname" placeholder="Adın..." autocomplete="given-name"></div>
+        <div><label class="mp-label">Soyadın</label><input class="mp-input" type="text" id="inp-lastname" placeholder="Soyadın..." autocomplete="family-name"></div>
+      </div>
+      <button class="mp-save" onclick="obNext(1)" style="margin-top:20px">Devam Et →</button>
+    </div>
+
+    <!-- STEP 2: Deneyim -->
+    <div id="ob-step-2" class="ob-step" style="display:none">
+      <div style="font-size:24px;margin-bottom:12px">🏪</div>
+      <div style="font-size:18px;font-weight:900;color:var(--text);margin-bottom:6px;letter-spacing:-.4px">E-ticaret deneyimin nedir?</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:20px">Sana gerçekten uygun bir yol haritası çizmek için.</div>
+      <div style="display:flex;flex-direction:column;gap:8px" id="ob-q1">
+        <button class="ob-choice" data-val="beginner" onclick="obSelect(this,'q1')">
+          <span class="ob-choice-icon">🌱</span>
+          <div><div class="ob-choice-title">Hiç tecrübem yok</div><div class="ob-choice-sub">Dropshipping'i yeni öğreniyorum</div></div>
+        </button>
+        <button class="ob-choice" data-val="some" onclick="obSelect(this,'q1')">
+          <span class="ob-choice-icon">⚡</span>
+          <div><div class="ob-choice-title">Biraz deneyimim var</div><div class="ob-choice-sub">eBay veya başka platformda sattım</div></div>
+        </button>
+        <button class="ob-choice" data-val="experienced" onclick="obSelect(this,'q1')">
+          <span class="ob-choice-icon">🔥</span>
+          <div><div class="ob-choice-title">Deneyimliyim</div><div class="ob-choice-sub">Shopify/dropshipping'i biliyorum ama ölçekleyemiyorum</div></div>
+        </button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:20px">
+        <button class="mp-save" style="background:transparent;border:1px solid var(--border2);color:var(--text2);flex-shrink:0;width:auto;padding:14px 20px" onclick="obBack(2)">← Geri</button>
+        <button class="mp-save" style="flex:1" onclick="obNext(2)" id="ob-btn-2" disabled>Devam Et →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Zaman -->
+    <div id="ob-step-3" class="ob-step" style="display:none">
+      <div style="font-size:24px;margin-bottom:12px">⏱️</div>
+      <div style="font-size:18px;font-weight:900;color:var(--text);margin-bottom:6px;letter-spacing:-.4px">Haftada ne kadar zaman ayırabilirsin?</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:20px">Gerçekçi ol — bu seni doğrudan etkiler.</div>
+      <div style="display:flex;flex-direction:column;gap:8px" id="ob-q2">
+        <button class="ob-choice" data-val="low" onclick="obSelect(this,'q2')">
+          <span class="ob-choice-icon">🌙</span>
+          <div><div class="ob-choice-title">1–5 saat</div><div class="ob-choice-sub">Part-time, iş veya okul var</div></div>
+        </button>
+        <button class="ob-choice" data-val="mid" onclick="obSelect(this,'q2')">
+          <span class="ob-choice-icon">☀️</span>
+          <div><div class="ob-choice-title">5–15 saat</div><div class="ob-choice-sub">Ciddi zaman ayırıyorum</div></div>
+        </button>
+        <button class="ob-choice" data-val="high" onclick="obSelect(this,'q2')">
+          <span class="ob-choice-icon">🚀</span>
+          <div><div class="ob-choice-title">15+ saat</div><div class="ob-choice-sub">Full-time odaklanıyorum</div></div>
+        </button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:20px">
+        <button class="mp-save" style="background:transparent;border:1px solid var(--border2);color:var(--text2);flex-shrink:0;width:auto;padding:14px 20px" onclick="obBack(3)">← Geri</button>
+        <button class="mp-save" style="flex:1" onclick="obNext(3)" id="ob-btn-3" disabled>Devam Et →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Sermaye -->
+    <div id="ob-step-4" class="ob-step" style="display:none">
+      <div style="font-size:24px;margin-bottom:12px">💰</div>
+      <div style="font-size:18px;font-weight:900;color:var(--text);margin-bottom:6px;letter-spacing:-.4px">Başlangıç sermayeniz var mı?</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:20px">Reklam bütçesi ve araçlar için.</div>
+      <div style="display:flex;flex-direction:column;gap:8px" id="ob-q3">
+        <button class="ob-choice" data-val="none" onclick="obSelect(this,'q3')">
+          <span class="ob-choice-icon">🪙</span>
+          <div><div class="ob-choice-title">$500'dan az</div><div class="ob-choice-sub">Çok kısıtlı, organikle başlayacağım</div></div>
+        </button>
+        <button class="ob-choice" data-val="mid" onclick="obSelect(this,'q3')">
+          <span class="ob-choice-icon">💵</span>
+          <div><div class="ob-choice-title">$500 – $2.000</div><div class="ob-choice-sub">Sınırlı ama reklam deneyebilirim</div></div>
+        </button>
+        <button class="ob-choice" data-val="high" onclick="obSelect(this,'q3')">
+          <span class="ob-choice-icon">💎</span>
+          <div><div class="ob-choice-title">$2.000+</div><div class="ob-choice-sub">Ciddi bütçeyle başlıyorum</div></div>
+        </button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:20px">
+        <button class="mp-save" style="background:transparent;border:1px solid var(--border2);color:var(--text2);flex-shrink:0;width:auto;padding:14px 20px" onclick="obBack(4)">← Geri</button>
+        <button class="mp-save" style="flex:1" onclick="obNext(4)" id="ob-btn-4" disabled>Devam Et →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: En büyük korku -->
+    <div id="ob-step-5" class="ob-step" style="display:none">
+      <div style="font-size:24px;margin-bottom:12px">🎯</div>
+      <div style="font-size:18px;font-weight:900;color:var(--text);margin-bottom:6px;letter-spacing:-.4px">En büyük endişen ne?</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:20px">Bunu bilmek sana doğrudan yardımcı olmamı sağlar.</div>
+      <div style="display:flex;flex-direction:column;gap:8px" id="ob-q4">
+        <button class="ob-choice" data-val="product" onclick="obSelect(this,'q4')">
+          <span class="ob-choice-icon">🔍</span>
+          <div><div class="ob-choice-title">Doğru ürünü bulamıyorum</div><div class="ob-choice-sub">Kazanan ürün seçimi zor geliyor</div></div>
+        </button>
+        <button class="ob-choice" data-val="ads" onclick="obSelect(this,'q4')">
+          <span class="ob-choice-icon">📣</span>
+          <div><div class="ob-choice-title">Reklamları bilmiyorum</div><div class="ob-choice-sub">Meta/FB reklamları karmaşık geliyor</div></div>
+        </button>
+        <button class="ob-choice" data-val="store" onclick="obSelect(this,'q4')">
+          <span class="ob-choice-icon">🛍️</span>
+          <div><div class="ob-choice-title">Mağaza kurulumu</div><div class="ob-choice-sub">Shopify kurulum ve teknik kısımlar</div></div>
+        </button>
+        <button class="ob-choice" data-val="scale" onclick="obSelect(this,'q4')">
+          <span class="ob-choice-icon">📈</span>
+          <div><div class="ob-choice-title">Satış var ama ölçekleyemiyorum</div><div class="ob-choice-sub">Büyüme stratejisi net değil</div></div>
+        </button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:20px">
+        <button class="mp-save" style="background:transparent;border:1px solid var(--border2);color:var(--text2);flex-shrink:0;width:auto;padding:14px 20px" onclick="obBack(5)">← Geri</button>
+        <button class="mp-save" style="flex:1" onclick="obFinish()" id="ob-btn-5" disabled>Yol Haritamı Oluştur ✨</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: Yükleniyor -->
+    <div id="ob-step-6" class="ob-step" style="display:none;text-align:center;padding:20px 0">
+      <div style="font-size:40px;margin-bottom:16px;animation:obSpin 1.5s linear infinite;display:inline-block">⚙️</div>
+      <div style="font-size:16px;font-weight:800;color:var(--text);margin-bottom:8px;letter-spacing:-.3px">Yol haritanız hazırlanıyor...</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.6" id="ob-loading-txt">Cevaplarını analiz ediyorum</div>
+    </div>
+
   </div>
 </div>
 
@@ -1038,33 +1205,213 @@ function applyTheme(){
   }catch(e){}
 }
 
-/* İSİM */
+/* ONBOARDİNG */
+var obAnswers={q1:null,q2:null,q3:null,q4:null};
+var obFirstName='';
+
+function obKey(){return 'mlynr_shop_ob_'+email.replace(/[^a-z0-9]/gi,'_');}
+function obRmKey(){return 'mlynr_shop_rm_'+email.replace(/[^a-z0-9]/gi,'_');}
+
 function checkUserName(){
   try{
     var n=LS.getItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));
-    if(!n){openNamePopup();}else{applyUserName(n);}
+    if(!n){
+      openNamePopup();
+    } else {
+      applyUserName(n);
+      // Yol haritası kayıtlıysa göster
+      var rm=LS.getItem(obRmKey());
+      if(rm){try{renderRoadmap(JSON.parse(rm));}catch(e){}}
+    }
   }catch(e){}
 }
+
 function openNamePopup(){
   document.getElementById('name-overlay').classList.add('show');
   document.getElementById('name-popup').classList.add('show');
-  setTimeout(function(){document.getElementById('inp-firstname').focus();},300);
+  obGoStep(1);
+  setTimeout(function(){var el=document.getElementById('inp-firstname');if(el)el.focus();},350);
 }
+
+function obGoStep(n){
+  for(var i=1;i<=6;i++){
+    var el=document.getElementById('ob-step-'+i);
+    if(el)el.style.display=(i===n)?'block':'none';
+  }
+  var labels=['','1 / 5','2 / 5','3 / 5','4 / 5','5 / 5',''];
+  var pcts=['','20%','40%','60%','80%','100%','100%'];
+  var lbl=document.getElementById('ob-step-label');
+  var bar=document.getElementById('ob-progress-bar');
+  if(lbl)lbl.textContent=labels[n]||'';
+  if(bar)bar.style.width=pcts[n]||'100%';
+}
+
+function obSelect(btn,q){
+  var group=document.getElementById('ob-'+q);
+  if(!group)return;
+  group.querySelectorAll('.ob-choice').forEach(function(b){b.classList.remove('selected');});
+  btn.classList.add('selected');
+  obAnswers[q]=btn.getAttribute('data-val');
+  // İlgili devam butonunu aktifleştir
+  var stepMap={q1:2,q2:3,q3:4,q4:5};
+  var btnEl=document.getElementById('ob-btn-'+stepMap[q]);
+  if(btnEl)btnEl.disabled=false;
+}
+
+function obNext(step){
+  if(step===1){
+    var fn=document.getElementById('inp-firstname').value.trim();
+    if(!fn){document.getElementById('inp-firstname').focus();return;}
+    obFirstName=fn;
+    obGoStep(2);
+  } else if(step===2){
+    if(!obAnswers.q1)return;
+    obGoStep(3);
+  } else if(step===3){
+    if(!obAnswers.q2)return;
+    obGoStep(4);
+  } else if(step===4){
+    if(!obAnswers.q3)return;
+    obGoStep(5);
+  }
+}
+
+function obBack(step){
+  obGoStep(step-1);
+}
+
+function obFinish(){
+  if(!obAnswers.q4)return;
+  // İsmi kaydet
+  var fn=obFirstName;
+  var ln=document.getElementById('inp-lastname').value.trim();
+  var full=fn+(ln?' '+ln:'');
+  try{LS.setItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'),full);}catch(e){}
+  applyUserName(full);
+
+  // Loading ekranı
+  obGoStep(6);
+  var txts=['Cevaplarını analiz ediyorum...','Seviyene özel plan oluşturuyorum...','Modül öncelikleri belirleniyor...','Neredeyse hazır ✨'];
+  var ti=0;
+  var interval=setInterval(function(){
+    ti++;
+    var el=document.getElementById('ob-loading-txt');
+    if(el&&txts[ti])el.textContent=txts[ti];
+  },900);
+
+  // Anthropic API ile yol haritası üret
+  var expMap={beginner:'Hiç tecrübesi yok, sıfırdan başlıyor',some:'Biraz eBay/e-ticaret deneyimi var',experienced:'Deneyimli ama ölçekleyemiyor'};
+  var timeMap={low:'Haftada 1-5 saat',mid:'Haftada 5-15 saat',high:'Haftada 15+ saat (full-time)'};
+  var budgetMap={none:'$500 altı sermaye, organikle başlayacak',mid:'$500-$2000 sermaye',high:'$2000+ sermaye'};
+  var fearMap={product:'Doğru ürün bulamıyor',ads:'Meta/FB reklamları karmaşık geliyor',store:'Shopify kurulum ve teknik kısımlar',scale:'Satış var ama ölçekleyemiyor'};
+
+  var prompt='Shopify dropshipping kursiyer için kişiselleştirilmiş yol haritası oluştur.\n\nKursiyer profili:\n- İsim: '+fn+'\n- Deneyim: '+expMap[obAnswers.q1]+'\n- Zaman: '+timeMap[obAnswers.q2]+'\n- Sermaye: '+budgetMap[obAnswers.q3]+'\n- En büyük endişe: '+fearMap[obAnswers.q4]+'\n\nEğitim 11 modülden oluşuyor: 1-Dropshipping Temelleri, 2-Şirket Kurulumu, 3-Website, 4-Ürün, 5-Organik Pazarlama, 6-Reklam Hesapları, 7-Veri Tabanlı Reklam, 8-Reklam Oluşturma, 9-Reklam Yayınlama, 10-Markalaşma, 11-Ölçekleme.\n\nBu kursiyer için:\n1. Hangi modüllere önce odaklanmalı (en önemli 3-4 modül)\n2. İlk 2 haftada ne yapmalı (somut adımlar)\n3. Onun profiline özel 1 kritik uyarı\n\nJSON formatında dön: {"baslik":"kısa başlık","ozet":"2 cümle özet","adimlar":[{"num":"1","baslik":"adım başlığı","detay":"detay"},{"num":"2","baslik":"...","detay":"..."},{"num":"3","baslik":"...","detay":"..."}],"odak":"kritik uyarı veya öncelik"}\n\nSadece JSON dön, başka hiçbir şey yazma.';
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1000,
+      messages:[{role:'user',content:prompt}]
+    })
+  }).then(function(r){return r.json();})
+  .then(function(data){
+    clearInterval(interval);
+    var text=(data.content&&data.content[0]&&data.content[0].text)||'';
+    var match=text.match(/\{[\s\S]*\}/);
+    if(!match)throw new Error('JSON yok');
+    var parsed=JSON.parse(match[0]);
+    // Kaydet
+    try{LS.setItem(obRmKey(),JSON.stringify(parsed));}catch(e){}
+    // Popup kapat
+    document.getElementById('name-overlay').classList.remove('show');
+    document.getElementById('name-popup').classList.remove('show');
+    showToast('Hoş geldin, '+fn+'! Yol haritanı hazırladım 🎯','green');
+    renderRoadmap(parsed);
+  }).catch(function(){
+    clearInterval(interval);
+    // Fallback: profil bazlı statik yol haritası
+    var fallback=buildFallbackRoadmap(obAnswers,fn);
+    try{LS.setItem(obRmKey(),JSON.stringify(fallback));}catch(e){}
+    document.getElementById('name-overlay').classList.remove('show');
+    document.getElementById('name-popup').classList.remove('show');
+    showToast('Hoş geldin, '+fn+'! 👋','green');
+    renderRoadmap(fallback);
+  });
+}
+
+function buildFallbackRoadmap(a,fn){
+  var baslik,ozet,adimlar,odak;
+  if(a.q1==='beginner'){
+    baslik=fn+', sıfırdan başlıyoruz';
+    ozet='Temel kavramları anlamadan hızlı hareket etme. İlk haftada modül 1-3\'ü tamamla, sonra ürün araştırmasına geç.';
+    adimlar=[
+      {num:'1',baslik:'Modül 1-3\'ü önce bitir',detay:'Dropshipping mantığını, şirket kurulumunu ve Shopify mağazasını kur. Bu üçü olmadan diğer adımlar anlamsız.'},
+      {num:'2',baslik:'Modül 4\'e odaklan',detay:'Kazanan ürün bulma metodlarını öğren. Facebook Ad Library ve TikTok yöntemi özellikle önemli.'},
+      {num:'3',baslik:'Organikle başla',detay:'Sermayeni korumak için önce organik içerikle test et. Modül 5\'i bitirdikten sonra reklama geç.'}
+    ];
+    odak=a.q3==='none'?'Sermaye kısıtlın var — organik içerik üretimine öncelik ver, reklamı son aşamaya bırak.':'İlk 5 gün ürün araştırması yap, hemen listeleme yapma.';
+  } else if(a.q1==='experienced'){
+    baslik=fn+', ölçeklemeye odaklanıyoruz';
+    ozet='Temelleri zaten biliyorsun. Modül 7-11\'e odaklan: veri tabanlı karar alma ve ölçekleme stratejileri önceliğin.';
+    adimlar=[
+      {num:'1',baslik:'Modül 7\'den başla',detay:'KPI hesap makinesi ve karlılık Excel\'ini kur. Veri olmadan doğru karar veremezsin.'},
+      {num:'2',baslik:'Modül 9-10\'u detaylı incele',detay:'Retargeting ve lookalike kitleler — büyüme buradan geliyor. Markalaşma modülü ise uzun vadeli.'},
+      {num:'3',baslik:'Modül 11: Ölçekleme',detay:'Agent kullanımı ve 3PL\'e geçiş zamanlaması. Bu aşamada otomasyon kritik.'}
+    ];
+    odak='Önce karlı bir ürün bul, sonra ölçekle. Ölçekleme parasız yapılmaz — sermayeni kontrol et.';
+  } else {
+    baslik=fn+', hızlı başlayalım';
+    ozet='Biraz deneyimin var, bu avantaj. Ürün bulma ve reklam modüllerine öncelik ver.';
+    adimlar=[
+      {num:'1',baslik:'Modül 4\'ü derinlemesine incele',detay:'Kazanan ürün kriterleri ve bulma metodlarını anla. Bu en kritik adım.'},
+      {num:'2',baslik:'Modül 6-7-8\'i sırayla yap',detay:'Meta Business kur, reklamları veri tabanlı hazırla ve ilk kreatifleri oluştur.'},
+      {num:'3',baslik:'İlk kreatif testi başlat',detay:'Küçük bütçeyle test et, kazananı ölçekle. Modül 9\'da retargeting ekle.'}
+    ];
+    odak=a.q4==='ads'?'Meta reklamlara girişmeden önce mutlaka Modül 6 ve 7\'yi bitir.':'Ürün seçimi her şeyin başı — doğru ürün bulmadan reklam bütçesi harcama.';
+  }
+  return {baslik:baslik,ozet:ozet,adimlar:adimlar,odak:odak};
+}
+
+function renderRoadmap(data){
+  var card=document.getElementById('roadmap-card');
+  if(!card)return;
+  var lbl=document.getElementById('rm-name-label');
+  var title=document.getElementById('rm-title');
+  var body=document.getElementById('rm-body');
+  var steps=document.getElementById('rm-steps');
+  var focus=document.getElementById('rm-focus');
+  if(lbl)lbl.textContent='Senin Yol Haritanı';
+  if(title)title.textContent=data.baslik||'Kişisel Yol Haritanı';
+  if(body)body.textContent=data.ozet||'';
+  if(steps&&data.adimlar){
+    steps.innerHTML=data.adimlar.map(function(s){
+      return '<div class="rm-step"><div class="rm-step-num">'+s.num+'</div><div class="rm-step-text"><strong>'+s.baslik+'</strong><br>'+s.detay+'</div></div>';
+    }).join('');
+  }
+  if(focus&&data.odak){
+    focus.style.display='flex';
+    focus.innerHTML='⚡ <span><strong>Odak noktanı:</strong> '+data.odak+'</span>';
+  }
+  card.style.display='block';
+  card.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
 function saveUserName(){
+  // Eski compat — artık obFinish üzerinden gidiyor
   var fn=document.getElementById('inp-firstname').value.trim();
   var ln=document.getElementById('inp-lastname').value.trim();
   if(!fn){document.getElementById('inp-firstname').focus();return;}
-  var full=fn+(ln?' '+ln:'');
-  try{LS.setItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'),full);}catch(e){}
-  document.getElementById('name-overlay').classList.remove('show');
-  document.getElementById('name-popup').classList.remove('show');
-  applyUserName(full);
-  showToast('Hoş geldin, '+fn+'! 👋','green');
+  obFirstName=fn;
+  obFinish();
 }
 function applyUserName(full){
   var parts=full.split(' ');
-  document.getElementById('uav').textContent=parts[0].charAt(0).toUpperCase();
-  document.getElementById('uname').textContent=full;
+  var el=document.getElementById('uav');
+  var un=document.getElementById('uname');
+  if(el)el.textContent=parts[0].charAt(0).toUpperCase();
+  if(un)un.textContent=full;
 }
 
 /* METOD TOGGLE */
