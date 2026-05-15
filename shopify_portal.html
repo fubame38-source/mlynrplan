@@ -383,6 +383,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .rm-cta-main:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(34,197,94,.3)}
 .rm-cta-sec{display:inline-flex;align-items:center;gap:6px;background:transparent;color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px 18px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
 .rm-cta-sec:hover{border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7)}
+.rm-cta-sec:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .mp-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:6px}
 .mp-input,.mp-textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;padding:12px 14px;outline:none;transition:border-color .2s}
 .mp-input:focus,.mp-textarea:focus{border-color:rgba(255,255,255,.3)}
@@ -623,6 +624,9 @@ footer p{font-size:12px;color:var(--text3)}
           </button>
           <button class="rm-cta-sec" onclick="openSupportBot()">
             🤖 AI Koça Sor
+          </button>
+          <button class="rm-cta-sec" onclick="refreshRoadmap()" id="rm-refresh-btn" style="margin-left:auto">
+            ↺ Yeni Plan
           </button>
         </div>
       </div>
@@ -1472,6 +1476,10 @@ function renderRoadmap(data){
   var card=document.getElementById('roadmap-card');
   if(!card)return;
 
+  // isim büyük harf
+  var fn=obFirstName||(email?email.split('@')[0]:'');
+  fn=fn.charAt(0).toUpperCase()+fn.slice(1).toLowerCase();
+
   // Timestamp
   var ts=document.getElementById('rm-timestamp');
   if(ts){
@@ -1494,14 +1502,16 @@ function renderRoadmap(data){
       (a.q4?'<div class="rm-profile-tag weak">'+fearLabel[a.q4]+'</div>':'');
   }
 
-  // Ana başlık — ismi yeşil yap
+  // Ana başlık — ismi yeşil yap, büyük harf
   var heroTitle=document.getElementById('rm-hero-title');
   if(heroTitle){
     var baslik=data.baslik||'Kişisel Yol Haritanı';
-    // İsim varsa yeşil yap
-    var fn=obFirstName||(email?email.split('@')[0]:'');
+    // İsmin ilk harfini büyük yap
+    baslik=baslik.charAt(0).toUpperCase()+baslik.slice(1);
     if(fn&&baslik.toLowerCase().includes(fn.toLowerCase())){
-      baslik=baslik.replace(new RegExp('('+fn+')', 'i'),'<span class="rm-name">$1</span>');
+      baslik=baslik.replace(new RegExp('('+fn+')', 'i'),function(m){
+        return '<span class="rm-name">'+m.charAt(0).toUpperCase()+m.slice(1)+'</span>';
+      });
     }
     heroTitle.innerHTML=baslik;
   }
@@ -1547,7 +1557,62 @@ function renderRoadmap(data){
   setTimeout(function(){card.scrollIntoView({behavior:'smooth',block:'nearest'});},300);
 }
 
-function saveUserName(){
+function refreshRoadmap(){
+  var btn=document.getElementById('rm-refresh-btn');
+  if(btn){btn.disabled=true;btn.textContent='⏳ Üretiyor...';}
+
+  // Yenile animasyonu
+  var card=document.getElementById('roadmap-card');
+  if(card)card.style.opacity='.5';
+
+  var fn=obFirstName||(email?email.split('@')[0]:'');
+  fn=fn.charAt(0).toUpperCase()+fn.slice(1).toLowerCase();
+
+  var expMap={beginner:'Hiç tecrübesi yok, sıfırdan başlıyor',some:'Biraz eBay/e-ticaret deneyimi var',experienced:'Deneyimli ama ölçekleyemiyor'};
+  var timeMap={low:'Haftada 1-5 saat (part-time)',mid:'Haftada 5-15 saat',high:'Haftada 15+ saat (full-time)'};
+  var budgetMap={none:'$500 altı, bootstrap',mid:'$500-$2000',high:'$2000+'};
+  var fearMap={product:'Kazanan ürün bulamıyor',ads:'Meta reklamları karmaşık',store:'Shopify teknik kurulum',scale:'Satış var büyüyemiyor'};
+
+  var systemPrompt='Sen MLYNR\'ın kişisel Shopify koçusun. Önceki plandan tamamen farklı, çok daha spesifik ve sürpriz bir strateji üret. Herkesin bilmediği trickler ver.';
+
+  var userPrompt=fn+' için ALTERNATİF 4 haftalık plan — öncekinden farklı açıdan yaklaş:\n\n'
+    +'Profil: '+expMap[obAnswers.q1]+' | '+timeMap[obAnswers.q2]+' | '+budgetMap[obAnswers.q3]+' | Sorun: '+fearMap[obAnswers.q4]+'\n\n'
+    +'Bu sefer:\n'
+    +'- Herkesin bilmediği, mentörlerin gizli tuttuğu 1 özel trick ekle\n'
+    +'- Rakiplerin kullanmadığı bir açıdan yaklaş\n'
+    +'- Bu kişinin profiline göre çoğunun atlayıp zarar gördüğü 1 hatayı öne çıkar\n'
+    +'- Her hafta için çok spesifik eylem (modül adı + ne yapacak + kaç gün)\n\n'
+    +'SADECE JSON dön:\n'
+    +'{"baslik":"'+fn+' için alternatif başlık","ozet":"Öncekinden farklı strateji neden daha iyi — 2 güçlü cümle","adimlar":[{"baslik":"Hafta 1","detay":"Spesifik eylem + modül + süre"},{"baslik":"Hafta 2","detay":"..."},{"baslik":"Hafta 3","detay":"..."},{"baslik":"Hafta 4","detay":"..."}],"odak":"Herkesin bilmediği 1 özel trick veya rakiplerin görmezden geldiği fırsat"}';
+
+  fetch(SUPPORT_FN,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY},
+    body:JSON.stringify({prompt:systemPrompt+'\n\n'+userPrompt})
+  }).then(function(r){return r.json();})
+  .then(function(data){
+    var text='';
+    if(typeof data==='string'){text=data;}
+    else if(data.reply){text=data.reply;}
+    else if(data.content){text=data.content;}
+    else if(data.message){text=data.message;}
+    else if(data.result){text=data.result;}
+    text=text.replace(/```json/gi,'').replace(/```/g,'').trim();
+    var match=text.match(/\{[\s\S]*\}/);
+    if(!match)throw new Error('JSON yok');
+    var parsed=JSON.parse(match[0]);
+    if(!parsed.baslik||!parsed.adimlar)throw new Error('Eksik');
+    try{LS.setItem(obRmKey(),JSON.stringify(parsed));}catch(e){}
+    if(card)card.style.opacity='1';
+    if(btn){btn.disabled=false;btn.textContent='↺ Yeni Plan';}
+    renderRoadmap(parsed);
+    showToast('Yeni plan hazır — farklı bir açıdan baktık 🎯','green');
+  }).catch(function(){
+    if(card)card.style.opacity='1';
+    if(btn){btn.disabled=false;btn.textContent='↺ Yeni Plan';}
+    showToast('Şu an bağlanamadım, tekrar dene.','');
+  });
+}
   // Eski compat — artık obFinish üzerinden gidiyor
   var fn=document.getElementById('inp-firstname').value.trim();
   var ln=document.getElementById('inp-lastname').value.trim();
