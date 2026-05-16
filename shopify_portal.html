@@ -10,8 +10,8 @@
 <style>
 :root{
   --font:'Geist',sans-serif;--mono:'Geist Mono',monospace;
-  --bg:#080808;--surface:#111;--surface2:#161616;--surface3:#1a1a1a;
-  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --bg:#0d0d0d;--surface:#1a1a1a;--surface2:#212121;--surface3:#272727;
+  --border:rgba(255,255,255,.10);--border2:rgba(255,255,255,.16);
   --text:#f0f0f0;--text2:#888;--text3:#444;--white:#fff;
   --green:#22c55e;--green-ln:rgba(34,197,94,.2);--green-dim:rgba(34,197,94,.05);
   --gold:#facc15;--gold-ln:rgba(250,204,21,.2);--gold-dim:rgba(250,204,21,.05);
@@ -250,10 +250,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 /* MODÜLLER */
 .module-accordion{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1)}
-.module-accordion.open{border-color:rgba(255,255,255,.15);background:var(--surface2)}
+.module-accordion.open{border-color:rgba(255,255,255,.22);background:var(--surface2)}
 .module-accordion-header{display:flex;align-items:center;gap:0;padding:0;cursor:pointer;user-select:none}
-.ma-num-big{font-size:clamp(48px,7vw,72px);font-weight:900;letter-spacing:-4px;line-height:1;color:var(--surface2);padding:20px 16px 20px 24px;flex-shrink:0;transition:color .2s;user-select:none}
-.module-accordion.open .ma-num-big{color:var(--surface3)}
+.ma-num-big{font-size:clamp(48px,7vw,72px);font-weight:900;letter-spacing:-4px;line-height:1;color:rgba(255,255,255,.12);padding:20px 16px 20px 24px;flex-shrink:0;transition:color .2s;user-select:none}
+.module-accordion.open .ma-num-big{color:rgba(255,255,255,.18)}
 .ma-content{flex:1;padding:20px 20px 20px 0}
 .ma-label-row{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
 .ma-name{font-size:clamp(14px,2vw,17px);font-weight:700;color:var(--text);letter-spacing:-.3px}
