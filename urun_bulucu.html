@@ -63,10 +63,8 @@ body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
-
 .bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:48px 48px}
 .bg-glow{position:fixed;top:-300px;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse,rgba(255,255,255,.025),transparent 70%);pointer-events:none;z-index:0}
-
 .topbar{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(8,8,8,.9);border-bottom:1px solid var(--border);padding:0 clamp(16px,4vw,40px)}
 .topbar-inner{max-width:860px;margin:0 auto;height:52px;display:flex;align-items:center;gap:16px}
 .tl{font-size:11px;font-weight:900;letter-spacing:4px;color:var(--white)}
@@ -74,20 +72,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .tl-page{font-size:11px;color:var(--text2);font-family:var(--mono)}
 .back-link{margin-left:auto;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s}
 .back-link:hover{color:var(--text2)}
-
 .hero{padding:clamp(48px,8vw,80px) clamp(20px,5vw,48px) 0;max-width:860px;margin:0 auto;position:relative;z-index:1}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:20px}
 .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.5s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .hero-title{font-size:clamp(42px,8vw,80px);font-weight:900;letter-spacing:-3px;line-height:.9;color:var(--white);margin-bottom:14px}
 .hero-sub{font-size:14px;color:var(--text2);margin-bottom:0;line-height:1.7;max-width:460px}
-
 .tabs-wrap{max-width:860px;margin:0 auto;padding:clamp(28px,5vw,48px) clamp(20px,5vw,48px) 0;position:relative;z-index:1}
 .tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;width:fit-content;margin-bottom:28px}
 .tab{padding:9px 20px;border-radius:9px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);cursor:pointer;transition:all .2s;user-select:none}
 .tab:hover{color:var(--text2)}
 .tab.active{background:var(--surface2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.4)}
-
 .input-card{background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}
 .input-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
 .ic-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:block}
@@ -96,18 +91,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .ic-input::placeholder{color:var(--text3)}
 .ic-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
 .ic-hint{font-size:12px;color:var(--text3);margin-top:10px;line-height:1.6}
-
 .niche-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:0}
 .niche-btn{padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-size:12px;cursor:pointer;transition:all .2s;text-align:center;user-select:none;line-height:1.3}
 .niche-btn:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:var(--text)}
 .niche-btn.sel{border-color:var(--green-ln);background:var(--green-dim);color:var(--green)}
-
 .analyze-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:.3px;padding:14px 28px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);flex-shrink:0}
 .analyze-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,255,255,.18)}
 .analyze-btn:disabled{background:var(--surface2);color:var(--text3);cursor:not-allowed;transform:none;box-shadow:none}
 .clear-btn{background:transparent;border:1px solid var(--border);border-radius:10px;color:var(--text3);font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 18px;cursor:pointer;transition:all .2s}
 .clear-btn:hover{border-color:var(--border2);color:var(--text2)}
-
 .loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:16px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spinner{width:32px;height:32px;border:2.5px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .75s linear infinite}
@@ -115,10 +107,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .loading-steps{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:8px}
 .ls-item{font-size:12px;color:var(--text3);opacity:0;animation:fadeIn .4s ease forwards}
 @keyframes fadeIn{to{opacity:1}}
-
 .report-wrap{display:none;flex-direction:column;gap:12px;animation:slideUp .4s cubic-bezier(.34,1.2,.64,1)}
 @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-
 .decision-card{border-radius:18px;padding:28px 32px;position:relative;overflow:hidden}
 .decision-card.sat{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(34,197,94,.04));border:1px solid var(--green-ln)}
 .decision-card.satma{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.04));border:1px solid var(--red-ln)}
@@ -129,13 +119,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .dikkat .dc-badge{background:rgba(250,204,21,.15);color:var(--gold);border:1px solid var(--gold-ln)}
 .dc-product{font-size:22px;font-weight:800;color:var(--white);letter-spacing:-.5px;margin-bottom:8px;line-height:1.2}
 .dc-reason{font-size:14px;color:var(--text2);line-height:1.75}
-
 .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px}
 .mc-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .mc-val{font-size:22px;font-weight:800;color:var(--white);letter-spacing:-.5px;line-height:1;margin-bottom:4px}
 .mc-sub{font-size:11px;color:var(--text2)}
-
 .detail-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
 .ds-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
 .ds-icon{font-size:16px}
@@ -143,27 +131,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .ds-body{padding:16px 20px}
 .ds-body p{font-size:13px;color:var(--text2);line-height:1.8}
 .ds-body strong{color:var(--text);font-weight:600}
-
 .hook-list{display:flex;flex-direction:column;gap:8px}
 .hook-item{padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-size:13px;color:var(--text2);line-height:1.6;cursor:pointer;transition:all .2s;position:relative}
 .hook-item:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
 .hook-copy{position:absolute;top:10px;right:12px;font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px}
 .hook-item:hover .hook-copy{color:var(--text2)}
-
 .competitor-wrap{display:flex;flex-direction:column;gap:6px}
 .comp-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:12px;color:var(--text2);line-height:1.5}
 .comp-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
 .comp-dot.pos{background:var(--green)}
 .comp-dot.neg{background:var(--red)}
 .comp-dot.neu{background:var(--text3)}
-
 .score-bars{display:flex;flex-direction:column;gap:10px}
 .score-row{display:flex;align-items:center;gap:12px}
 .score-label{font-size:11px;color:var(--text2);min-width:90px}
 .score-bar-wrap{flex:1;height:4px;background:var(--border2);border-radius:99px;overflow:hidden}
 .score-bar-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
 .score-val{font-family:var(--mono);font-size:10px;color:var(--text2);min-width:28px;text-align:right}
-
 .suggestion-card{background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:22px 24px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
 .suggestion-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
 .suggestion-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.5);border-color:rgba(255,255,255,.18)}
@@ -177,7 +161,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sc-analyze-btn{margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding:7px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:transparent;transition:all .2s}
 .sc-analyze-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
 .suggestions-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
 .report-actions{display:flex;gap:8px;padding-top:4px;flex-wrap:wrap}
 .ra-btn{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:1px solid var(--border2);background:transparent;color:var(--text3)}
 .ra-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text2)}
@@ -185,9 +168,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .ra-btn.primary:hover{box-shadow:0 6px 20px rgba(34,197,94,.3);transform:translateY(-1px)}
 .ra-btn.secondary{background:var(--white);color:var(--bg);border-color:transparent}
 .ra-btn.secondary:hover{box-shadow:0 6px 20px rgba(255,255,255,.15);transform:translateY(-1px)}
-
 .history-wrap{max-width:860px;margin:0 auto;padding:0 clamp(20px,5vw,48px) clamp(40px,6vw,60px);position:relative;z-index:1}
-.history-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;margin-top:32px}
 .history-list{display:flex;flex-direction:column;gap:6px}
 .history-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s}
 .history-item:hover{border-color:var(--border2);background:var(--surface2)}
@@ -197,11 +178,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .hi-decision.dikkat{background:var(--gold)}
 .hi-name{font-size:13px;color:var(--text);flex:1}
 .hi-date{font-family:var(--mono);font-size:10px;color:var(--text3)}
-
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;color:var(--text);z-index:9100;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.green{border-color:var(--green-ln);color:var(--green)}
-
 @media(max-width:640px){
   .metrics-grid{grid-template-columns:1fr 1fr}
   .niche-grid{grid-template-columns:repeat(3,1fr)}
@@ -221,7 +200,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="tl-sep">/</div>
     <div class="tl-page">Ürün Bulucu</div>
     <a href="https://mlynrplan.com/shopify_portal.html" class="back-link">← Portala Dön</a>
-    <button id="theme-toggle" onclick="toggleTheme()" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:14px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;margin-left:8px" title="Tema değiştir">☀️</button>
+    <button id="theme-toggle" onclick="toggleTheme()" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:14px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;margin-left:8px">☀️</button>
   </div>
 </nav>
 
@@ -233,18 +212,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <div class="tabs-wrap">
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('analiz',this)">Ürün Analizi</div>
-    <div class="tab" onclick="switchTab('nis',this)">Niş → Ürün Öner</div>
+    <div class="tab active" id="tab-btn-analiz" onclick="switchTab('analiz',this)">Ürün Analizi</div>
+    <div class="tab" id="tab-btn-nis" onclick="switchTab('nis',this)">Niş → Ürün Öner</div>
   </div>
 
-  <!-- ANALİZ TABI -->
   <div id="tab-analiz">
     <div class="input-card">
-      <span class="ic-label">Ürün Adı veya AliExpress URL</span>
-      <input class="ic-input" id="analiz-input" type="text" placeholder="Örn: Posture corrector back brace · veya aliexpress.com/item/..." />
-      <div class="ic-hint">Ürün adı, AliExpress linki veya Amazon linki girebilirsin. AI web'de araştırıp analiz yapar.</div>
+      <span class="ic-label">Ürün Adı veya AliExpress / Amazon URL</span>
+      <input class="ic-input" id="analiz-input" type="text" placeholder="Örn: Posture corrector · veya aliexpress.com/item/..." />
+      <div class="ic-hint">Ürün adı veya link gir. AI web'de araştırıp analiz yapar.</div>
       <div class="ic-row">
-        <button class="analyze-btn" onclick="doAnaliz()" id="analiz-btn">🔍 Analiz Et</button>
+        <button class="analyze-btn" id="analiz-btn" onclick="doAnaliz()">🔍 Analiz Et</button>
         <button class="clear-btn" onclick="clearAnaliz()">Temizle</button>
       </div>
     </div>
@@ -258,13 +236,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div id="analiz-report" class="report-wrap"></div>
   </div>
 
-  <!-- NİŞ TABI -->
   <div id="tab-nis" style="display:none">
     <div class="input-card">
       <span class="ic-label">Bir Niş Seç</span>
       <div class="niche-grid" id="niche-grid"></div>
       <div class="ic-row" style="margin-top:16px">
-        <button class="analyze-btn" onclick="doNis()" id="nis-btn">💡 Ürün Öner</button>
+        <button class="analyze-btn" id="nis-btn" onclick="doNis()">💡 Ürün Öner</button>
         <button class="clear-btn" onclick="clearNis()">Temizle</button>
       </div>
     </div>
@@ -280,9 +257,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <div class="history-wrap">
   <div id="history-section" style="display:none">
-    <div class="history-label" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:32px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:32px">
       <span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)">Geçmiş Analizler</span>
-      <button onclick="clearAllHist()" style="background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text3);font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(239,68,68,.4)';this.style.color='#ef4444'" onmouseout="this.style.borderColor='';this.style.color=''">Tümünü Sil</button>
+      <button onclick="clearAllHist()" style="background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text3);font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;cursor:pointer" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color=''">Tümünü Sil</button>
     </div>
     <div class="history-list" id="history-list"></div>
   </div>
@@ -291,10 +268,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div class="toast" id="toast"></div>
 
 <script>
-var API_URL='https://xrelhozqawdseobxqbju.supabase.co/functions/v1/shopify-endpoint';
-var API_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
+var API_URL = 'https://xrelhozqawdseobxqbju.supabase.co/functions/v1/shopify-endpoint';
+var API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
 
-var NISLER=[
+var NISLER = [
   {e:'🐾',n:'Evcil Hayvan'},{e:'🏠',n:'Ev & Yaşam'},{e:'💪',n:'Spor & Fitness'},
   {e:'🌿',n:'Bahçe'},{e:'👶',n:'Bebek & Çocuk'},{e:'🍳',n:'Mutfak Gadget'},
   {e:'🚗',n:'Araç Aksesuar'},{e:'💄',n:'Güzellik'},{e:'📚',n:'Ofis & Çalışma'},
@@ -303,237 +280,89 @@ var NISLER=[
   {e:'🧹',n:'Temizlik & Düzen'}
 ];
 
-var selectedNis=null;
-var historyData=[];
-try{var h=localStorage.getItem('mlynr_urun_history');if(h)historyData=JSON.parse(h);}catch(e){}
+var selectedNis = null;
+var historyData = [];
+try { var _h = localStorage.getItem('mlynr_urun_history'); if (_h) historyData = JSON.parse(_h); } catch(e) {}
 
 function tryParseJSON(raw) {
   if (!raw || typeof raw !== 'string') return null;
-  raw = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+  raw = raw.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
   try { return JSON.parse(raw); } catch(e) {}
-  try { var m1 = raw.match(/\{[\s\S]*\}/); if (m1) return JSON.parse(m1[0]); } catch(e) {}
+  try { var m = raw.match(/\{[\s\S]*\}/); if (m) return JSON.parse(m[0]); } catch(e) {}
   try { var m2 = raw.match(/\[[\s\S]*\]/); if (m2) return JSON.parse(m2[0]); } catch(e) {}
   return null;
 }
 
-function callAI(prompt, onSuccess, onError, useSearch) {
+function callAPI(payload, onSuccess, onError) {
   fetch(API_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + API_KEY, 'apikey': API_KEY },
-    body: JSON.stringify({
-      prompt: prompt,
-      use_search: useSearch || false,
-      system: 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hic bir aciklama, markdown, kod blogu veya ek metin yazma. Sadece ham JSON yaz.'
-    })
+    headers: {'Content-Type':'application/json','Authorization':'Bearer '+API_KEY,'apikey':API_KEY},
+    body: JSON.stringify(payload)
   })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    var raw = '';
-    if (data && typeof data.sonuc === 'string') raw = data.sonuc;
-    else if (data && typeof data.reply === 'string') raw = data.reply;
-    else if (typeof data === 'string') raw = data;
-    else raw = JSON.stringify(data);
-
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    var raw = (data && typeof data.sonuc === 'string') ? data.sonuc : (data && typeof data.reply === 'string') ? data.reply : JSON.stringify(data);
     var parsed = tryParseJSON(raw);
-    if (parsed) onSuccess(parsed);
-    else onError(raw);
+    if (parsed) onSuccess(parsed); else onError(raw);
   })
-  .catch(function(e) { onError(e.message || 'Bağlantı hatası'); });
-}
-
-// Portale kaydet
-function saveToPortal(d, inputTxt) {
-  var name = d.urun_adi || inputTxt;
-  var status = d.karar === 'SAT' ? 'SAT' : (d.karar === 'SATMA' ? 'SATMA' : 'BEKLEMEDE');
-  try {
-    var existing = [];
-    try { var e = localStorage.getItem('mlynr_saved_products'); if(e) existing = JSON.parse(e); } catch(ex) {}
-    var alreadyExists = existing.some(function(p) { return p.name === name; });
-    if (!alreadyExists) {
-      existing.unshift({ name: name, status: status, date: new Date().toISOString().slice(0,10), id: Date.now() });
-      localStorage.setItem('mlynr_saved_products', JSON.stringify(existing));
-    }
-    var portalKey = null;
-    for (var i = 0; i < localStorage.length; i++) {
-      var k = localStorage.key(i);
-      if (k && k.startsWith('mlynr_shop_') && !k.includes('admin') && !k.includes('fullname')) { portalKey = k; break; }
-    }
-    if (portalKey) {
-      try {
-        var ps = JSON.parse(localStorage.getItem(portalKey) || '{}');
-        if (!ps.savedProducts) ps.savedProducts = [];
-        var ae = ps.savedProducts.some(function(p) { return p.name === name; });
-        if (!ae) { ps.savedProducts.unshift({ name: name, status: status, date: new Date().toISOString().slice(0,10), id: Date.now() }); }
-        localStorage.setItem(portalKey, JSON.stringify(ps));
-      } catch(ex) {}
-    }
-    showToast('✓ Portale kaydedildi', 'green');
-  } catch(ex) { showToast('Kaydetme hatası'); }
-}
-
-function renderNisGrid() {
-  var g = document.getElementById('niche-grid'); if (!g) return; g.innerHTML = '';
-  NISLER.forEach(function(n, i) {
-    var btn = document.createElement('div');
-    btn.className = 'niche-btn' + (selectedNis === i ? ' sel' : '');
-    btn.textContent = n.e + ' ' + n.n;
-    btn.onclick = function() { selectedNis = i; renderNisGrid(); };
-    g.appendChild(btn);
-  });
-}
-
-function switchTab(tab, el) {
-  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-  if (el) el.classList.add('active');
-  document.getElementById('tab-analiz').style.display = tab === 'analiz' ? 'block' : 'none';
-  document.getElementById('tab-nis').style.display = tab === 'nis' ? 'block' : 'none';
-}
-
-function buildAnalizPrompt(input) {
-  var isAliExpress = input.indexOf('aliexpress') !== -1;
-  var isAmazon = input.indexOf('amazon') !== -1;
-  var isURL = input.startsWith('http') || input.indexOf('.com/') !== -1;
-
-  var urunBilgisi = '';
-  if (isAliExpress) {
-    // AliExpress URL'den item ID çıkar
-    var itemMatch = input.match(/\/item\/(\d+)/);
-    var itemId = itemMatch ? itemMatch[1] : '';
-    urunBilgisi = 'Bu bir AliExpress urun linki' + (itemId ? ' (item ID: ' + itemId + ')' : '') + '. URL: ' + input + '. Bu linkteki urunu analiz et. AliExpress urunleri genellikle Cinden gelen dropshipping urunleridir. URL\'deki kelimelerden ürün kategorisini anla ve gercekci bir Shopify dropshipping analizi yap.';
-  } else if (isAmazon) {
-    urunBilgisi = 'Bu bir Amazon urun linki: ' + input + '. Bu urunu rakip olarak degerlendirip dropshipping potansiyelini analiz et.';
-  } else if (isURL) {
-    urunBilgisi = 'Bu bir urun linki: ' + input + '. Linkteki urun bilgilerinden dropshipping analizi yap.';
-  } else {
-    urunBilgisi = 'Urun adi: ' + input;
-  }
-
-  var idMatch = input.match(/\d{10,}/);
-  var searchTerm = idMatch ? 'aliexpress ' + idMatch[0] + ' price' : input;
-  var jsonFormat = '{"karar":"SAT","urun_adi":"Turkce urun adi","karar_nedeni":"2-3 cumle Turkce","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Turkce hook","hook2":"Turkce hook","hook3":"Turkce hook","firsat":"string","uyari":"string","rakip_notu":"string","aliexpress_arama":"English search term","amazon_arama":"English search term","aliexpress_gercek_fiyat":"$X-$X","aliexpress_satici_sayisi":"tahmini sayi","aliexpress_rating":"X.X/5"}';
-  return 'Urun: ' + urunBilgisi + '\n\nOnce web aramasi yap: "' + searchTerm + '" - AliExpress fiyat, satici sayisi ve rating bul. Sonra bu verileri kullanarak YALNIZCA asagidaki JSON formatinda yanit ver, JSON disinda tek kelime bile yazma:\n' + jsonFormat;
+  .catch(function(e){ onError(e.message || 'Baglanti hatasi'); });
 }
 
 function doAnaliz() {
-  var inp = document.getElementById('analiz-input'); if (!inp) return;
-  var input = inp.value.trim(); if (!input) { showToast('Ürün adı veya link gir'); return; }
+  var inp = document.getElementById('analiz-input');
+  var input = inp ? inp.value.trim() : '';
+  if (!input) { showToast('Urun adi veya link gir'); return; }
+
   var btn = document.getElementById('analiz-btn');
   var loading = document.getElementById('analiz-loading');
   var report = document.getElementById('analiz-report');
   if (btn) btn.disabled = true;
   if (loading) loading.style.display = 'block';
   if (report) { report.style.display = 'none'; report.innerHTML = ''; }
-  var stepsEl = document.getElementById('loading-steps'); if (stepsEl) stepsEl.innerHTML = '';
-  var steps = ['Link analiz ediliyor...','Ürün bilgisi çıkarılıyor...','Pazar verisi hesaplanıyor...','Reklam hookları yazılıyor...','Rapor hazırlanıyor...'];
+
+  var stepsEl = document.getElementById('loading-steps');
+  if (stepsEl) stepsEl.innerHTML = '';
+  var steps = ['Ürün araştırılıyor...','AliExpress verisi çekiliyor...','Pazar analizi yapılıyor...','Reklam hookları yazılıyor...','Rapor hazırlanıyor...'];
   var si = 0;
-  var stepInterval = setInterval(function() {
-    if (stepsEl && si < steps.length) { var d = document.createElement('div'); d.className = 'ls-item'; d.textContent = steps[si]; stepsEl.appendChild(d); si++; }
-  }, 800);
+  var stInt = setInterval(function(){
+    if (stepsEl && si < steps.length) {
+      var d = document.createElement('div'); d.className = 'ls-item'; d.textContent = steps[si]; stepsEl.appendChild(d); si++;
+    }
+  }, 900);
 
-  var prompt = buildAnalizPrompt(input);
+  var isAli = input.indexOf('aliexpress') !== -1;
+  var isAmz = input.indexOf('amazon') !== -1;
+  var isLink = input.startsWith('http') || input.indexOf('.com/') !== -1;
+  var itemId = isAli ? (input.match(/\/item\/(\d+)/) || [])[1] : null;
 
-  callAI(prompt,
-    function(parsed) {
-      clearInterval(stepInterval);
+  var searchHint;
+  if (isAli && itemId) {
+    searchHint = 'Web\'de "aliexpress ' + itemId + '" veya "site:aliexpress.com ' + itemId + '" ara, urun adini bul. Sonra bu urun icin AliExpress fiyat, satici sayisi ve pazar analizi yap.';
+  } else if (isLink) {
+    searchHint = 'Su linkteki urunu web\'de ara ve analiz et: ' + input;
+  } else {
+    searchHint = '"' + input + '" urununu AliExpress ve dropshipping acisindan web\'de ara, gercek fiyat ve pazar verisini bul.';
+  }
+
+  var schema = '{"karar":"SAT","urun_adi":"Turkce urun adi","karar_nedeni":"2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Turkce hook","hook2":"Turkce hook","hook3":"Turkce hook","firsat":"string","uyari":"string","rakip_notu":"string","aliexpress_arama":"English term","amazon_arama":"English term","aliexpress_gercek_fiyat":"$X-$X","aliexpress_satici_sayisi":"150+","aliexpress_rating":"4.5/5"}';
+  var prompt = searchHint + '\n\nBuldugun GERCEK verileri kullanarak Shopify dropshipping analizi yap. karar: SAT, DIKKAT veya SATMA. SADECE asagidaki JSON formatinda yanit ver, baska hicbir sey yazma:\n' + schema;
+
+  callAPI(
+    {prompt: prompt, use_search: true, system: 'Sen bir Shopify dropshipping uzmanisın. Web aramasi yap, GERCEK verileri bul. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.'},
+    function(parsed){
+      clearInterval(stInt);
       if (loading) loading.style.display = 'none';
       if (btn) btn.disabled = false;
       renderReport(parsed, input);
       saveHist(input, parsed.karar, parsed);
     },
-    function(txt) {
-      clearInterval(stepInterval);
+    function(txt){
+      clearInterval(stInt);
       if (loading) loading.style.display = 'none';
       if (btn) btn.disabled = false;
-      renderRaw(txt || 'Analiz yapılamadı, tekrar dene.', input);
-    },
-    true
+      renderRaw(txt || 'Analiz yapilamadi, tekrar dene.');
+    }
   );
-}
-
-function renderReport(d, inputTxt) {
-  var wrap = document.getElementById('analiz-report'); if (!wrap) return;
-  wrap.style.display = 'flex';
-  var k = (d.karar || 'DIKKAT').toUpperCase();
-  var cls = k === 'SAT' ? 'sat' : (k === 'SATMA' ? 'satma' : 'dikkat');
-  var emoji = k === 'SAT' ? '✅' : (k === 'SATMA' ? '❌' : '⚠️');
-  var profit = Math.round((d.ideal_satis_fiyati || 25) * 0.35);
-  var rek = d.rekabet_skoru || 5;
-  var rekLbl = rek <= 4 ? 'DÜŞÜK' : (rek <= 7 ? 'ORTA' : 'YÜKSEK');
-  var h = '';
-  h += '<div class="decision-card ' + cls + '">';
-  h += '<div class="dc-badge">' + emoji + ' ' + k + '</div>';
-  h += '<div class="dc-product">' + (d.urun_adi || inputTxt) + '</div>';
-  h += '<div class="dc-reason">' + (d.karar_nedeni || '') + '</div>';
-  h += '</div>';
-  h += '<div class="metrics-grid">';
-  h += '<div class="mc"><div class="mc-label">💰 Fiyat Aralığı</div><div class="mc-val">$' + (d.fiyat_min||15) + '-' + (d.fiyat_max||35) + '</div><div class="mc-sub">İdeal: $' + (d.ideal_satis_fiyati||25) + '</div></div>';
-  h += '<div class="mc"><div class="mc-label">📦 Tahmini Kâr</div><div class="mc-val">~$' + profit + '</div><div class="mc-sub">Satış başına</div></div>';
-  h += '<div class="mc"><div class="mc-label">⚔️ Rekabet</div><div class="mc-val">' + rekLbl + '</div><div class="mc-sub">Skor: ' + rek + '/10</div></div>';
-  h += '</div>';
-  if (d.aliexpress_gercek_fiyat || d.aliexpress_satici_sayisi) {
-    h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">🛍️</span><div class="ds-title">AliExpress Gerçek Veri</div></div><div class="ds-body"><div class="competitor-wrap">';
-    if (d.aliexpress_gercek_fiyat) h += '<div class="comp-item"><div class="comp-dot pos"></div><span>Tedarik Fiyatı: <strong>' + d.aliexpress_gercek_fiyat + '</strong></span></div>';
-    if (d.aliexpress_satici_sayisi) h += '<div class="comp-item"><div class="comp-dot neu"></div><span>Satıcı Sayısı: <strong>' + d.aliexpress_satici_sayisi + '</strong></span></div>';
-    if (d.aliexpress_rating) h += '<div class="comp-item"><div class="comp-dot pos"></div><span>Ortalama Rating: <strong>' + d.aliexpress_rating + '</strong></span></div>';
-    h += '</div></div></div>';
-  }
-  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Ürün Skorları</div></div><div class="ds-body"><div class="score-bars">';
-  h += sBar('Problem Çözücü', d.problem_cozucu||5, '#22c55e');
-  h += sBar('Wow Factor', d.wow_factor||5, '#facc15');
-  h += sBar('Kreatif Uygunluk', d.kreatif_uygunluk||5, '#38bdf8');
-  h += sBar('Talep', d.talep_skoru||5, '#f97316');
-  h += sBar('Az Rekabet', 10 - rek, '#a78bfa');
-  h += '</div></div></div>';
-  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">🎯</span><div class="ds-title">Hedef Kitle</div></div><div class="ds-body"><p><strong>' + (d.hedef_kitle||'') + '</strong><br>' + (d.hedef_kitle_detay||'') + '</p></div></div>';
-  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">🎬</span><div class="ds-title">Reklam Hook Önerileri</div><span style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:auto">Tıkla → Kopyala</span></div><div class="ds-body"><div class="hook-list">';
-  if (d.hook1) h += '<div class="hook-item" onclick="copyHook(this)"><span class="hook-text">' + d.hook1 + '</span><span class="hook-copy">Kopyala</span></div>';
-  if (d.hook2) h += '<div class="hook-item" onclick="copyHook(this)"><span class="hook-text">' + d.hook2 + '</span><span class="hook-copy">Kopyala</span></div>';
-  if (d.hook3) h += '<div class="hook-item" onclick="copyHook(this)"><span class="hook-text">' + d.hook3 + '</span><span class="hook-copy">Kopyala</span></div>';
-  h += '</div></div></div>';
-  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">🏆</span><div class="ds-title">Fırsat & Uyarı</div></div><div class="ds-body"><div class="competitor-wrap">';
-  if (d.firsat) h += '<div class="comp-item"><div class="comp-dot pos"></div><span>' + d.firsat + '</span></div>';
-  if (d.uyari) h += '<div class="comp-item"><div class="comp-dot neg"></div><span>' + d.uyari + '</span></div>';
-  if (d.rakip_notu) h += '<div class="comp-item"><div class="comp-dot neu"></div><span>' + d.rakip_notu + '</span></div>';
-  h += '</div></div></div>';
-  if (d.aliexpress_arama || d.amazon_arama) {
-    h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">🛒</span><div class="ds-title">Tedarik Linkleri</div></div><div class="ds-body" style="display:flex;flex-direction:column;gap:8px">';
-    if (d.aliexpress_arama) { var aliUrl = 'https://www.aliexpress.com/wholesale?SearchText=' + encodeURIComponent(d.aliexpress_arama); h += '<a href="' + aliUrl + '" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);font-size:13px"><span style="font-size:18px">🇨🇳</span><div><div style="font-weight:600;margin-bottom:2px">AliExpress\'te Ara</div><div style="font-size:11px;color:var(--text3)">' + d.aliexpress_arama + '</div></div><span style="margin-left:auto;color:var(--text3)">↗</span></a>'; }
-    if (d.amazon_arama) { var amzUrl = 'https://www.amazon.com/s?k=' + encodeURIComponent(d.amazon_arama); h += '<a href="' + amzUrl + '" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);font-size:13px"><span style="font-size:18px">📦</span><div><div style="font-weight:600;margin-bottom:2px">Amazon\'da Ara (Rakip İncele)</div><div style="font-size:11px;color:var(--text3)">' + d.amazon_arama + '</div></div><span style="margin-left:auto;color:var(--text3)">↗</span></a>'; }
-    h += '</div></div>';
-  }
-  // Aksiyon butonları - closure ile güvenli
-  var saveId = 'save-btn-' + Date.now();
-  h += '<div class="report-actions">';
-  h += '<button class="ra-btn primary" id="' + saveId + '">💾 Portale Kaydet</button>';
-  h += '<button class="ra-btn secondary" onclick="copyReport()">📋 Raporu Kopyala</button>';
-  h += '<button class="ra-btn" onclick="clearAnaliz()">↺ Yeni Analiz</button>';
-  h += '</div>';
-  wrap.innerHTML = h;
-  // Event listener ile güvenli bağla
-  var saveBtn = document.getElementById(saveId);
-  if (saveBtn) {
-    saveBtn.addEventListener('click', function() { saveToPortal(d, inputTxt); });
-  }
-}
-
-function copyHook(el) {
-  var txt = el.querySelector('.hook-text').textContent;
-  var copyEl = el.querySelector('.hook-copy');
-  navigator.clipboard.writeText(txt).then(function() {
-    if (copyEl) { copyEl.textContent = '✓ Kopyalandı'; setTimeout(function() { copyEl.textContent = 'Kopyala'; }, 2000); }
-  });
-}
-
-function sBar(label, val, color) {
-  val = Math.max(0, Math.min(10, val || 0));
-  return '<div class="score-row"><span class="score-label">' + label + '</span><div class="score-bar-wrap"><div class="score-bar-fill" style="width:' + (val*10) + '%;background:' + color + '"></div></div><span class="score-val">' + val + '/10</span></div>';
-}
-
-function renderRaw(txt, input) {
-  var wrap = document.getElementById('analiz-report'); if (!wrap) return;
-  wrap.style.display = 'flex';
-  wrap.innerHTML = '<div class="detail-section"><div class="ds-header"><span class="ds-icon">📋</span><div class="ds-title">AI Analizi</div></div><div class="ds-body"><p style="white-space:pre-wrap;font-size:13px;line-height:1.7">' + txt + '</p></div></div>'
-    + '<div class="report-actions"><button class="ra-btn" onclick="clearAnaliz()">↺ Yeni Analiz</button></div>';
 }
 
 function clearAnaliz() {
@@ -543,9 +372,107 @@ function clearAnaliz() {
   if (rep) { rep.style.display = 'none'; rep.innerHTML = ''; }
 }
 
+function sBar(label, val, color) {
+  val = Math.max(0, Math.min(10, val || 0));
+  return '<div class="score-row"><span class="score-label">'+label+'</span><div class="score-bar-wrap"><div class="score-bar-fill" style="width:'+(val*10)+'%;background:'+color+'"></div></div><span class="score-val">'+val+'/10</span></div>';
+}
+
+function renderReport(d, inputTxt) {
+  var wrap = document.getElementById('analiz-report');
+  if (!wrap) return;
+  wrap.style.display = 'flex';
+  var k = (d.karar || 'DIKKAT').toUpperCase();
+  var cls = k === 'SAT' ? 'sat' : (k === 'SATMA' ? 'satma' : 'dikkat');
+  var emoji = k === 'SAT' ? '✅' : (k === 'SATMA' ? '❌' : '⚠️');
+  var profit = Math.round((d.ideal_satis_fiyati || 25) * 0.35);
+  var rek = d.rekabet_skoru || 5;
+  var rekLbl = rek <= 4 ? 'DÜŞÜK' : (rek <= 7 ? 'ORTA' : 'YÜKSEK');
+  var h = '';
+
+  h += '<div class="decision-card '+cls+'">';
+  h += '<div class="dc-badge">'+emoji+' '+k+'</div>';
+  h += '<div class="dc-product">'+(d.urun_adi || inputTxt)+'</div>';
+  h += '<div class="dc-reason">'+(d.karar_nedeni || '')+'</div>';
+  h += '</div>';
+
+  h += '<div class="metrics-grid">';
+  h += '<div class="mc"><div class="mc-label">💰 Fiyat Aralığı</div><div class="mc-val">$'+(d.fiyat_min||15)+'-'+(d.fiyat_max||35)+'</div><div class="mc-sub">İdeal: $'+(d.ideal_satis_fiyati||25)+'</div></div>';
+  h += '<div class="mc"><div class="mc-label">📦 Tahmini Kâr</div><div class="mc-val">~$'+profit+'</div><div class="mc-sub">Satış başına</div></div>';
+  h += '<div class="mc"><div class="mc-label">⚔️ Rekabet</div><div class="mc-val">'+rekLbl+'</div><div class="mc-sub">Skor: '+rek+'/10</div></div>';
+  h += '</div>';
+
+  if (d.aliexpress_gercek_fiyat || d.aliexpress_satici_sayisi) {
+    h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">🛍️</span><div class="ds-title">AliExpress Gerçek Veri</div></div><div class="ds-body"><div class="competitor-wrap">';
+    if (d.aliexpress_gercek_fiyat) h += '<div class="comp-item"><div class="comp-dot pos"></div><span>Tedarik Fiyatı: <strong>'+d.aliexpress_gercek_fiyat+'</strong></span></div>';
+    if (d.aliexpress_satici_sayisi) h += '<div class="comp-item"><div class="comp-dot neu"></div><span>Satıcı Sayısı: <strong>'+d.aliexpress_satici_sayisi+'</strong></span></div>';
+    if (d.aliexpress_rating) h += '<div class="comp-item"><div class="comp-dot pos"></div><span>Ortalama Rating: <strong>'+d.aliexpress_rating+'</strong></span></div>';
+    h += '</div></div></div>';
+  }
+
+  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Ürün Skorları</div></div><div class="ds-body"><div class="score-bars">';
+  h += sBar('Problem Çözücü', d.problem_cozucu||5, '#22c55e');
+  h += sBar('Wow Factor', d.wow_factor||5, '#facc15');
+  h += sBar('Kreatif Uygunluk', d.kreatif_uygunluk||5, '#38bdf8');
+  h += sBar('Talep', d.talep_skoru||5, '#f97316');
+  h += sBar('Az Rekabet', 10-rek, '#a78bfa');
+  h += '</div></div></div>';
+
+  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">🎯</span><div class="ds-title">Hedef Kitle</div></div><div class="ds-body"><p><strong>'+(d.hedef_kitle||'')+'</strong><br>'+(d.hedef_kitle_detay||'')+'</p></div></div>';
+
+  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">🎬</span><div class="ds-title">Reklam Hook Önerileri</div><span style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:auto">Tıkla → Kopyala</span></div><div class="ds-body"><div class="hook-list">';
+  if (d.hook1) h += '<div class="hook-item" onclick="copyHook(this)"><span class="hook-text">'+d.hook1+'</span><span class="hook-copy">Kopyala</span></div>';
+  if (d.hook2) h += '<div class="hook-item" onclick="copyHook(this)"><span class="hook-text">'+d.hook2+'</span><span class="hook-copy">Kopyala</span></div>';
+  if (d.hook3) h += '<div class="hook-item" onclick="copyHook(this)"><span class="hook-text">'+d.hook3+'</span><span class="hook-copy">Kopyala</span></div>';
+  h += '</div></div></div>';
+
+  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">🏆</span><div class="ds-title">Fırsat & Uyarı</div></div><div class="ds-body"><div class="competitor-wrap">';
+  if (d.firsat) h += '<div class="comp-item"><div class="comp-dot pos"></div><span>'+d.firsat+'</span></div>';
+  if (d.uyari) h += '<div class="comp-item"><div class="comp-dot neg"></div><span>'+d.uyari+'</span></div>';
+  if (d.rakip_notu) h += '<div class="comp-item"><div class="comp-dot neu"></div><span>'+d.rakip_notu+'</span></div>';
+  h += '</div></div></div>';
+
+  if (d.aliexpress_arama || d.amazon_arama) {
+    h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">🛒</span><div class="ds-title">Tedarik Linkleri</div></div><div class="ds-body" style="display:flex;flex-direction:column;gap:8px">';
+    if (d.aliexpress_arama) {
+      var aUrl = 'https://www.aliexpress.com/wholesale?SearchText='+encodeURIComponent(d.aliexpress_arama);
+      h += '<a href="'+aUrl+'" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);font-size:13px"><span style="font-size:18px">🇨🇳</span><div><div style="font-weight:600;margin-bottom:2px">AliExpress\'te Ara</div><div style="font-size:11px;color:var(--text3)">'+d.aliexpress_arama+'</div></div><span style="margin-left:auto;color:var(--text3)">↗</span></a>';
+    }
+    if (d.amazon_arama) {
+      var amUrl = 'https://www.amazon.com/s?k='+encodeURIComponent(d.amazon_arama);
+      h += '<a href="'+amUrl+'" target="_blank" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);font-size:13px"><span style="font-size:18px">📦</span><div><div style="font-weight:600;margin-bottom:2px">Amazon\'da Ara</div><div style="font-size:11px;color:var(--text3)">'+d.amazon_arama+'</div></div><span style="margin-left:auto;color:var(--text3)">↗</span></a>';
+    }
+    h += '</div></div>';
+  }
+
+  var sid = 'sbtn-'+Date.now();
+  h += '<div class="report-actions">';
+  h += '<button class="ra-btn primary" id="'+sid+'">💾 Portale Kaydet</button>';
+  h += '<button class="ra-btn secondary" onclick="copyReport()">📋 Raporu Kopyala</button>';
+  h += '<button class="ra-btn" onclick="clearAnaliz()">↺ Yeni Analiz</button>';
+  h += '</div>';
+
+  wrap.innerHTML = h;
+  var sb = document.getElementById(sid);
+  if (sb) sb.addEventListener('click', function(){ saveToPortal(d, inputTxt); });
+}
+
+function renderRaw(txt) {
+  var wrap = document.getElementById('analiz-report');
+  if (!wrap) return;
+  wrap.style.display = 'flex';
+  wrap.innerHTML = '<div class="detail-section"><div class="ds-header"><span class="ds-icon">📋</span><div class="ds-title">AI Yanıtı</div></div><div class="ds-body"><p style="white-space:pre-wrap;font-size:13px;line-height:1.7">'+txt+'</p></div></div><div class="report-actions"><button class="ra-btn" onclick="clearAnaliz()">↺ Yeni Analiz</button></div>';
+}
+
+function copyHook(el) {
+  var txt = el.querySelector('.hook-text').textContent;
+  var c = el.querySelector('.hook-copy');
+  navigator.clipboard.writeText(txt).then(function(){ if(c){c.textContent='✓ Kopyalandı'; setTimeout(function(){c.textContent='Kopyala';},2000);} });
+}
+
 function copyReport() {
-  var wrap = document.getElementById('analiz-report'); if (!wrap) return;
-  navigator.clipboard.writeText(wrap.innerText || wrap.textContent).then(function() { showToast('✓ Rapor kopyalandı', 'green'); });
+  var w = document.getElementById('analiz-report');
+  if (!w) return;
+  navigator.clipboard.writeText(w.innerText||w.textContent).then(function(){ showToast('✓ Rapor kopyalandı','green'); });
 }
 
 function doNis() {
@@ -558,114 +485,94 @@ function doNis() {
   if (loading) loading.style.display = 'block';
   if (report) { report.style.display = 'none'; report.innerHTML = ''; }
 
-  // Sade ve net prompt - daha kısa, JSON parse başarısı yüksek
-  var prompt = nis.n + ' nisinde Shopify dropshipping icin 4 kazanan urun oner. Kriterler: problem cozucu, wow factor, video icerigi kolay, AliExpressden temin edilebilir, dusuk-orta rekabet.\n\nSADECE JSON yaz, baska hicbir sey yazma:\n{"oneriler":[{"urun_adi":"gercek urun adi Turkce","neden_kazanir":"kisa aciklama","problem_cozuyor":"hangi problemi","kreatif_fikri":"video fikri","fiyat_aralik":"$xx-xx","rekabet":"DUSUK","wow_factor":8,"kreatif_uygunluk":9},{"urun_adi":"...","neden_kazanir":"...","problem_cozuyor":"...","kreatif_fikri":"...","fiyat_aralik":"$xx-xx","rekabet":"DUSUK","wow_factor":8,"kreatif_uygunluk":9},{"urun_adi":"...","neden_kazanir":"...","problem_cozuyor":"...","kreatif_fikri":"...","fiyat_aralik":"$xx-xx","rekabet":"ORTA","wow_factor":7,"kreatif_uygunluk":8},{"urun_adi":"...","neden_kazanir":"...","problem_cozuyor":"...","kreatif_fikri":"...","fiyat_aralik":"$xx-xx","rekabet":"DUSUK","wow_factor":9,"kreatif_uygunluk":9}]}';
+  var prompt = nis.n + ' nisinde Shopify dropshipping icin en iyi 4 kazanan urunu web\'de ara. Problem cozucu, wow factor yuksek, AliExpressden temin edilebilir olsun. SADECE JSON yaz:\n{"oneriler":[{"urun_adi":"Turkce ad","neden_kazanir":"aciklama","problem_cozuyor":"hangi problem","kreatif_fikri":"video fikri","fiyat_aralik":"$xx-xx","rekabet":"DUSUK","wow_factor":8,"kreatif_uygunluk":9}]}';
 
-  callAI(prompt,
-    function(parsed) {
+  callAPI(
+    {prompt: prompt, use_search: true, system: 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Baska hicbir sey yazma.'},
+    function(parsed){
       if (loading) loading.style.display = 'none';
       if (btn) btn.disabled = false;
-      var oneriler = parsed.oneriler && parsed.oneriler.length ? parsed.oneriler : null;
-      // Eğer parsed direkt array ise
-      if (!oneriler && Array.isArray(parsed)) oneriler = parsed;
-      if (oneriler && oneriler.length) {
-        renderNis(oneriler, nis);
-      } else {
-        showToast('Farklı bir niş dene');
-        if (btn) btn.disabled = false;
-      }
+      var o = parsed.oneriler || (Array.isArray(parsed) ? parsed : null);
+      if (o && o.length) renderNis(o, nis); else showToast('Farkli bir nis dene');
     },
-    function(txt) {
+    function(txt){
       if (loading) loading.style.display = 'none';
       if (btn) btn.disabled = false;
-      // Son şans: raw text parse dene
       var retry = tryParseJSON(txt);
-      if (retry) {
-        var oneriler = retry.oneriler || (Array.isArray(retry) ? retry : null);
-        if (oneriler && oneriler.length) { renderNis(oneriler, nis); return; }
-      }
-      if (report) {
-        report.style.display = 'flex';
-        report.innerHTML = '<div class="detail-section"><div class="ds-header"><span class="ds-icon">⚠️</span><div class="ds-title">Yanıt alınamadı</div></div><div class="ds-body"><p>AI yanıtı işlenemedi. Tekrar dene veya farklı niş seç.</p></div></div>'
-          + '<div class="report-actions"><button class="ra-btn" onclick="clearNis()">↺ Farklı Niş</button></div>';
-      }
+      if (retry) { var o = retry.oneriler || (Array.isArray(retry) ? retry : null); if (o && o.length) { renderNis(o, nis); return; } }
+      if (report) { report.style.display = 'flex'; report.innerHTML = '<div class="detail-section"><div class="ds-header"><span class="ds-icon">⚠️</span><div class="ds-title">Yanıt alınamadı</div></div><div class="ds-body"><p>Tekrar dene.</p></div></div><div class="report-actions"><button class="ra-btn" onclick="clearNis()">↺ Farklı Niş</button></div>'; }
     }
   );
 }
 
 function renderNis(oneriler, nis) {
-  var wrap = document.getElementById('nis-report'); if (!wrap) return;
+  var wrap = document.getElementById('nis-report');
+  if (!wrap) return;
   wrap.style.display = 'flex';
-  var h = '<div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:4px">' + nis.n + ' nişi için öneriler</div>';
+  var h = '<div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:4px">'+nis.n+' nişi için öneriler</div>';
   h += '<div class="suggestions-grid">';
-  oneriler.forEach(function(o, i) {
-    var rekStr = (o.rekabet || 'DUSUK').toUpperCase();
-    var rTag = (rekStr === 'DUSUK' || rekStr === 'DÜŞÜK') ? 'green' : (rekStr === 'YUKSEK' || rekStr === 'YÜKSEK' ? 'red' : '');
-    var rekLabel = rekStr === 'DUSUK' ? 'DÜŞÜK' : (rekStr === 'YUKSEK' ? 'YÜKSEK' : rekStr);
+  oneriler.forEach(function(o, i){
+    var rs = (o.rekabet||'DUSUK').toUpperCase();
+    var rt = (rs==='DUSUK'||rs==='DÜŞÜK') ? 'green' : (rs==='YUKSEK'||rs==='YÜKSEK' ? 'red' : '');
+    var rl = rs==='DUSUK'?'DÜŞÜK':(rs==='YUKSEK'?'YÜKSEK':rs);
     h += '<div class="suggestion-card">';
-    h += '<div class="sc-num">Öneri ' + (i+1) + '</div>';
-    h += '<div class="sc-product">' + (o.urun_adi || '') + '</div>';
-    if (o.problem_cozuyor) h += '<div style="font-size:11px;color:var(--green);margin-bottom:6px">✓ ' + o.problem_cozuyor + '</div>';
-    h += '<div class="sc-why">' + (o.neden_kazanir || '') + '</div>';
-    if (o.kreatif_fikri) h += '<div style="font-size:11px;color:var(--text3);margin-top:6px;margin-bottom:8px">🎬 ' + o.kreatif_fikri + '</div>';
+    h += '<div class="sc-num">Öneri '+(i+1)+'</div>';
+    h += '<div class="sc-product">'+(o.urun_adi||'')+'</div>';
+    if (o.problem_cozuyor) h += '<div style="font-size:11px;color:var(--green);margin-bottom:6px">✓ '+o.problem_cozuyor+'</div>';
+    h += '<div class="sc-why">'+(o.neden_kazanir||'')+'</div>';
+    if (o.kreatif_fikri) h += '<div style="font-size:11px;color:var(--text3);margin-top:6px;margin-bottom:8px">🎬 '+o.kreatif_fikri+'</div>';
     h += '<div class="sc-tags">';
-    if (o.fiyat_aralik) h += '<span class="sc-tag">' + o.fiyat_aralik + '</span>';
-    if (o.wow_factor) h += '<span class="sc-tag">Wow: ' + o.wow_factor + '/10</span>';
-    if (o.kreatif_uygunluk) h += '<span class="sc-tag">Kreatif: ' + o.kreatif_uygunluk + '/10</span>';
-    h += '<span class="sc-tag ' + rTag + '">' + rekLabel + '</span>';
+    if (o.fiyat_aralik) h += '<span class="sc-tag">'+o.fiyat_aralik+'</span>';
+    if (o.wow_factor) h += '<span class="sc-tag">Wow: '+o.wow_factor+'/10</span>';
+    if (o.kreatif_uygunluk) h += '<span class="sc-tag">Kreatif: '+o.kreatif_uygunluk+'/10</span>';
+    h += '<span class="sc-tag '+rt+'">'+rl+'</span>';
     h += '</div>';
-    var urunAdi = (o.urun_adi || '').replace(/"/g, '&quot;');
-    h += '<button class="sc-analyze-btn" data-urun="' + urunAdi + '" onclick="analyzeThis(this)">🔍 Tam Analiz Al →</button>';
+    h += '<button class="sc-analyze-btn" data-urun="'+(o.urun_adi||'').replace(/"/g,'&quot;')+'" onclick="analyzeThis(this)">🔍 Tam Analiz Al →</button>';
     h += '</div>';
   });
-  h += '</div>';
-  h += '<div class="report-actions"><button class="ra-btn" onclick="clearNis()">↺ Farklı Niş</button></div>';
+  h += '</div><div class="report-actions"><button class="ra-btn" onclick="clearNis()">↺ Farklı Niş</button></div>';
   wrap.innerHTML = h;
 }
 
 function analyzeThis(btn) {
   var urun = btn.getAttribute('data-urun');
-  switchTab('analiz', document.querySelectorAll('.tab')[0]);
-  var inp = document.getElementById('analiz-input'); if (inp) inp.value = urun;
-  setTimeout(function() { doAnaliz(); }, 200);
+  switchTab('analiz', document.getElementById('tab-btn-analiz'));
+  var inp = document.getElementById('analiz-input');
+  if (inp) inp.value = urun;
+  setTimeout(function(){ doAnaliz(); }, 200);
 }
 
 function clearNis() {
-  selectedNis = null;
-  renderNisGrid();
+  selectedNis = null; renderNisGrid();
   var r = document.getElementById('nis-report');
   if (r) { r.style.display = 'none'; r.innerHTML = ''; }
 }
 
-function getDisplayName(input) {
-  // URL'den temiz isim çıkar
-  if (!input) return 'Bilinmeyen Ürün';
-  if (input.startsWith('http') || input.indexOf('.com/') !== -1) {
-    // AliExpress item ID'yi bul
-    if (input.indexOf('aliexpress') !== -1) {
-      var m = input.match(/\/item\/(\d+)/);
-      return m ? 'AliExpress #' + m[1] : 'AliExpress Ürünü';
+function saveToPortal(d, inputTxt) {
+  var name = d.urun_adi || inputTxt;
+  var status = d.karar === 'SAT' ? 'SAT' : (d.karar === 'SATMA' ? 'SATMA' : 'BEKLEMEDE');
+  try {
+    var existing = [];
+    try { var e = localStorage.getItem('mlynr_saved_products'); if (e) existing = JSON.parse(e); } catch(ex) {}
+    if (!existing.some(function(p){ return p.name===name; })) {
+      existing.unshift({name:name,status:status,date:new Date().toISOString().slice(0,10),id:Date.now()});
+      localStorage.setItem('mlynr_saved_products', JSON.stringify(existing));
     }
-    if (input.indexOf('amazon') !== -1) return 'Amazon Ürünü';
-    // Genel URL — domain'i göster
-    try { return new URL(input).hostname.replace('www.',''); } catch(e) {}
-    return 'URL Ürünü';
-  }
-  return input;
+    showToast('✓ Portale kaydedildi','green');
+  } catch(ex) { showToast('Kaydetme hatası'); }
 }
 
 function saveHist(input, karar, data) {
-  // Gerçek ürün adını kaydet (URL değil)
-  var displayName = (data && data.urun_adi) ? data.urun_adi : getDisplayName(input);
-  historyData.unshift({ input: input, displayName: displayName, karar: karar, date: new Date().toISOString().slice(0,10), data: data, id: Date.now() });
-  if (historyData.length > 30) historyData = historyData.slice(0, 30);
+  var dn = (data && data.urun_adi) ? data.urun_adi : input;
+  historyData.unshift({input:input,displayName:dn,karar:karar,date:new Date().toISOString().slice(0,10),data:data,id:Date.now()});
+  if (historyData.length > 30) historyData = historyData.slice(0,30);
   try { localStorage.setItem('mlynr_urun_history', JSON.stringify(historyData)); } catch(e) {}
   renderHistory();
 }
 
 function deleteHist(id, e) {
   e.stopPropagation();
-  historyData = historyData.filter(function(h) { return h.id !== id; });
+  historyData = historyData.filter(function(h){ return h.id !== id; });
   try { localStorage.setItem('mlynr_urun_history', JSON.stringify(historyData)); } catch(e) {}
   renderHistory();
 }
@@ -684,74 +591,70 @@ function renderHistory() {
   if (!historyData || historyData.length === 0) { sec.style.display = 'none'; return; }
   sec.style.display = 'block';
   list.innerHTML = '';
-  historyData.slice(0, 20).forEach(function(hh) {
-    var k = (hh.karar || 'DIKKAT').toUpperCase();
-    var cls = k === 'SAT' ? 'sat' : (k === 'SATMA' ? 'satma' : 'dikkat');
-    var displayName = hh.displayName || (hh.data && hh.data.urun_adi ? hh.data.urun_adi : getDisplayName(hh.input));
-    var histId = hh.id || Math.random();
-
-    var div = document.createElement('div');
-    div.className = 'history-item';
-    div.style.cssText = 'position:relative';
-
-    var dot = document.createElement('div');
-    dot.className = 'hi-decision ' + cls;
-
-    var nameEl = document.createElement('span');
-    nameEl.className = 'hi-name';
-    nameEl.textContent = displayName;
-
-    var dateEl = document.createElement('span');
-    dateEl.className = 'hi-date';
-    dateEl.textContent = hh.date || '';
-
-    var delBtn = document.createElement('button');
-    delBtn.textContent = '×';
-    delBtn.style.cssText = 'background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:0 4px;line-height:1;margin-left:4px;flex-shrink:0;transition:color .2s';
-    delBtn.title = 'Sil';
-    delBtn.onmouseover = function() { this.style.color = '#ef4444'; };
-    delBtn.onmouseout = function() { this.style.color = ''; };
-    delBtn.onclick = function(e) { deleteHist(histId, e); };
-
-    div.appendChild(dot);
-    div.appendChild(nameEl);
-    div.appendChild(dateEl);
-    div.appendChild(delBtn);
-
-    div.onclick = function() {
+  historyData.slice(0,20).forEach(function(hh){
+    var k = (hh.karar||'DIKKAT').toUpperCase();
+    var cls = k==='SAT'?'sat':(k==='SATMA'?'satma':'dikkat');
+    var dn = hh.displayName || hh.input;
+    var hid = hh.id || Math.random();
+    var div = document.createElement('div'); div.className = 'history-item';
+    var dot = document.createElement('div'); dot.className = 'hi-decision '+cls;
+    var nm = document.createElement('span'); nm.className = 'hi-name'; nm.textContent = dn;
+    var dt = document.createElement('span'); dt.className = 'hi-date'; dt.textContent = hh.date||'';
+    var del = document.createElement('button');
+    del.textContent = '×';
+    del.style.cssText = 'background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:0 4px;line-height:1;margin-left:4px;flex-shrink:0';
+    del.onmouseover = function(){ this.style.color='#ef4444'; };
+    del.onmouseout = function(){ this.style.color=''; };
+    del.onclick = function(e){ deleteHist(hid, e); };
+    div.appendChild(dot); div.appendChild(nm); div.appendChild(dt); div.appendChild(del);
+    div.onclick = function(){
       var inp = document.getElementById('analiz-input');
-      if (inp) inp.value = hh.input || displayName;
-      if (hh.data) { var rep = document.getElementById('analiz-report'); if (rep) { rep.style.display = 'flex'; renderReport(hh.data, hh.input || displayName); } }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (inp) inp.value = hh.input||dn;
+      if (hh.data) renderReport(hh.data, hh.input||dn);
+      window.scrollTo({top:0,behavior:'smooth'});
     };
     list.appendChild(div);
   });
 }
 
+function renderNisGrid() {
+  var g = document.getElementById('niche-grid');
+  if (!g) return; g.innerHTML = '';
+  NISLER.forEach(function(n,i){
+    var btn = document.createElement('div');
+    btn.className = 'niche-btn'+(selectedNis===i?' sel':'');
+    btn.textContent = n.e+' '+n.n;
+    btn.onclick = function(){ selectedNis=i; renderNisGrid(); };
+    g.appendChild(btn);
+  });
+}
+
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  document.getElementById('tab-analiz').style.display = tab==='analiz'?'block':'none';
+  document.getElementById('tab-nis').style.display = tab==='nis'?'block':'none';
+}
+
 var _tt;
 function showToast(m, cls) {
   var t = document.getElementById('toast'); if (!t) return;
-  t.textContent = m;
-  t.className = 'toast' + (cls ? ' ' + cls : '') + ' show';
-  clearTimeout(_tt);
-  _tt = setTimeout(function() { t.classList.remove('show'); }, 2600);
+  t.textContent = m; t.className = 'toast'+(cls?' '+cls:'')+' show';
+  clearTimeout(_tt); _tt = setTimeout(function(){ t.classList.remove('show'); }, 2600);
 }
 
 function toggleTheme() {
   var isLight = document.body.classList.toggle('light-mode');
   document.getElementById('theme-toggle').textContent = isLight ? '🌙' : '☀️';
-  try { localStorage.setItem('mlynr_theme', isLight ? 'light' : 'dark'); } catch(e) {}
-}
-function applyTheme() {
-  try { var t = localStorage.getItem('mlynr_theme'); if (t === 'light') { document.body.classList.add('light-mode'); var btn = document.getElementById('theme-toggle'); if (btn) btn.textContent = '🌙'; } } catch(e) {}
+  try { localStorage.setItem('mlynr_theme', isLight?'light':'dark'); } catch(e) {}
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  applyTheme();
+document.addEventListener('DOMContentLoaded', function(){
+  try { var t=localStorage.getItem('mlynr_theme'); if(t==='light'){document.body.classList.add('light-mode');var b=document.getElementById('theme-toggle');if(b)b.textContent='🌙';} } catch(e) {}
   renderNisGrid();
   renderHistory();
   var inp = document.getElementById('analiz-input');
-  if (inp) inp.addEventListener('keydown', function(e) { if (e.key === 'Enter') doAnaliz(); });
+  if (inp) inp.addEventListener('keydown', function(e){ if(e.key==='Enter') doAnaliz(); });
 });
 </script>
 </body>
