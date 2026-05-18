@@ -408,7 +408,10 @@ function buildAnalizPrompt(input) {
     urunBilgisi = 'Urun adi: ' + input;
   }
 
-  return 'Once AliExpress sitesinde "' + input + '" urununu ara, gercek fiyat araligini, satici sayisini ve ortalama ratingi bul. Sonra asagidaki analizi yap.\n\n' + urunBilgisi + '\n\nShopify dropshipping icin analiz yap. SADECE asagidaki JSON formatinda yanit ver, baska hicbir sey yazma:\n{"karar":"SAT","urun_adi":"gercek urun adi Turkce","karar_nedeni":"Turkce 2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Turkce hook","hook2":"Turkce hook","hook3":"Turkce hook","firsat":"string","uyari":"string","rakip_notu":"string","aliexpress_arama":"English search term","amazon_arama":"English search term","aliexpress_gercek_fiyat":"$X - $X","aliexpress_satici_sayisi":"tahmini sayi","aliexpress_rating":"X.X/5"}\nkarar degeri: SAT, DIKKAT veya SATMA olsun. urun_adi alanina URL degil gercek urun adini yaz.';
+  var idMatch = input.match(/\d{10,}/);
+  var searchTerm = idMatch ? 'aliexpress ' + idMatch[0] + ' price' : input;
+  var jsonFormat = '{"karar":"SAT","urun_adi":"Turkce urun adi","karar_nedeni":"2-3 cumle Turkce","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Turkce hook","hook2":"Turkce hook","hook3":"Turkce hook","firsat":"string","uyari":"string","rakip_notu":"string","aliexpress_arama":"English search term","amazon_arama":"English search term","aliexpress_gercek_fiyat":"$X-$X","aliexpress_satici_sayisi":"tahmini sayi","aliexpress_rating":"X.X/5"}';
+  return 'Urun: ' + urunBilgisi + '\n\nOnce web aramasi yap: "' + searchTerm + '" - AliExpress fiyat, satici sayisi ve rating bul. Sonra bu verileri kullanarak YALNIZCA asagidaki JSON formatinda yanit ver, JSON disinda tek kelime bile yazma:\n' + jsonFormat;
 }
 
 function doAnaliz() {
