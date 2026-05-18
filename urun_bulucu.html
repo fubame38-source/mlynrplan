@@ -316,12 +316,13 @@ function tryParseJSON(raw) {
   return null;
 }
 
-function callAI(prompt, onSuccess, onError) {
+function callAI(prompt, onSuccess, onError, useSearch) {
   fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + API_KEY, 'apikey': API_KEY },
     body: JSON.stringify({
       prompt: prompt,
+      use_search: useSearch || false,
       system: 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hic bir aciklama, markdown, kod blogu veya ek metin yazma. Sadece ham JSON yaz.'
     })
   })
@@ -395,19 +396,18 @@ function buildAnalizPrompt(input) {
 
   var urunBilgisi = '';
   if (isAliExpress) {
-    // AliExpress URL'den item ID çıkar
     var itemMatch = input.match(/\/item\/(\d+)/);
     var itemId = itemMatch ? itemMatch[1] : '';
-    urunBilgisi = 'Bu bir AliExpress urun linki' + (itemId ? ' (item ID: ' + itemId + ')' : '') + '. URL: ' + input + '. Bu linkteki urunu analiz et. AliExpress urunleri genellikle Cinden gelen dropshipping urunleridir. URL\'deki kelimelerden ürün kategorisini anla ve gercekci bir Shopify dropshipping analizi yap.';
+    urunBilgisi = 'Bu bir AliExpress urun linki' + (itemId ? ' (item ID: ' + itemId + ')' : '') + '. URL: ' + input;
   } else if (isAmazon) {
-    urunBilgisi = 'Bu bir Amazon urun linki: ' + input + '. Bu urunu rakip olarak degerlendirip dropshipping potansiyelini analiz et.';
+    urunBilgisi = 'Bu bir Amazon urun linki: ' + input;
   } else if (isURL) {
-    urunBilgisi = 'Bu bir urun linki: ' + input + '. Linkteki urun bilgilerinden dropshipping analizi yap.';
+    urunBilgisi = 'Bu bir urun linki: ' + input;
   } else {
     urunBilgisi = 'Urun adi: ' + input;
   }
 
-  return urunBilgisi + '\n\nShopify dropshipping icin analiz yap. SADECE asagidaki JSON formatinda yanit ver, baska hicbir sey yazma:\n{"karar":"SAT","urun_adi":"gercek urun adi Turkce","karar_nedeni":"Turkce 2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Turkce hook","hook2":"Turkce hook","hook3":"Turkce hook","firsat":"string","uyari":"string","rakip_notu":"string","aliexpress_arama":"English search term","amazon_arama":"English search term"}\nkarar degeri: SAT, DIKKAT veya SATMA olsun. urun_adi alanina URL degil gercek urun adini yaz.';
+  return 'Once AliExpress sitesinde "' + input + '" kelimesiyle arama yap. Gercek fiyat araligini, kac adet satildigi bilgisini, urun ratingini ve kac satici oldugunu bul. Bu bilgileri kullanarak asagidaki analizi yap.\n\n' + urunBilgisi + '\n\nShopify dropshipping icin analiz yap. SADECE asagidaki JSON formatinda yanit ver, baska hicbir sey yazma:\n{"karar":"SAT","urun_adi":"gercek urun adi Turkce","karar_nedeni":"Turkce 2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Turkce hook","hook2":"Turkce hook","hook3":"Turkce hook","firsat":"string","uyari":"string","rakip_notu":"string","aliexpress_arama":"English search term","amazon_arama":"English search term","aliexpress_gercek_fiyat":"$X - $X","aliexpress_satici_sayisi":"tahmini rakam","aliexpress_rating":"X.X/5"}\nkarar degeri: SAT, DIKKAT veya SATMA olsun. urun_adi alanina URL degil gercek urun adini yaz.';
 }
 
 function doAnaliz() {
@@ -441,7 +441,8 @@ function doAnaliz() {
       if (loading) loading.style.display = 'none';
       if (btn) btn.disabled = false;
       renderRaw(txt || 'Analiz yapılamadı, tekrar dene.', input);
-    }
+    },
+    true
   );
 }
 
@@ -464,8 +465,7 @@ function renderReport(d, inputTxt) {
   h += '<div class="mc"><div class="mc-label">💰 Fiyat Aralığı</div><div class="mc-val">$' + (d.fiyat_min||15) + '-' + (d.fiyat_max||35) + '</div><div class="mc-sub">İdeal: $' + (d.ideal_satis_fiyati||25) + '</div></div>';
   h += '<div class="mc"><div class="mc-label">📦 Tahmini Kâr</div><div class="mc-val">~$' + profit + '</div><div class="mc-sub">Satış başına</div></div>';
   h += '<div class="mc"><div class="mc-label">⚔️ Rekabet</div><div class="mc-val">' + rekLbl + '</div><div class="mc-sub">Skor: ' + rek + '/10</div></div>';
-  h += '</div>';
-  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Ürün Skorları</div></div><div class="ds-body"><div class="score-bars">';
+  h += '</div>';\n  if (d.aliexpress_gercek_fiyat || d.aliexpress_satici_sayisi) {\n    h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">🛍️</span><div class="ds-title">AliExpress Gerçek Veri</div></div><div class="ds-body"><div class="competitor-wrap">';\n    if (d.aliexpress_gercek_fiyat) h += '<div class="comp-item"><div class="comp-dot pos"></div><span>Tedarik Fiyatı: <strong>' + d.aliexpress_gercek_fiyat + '</strong></span></div>';\n    if (d.aliexpress_satici_sayisi) h += '<div class="comp-item"><div class="comp-dot neu"></div><span>Satıcı Sayısı: <strong>' + d.aliexpress_satici_sayisi + '</strong></span></div>';\n    if (d.aliexpress_rating) h += '<div class="comp-item"><div class="comp-dot pos"></div><span>Ortalama Rating: <strong>' + d.aliexpress_rating + '</strong></span></div>';\n    h += '</div></div></div>';\n  }\n  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Ürün Skorları</div></div><div class="ds-body"><div class="score-bars">';
   h += sBar('Problem Çözücü', d.problem_cozucu||5, '#22c55e');
   h += sBar('Wow Factor', d.wow_factor||5, '#facc15');
   h += sBar('Kreatif Uygunluk', d.kreatif_uygunluk||5, '#38bdf8');
