@@ -335,17 +335,16 @@ function doAnaliz() {
   var isLink = input.startsWith('http') || input.indexOf('.com/') !== -1;
   var itemId = isAli ? (input.match(/\/item\/(\d+)/) || [])[1] : null;
 
-  var searchHint;
-  if (isAli && itemId) {
-    searchHint = 'Web\'de "aliexpress ' + itemId + '" veya "site:aliexpress.com ' + itemId + '" ara, urun adini bul. Sonra bu urun icin AliExpress fiyat, satici sayisi ve pazar analizi yap.';
-  } else if (isLink) {
-    searchHint = 'Su linkteki urunu web\'de ara ve analiz et: ' + input;
-  } else {
-    searchHint = '"' + input + '" urununu AliExpress ve dropshipping acisindan web\'de ara, gercek fiyat ve pazar verisini bul.';
-  }
-
   var schema = '{"karar":"SAT","urun_adi":"Turkce urun adi","karar_nedeni":"2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Turkce hook","hook2":"Turkce hook","hook3":"Turkce hook","firsat":"string","uyari":"string","rakip_notu":"string","aliexpress_arama":"English term","amazon_arama":"English term","aliexpress_gercek_fiyat":"$X-$X","aliexpress_satici_sayisi":"150+","aliexpress_rating":"4.5/5"}';
-  var prompt = searchHint + '\n\nBuldugun GERCEK verileri kullanarak Shopify dropshipping analizi yap. karar: SAT, DIKKAT veya SATMA. SADECE asagidaki JSON formatinda yanit ver, baska hicbir sey yazma:\n' + schema;
+
+  var prompt;
+  if (isAli) {
+    prompt = 'AliExpress urun linki: ' + input + '\n\nBu linkteki urunu analiz et. Urun adini bilmesen bile URL\'deki item ID\'den veya genel AliExpress dropshipping bilginle tahmini bir analiz yap. Web aramasini kullanarak benzer urunlerin fiyat araligini, pazar durumunu ve dropshipping potansiyelini bul. Urun adini bulamazsan kategoriyi tahmin et ve makul bir urun adi yaz.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver. JSON disinda tek kelime bile yazma. Aciklama yapma, soru sorma:\n' + schema;
+  } else if (isLink) {
+    prompt = 'Urun linki: ' + input + '\n\nBu linkteki urunu web\'de ara ve analiz et.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver. JSON disinda tek kelime bile yazma:\n' + schema;
+  } else {
+    prompt = '"' + input + '" urununu AliExpress ve Shopify dropshipping acisindan web\'de ara, gercek fiyat ve pazar verisini bul.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver. JSON disinda tek kelime bile yazma:\n' + schema;
+  }
 
   callAPI(
     {prompt: prompt, use_search: true, system: 'Sen bir Shopify dropshipping uzmanisın. Web aramasi yap, GERCEK verileri bul. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.'},
