@@ -338,16 +338,25 @@ function doAnaliz() {
   var schema = '{"karar":"SAT","urun_adi":"Turkce urun adi","karar_nedeni":"2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Turkce hook","hook2":"Turkce hook","hook3":"Turkce hook","firsat":"string","uyari":"string","rakip_notu":"string","aliexpress_arama":"English term","amazon_arama":"English term","aliexpress_gercek_fiyat":"$X-$X","aliexpress_satici_sayisi":"150+","aliexpress_rating":"4.5/5"}';
 
   var prompt;
-  if (isAli) {
-    prompt = 'AliExpress urun linki: ' + input + '\n\nBu linkteki urunu analiz et. Urun adini bilmesen bile URL\'deki item ID\'den veya genel AliExpress dropshipping bilginle tahmini bir analiz yap. Web aramasini kullanarak benzer urunlerin fiyat araligini, pazar durumunu ve dropshipping potansiyelini bul. Urun adini bulamazsan kategoriyi tahmin et ve makul bir urun adi yaz.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver. JSON disinda tek kelime bile yazma. Aciklama yapma, soru sorma:\n' + schema;
+  var apiPayload;
+
+  if (isAli && itemId) {
+    // Apify ile gerçek ürün verisi çek
+    prompt = 'Urun adi: __TITLE__\nAliExpress fiyat: __PRICE__\nRating: __RATING__\nSiparis sayisi: __ORDERS__\n\nBu AliExpress urununu Shopify dropshipping acisindan analiz et. GERCEK verileri kullan.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver. JSON disinda tek kelime bile yazma:\n' + schema;
+    apiPayload = {prompt: prompt, use_search: false, aliexpress_item_id: itemId, system: 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.'};
+  } else if (isAli) {
+    prompt = 'AliExpress urun: ' + input + '\n\nBu urunu AliExpress dropshipping acisindan analiz et, web\'de benzer urunlerin verilerini ara.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver:\n' + schema;
+    apiPayload = {prompt: prompt, use_search: true, system: 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.'};
   } else if (isLink) {
     prompt = 'Urun linki: ' + input + '\n\nBu linkteki urunu web\'de ara ve analiz et.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver. JSON disinda tek kelime bile yazma:\n' + schema;
+    apiPayload = {prompt: prompt, use_search: true, system: 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.'};
   } else {
     prompt = '"' + input + '" urununu AliExpress ve Shopify dropshipping acisindan web\'de ara, gercek fiyat ve pazar verisini bul.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver. JSON disinda tek kelime bile yazma:\n' + schema;
+    apiPayload = {prompt: prompt, use_search: true, system: 'Sen bir Shopify dropshipping uzmanisın. Web aramasi yap, GERCEK verileri bul. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.'};
   }
 
   callAPI(
-    {prompt: prompt, use_search: true, system: 'Sen bir Shopify dropshipping uzmanisın. Web aramasi yap, GERCEK verileri bul. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.'},
+    apiPayload,
     function(parsed){
       clearInterval(stInt);
       if (loading) loading.style.display = 'none';
