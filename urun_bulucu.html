@@ -474,7 +474,7 @@ function renderReport(d, inputTxt) {
     if (d.aliexpress_rating) h += '<div class="comp-item"><div class="comp-dot pos"></div><span>Ortalama Rating: <strong>' + d.aliexpress_rating + '</strong></span></div>';
     h += '</div></div></div>';
   }
-  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Ürün Skorları</div></div>'<div class="ds-body"><div class="score-bars">';
+  h += '<div class="detail-section"><div class="ds-header"><span class="ds-icon">📊</span><div class="ds-title">Ürün Skorları</div></div><div class="ds-body"><div class="score-bars">';
   h += sBar('Problem Çözücü', d.problem_cozucu||5, '#22c55e');
   h += sBar('Wow Factor', d.wow_factor||5, '#facc15');
   h += sBar('Kreatif Uygunluk', d.kreatif_uygunluk||5, '#38bdf8');
