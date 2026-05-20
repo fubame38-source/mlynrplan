@@ -467,6 +467,9 @@ body.light .shopify-pill{border-color:rgba(0,0,0,.25) !important;color:#111 !imp
 .mclub-claim-btn{width:100%;padding:12px;border-radius:10px;border:1px solid var(--mcc,var(--border2));background:rgba(var(--mcc-rgb,255,255,255),.05);color:var(--mcc-text,var(--text2));font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.2px}
 .mclub-claim-btn:hover:not(.claimed){background:rgba(var(--mcc-rgb,255,255,255),.12);color:var(--text);transform:translateY(-1px)}
 .mclub-claim-btn.claimed{background:transparent;color:var(--text3);border-color:var(--border);cursor:default;font-weight:500;font-size:11px}
+.mclub-claim-btn.approved{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(34,197,94,.06));color:#4ade80;border-color:rgba(34,197,94,.35);cursor:default;font-weight:700;font-size:12px;letter-spacing:.3px;position:relative;overflow:hidden}
+.mclub-claim-btn.approved::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(34,197,94,.08),transparent);animation:approvedShine 2.5s ease-in-out infinite}
+@keyframes approvedShine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 .mclub-card[data-tier="1k"]{--mcc:rgba(200,120,64,.5);--mcc-text:#c87840;--mcc-rgb:200,120,64}
 .mclub-card[data-tier="10k"]{--mcc:rgba(176,188,200,.4);--mcc-text:#a0b0c0;--mcc-rgb:176,188,200}
 .mclub-card[data-tier="100k"]{--mcc:rgba(250,204,21,.45);--mcc-text:#d4a800;--mcc-rgb:250,204,21}
@@ -1959,7 +1962,7 @@ function renderMClubGrid(){
     if(!status){
       btnHtml='<button class="mclub-claim-btn" onclick="mclubClaim(\''+c.tier+'\')">'+c.icon+' Bu ciroya ulaştım!</button>';
     }else if(status==='approved'){
-      btnHtml='<button class="mclub-claim-btn claimed">✓ Sertifikan onaylandı 🎉</button>';
+      btnHtml='<button class="mclub-claim-btn approved">✦ Sertifikan Onaylandı</button>';
     }else{
       btnHtml='<button class="mclub-claim-btn claimed">✓ Danışmanın bilgilendirildi</button>';
     }
