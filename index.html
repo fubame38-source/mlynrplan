@@ -447,29 +447,53 @@ body.light .shopify-pill{border-color:rgba(0,0,0,.25) !important;color:#111 !imp
 #welcome-toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-80px);z-index:8500;background:var(--surface);border:1px solid var(--green-ln);border-radius:12px;padding:12px 20px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:transform .4s cubic-bezier(.34,1.2,.64,1),opacity .4s;opacity:0;white-space:nowrap}
 #welcome-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 #welcome-toast .wt-name{color:var(--green);text-transform:uppercase;letter-spacing:.5px}
-.cert-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:32px}
-.cert-locked{border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;background:var(--surface);display:flex;gap:16px;align-items:center;opacity:.5;cursor:not-allowed}
-.cert-locked-icon{width:38px;height:38px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
-.cert-locked-body h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
-.cert-locked-body p{font-size:11px;color:var(--text2)}
-.cert-locked-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-top:6px}
-.cert-card{border:1px solid rgba(250,204,21,.25);border-radius:var(--r);padding:22px 26px;background:linear-gradient(135deg,rgba(250,204,21,.04),rgba(34,197,94,.03));display:flex;gap:16px;align-items:center;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
-.cert-card:hover{transform:translateY(-3px);border-color:rgba(250,204,21,.45)}
-.cert-card-icon{width:38px;height:38px;border-radius:10px;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
-.cert-card-body h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
-.cert-card-body p{font-size:11px;color:var(--text2)}
-.cert-card-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:rgba(250,204,21,.7);text-transform:uppercase;margin-top:6px}
-.cert-card-arrow{font-size:16px;color:rgba(250,204,21,.5);flex-shrink:0;margin-left:auto;transition:all .2s}
-.cert-card:hover .cert-card-arrow{color:rgba(250,204,21,.9);transform:translate(2px,-2px)}
-#cert-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);z-index:3000;opacity:0;pointer-events:none;transition:opacity .3s}
-#cert-overlay.show{opacity:1;pointer-events:all}
-#cert-popup{position:fixed;inset:0;z-index:3001;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.34,1.2,.64,1);transform:scale(.96)}
-#cert-popup.show{opacity:1;pointer-events:all;transform:scale(1)}
-.cert-popup-wrap{width:min(840px,94vw);background:transparent}
-#cert-canvas{display:block;width:100%;border-radius:8px;box-shadow:0 32px 80px rgba(0,0,0,.7)}
-.cert-popup-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.cert-dl-btn{display:flex;align-items:center;gap:8px;background:rgba(250,204,21,1);color:#000;font-weight:700;font-size:11px;padding:11px 22px;border-radius:8px;border:none;cursor:pointer;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;transition:all .2s}
-.cert-dl-btn:hover{background:#eab308;transform:scale(1.03)}
+/* ── MLYNR CLUB ── */
+.mlynrclub-section{max-width:920px;margin:0 auto;padding:0 clamp(16px,5vw,48px) 56px}
+.mlynrclub-header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:36px}
+.mlynrclub-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.mlynrclub-title{font-size:clamp(26px,5vw,36px);font-weight:900;color:var(--text);letter-spacing:-1px;line-height:1.1}
+.mlynrclub-title em{font-style:normal;background:linear-gradient(90deg,#facc15,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.mlynrclub-sub{font-size:12px;color:var(--text3);margin-top:10px;line-height:1.7;max-width:480px}
+.mlynrclub-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:580px){.mlynrclub-grid{grid-template-columns:1fr}}
+.mclub-card{border:1px solid var(--border);border-radius:16px;background:var(--surface);overflow:hidden;display:flex;flex-direction:column;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
+.mclub-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.5);border-color:var(--mcc,var(--border2))}
+.mclub-canvas-wrap{position:relative;width:100%;background:#060608;line-height:0;cursor:pointer}
+.mclub-canvas{display:block;width:100%}
+.mclub-zoom-hint{position:absolute;bottom:8px;right:8px;font-family:var(--mono);font-size:8px;letter-spacing:1px;color:rgba(255,255,255,.4);background:rgba(0,0,0,.5);padding:4px 8px;border-radius:5px;backdrop-filter:blur(6px);pointer-events:none}
+.mclub-body{padding:14px 16px 16px}
+.mclub-name{font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.4px;margin-bottom:2px}
+.mclub-milestone{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--mcc-text,var(--text3));margin-bottom:12px}
+.mclub-claim-btn{width:100%;padding:12px;border-radius:10px;border:1px solid var(--mcc,var(--border2));background:rgba(var(--mcc-rgb,255,255,255),.05);color:var(--mcc-text,var(--text2));font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.2px}
+.mclub-claim-btn:hover:not(.claimed){background:rgba(var(--mcc-rgb,255,255,255),.12);color:var(--text);transform:translateY(-1px)}
+.mclub-claim-btn.claimed{background:transparent;color:var(--text3);border-color:var(--border);cursor:default;font-weight:500;font-size:11px}
+.mclub-card[data-tier="1k"]{--mcc:rgba(200,120,64,.5);--mcc-text:#c87840;--mcc-rgb:200,120,64}
+.mclub-card[data-tier="10k"]{--mcc:rgba(176,188,200,.4);--mcc-text:#a0b0c0;--mcc-rgb:176,188,200}
+.mclub-card[data-tier="100k"]{--mcc:rgba(250,204,21,.45);--mcc-text:#d4a800;--mcc-rgb:250,204,21}
+.mclub-card[data-tier="1m"]{--mcc:rgba(167,139,250,.45);--mcc-text:#a78bfa;--mcc-rgb:167,139,250}
+/* Tebrik Modal */
+#mclub-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(16px);z-index:3000;opacity:0;pointer-events:none;transition:opacity .3s}
+#mclub-overlay.show{opacity:1;pointer-events:all}
+#mclub-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-60%) scale(.92);z-index:3001;width:min(400px,92vw);background:var(--surface);border:1px solid var(--border2);border-radius:24px;padding:36px 28px;text-align:center;opacity:0;pointer-events:none;transition:all .4s cubic-bezier(.34,1.3,.64,1)}
+#mclub-modal.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1)}
+.mcm-emoji{font-size:52px;margin-bottom:12px;display:block;animation:mcmBounce .5s cubic-bezier(.34,1.6,.64,1) .1s both}
+@keyframes mcmBounce{0%{transform:scale(0)}100%{transform:scale(1)}}
+.mcm-title{font-size:19px;font-weight:800;color:var(--text);letter-spacing:-.5px;margin-bottom:6px}
+.mcm-sub{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:24px}
+.mcm-wa-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:#25d366;color:#fff;border:none;border-radius:12px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:10px}
+.mcm-wa-btn:hover{background:#1fb855;transform:scale(1.02)}
+.mcm-close-btn{width:100%;padding:11px;background:transparent;color:var(--text3);border:1px solid var(--border);border-radius:12px;font-family:var(--font);font-size:12px;cursor:pointer;transition:all .2s}
+.mcm-close-btn:hover{border-color:var(--border2);color:var(--text2)}
+/* Büyük sertifika popup */
+#mclub-big-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);z-index:3000;opacity:0;pointer-events:none;transition:opacity .3s}
+#mclub-big-overlay.show{opacity:1;pointer-events:all}
+#mclub-big-popup{position:fixed;inset:0;z-index:3001;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.34,1.2,.64,1);transform:scale(.95)}
+#mclub-big-popup.show{opacity:1;pointer-events:all;transform:scale(1)}
+.mclub-big-wrap{width:min(860px,94vw)}
+#mclub-big-canvas{display:block;width:100%;border-radius:10px;box-shadow:0 40px 100px rgba(0,0,0,.85)}
+.mclub-big-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.cert-dl-btn{display:flex;align-items:center;gap:8px;background:#facc15;color:#000;font-weight:700;font-size:11px;padding:11px 22px;border-radius:8px;border:none;cursor:pointer;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;transition:all .2s}
+.cert-dl-btn:hover{background:#eab308;transform:scale(1.02)}
 .cert-close-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);color:var(--text2);font-weight:600;font-size:11px;padding:11px 22px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;transition:all .2s}
 .cert-close-btn:hover{background:rgba(255,255,255,.1)}
 .fs2-wrap{position:relative;background:#000;border-radius:16px;overflow:hidden;box-shadow:0 0 0 1px rgba(34,197,94,.2),0 40px 80px rgba(0,0,0,.8)}
@@ -1151,32 +1175,38 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
     </div>
   </div>
 
-  <div class="cert-section" id="cert-section">
-    <div class="cert-locked" id="cert-locked">
-      <div class="cert-locked-icon">🔒</div>
-      <div class="cert-locked-body">
-        <h3>E-Ticaret Uzmanı Sertifikası</h3>
-        <p>28 günlük programı tamamladığında sertifikan hazır olacak.</p>
-        <div class="cert-locked-tag">● 28/28 gün gerekli · Kilitli</div>
-      </div>
+  <!-- MLYNR CLUB -->
+  <div class="mlynrclub-section" id="mlynrclub-section">
+    <div class="mlynrclub-header">
+      <div class="mlynrclub-eyebrow">✦ Başarı Kulüpleri</div>
+      <div class="mlynrclub-title">MLYNR <em>CLUB</em></div>
+      <p class="mlynrclub-sub">Satış hedefine ulaş, aşağıdaki butona tıkla — danışmanın seninle iletişime geçsin.</p>
     </div>
-    <div class="cert-card" id="cert-unlocked" style="display:none" onclick="openCert()">
-      <div class="cert-card-icon">🏆</div>
-      <div class="cert-card-body">
-        <h3>E-Ticaret Uzmanı Sertifikası</h3>
-        <p>Programı başarıyla tamamladın. Sertifikanı indir ve paylaş.</p>
-        <div class="cert-card-tag">● Sertifikan hazır · İndir & Paylaş</div>
-      </div>
-      <div class="cert-card-arrow">↗</div>
+    <div class="mlynrclub-grid" id="mlynrclub-grid">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);padding:20px 0;text-align:center;grid-column:1/-1">Yükleniyor...</div>
     </div>
   </div>
 
-  <div id="cert-overlay" onclick="closeCert()"></div>
-  <div id="cert-popup">
-    <div class="cert-popup-wrap"><canvas id="cert-canvas"></canvas></div>
-    <div class="cert-popup-actions">
-      <button class="cert-dl-btn" onclick="certDownload()">⬇ Sertifikayı İndir</button>
-      <button class="cert-close-btn" onclick="closeCert()">✕ Kapat</button>
+  <!-- Tebrik Modal -->
+  <div id="mclub-overlay" onclick="closeMClubModal()"></div>
+  <div id="mclub-modal">
+    <span class="mcm-emoji" id="mcm-emoji">🎉</span>
+    <div class="mcm-title" id="mcm-title">Tebrikler!</div>
+    <div class="mcm-sub" id="mcm-sub">Bu başarıyı kayıt altına aldık. Şimdi danışmanınla iletişime geç, sertifikan hazırlansın!</div>
+    <button class="mcm-wa-btn" id="mcm-wa-btn" onclick="openWA()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Danışmanına Mesaj At
+    </button>
+    <button class="mcm-close-btn" onclick="closeMClubModal()">Kapat</button>
+  </div>
+
+  <!-- Büyük Sertifika Popup -->
+  <div id="mclub-big-overlay" onclick="closeMClubBig()"></div>
+  <div id="mclub-big-popup">
+    <div class="mclub-big-wrap"><canvas id="mclub-big-canvas"></canvas></div>
+    <div class="mclub-big-btns">
+      <button class="cert-dl-btn" onclick="downloadMClubCert()">⬇ İndir</button>
+      <button class="cert-close-btn" onclick="closeMClubBig()">✕ Kapat</button>
     </div>
   </div>
 
@@ -1598,7 +1628,7 @@ function saveState(){
 function loadState(){if(!email)return;try{var r=LS.getItem(stK());if(r){var d=JSON.parse(r);done=d.done||[];mc=d.mc||{};}else{done=[];mc={};}}catch(e){done=[];mc={};}}
 function loadStateFromDB(){
   if(!_user){loadState();showApp();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);return;}
-  _sb.from('progress').select('done,mc,spin,first_sale,earn_opened,full_name').eq('user_id',_user.id).limit(1)
+  _sb.from('progress').select('done,mc,spin,first_sale,earn_opened,full_name,unlocked_clubs').eq('user_id',_user.id).limit(1)
     .then(function(r){
       if(r.error){console.warn('DB load error:',r.error);loadState();showApp();return;}
       if(r.data&&r.data.length>0)r.data=r.data[0];else r.data=null;
@@ -1615,9 +1645,14 @@ function loadStateFromDB(){
       if(r.data.spin&&typeof r.data.spin==='object')try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(r.data.spin));}catch(e){}
       try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
       if(r.data.full_name)try{LS.setItem('mlynr6_name_'+email,r.data.full_name);}catch(e){}
+      var rawUC=r.data.unlocked_clubs;
+      if(Array.isArray(rawUC))_unlockedClubs=rawUC;
+      else if(typeof rawUC==='string'){try{_unlockedClubs=JSON.parse(rawUC);}catch(e){_unlockedClubs=[];}}
+      else _unlockedClubs=[];
       showApp();
+      loadClubApps();
       setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);
-    }).catch(function(err){console.warn('DB load failed:',err);loadState();showApp();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);});
+    }).catch(function(err){console.warn('DB load failed:',err);loadState();showApp();loadClubApps();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);});
 }
 
 // ── AUTH ──────────────────────────────────────────────────────
@@ -1874,38 +1909,262 @@ function skipUserName(){closeNamePopup();}
 function showWelcomeToast(name){var toast=document.getElementById('welcome-toast'),span=document.getElementById('wt-name-span');if(!toast||!span)return;span.textContent=name.toUpperCase();toast.classList.add('show');setTimeout(function(){toast.classList.remove('show');},3500);}
 function updateNameUI(){var name=getUserName();if(!name)return;var firstName=name.split(' ')[0];var av=document.getElementById('uav');if(av)av.textContent=firstName.charAt(0).toUpperCase();var un=document.getElementById('uname');if(un)un.textContent=firstName;}
 
-// ── SERTİFİKA ─────────────────────────────────────────────────
-function updateCertSection(){var total=0;for(var wi=0;wi<WEEKS.length;wi++)total+=WEEKS[wi].days.length;var completed=done.length>=total;var locked=document.getElementById('cert-locked'),unlocked=document.getElementById('cert-unlocked');if(!locked||!unlocked)return;if(completed){locked.style.display='none';unlocked.style.display='flex';}else{locked.style.display='flex';unlocked.style.display='none';}}
-function openCert(){document.getElementById('cert-overlay').classList.add('show');document.getElementById('cert-popup').classList.add('show');setTimeout(certDraw,80);}
-function closeCert(){document.getElementById('cert-overlay').classList.remove('show');document.getElementById('cert-popup').classList.remove('show');}
-function certDownload(){try{var c=document.getElementById('cert-canvas'),a=document.createElement('a');a.download='mlynr-eticaret-uzman-sertifikasi.png';a.href=c.toDataURL('image/png');a.click();}catch(e){}}
-function certDraw(){
-  try{
-    var c=document.getElementById('cert-canvas');if(!c)return;
-    var W=2480,H=1754;c.width=W;c.height=H;var ctx=c.getContext('2d');
-    var now=new Date(),months2=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-    var recipientName=getUserName()||email.split('@')[0];
-    ctx.fillStyle='#080a09';ctx.fillRect(0,0,W,H);
-    var M=60;ctx.strokeStyle='rgba(250,204,21,0.55)';ctx.lineWidth=1.5;ctx.strokeRect(M,M,W-M*2,H-M*2);
-    var logoY=M+148;ctx.fillStyle='#ffffff';ctx.font='900 64px Arial, sans-serif';ctx.textAlign='center';ctx.fillText('MLYNR.',W/2,logoY);
-    var hr1Y=logoY+50;var hrg=ctx.createLinearGradient(M+60,0,W-M-60,0);hrg.addColorStop(0,'rgba(250,204,21,0)');hrg.addColorStop(0.5,'rgba(250,204,21,0.5)');hrg.addColorStop(1,'rgba(250,204,21,0)');ctx.strokeStyle=hrg;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(M+60,hr1Y);ctx.lineTo(W-M-60,hr1Y);ctx.stroke();
-    var labY=hr1Y+78;ctx.fillStyle='rgba(250,204,21,0.5)';ctx.font='600 22px monospace';ctx.textAlign='center';ctx.fillText('S E R T İ F İ K A',W/2,labY);
-    var titleY=labY+126;ctx.shadowColor='rgba(250,204,21,0.3)';ctx.shadowBlur=70;ctx.fillStyle='#facc15';ctx.font='900 128px Arial, sans-serif';ctx.textAlign='center';ctx.fillText('E-TİCARET UZMANI',W/2,titleY);ctx.shadowBlur=0;ctx.shadowColor='transparent';
-    var preY=titleY+148;ctx.fillStyle='rgba(255,255,255,0.28)';ctx.font='400 27px monospace';ctx.textAlign='center';ctx.fillText('Bu sertifika,',W/2,preY);
-    var nameY=preY+122;ctx.fillStyle='#ffffff';ctx.font='800 104px Arial, sans-serif';ctx.textAlign='center';ctx.fillText(recipientName,W/2,nameY);
-    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='400 27px monospace';ctx.textAlign='center';ctx.fillText('adına verilmiştir.',W/2,nameY+72);
-    var descY=nameY+148;ctx.fillStyle='rgba(255,255,255,0.36)';ctx.font='400 28px Arial, sans-serif';ctx.textAlign='center';ctx.fillText('Start & Scale Dropshipping programını başarıyla tamamlayarak',W/2,descY);ctx.fillText('eBay & Shopify e-ticaret alanında uzman seviyeye ulaşmıştır.',W/2,descY+44);
-    var sigY=descY+160;var LX=W/2-380,RX=W/2+380,LW=300;
-    ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(LX-LW/2,sigY+56);ctx.lineTo(LX+LW/2,sigY+56);ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,0.85)';ctx.font='italic 700 38px Georgia, serif';ctx.textAlign='center';ctx.fillText('Canberk Öztürk',LX,sigY+48);
-    ctx.fillStyle='rgba(250,204,21,0.5)';ctx.font='600 19px monospace';ctx.textAlign='center';ctx.fillText('KURUCU · MLYNR.',LX,sigY+90);
-    var ds2=now.getDate()+' '+months2[now.getMonth()]+' '+now.getFullYear();
-    ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(RX-LW/2,sigY+56);ctx.lineTo(RX+LW/2,sigY+56);ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,0.85)';ctx.font='700 38px Arial, sans-serif';ctx.textAlign='center';ctx.fillText(ds2,RX,sigY+48);
-    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='600 19px monospace';ctx.textAlign='center';ctx.fillText('TAMAMLANMA TARİHİ',RX,sigY+90);
-    var ftY=H-M-50;ctx.fillStyle='rgba(255,255,255,0.09)';ctx.font='400 18px monospace';ctx.textAlign='center';ctx.fillText('mlynr.com  ·  okul.mlynr.com',W/2,ftY);
-  }catch(e){console.error('certDraw error',e);}
+// ── CLUB SERTİFİKA SİSTEMİ ────────────────────────────────────
+// ── MLYNR CLUB ─────────────────────────────────────────────────
+var _mclubClaims = {};   // tier -> true if claimed
+var _mclubBigTier = null;
+
+var CLUBS = [
+  {tier:'1k',  icon:'🥉', name:'$1.000 Club',     milestone:'$1.000',    color:'#c87840',rgb:'200,120,64', bg:'#0d0805', levelLabel:'BRONZ SEVİYE'},
+  {tier:'10k', icon:'🥈', name:'$10.000 Club',    milestone:'$10.000',   color:'#b0bcc8',rgb:'176,188,200',bg:'#08090d', levelLabel:'GÜMÜŞ SEVİYE'},
+  {tier:'100k',icon:'🥇', name:'$100.000 Club',   milestone:'$100.000',  color:'#facc15',rgb:'250,204,21', bg:'#0a0a00', levelLabel:'ALTIN SEVİYE'},
+  {tier:'1m',  icon:'💎', name:'$1.000.000 Club', milestone:'$1.000.000',color:'#a78bfa',rgb:'167,139,250',bg:'#060408', levelLabel:'ELİT SEVİYE'}
+];
+
+// ── LOAD CLAIMS ────────────────────────────────────────────────
+function loadClubApps(cb){
+  if(!_user){renderMClubGrid();if(cb)cb();return;}
+  _sb.from('club_claims').select('club').eq('user_id',_user.id)
+    .then(function(r){
+      _mclubClaims={};
+      if(r.data&&Array.isArray(r.data))r.data.forEach(function(row){_mclubClaims[row.club]=true;});
+      renderMClubGrid();
+      if(cb)cb();
+    }).catch(function(){renderMClubGrid();if(cb)cb();});
 }
+
+// ── RENDER GRID ────────────────────────────────────────────────
+function renderMClubGrid(){
+  var grid=document.getElementById('mlynrclub-grid');if(!grid)return;
+  var html='';
+  CLUBS.forEach(function(c,i){
+    var claimed=!!_mclubClaims[c.tier];
+    var btnHtml=claimed
+      ?'<button class="mclub-claim-btn claimed">✓ Danışmanın bilgilendirildi</button>'
+      :'<button class="mclub-claim-btn" onclick="mclubClaim(\''+c.tier+'\')">'+c.icon+' Bu ciroya ulaştım!</button>';
+    html+='<div class="mclub-card" data-tier="'+c.tier+'">'
+      +'<div class="mclub-canvas-wrap" onclick="openMClubBig(\''+c.tier+'\')">'
+        +'<canvas class="mclub-canvas" id="mclub-mini-'+c.tier+'" height="180"></canvas>'
+        +'<span class="mclub-zoom-hint">🔍 Büyüt</span>'
+      +'</div>'
+      +'<div class="mclub-body">'
+        +'<div class="mclub-name">'+c.name+'</div>'
+        +'<div class="mclub-milestone">'+c.levelLabel+'</div>'
+        +btnHtml
+      +'</div>'
+      +'</div>';
+  });
+  grid.innerHTML=html;
+  // Mini sertifikaları çiz
+  CLUBS.forEach(function(c){drawMClubMini(c.tier);});
+}
+
+// ── MINI CERT ─────────────────────────────────────────────────
+function drawMClubMini(tier){
+  try{
+    var club=CLUBS.find(function(c){return c.tier===tier;});if(!club)return;
+    var cv=document.getElementById('mclub-mini-'+tier);if(!cv)return;
+    var W=cv.parentElement.offsetWidth||400;
+    var H=Math.round(W*0.56);
+    cv.width=W*2;cv.height=H*2; // retina
+    cv.style.width=W+'px';cv.style.height=H+'px';
+    drawCertOnCanvas(cv,club,W*2,H*2,true);
+  }catch(e){}
+}
+
+// ── BIG CERT ──────────────────────────────────────────────────
+function openMClubBig(tier){
+  _mclubBigTier=tier;
+  document.getElementById('mclub-big-overlay').classList.add('show');
+  document.getElementById('mclub-big-popup').classList.add('show');
+  setTimeout(function(){
+    var club=CLUBS.find(function(c){return c.tier===tier;});if(!club)return;
+    var cv=document.getElementById('mclub-big-canvas');
+    drawCertOnCanvas(cv,club,2480,1754,false);
+  },80);
+}
+function closeMClubBig(){
+  document.getElementById('mclub-big-overlay').classList.remove('show');
+  document.getElementById('mclub-big-popup').classList.remove('show');
+}
+function downloadMClubCert(){
+  try{
+    var cv=document.getElementById('mclub-big-canvas');
+    var a=document.createElement('a');
+    a.download='mlynr-'+(_mclubBigTier||'club')+'-sertifika.png';
+    a.href=cv.toDataURL('image/png');a.click();
+  }catch(e){}
+}
+
+// ── CERT DRAW (paylaşılan fonksiyon) ──────────────────────────
+function drawCertOnCanvas(cv,club,W,H,isMini){
+  cv.width=W;cv.height=H;
+  var ctx=cv.getContext('2d');
+  var col=club.color,rgb=club.rgb;
+  var uname=getUserName()||email.split('@')[0];
+  var ay=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  var now=new Date();
+  var tarih=now.getDate()+' '+ay[now.getMonth()]+' '+now.getFullYear();
+  var s=W/2480; // ölçek faktörü
+
+  ctx.fillStyle=club.bg;ctx.fillRect(0,0,W,H);
+  var gr=ctx.createRadialGradient(W/2,H*.45,0,W/2,H*.45,W*.7);
+  gr.addColorStop(0,'rgba('+rgb+',.09)');gr.addColorStop(1,'rgba('+rgb+',0)');
+  ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);
+
+  // Çerçeve
+  var M=Math.round(56*s);
+  ctx.strokeStyle='rgba('+rgb+',.6)';ctx.lineWidth=Math.max(1,2*s);ctx.strokeRect(M,M,W-M*2,H-M*2);
+  ctx.strokeStyle='rgba('+rgb+',.14)';ctx.lineWidth=Math.max(.5,s);ctx.strokeRect(M+Math.round(18*s),M+Math.round(18*s),W-M*2-Math.round(36*s),H-M*2-Math.round(36*s));
+
+  // Köşe L'leri
+  var CS=Math.round(52*s);
+  [[M,M,1,1],[W-M,M,-1,1],[M,H-M,1,-1],[W-M,H-M,-1,-1]].forEach(function(p){
+    ctx.strokeStyle='rgba('+rgb+',.8)';ctx.lineWidth=Math.max(1,2.5*s);
+    ctx.beginPath();ctx.moveTo(p[0]+p[2]*CS,p[1]);ctx.lineTo(p[0],p[1]);ctx.lineTo(p[0],p[1]+p[3]*CS);ctx.stroke();
+    ctx.fillStyle='rgba('+rgb+',.5)';ctx.beginPath();ctx.arc(p[0],p[1],Math.max(1.5,4*s),0,Math.PI*2);ctx.fill();
+  });
+
+  function hline(y,a){
+    var g=ctx.createLinearGradient(M+80*s,0,W-M-80*s,0);
+    g.addColorStop(0,'rgba('+rgb+',0)');g.addColorStop(.5,'rgba('+rgb+','+a+')');g.addColorStop(1,'rgba('+rgb+',0)');
+    ctx.strokeStyle=g;ctx.lineWidth=Math.max(.5,s);
+    ctx.beginPath();ctx.moveTo(M+80*s,y);ctx.lineTo(W-M-80*s,y);ctx.stroke();
+  }
+
+  // MLYNR.
+  ctx.fillStyle='rgba(255,255,255,.95)';ctx.font='900 '+Math.round(62*s)+'px Arial,sans-serif';ctx.textAlign='center';
+  ctx.fillText('MLYNR.',W/2,M+110*s);
+  hline(M+148*s,.45);
+
+  // Seviye etiketi (spaced)
+  var lvl=club.levelLabel,lx=W/2-lvl.length*6.5*s;
+  ctx.fillStyle='rgba('+rgb+',.6)';ctx.font='600 '+Math.round(22*s)+'px monospace';
+  for(var i=0;i<lvl.length;i++)ctx.fillText(lvl[i],lx+i*13*s,M+205*s);
+
+  // Milestone büyük
+  var tY=M+400*s;
+  ctx.shadowColor='rgba('+rgb+',.5)';ctx.shadowBlur=100*s;
+  ctx.fillStyle=col;ctx.font='900 '+Math.round(172*s)+'px Arial,sans-serif';ctx.textAlign='center';
+  ctx.fillText(club.milestone,W/2,tY);
+  ctx.shadowBlur=0;ctx.shadowColor='transparent';
+
+  ctx.fillStyle='rgba(255,255,255,.38)';ctx.font='700 '+Math.round(46*s)+'px monospace';ctx.textAlign='center';
+  ctx.fillText('D R O P S H I P P I N G   C L U B',W/2,tY+96*s);
+  hline(tY+152*s,.4);
+
+  // "Bu sertifika,"
+  var pY=tY+230*s;
+  ctx.fillStyle='rgba(255,255,255,.26)';ctx.font='400 '+Math.round(29*s)+'px monospace';ctx.textAlign='center';
+  ctx.fillText('Bu sertifika,',W/2,pY);
+
+  // İsim
+  var nY=pY+124*s;
+  ctx.shadowColor='rgba('+rgb+',.22)';ctx.shadowBlur=32*s;
+  ctx.fillStyle='#ffffff';ctx.font='800 '+Math.round(112*s)+'px Arial,sans-serif';ctx.textAlign='center';
+  ctx.fillText(uname,W/2,nY);
+  ctx.shadowBlur=0;ctx.shadowColor='transparent';
+
+  var nw=ctx.measureText(uname).width;
+  var g2=ctx.createLinearGradient(W/2-nw/2,0,W/2+nw/2,0);
+  g2.addColorStop(0,'rgba('+rgb+',0)');g2.addColorStop(.5,'rgba('+rgb+',.35)');g2.addColorStop(1,'rgba('+rgb+',0)');
+  ctx.strokeStyle=g2;ctx.lineWidth=Math.max(.5,s);
+  ctx.beginPath();ctx.moveTo(W/2-nw/2,nY+18*s);ctx.lineTo(W/2+nw/2,nY+18*s);ctx.stroke();
+
+  ctx.fillStyle='rgba(255,255,255,.18)';ctx.font='400 '+Math.round(28*s)+'px monospace';ctx.textAlign='center';
+  ctx.fillText('adına verilmiştir.',W/2,nY+78*s);
+
+  // Açıklama
+  var dY=nY+158*s;
+  if(!isMini){
+    ctx.fillStyle='rgba(255,255,255,.3)';ctx.font='400 '+Math.round(26*s)+'px Arial,sans-serif';ctx.textAlign='center';
+    ctx.fillText('eBay dropshipping alanında '+club.milestone+' satış hacmine ulaşarak',W/2,dY);
+    ctx.fillText('başarısını kanıtlamış ve MLYNR. topluluğuna ilham vermiştir.',W/2,dY+46*s);
+  }
+
+  // İmzalar (sadece büyük versiyonda)
+  if(!isMini){
+    var sY=dY+168*s,LX=W/2-420*s,RX=W/2+420*s,LW=340*s;
+    ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=Math.max(.5,s);
+    ctx.beginPath();ctx.moveTo(LX-LW/2,sY+58*s);ctx.lineTo(LX+LW/2,sY+58*s);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.88)';ctx.font='italic 700 '+Math.round(40*s)+'px Georgia,serif';ctx.textAlign='center';
+    ctx.fillText('Canberk Öztürk',LX,sY+50*s);
+    ctx.fillStyle='rgba('+rgb+',.5)';ctx.font='600 '+Math.round(19*s)+'px monospace';ctx.textAlign='center';
+    ctx.fillText('KURUCU · MLYNR.',LX,sY+92*s);
+    ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=Math.max(.5,s);
+    ctx.beginPath();ctx.moveTo(RX-LW/2,sY+58*s);ctx.lineTo(RX+LW/2,sY+58*s);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.88)';ctx.font='700 '+Math.round(40*s)+'px Arial,sans-serif';ctx.textAlign='center';
+    ctx.fillText(tarih,RX,sY+50*s);
+    ctx.fillStyle='rgba(255,255,255,.22)';ctx.font='600 '+Math.round(19*s)+'px monospace';ctx.textAlign='center';
+    ctx.fillText('ONAYLANMA TARİHİ',RX,sY+92*s);
+  }
+
+  // Footer
+  ctx.fillStyle='rgba(255,255,255,.07)';ctx.font='400 '+Math.round(19*s)+'px monospace';ctx.textAlign='center';
+  ctx.fillText('mlynrplan.com  ·  okul.mlynr.com',W/2,H-M-52*s);
+
+  // ÖRNEK watermark
+  ctx.save();
+  ctx.translate(W/2,H/2);ctx.rotate(-Math.PI/6);
+  ctx.font='900 '+Math.round(320*s)+'px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillStyle='rgba(255,255,255,.065)';
+  ctx.fillText('ÖRNEK',0,0);
+  ctx.restore();
+}
+
+// ── CLAIM BUTON ───────────────────────────────────────────────
+var _mclubActiveTier=null;
+function mclubClaim(tier){
+  var club=CLUBS.find(function(c){return c.tier===tier;});if(!club)return;
+  if(_mclubClaims[tier])return;
+  _mclubActiveTier=tier;
+  // Supabase'e kaydet
+  if(_user){
+    _sb.from('club_claims').insert({
+      user_id:_user.id,email:email,
+      full_name:getUserName()||'',
+      club:tier,
+      milestone:club.milestone,
+      claimed_at:new Date().toISOString()
+    }).then(function(r){
+      if(!r.error)_mclubClaims[tier]=true;
+      renderMClubGrid();
+    }).catch(function(){});
+  }else{
+    _mclubClaims[tier]=true;
+    renderMClubGrid();
+  }
+  // Tebrik popup
+  document.getElementById('mcm-emoji').textContent=club.icon;
+  document.getElementById('mcm-title').textContent='Tebrikler! '+club.name+'\'a ulaştın! 🎊';
+  document.getElementById('mcm-sub').textContent='Bu başarıyı kaydettik. Şimdi danışmanınla iletişime geç, sertifikan hazırlansın ve adresine gönderilsin!';
+  document.getElementById('mclub-overlay').classList.add('show');
+  document.getElementById('mclub-modal').classList.add('show');
+}
+function closeMClubModal(){
+  document.getElementById('mclub-overlay').classList.remove('show');
+  document.getElementById('mclub-modal').classList.remove('show');
+}
+function openWA(){
+  var club=CLUBS.find(function(c){return c.tier===_mclubActiveTier;});
+  var name=getUserName()||'';
+  var msg='Merhaba! Ben '+name+'. MLYNR eğitiminden '+( club?club.milestone:'' )+' Club seviyesine ulaştım, sertifikamı almak istiyorum.';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+// eski stub'lar
+function updateCertSection(){}
+function openCert(){}
+function closeCert(){}
+function certDownload(){}
+function certDraw(){}
+function openClubCert(){}
+function closeClubCert(){}
+function downloadClubCert(){}
+function applyFromCert(){}
+function openClubModal(){}
+function closeClubModal(){}
+function submitClubApp(){}
 
 // ── MENTOR ────────────────────────────────────────────────────
 function openMentorPopup(){document.getElementById('mentor-overlay').classList.add('show');document.getElementById('mentor-popup').classList.add('show');}
