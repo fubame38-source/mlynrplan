@@ -839,7 +839,7 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
           <span class="level-emoji" id="level-emoji">🌱</span>
           <span class="level-name" id="level-name">Çaylak</span>
         </div>
-        <a href="/shopify_portal.html" class="support-pill shopify-pill"><span>Shopify Portalı</span></a>
+        <a href="#" onclick="openShopifyPortal(event)" class="support-pill shopify-pill"><span>Shopify Portalı</span></a>
         <a href="https://t.me/mlynr_bot" target="_blank" class="support-pill"><div class="dot"></div><span>Canlı Destek</span></a>
         <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Tema">🌙</button>
         <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMenu()" aria-label="Menü">
@@ -2168,7 +2168,22 @@ function closeMClubModal(){
   document.getElementById('mclub-modal').classList.remove('show');
 }
 
-// eski stub'lar
+function openShopifyPortal(e){
+  e.preventDefault();
+  var em=email||'';
+  var nm=getUserName()||'';
+  try{
+    // Shopify portal'ın session key'ini aktif kullanıcıyla yaz
+    if(em) localStorage.setItem('mlynr_shop_session', em);
+    // İsim key'ini de yaz (portal email-bazlı key kullanıyor)
+    if(em && nm){
+      var k='mlynr_shop_fullname_'+em.replace(/[^a-z0-9]/gi,'_');
+      localStorage.setItem(k, nm);
+    }
+  }catch(ex){}
+  window.location.href='/shopify_portal.html';
+}
+// eski cert stub'lar
 function updateCertSection(){}
 function openCert(){}
 function closeCert(){}
