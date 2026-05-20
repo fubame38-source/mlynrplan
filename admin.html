@@ -294,7 +294,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
         <div class="club-th">Kursiyer</div>
         <div class="club-th">Kulüp</div>
         <div class="club-th">Tarih</div>
-        <div class="club-th">Durum</div>
+        <div class="club-th">İşlem</div>
       </div>
       <div class="club-tbody" id="club-tbody"><div class="club-empty">Yükleniyor...</div></div>
     </div>
@@ -630,7 +630,22 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
 
 
-// ── MLYNR CLUB ──────────────────────────────────────────────────
+async function approveClubClaim(id, btn){
+  if(!id)return;
+  btn.disabled=true;btn.textContent='...';
+  try{
+    var d = await api('club-approve',{claimId:id});
+    if(d.error) throw new Error(d.error);
+    // Lokal güncelle
+    var claim = clubClaims.find(function(c){return c.id===id;});
+    if(claim) claim.status='approved';
+    renderClubTable();
+    showToast('✓ Sertifika onaylandı!');
+  }catch(e){
+    btn.disabled=false;btn.textContent='Onayla ✓';
+    showToast('Hata: '+e.message);
+  }
+}
 var clubClaims = [];
 var clubFilter = 'all';
 
@@ -654,8 +669,7 @@ async function loadClubClaims(){
   if(tbody) tbody.innerHTML='<div class="club-empty"><span class="spin"></span> Yükleniyor...</div>';
   try{
     var d = await api('club-claims');
-    if(d.error) throw new Error(d.error);
-    clubClaims = d.claims || [];
+    if(d.error) throw new Error(d.error);    clubClaims = d.claims || [];
     renderClubStats();
     renderClubTable();
   }catch(e){
@@ -684,20 +698,21 @@ function cfSet(f){
 function renderClubTable(){
   var tbody=document.getElementById('club-tbody');if(!tbody)return;
   var list = clubFilter==='all' ? clubClaims : clubClaims.filter(function(c){return c.club===clubFilter;});
-  if(!list.length){
-    tbody.innerHTML='<div class="club-empty">Henüz başvuru yok.</div>';return;
-  }
-  // Tarihe göre sırala (yeniden eskiye)
+  if(!list.length){tbody.innerHTML='<div class="club-empty">Henüz başvuru yok.</div>';return;}
   list = list.slice().sort(function(a,b){return new Date(b.claimed_at)-new Date(a.claimed_at);});
   var html='';
   list.forEach(function(c){
     var meta=CLUB_META[c.club]||{label:c.club,icon:'🏆',cls:''};
     var dt=c.claimed_at ? new Date(c.claimed_at).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+    var approved=c.status==='approved';
+    var actionHtml=approved
+      ?'<span style="font-size:11px;color:var(--green)">✓ Onaylandı</span>'
+      :'<button class="abtn abtn-unban" onclick="approveClubClaim(\''+c.id+'\',this)" style="font-size:10px">Onayla ✓</button>';
     html+='<div class="club-row">'
       +'<div><div class="club-name-cell">'+(c.full_name||'İsimsiz')+'</div><div class="club-email-cell">'+(c.email||'')+'</div></div>'
       +'<div><span class="club-tier-badge '+meta.cls+'">'+meta.icon+' '+meta.label+'</span></div>'
       +'<div class="club-date">'+dt+'</div>'
-      +'<div><span style="font-size:10px;color:var(--yellow);letter-spacing:.5px">⏳ Bekliyor</span></div>'
+      +'<div>'+actionHtml+'</div>'
       +'</div>';
   });
   tbody.innerHTML=html;
