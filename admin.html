@@ -119,6 +119,43 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .toast.show{opacity:1;transform:translateY(0)}
 .toast.ok{border-color:rgba(34,197,94,.3);color:var(--green)}
 .toast.err{border-color:rgba(248,113,113,.3);color:var(--red)}
+
+/* ── MLYNR CLUB ── */
+.club-nav{display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:16px}
+.cnav-btn{background:transparent;border:none;color:var(--text3);font-family:var(--font);font-size:12px;font-weight:600;padding:7px 16px;border-radius:8px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+.cnav-btn:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.cnav-btn.active{background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--border2)}
+.club-section-panel{display:none}
+.club-section-panel.active{display:block}
+.club-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+@media(max-width:700px){.club-stats-grid{grid-template-columns:repeat(2,1fr)}}
+.club-stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-align:center}
+.club-stat-num{font-size:26px;font-weight:800;line-height:1;margin-bottom:5px}
+.club-stat-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.club-stat[data-tier="1k"] .club-stat-num{color:#c87840}
+.club-stat[data-tier="10k"] .club-stat-num{color:#a0b0c0}
+.club-stat[data-tier="100k"] .club-stat-num{color:#facc15}
+.club-stat[data-tier="1m"] .club-stat-num{color:#a78bfa}
+.club-table{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.club-thead{display:grid;grid-template-columns:2fr 1fr 1.2fr 1.4fr;padding:11px 18px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}
+.club-th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.club-tbody{max-height:520px;overflow-y:auto}
+.club-row{display:grid;grid-template-columns:2fr 1fr 1.2fr 1.4fr;padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;transition:background .15s}
+.club-row:hover{background:rgba(255,255,255,.02)}
+.club-row:last-child{border-bottom:none}
+.club-tier-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;border:1px solid}
+.club-tier-1k{color:#c87840;border-color:rgba(200,120,64,.3);background:rgba(200,120,64,.08)}
+.club-tier-10k{color:#a0b0c0;border-color:rgba(176,188,200,.3);background:rgba(176,188,200,.07)}
+.club-tier-100k{color:#d4a800;border-color:rgba(250,204,21,.3);background:rgba(250,204,21,.07)}
+.club-tier-1m{color:#a78bfa;border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.08)}
+.club-date{font-size:11px;color:var(--text2);font-family:var(--mono)}
+.club-name-cell{font-size:13px;font-weight:600}
+.club-email-cell{font-size:11px;color:var(--text3);margin-top:2px}
+.club-empty{padding:48px;text-align:center;color:var(--text3);font-size:13px}
+.club-filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.club-filter-bar .fbtn{font-size:11px}
+.club-refresh{margin-left:auto}
+
 </style>
 </head>
 <body>
@@ -148,6 +185,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   </div>
 
   
+  <!-- CLUB NAV -->
+  <div class="club-nav">
+    <button class="cnav-btn active" id="nav-students" onclick="switchPanel('students')">👥 Kursiyerler</button>
+    <button class="cnav-btn" id="nav-club" onclick="switchPanel('club')">🏆 MLYNR Club</button>
+  </div>
+
+  <!-- KURSIYERLER PANELİ -->
+  <div class="club-section-panel active" id="panel-students">
+
   <!-- TOPLU MESAJ -->
   <div class="bulk-section" id="bulk-section">
     <div class="bulk-title">📢 Toplu Mesaj Gönder</div>
@@ -225,6 +271,35 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
     </div>
     <div class="tbody" id="tbody"><div class="erow"><span class="spin"></span>Yükleniyor...</div></div>
   </div>
+  </div><!-- /panel-students -->
+
+  <!-- MLYNR CLUB PANELİ -->
+  <div class="club-section-panel" id="panel-club">
+    <div class="club-stats-grid" id="club-stats-grid">
+      <div class="club-stat" data-tier="1k"><div class="club-stat-num" id="cstat-1k">—</div><div class="club-stat-lbl">$1.000 Club</div></div>
+      <div class="club-stat" data-tier="10k"><div class="club-stat-num" id="cstat-10k">—</div><div class="club-stat-lbl">$10.000 Club</div></div>
+      <div class="club-stat" data-tier="100k"><div class="club-stat-num" id="cstat-100k">—</div><div class="club-stat-lbl">$100.000 Club</div></div>
+      <div class="club-stat" data-tier="1m"><div class="club-stat-num" id="cstat-1m">—</div><div class="club-stat-lbl">$1.000.000 Club</div></div>
+    </div>
+    <div class="club-filter-bar">
+      <button class="fbtn act" id="cf-all" onclick="cfSet('all')">Tümü</button>
+      <button class="fbtn" id="cf-1k" onclick="cfSet('1k')">🥉 $1K</button>
+      <button class="fbtn" id="cf-10k" onclick="cfSet('10k')">🥈 $10K</button>
+      <button class="fbtn" id="cf-100k" onclick="cfSet('100k')">🥇 $100K</button>
+      <button class="fbtn" id="cf-1m" onclick="cfSet('1m')">💎 $1M</button>
+      <button class="rbtn club-refresh" onclick="loadClubClaims()">↻ Yenile</button>
+    </div>
+    <div class="club-table">
+      <div class="club-thead">
+        <div class="club-th">Kursiyer</div>
+        <div class="club-th">Kulüp</div>
+        <div class="club-th">Tarih</div>
+        <div class="club-th">Durum</div>
+      </div>
+      <div class="club-tbody" id="club-tbody"><div class="club-empty">Yükleniyor...</div></div>
+    </div>
+  </div><!-- /panel-club -->
+
 </div>
 
 <!-- Mesaj Modal -->
@@ -553,6 +628,81 @@ function showToast(msg, type){
 }
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
 function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
+
+
+// ── MLYNR CLUB ──────────────────────────────────────────────────
+var clubClaims = [];
+var clubFilter = 'all';
+
+var CLUB_META = {
+  '1k':  {label:'$1.000 Club',  icon:'🥉', cls:'club-tier-1k'},
+  '10k': {label:'$10.000 Club', icon:'🥈', cls:'club-tier-10k'},
+  '100k':{label:'$100.000 Club',icon:'🥇', cls:'club-tier-100k'},
+  '1m':  {label:'$1.000.000 Club',icon:'💎',cls:'club-tier-1m'}
+};
+
+function switchPanel(p){
+  ['students','club'].forEach(function(id){
+    document.getElementById('panel-'+id).classList.toggle('active', id===p);
+    document.getElementById('nav-'+id).classList.toggle('active', id===p);
+  });
+  if(p==='club' && clubClaims.length===0) loadClubClaims();
+}
+
+async function loadClubClaims(){
+  var tbody = document.getElementById('club-tbody');
+  if(tbody) tbody.innerHTML='<div class="club-empty"><span class="spin"></span> Yükleniyor...</div>';
+  try{
+    var d = await api('club-claims');
+    if(d.error) throw new Error(d.error);
+    clubClaims = d.claims || [];
+    renderClubStats();
+    renderClubTable();
+  }catch(e){
+    if(tbody) tbody.innerHTML='<div class="club-empty" style="color:var(--red)">Hata: '+e.message+'</div>';
+  }
+}
+
+function renderClubStats(){
+  var counts = {'1k':0,'10k':0,'100k':0,'1m':0};
+  clubClaims.forEach(function(c){ if(counts[c.club]!==undefined) counts[c.club]++; });
+  ['1k','10k','100k','1m'].forEach(function(t){
+    var el = document.getElementById('cstat-'+t);
+    if(el) el.textContent = counts[t];
+  });
+}
+
+function cfSet(f){
+  clubFilter=f;
+  ['all','1k','10k','100k','1m'].forEach(function(id){
+    var btn=document.getElementById('cf-'+id);
+    if(btn) btn.classList.toggle('act', id===f);
+  });
+  renderClubTable();
+}
+
+function renderClubTable(){
+  var tbody=document.getElementById('club-tbody');if(!tbody)return;
+  var list = clubFilter==='all' ? clubClaims : clubClaims.filter(function(c){return c.club===clubFilter;});
+  if(!list.length){
+    tbody.innerHTML='<div class="club-empty">Henüz başvuru yok.</div>';return;
+  }
+  // Tarihe göre sırala (yeniden eskiye)
+  list = list.slice().sort(function(a,b){return new Date(b.claimed_at)-new Date(a.claimed_at);});
+  var html='';
+  list.forEach(function(c){
+    var meta=CLUB_META[c.club]||{label:c.club,icon:'🏆',cls:''};
+    var dt=c.claimed_at ? new Date(c.claimed_at).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+    html+='<div class="club-row">'
+      +'<div><div class="club-name-cell">'+(c.full_name||'İsimsiz')+'</div><div class="club-email-cell">'+(c.email||'')+'</div></div>'
+      +'<div><span class="club-tier-badge '+meta.cls+'">'+meta.icon+' '+meta.label+'</span></div>'
+      +'<div class="club-date">'+dt+'</div>'
+      +'<div><span style="font-size:10px;color:var(--yellow);letter-spacing:.5px">⏳ Bekliyor</span></div>'
+      +'</div>';
+  });
+  tbody.innerHTML=html;
+}
+
 </script>
 </body>
 </html>
