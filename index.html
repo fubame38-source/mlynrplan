@@ -1634,7 +1634,7 @@ function loadStateFromDB(){
       if(r.data&&r.data.length>0)r.data=r.data[0];else r.data=null;
       if(!r.data){
         done=[];mc={};
-        _sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,earn_opened:false,updated_at:new Date().toISOString()}).then(function(){showApp();setTimeout(function(){openNamePopup();},400);});
+        _sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,updated_at:new Date().toISOString()}).then(function(){loadClubApps();showApp();setTimeout(function(){openNamePopup();},400);});
         return;
       }
       var raw=r.data.done;
@@ -1677,7 +1677,7 @@ function doAuth(){
             _sb.auth.signInWithPassword({email:em,password:pw}).then(function(r3){
               if(r3.error){er.style.color='';er.textContent='Giris hatasi.';btn.disabled=false;return;}
               _user=r3.data.user;email=_user.email;er.style.color='#4ade80';er.textContent='Hos geldin!';btn.disabled=false;
-              _sb.from('progress').select('user_id').eq('user_id',_user.id).limit(1).then(function(chk){if(!chk.data||chk.data.length===0)_sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,earn_opened:false,updated_at:new Date().toISOString()}).then(function(){loadStateFromDB();});else loadStateFromDB();});
+              _sb.from('progress').select('user_id').eq('user_id',_user.id).limit(1).then(function(chk){if(!chk.data||chk.data.length===0)_sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,updated_at:new Date().toISOString()}).then(function(){loadStateFromDB();});else loadStateFromDB();});
             });
           });
         }else{_user=r.data.user;email=_user.email;btn.disabled=false;loadStateFromDB();}
@@ -1705,6 +1705,14 @@ function showApp(){
   initBriefing();
   setTimeout(initScrollAnim,50);
   setTimeout(checkAdminMessages,1500);
+  // Club grid — her durumda render et
+  setTimeout(function(){if(document.getElementById('mlynrclub-grid'))renderMClubGrid();},200);
+  // İsim yoksa her zaman popup aç (backup)
+  if(!getUserName()){
+    setTimeout(function(){
+      if(!getUserName())openNamePopup();
+    },600);
+  }
 }
 // ── ADMİN MESAJ ──────────────────────────────────────────────
 var _adminMsgId=null;
