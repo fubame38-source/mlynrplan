@@ -2017,25 +2017,31 @@ function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m
       }catch(e){}
     }
   }
-  // Stüdyodan geliyorsa Supabase session'ı yenile ve direkt gir
-  // Stüdyodan dönüş: localStorage'da kayıtlı email varsa direkt gir
-  var cachedEmail=null;
-  try{cachedEmail=LS.getItem('mlynr_shop_session');}catch(e){}
-  
-  if(cachedEmail){
-    // Direkt gir, login ekranı gösterme
-    tryEnter(cachedEmail,null);
-  } else {
-    var loginTimer=setTimeout(function(){if(!entered)showLogin();},2000);
-    _sb.auth.getSession().then(function(r){
-      clearTimeout(loginTimer);
-      if(r.data&&r.data.session&&r.data.session.user){
-        tryEnter(r.data.session.user.email,r.data.session.user);
+  // Her zaman Supabase session'ı kontrol et — localStorage'a güvenme
+  var loginTimer=setTimeout(function(){if(!entered)showLogin();},2500);
+  _sb.auth.getSession().then(function(r){
+    clearTimeout(loginTimer);
+    if(r.data&&r.data.session&&r.data.session.user){
+      // Supabase session var — localStorage'ı bu emaille güncelle
+      var sbEmail=r.data.session.user.email;
+      try{localStorage.setItem('mlynr_shop_session',sbEmail);}catch(e){}
+      tryEnter(sbEmail,r.data.session.user);
+    } else {
+      // Supabase session yok — localStorage'a bak
+      var cachedEmail=null;
+      try{cachedEmail=localStorage.getItem('mlynr_shop_session');}catch(e){}
+      if(cachedEmail){
+        tryEnter(cachedEmail,null);
       } else {
         showLogin();
       }
-    }).catch(function(){clearTimeout(loginTimer);showLogin();});
-  }
+    }
+  }).catch(function(){
+    clearTimeout(loginTimer);
+    var cachedEmail=null;
+    try{cachedEmail=localStorage.getItem('mlynr_shop_session');}catch(e){}
+    if(cachedEmail){tryEnter(cachedEmail,null);}else{showLogin();}
+  });
 })();
 
 document.addEventListener('DOMContentLoaded',function(){
