@@ -1705,8 +1705,6 @@ function showApp(){
   initBriefing();
   setTimeout(initScrollAnim,50);
   setTimeout(checkAdminMessages,1500);
-  // Club grid — her durumda render et
-  setTimeout(function(){if(document.getElementById('mlynrclub-grid'))renderMClubGrid();},200);
   // İsim yoksa her zaman popup aç (backup)
   if(!getUserName()){
     setTimeout(function(){
@@ -1931,18 +1929,21 @@ var CLUBS = [
 
 // ── LOAD CLAIMS ────────────────────────────────────────────────
 function loadClubApps(cb){
-  renderMClubGrid();
   if(cb)cb();
-  if(!_user)return;
-  try{
-    _sb.from('club_claims').select('club,status').eq('user_id',_user.id)
-      .then(function(r){
-        if(r.data&&Array.isArray(r.data)&&r.data.length>0){
-          r.data.forEach(function(row){_mclubClaims[row.club]=row.status||'pending';});
-          renderMClubGrid();
-        }
-      }).catch(function(){});
-  }catch(e){}
+  if(!_user){renderMClubGrid();return;}
+  // DB cevabını bekle, sadece sonra render et
+  _sb.from('club_claims').select('club,status').eq('user_id',_user.id)
+    .then(function(r){
+      _mclubClaims={};
+      if(r.data&&Array.isArray(r.data)){
+        r.data.forEach(function(row){
+          // approved zaten varsa üzerine yazma
+          if(_mclubClaims[row.club]!=='approved')
+            _mclubClaims[row.club]=row.status||'pending';
+        });
+      }
+      renderMClubGrid();
+    }).catch(function(){renderMClubGrid();});
 }
 
 function renderMClubGrid(){
