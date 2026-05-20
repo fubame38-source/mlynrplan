@@ -724,15 +724,15 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 /* ── ADMİN MESAJ ── */
 #admin-msg-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9500;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
 #admin-msg-overlay.show{opacity:1;pointer-events:all}
-#admin-msg-box{background:#111;border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:32px;width:min(420px,92vw);position:relative}
+#admin-msg-box{background:#111;border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:32px;width:min(420px,92vw);position:relative;color:#e8e8e8}
 #admin-msg-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);border-radius:20px 20px 0 0;pointer-events:none}
 .amsg-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--border)}
 .amsg-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#e0e0e0,#888);color:#000;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0}
 .amsg-hinfo{flex:1}
-.amsg-hname{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.amsg-hname{font-size:14px;font-weight:700;color:#e8e8e8;margin-bottom:3px}
 .amsg-hrole{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
 .amsg-ping{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.6);animation:blink 1.5s ease-in-out infinite;flex-shrink:0}
-.amsg-body{font-size:14px;color:var(--text);line-height:1.85;margin-bottom:24px;white-space:pre-wrap}
+.amsg-body{font-size:14px;color:#e8e8e8;line-height:1.85;margin-bottom:24px;white-space:pre-wrap}
 .amsg-close{width:100%;background:#fff;color:#000;border:none;border-radius:10px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:1px;padding:14px;cursor:pointer;transition:opacity .2s}
 .amsg-close:hover{opacity:.88}
 
