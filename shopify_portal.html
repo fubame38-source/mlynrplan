@@ -1027,18 +1027,81 @@ var _user=null,email='',done=[],taskChecks={};
 var adminTask={title:'',body:'',due:'',checks:[]};
 
 function stK(){return 'mlynr_shop_'+email.replace(/[^a-z0-9]/gi,'_');}
+
+/* ── SUPABASE SYNC ── */
+var _savePending=false,_saveTimer=null;
+
 function saveState(){
   if(!email)return;
+  // 1) Önce localStorage'a anında yaz
   try{LS.setItem(stK(),JSON.stringify({done:done,taskChecks:taskChecks}));}catch(e){}
   showSaved();
+  // 2) Supabase'e debounce ile yaz (art arda tıklamalarda tek istek)
+  clearTimeout(_saveTimer);
+  _saveTimer=setTimeout(function(){_pushToSupabase();},800);
 }
+
+function _pushToSupabase(){
+  if(!email)return;
+  var payload={
+    user_id:email,
+    progress_data:JSON.stringify({done:done,taskChecks:taskChecks}),
+    updated_at:new Date().toISOString()
+  };
+  fetch(SUPABASE_URL+'/rest/v1/shopify_progress',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'apikey':SUPABASE_KEY,
+      'Authorization':'Bearer '+SUPABASE_KEY,
+      'Prefer':'resolution=merge-duplicates'
+    },
+    body:JSON.stringify(payload)
+  }).catch(function(){/* sessiz hata — localStorage yedek */});
+}
+
 function loadState(){
   if(!email)return;
+  // 1) localStorage'dan hemen yükle (hızlı, offline-safe)
   try{
     var r=LS.getItem(stK());
     if(r){var d=JSON.parse(r);done=d.done||[];taskChecks=d.taskChecks||{};}
     else{done=[];taskChecks={};}
   }catch(e){done=[];taskChecks={};}
+  // 2) Supabase'den arka planda yükle (farklı cihaz/tarayıcı desteği)
+  _pullFromSupabase();
+}
+
+function _pullFromSupabase(){
+  if(!email)return;
+  fetch(SUPABASE_URL+'/rest/v1/shopify_progress?user_id=eq.'+encodeURIComponent(email)+'&select=progress_data,updated_at&limit=1',{
+    headers:{
+      'apikey':SUPABASE_KEY,
+      'Authorization':'Bearer '+SUPABASE_KEY
+    }
+  })
+  .then(function(r){return r.json();})
+  .then(function(rows){
+    if(!rows||!rows.length||!rows[0].progress_data)return;
+    var remote=JSON.parse(rows[0].progress_data);
+    // Uzaktaki veri daha fazla ilerleme içeriyorsa birleştir
+    var remoteDone=remote.done||[];
+    var merged=done.slice();
+    remoteDone.forEach(function(id){if(merged.indexOf(id)<0)merged.push(id);});
+    var changed=(merged.length!==done.length);
+    // taskChecks: uzaktakini de birleştir
+    var remoteChecks=remote.taskChecks||{};
+    var mergedChecks=Object.assign({},taskChecks);
+    Object.keys(remoteChecks).forEach(function(k){
+      if(!mergedChecks[k])mergedChecks[k]=remoteChecks[k];
+    });
+    done=merged;taskChecks=mergedChecks;
+    // localStorage'ı güncelle
+    try{LS.setItem(stK(),JSON.stringify({done:done,taskChecks:taskChecks}));}catch(e){}
+    // Sadece gerçekten değişim varsa yeniden render et
+    if(changed){renderAll();}
+  })
+  .catch(function(){/* sessiz hata */});
 }
 
 function updateXP(){}
