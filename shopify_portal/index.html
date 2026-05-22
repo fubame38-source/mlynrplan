@@ -128,8 +128,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .hero-inner{max-width:900px;margin:0 auto}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:14px}
 .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 1.5s ease-in-out infinite}
-.hero-title{font-size:clamp(42px,9vw,88px);font-weight:900;letter-spacing:-4px;line-height:.9;color:var(--white);margin-bottom:10px}
-.hero-subtitle{font-size:14px;font-weight:400;color:var(--text2);margin-bottom:20px}
+.hero-title{font-size:clamp(32px,6vw,56px);font-weight:900;letter-spacing:-2px;line-height:1;color:var(--white);margin-bottom:6px}
+.hero-subtitle{font-size:13px;font-weight:400;color:var(--text2);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.hero-subtitle .sep{color:var(--text3)}
 
 /* QUICK GRID */
 .quick-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
@@ -145,6 +146,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .qc-badge.green{color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln)}
 .qc-badge.purple{color:var(--purple);background:var(--purple-dim);border:1px solid var(--purple-ln)}
 .qc-ping{position:absolute;top:14px;right:14px;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.6);animation:blink 1.5s ease-in-out infinite}
+
+/* STAT BAR */
+.stat-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0;margin-bottom:14px;overflow:hidden}
+.stat-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 12px;gap:4px}
+.stat-val{font-size:20px;font-weight:900;letter-spacing:-1px;color:var(--white);line-height:1}
+.stat-lbl{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);text-align:center}
+.stat-divider{width:1px;background:var(--border);align-self:stretch;display:none}
+@media(max-width:600px){.stat-bar{grid-template-columns:1fr 1fr}.stat-divider{display:none}}
 
 /* PROGRESS ROW */
 .prog-row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px}
@@ -251,6 +260,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* MODÜLLER */
 .module-accordion{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1)}
 .module-accordion.open{border-color:rgba(255,255,255,.22);background:var(--surface2)}
+.module-accordion.current-module{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.03)}
+.module-accordion.current-module .ma-num-big{color:rgba(34,197,94,.2)}
+.current-module-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:4px;padding:2px 7px;margin-left:8px}
 .module-accordion-header{display:flex;align-items:center;gap:0;padding:0;cursor:pointer;user-select:none}
 .ma-num-big{font-size:clamp(48px,7vw,72px);font-weight:900;letter-spacing:-4px;line-height:1;color:rgba(255,255,255,.12);padding:20px 16px 20px 24px;flex-shrink:0;transition:color .2s;user-select:none}
 .module-accordion.open .ma-num-big{color:rgba(255,255,255,.18)}
@@ -567,8 +579,31 @@ footer p{font-size:12px;color:var(--text3)}
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><div class="hero-badge-dot"></div>Shopify Mentörlük · Aktif</div>
-      <div class="hero-title">MLYNR<span style="color:var(--text3)">.</span></div>
-      <div class="hero-subtitle">Shopify Mentörlük Portalı — Hoş geldin</div>
+      <div class="hero-title" id="hero-greeting-name">MLYNR<span style="color:var(--text3)">.</span></div>
+      <div class="hero-subtitle" id="hero-subtitle-txt">Shopify Mentörlük Portalı — Hoş geldin</div>
+
+      <!-- STAT BAR -->
+      <div class="stat-bar" id="stat-bar">
+        <div class="stat-item">
+          <div class="stat-val" id="stat-completed">0</div>
+          <div class="stat-lbl">Tamamlanan Ders</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-val" id="stat-modules">0</div>
+          <div class="stat-lbl">Aktif Modül</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-val" id="stat-pct">0%</div>
+          <div class="stat-lbl">Tamamlandı</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-val" id="stat-remaining">76</div>
+          <div class="stat-lbl">Kalan Ders</div>
+        </div>
+      </div>
 
       <!-- QUICK ACTIONS -->
       <div class="quick-grid" style="grid-template-columns:1fr 1fr">
@@ -1106,6 +1141,47 @@ function _pullFromSupabase(){
 
 function updateXP(){}
 
+function updateStatBar(){
+  var totalDone=0, totalAll=0;
+  var modulesDone=0;
+  MODULES.forEach(function(m){
+    var mDone=0;
+    m.videos.forEach(function(v,i){if(done.indexOf(m.id+'-'+i)>=0)mDone++;});
+    if(mDone>0)modulesDone++;
+    totalDone+=mDone;
+    totalAll+=m.videos.length;
+  });
+  var pct=totalAll>0?Math.round(totalDone/totalAll*100):0;
+  var el=function(id){return document.getElementById(id);};
+  if(el('stat-completed'))el('stat-completed').textContent=totalDone;
+  if(el('stat-modules'))el('stat-modules').textContent=modulesDone;
+  if(el('stat-pct'))el('stat-pct').textContent=pct+'%';
+  if(el('stat-remaining'))el('stat-remaining').textContent=totalAll-totalDone;
+}
+
+function updateHeroGreeting(){
+  var profile=null;
+  try{profile=JSON.parse(LS.getItem('mlynr_profile')||'null');}catch(e){}
+  var firstName='';
+  if(profile&&profile.firstName)firstName=profile.firstName;
+  var titleEl=document.getElementById('hero-greeting-name');
+  var subtitleEl=document.getElementById('hero-subtitle-txt');
+  if(titleEl){
+    if(firstName){
+      titleEl.innerHTML='Merhaba, <span style="color:var(--text2)">'+firstName+'</span><span style="color:var(--text3)">.</span>';
+    }else{
+      titleEl.innerHTML='MLYNR<span style="color:var(--text3)">.</span>';
+    }
+  }
+  if(subtitleEl){
+    var now=new Date();
+    var days=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+    var months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+    var dateStr=days[now.getDay()]+', '+now.getDate()+' '+months[now.getMonth()];
+    subtitleEl.innerHTML='Shopify Mentörlük Portalı <span class="sep">·</span> '+dateStr;
+  }
+}
+
 /* AUTH */
 var _failCount=0,_failLock=0;
 function doAuth(){
@@ -1206,9 +1282,19 @@ function renderModules(){
     totalDone+=modDone;
     var pct=Math.round(modDone/mod.videos.length*100);
     var acc=document.createElement('div');acc.className='module-accordion';acc.id='acc-'+mod.id;
+    // En son bırakılan modülü bul (hiç yapılmamış ilk modül = aktif modül)
+    var isCurrent=(pct>0&&pct<100);
+    if(pct===0){
+      // Önceki modüller tamamlandıysa bu aktif
+      var prevAllDone=true;
+      MODULES.forEach(function(m2){if(m2.id<mod.id){var d2=0;m2.videos.forEach(function(_,ii){if(done.indexOf(m2.id+'-'+ii)>-1)d2++;});if(d2<m2.videos.length)prevAllDone=false;}});
+      if(prevAllDone)isCurrent=true;
+    }
+    if(isCurrent)acc.classList.add('current-module');
+    var badgeHtml=isCurrent?'<span class="current-module-badge">● Devam Et</span>':'';
     var header=document.createElement('div');header.className='module-accordion-header';
     header.innerHTML='<div class="ma-num-big">'+String(mod.id).padStart(2,'0')+'</div>'
-      +'<div class="ma-content"><div class="ma-label-row">Modül '+String(mod.id).padStart(2,'0')+' — '+pct+'% tamamlandı</div><div class="ma-name">'+mod.name+'</div></div>'
+      +'<div class="ma-content"><div class="ma-label-row">Modül '+String(mod.id).padStart(2,'0')+' — '+pct+'% tamamlandı'+badgeHtml+'</div><div class="ma-name">'+mod.name+'</div></div>'
       +'<div class="ma-right"><div class="ma-bar-wrap"><div class="ma-bar-fill" style="width:'+pct+'%"></div></div><span class="ma-pct">'+pct+'%</span><span class="ma-chevron">▾</span></div>';
     header.addEventListener('click',function(e){
       e.stopPropagation();
@@ -1259,6 +1345,8 @@ function renderAll(){
   try{renderModules();}catch(e){}
   try{renderTodayContentTask();}catch(e){}
   try{renderReklamAnaliz();}catch(e){}
+  try{updateStatBar();}catch(e){}
+  try{updateHeroGreeting();}catch(e){}
 }
 
 function openRpPopup(d){
