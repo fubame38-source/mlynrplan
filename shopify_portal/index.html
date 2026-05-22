@@ -1334,6 +1334,7 @@ function renderReklamAnaliz(){
 }
 
 function renderTodayContentTask(){
+  if(!document.getElementById('today-content-section'))return;
   var day=new Date().getDay();
   var todayIdx=day===0?6:day-1;
   var gunler=['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
