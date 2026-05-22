@@ -1498,7 +1498,7 @@ function obRmKey(){return 'mlynr_shop_rm_'+email.replace(/[^a-z0-9]/gi,'_');}
 
 function checkUserName(){
   try{
-    var n=LS.getItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));
+    var n=LS.getItem('mlynr_sp_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));
     if(!n){
       openNamePopup();
     } else {
@@ -1583,7 +1583,7 @@ function obFinish(){
   var fn=obFirstName;
   var ln=document.getElementById('inp-lastname').value.trim();
   var full=fn+(ln?' '+ln:'');
-  try{LS.setItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'),full);}catch(e){}
+  try{LS.setItem('mlynr_sp_fullname_'+email.replace(/[^a-z0-9]/gi,'_'),full);}catch(e){}
   applyUserName(full);
 
   // Loading ekranı
@@ -1680,7 +1680,7 @@ function getDisplayName(){
   var fn=obFirstName;
   if(!fn&&email){
     try{
-      var saved=LS.getItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));
+      var saved=LS.getItem('mlynr_sp_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));
       if(saved)fn=saved.split(' ')[0];
     }catch(e){}
   }
@@ -1809,7 +1809,7 @@ function openCheckin(){
   var fn=obFirstName;
   if(!fn){
     try{
-      var saved=LS.getItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));
+      var saved=LS.getItem('mlynr_sp_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));
       if(saved)fn=saved.split(' ')[0];
     }catch(e){}
   }
@@ -1887,7 +1887,7 @@ function submitCheckin(){
     closeCheckin();
     // ismi güncelle
     var savedName=null;
-    try{savedName=LS.getItem('mlynr_shop_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));}catch(e){}
+    try{savedName=LS.getItem('mlynr_sp_fullname_'+email.replace(/[^a-z0-9]/gi,'_'));}catch(e){}
     if(savedName&&!obFirstName)obFirstName=savedName.split(' ')[0];
     // Planı kaydet
     var existingRm=null;
