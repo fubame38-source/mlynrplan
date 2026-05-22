@@ -1146,7 +1146,7 @@ function updateStatBar(){
   var modulesDone=0;
   MODULES.forEach(function(m){
     var mDone=0;
-    m.videos.forEach(function(v){if(done.indexOf(v.id)>=0)mDone++;});
+    m.videos.forEach(function(v,i){if(done.indexOf(m.id+'-'+i)>=0)mDone++;});
     if(mDone>0)modulesDone++;
     totalDone+=mDone;
     totalAll+=m.videos.length;
