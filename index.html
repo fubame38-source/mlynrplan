@@ -809,7 +809,7 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .aw-item strong{color:var(--text);font-weight:600}
 @media(max-width:640px){.rules-grid{grid-template-columns:1fr}}
 
-/* ══ YOL HARİTASI ══ */
+/* YOL HARITASI */
 .yh-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:24px;position:relative;z-index:1}
 .yh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:16px}
 .yh-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
@@ -818,13 +818,13 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .yh-ring-wrap{position:relative;width:56px;height:56px;flex-shrink:0}
 .yh-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--green);font-family:var(--mono)}
 .yh-top-stat-val{font-size:22px;font-weight:900;color:var(--white);line-height:1;letter-spacing:-1px}
-.yh-top-stat-tot{font-size:13px;font-weight:400;color:var(--text3);margin-left:2px}
+.yh-top-stat-tot{font-size:13px;color:var(--text3);margin-left:2px}
 .yh-top-stat-lbl{font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;margin-top:2px}
-.yh-today-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--green-ln);border-radius:16px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:20px;cursor:pointer;transition:border-color .2s,transform .15s;-webkit-tap-highlight-color:transparent}
+.yh-today-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--green-ln);border-radius:16px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:20px;cursor:pointer;transition:border-color .2s,transform .15s}
 .yh-today-card:hover{border-color:rgba(34,197,94,.5);transform:translateY(-1px)}
 .yh-today-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(34,197,94,.06),transparent 60%);pointer-events:none}
-.yh-today-pulse{position:absolute;top:20px;right:20px;width:8px;height:8px;border-radius:50%;background:var(--green);animation:yh-blink 1.6s ease-in-out infinite}
-@keyframes yh-blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+.yh-today-pulse{position:absolute;top:20px;right:20px;width:8px;height:8px;border-radius:50%;background:var(--green);animation:yhblink 1.6s ease-in-out infinite}
+@keyframes yhblink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
 .yh-today-left{flex:1;min-width:0}
 .yh-today-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
 .yh-today-title{font-size:16px;font-weight:800;color:var(--white);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -867,18 +867,18 @@ body.light .yh-cp-track{background:rgba(0,0,0,.07)}
 .yh-node.done .yh-node-btn{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.45)}
 .yh-node.done .yh-node-num{color:var(--green)}
 .yh-node.done .yh-node-lbl{color:rgba(34,197,94,.7)}
-.yh-node.current .yh-node-btn{background:rgba(34,197,94,.1);border-color:var(--green);animation:yh-np 2s ease-in-out infinite}
+.yh-node.current .yh-node-btn{background:rgba(34,197,94,.1);border-color:var(--green);animation:yhnp 2s ease-in-out infinite}
 .yh-node.current .yh-node-num{color:var(--green)}
 .yh-node.current .yh-node-lbl{color:var(--green)}
 .yh-node.open .yh-node-btn{background:var(--surface);border-color:var(--border2)}
 .yh-node.open .yh-node-num{color:var(--text2)}
 .yh-node.open .yh-node-lbl{color:var(--text3)}
-.yh-node.locked .yh-node-btn{opacity:.3;cursor:default}
+.yh-node.locked .yh-node-btn{opacity:.3}
 .yh-node.locked{cursor:default}
 .yh-node.locked:hover .yh-node-btn{transform:none}
 .yh-node.locked .yh-node-num{color:var(--text3)}
-.yh-node.selected .yh-node-btn{border-color:var(--white) !important}
-@keyframes yh-np{0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.12)}50%{box-shadow:0 0 0 6px rgba(34,197,94,.06),0 0 20px rgba(34,197,94,.25)}}
+.yh-node.selected .yh-node-btn{border-color:var(--white)!important}
+@keyframes yhnp{0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.12)}50%{box-shadow:0 0 0 6px rgba(34,197,94,.06),0 0 20px rgba(34,197,94,.25)}}
 .yh-node-check{position:absolute;top:-5px;right:-5px;width:15px;height:15px;background:var(--green);border-radius:50%;border:2px solid var(--surface2);display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:800}
 .yh-task-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
 body.light .yh-task-panel{background:#f8f8f8;border-color:rgba(0,0,0,.08)}
@@ -892,7 +892,7 @@ body.light .yh-panel-head{background:#f0f0f0;border-color:rgba(0,0,0,.08)}
 .yh-panel-title{font-size:14px;font-weight:700;color:var(--text);flex:1}
 .yh-panel-meta{font-size:11px;color:var(--text3);flex-shrink:0;font-family:var(--mono)}
 .yh-task-list{list-style:none;padding:10px;display:flex;flex-direction:column;gap:6px}
-.yh-task-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.yh-task-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s}
 .yh-task-item:hover{border-color:var(--border2)}
 .yh-task-item.ck{opacity:.6}
 .yh-task-item.ck .yh-task-text{text-decoration:line-through;color:var(--text3)}
@@ -1273,12 +1273,12 @@ body.light .yh-task-item:hover{border-color:rgba(0,0,0,.14)}
     </div>
   </div>
 
-  <!-- YOL HARİTASI -->
+  <!-- YOL HARITASI -->
   <div class="yh-section" id="yh-section">
     <div class="yh-top">
-      <div class="yh-top-left">
-        <div class="yh-eyebrow">✦ 28 Günlük Plan</div>
-        <div class="yh-title">Yol Haritası</div>
+      <div>
+        <div class="yh-eyebrow">&#10022; 28 Gunluk Plan</div>
+        <div class="yh-title">Yol Haritasi</div>
       </div>
       <div class="yh-top-right">
         <div class="yh-ring-wrap">
@@ -1297,18 +1297,18 @@ body.light .yh-task-item:hover{border-color:rgba(0,0,0,.14)}
     <div class="yh-today-card" id="yh-today-card" onclick="yhGoToday()">
       <div class="yh-today-pulse"></div>
       <div class="yh-today-left">
-        <div class="yh-today-tag">&#9889; BUGÜN &middot; GÜN <span id="yh-today-daynum">1</span></div>
-        <div class="yh-today-title" id="yh-today-title">Yükleniyor...</div>
-        <div class="yh-today-sub" id="yh-today-sub">0 / 3 görev tamamlandı</div>
+        <div class="yh-today-tag">&#9889; BUGUN &middot; GUN <span id="yh-today-daynum">1</span></div>
+        <div class="yh-today-title" id="yh-today-title">eBay Hesap Acilisi</div>
+        <div class="yh-today-sub" id="yh-today-sub">0 / 3 gorev tamamlandi</div>
       </div>
       <div class="yh-today-right">
         <div class="yh-today-tasks-mini" id="yh-today-tasks-mini"></div>
-        <div class="yh-today-cta">Göreve Başla →</div>
+        <div class="yh-today-cta">Goreve Basla &rarr;</div>
       </div>
     </div>
     <div class="yh-camps-row" id="yh-camps-nav">
       <button class="yh-ctab active" data-camp="0" onclick="yhSwitchCamp(0)">
-        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 1</div><div class="yh-ctab-range">eBay Başlangıç</div></div>
+        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 1</div><div class="yh-ctab-range">eBay Baslangic</div></div>
         <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-0"></div></div>
       </button>
       <button class="yh-ctab" data-camp="1" onclick="yhSwitchCamp(1)">
@@ -1316,7 +1316,7 @@ body.light .yh-task-item:hover{border-color:rgba(0,0,0,.14)}
         <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-1"></div></div>
       </button>
       <button class="yh-ctab" data-camp="2" onclick="yhSwitchCamp(2)">
-        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 3</div><div class="yh-ctab-range">Hesap Sağlığı</div></div>
+        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 3</div><div class="yh-ctab-range">Hesap Sagligi</div></div>
         <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-2"></div></div>
       </button>
       <button class="yh-ctab" data-camp="3" onclick="yhSwitchCamp(3)">
@@ -1327,8 +1327,8 @@ body.light .yh-task-item:hover{border-color:rgba(0,0,0,.14)}
     <div class="yh-camp-body">
       <div class="yh-map-header">
         <div>
-          <div class="yh-camp-title" id="yh-camp-title">Hafta 1 — Hesap & Ürün Araştırma</div>
-          <div class="yh-camp-desc" id="yh-camp-desc">eBay hesabı kur, Amazon tedarik sistemini öğren</div>
+          <div class="yh-camp-title" id="yh-camp-title">Hafta 1 - Hesap ve Urun Arastirma</div>
+          <div class="yh-camp-desc" id="yh-camp-desc">eBay hesabi kur, Amazon tedarik sistemini ogren</div>
         </div>
         <div class="yh-map-prog">
           <span id="yh-cp-text">0 / 7</span>
@@ -1339,7 +1339,7 @@ body.light .yh-task-item:hover{border-color:rgba(0,0,0,.14)}
       <div class="yh-task-panel" id="yh-task-panel">
         <div class="yh-task-empty">
           <div style="font-size:20px;opacity:.3">&#8593;</div>
-          <div>Bir güne tikla, görevleri gör</div>
+          <div>Bir gune tikla, gorevleri gor</div>
         </div>
       </div>
     </div>
@@ -2882,141 +2882,149 @@ function toggleOnboarding(){
     if(b){b.textContent='Okundu ✓';b.className='ot-badge read';}
   }}catch(e){}
 })();
+
 /* YOL HARITASI JS */
-var YH_CAMPS=[
-  {title:'Hafta 1 — Hesap & Ürün Araştırma',desc:'eBay hesabı kur, Amazon tedarik sistemini öğren',days:[1,2,3,4,5,6,7]},
-  {title:'Hafta 2 — Otomasyon & Sipariş',desc:'AutoDS kur, ilk siparişleri al ve yönet',days:[8,9,10,11,12,13,14]},
-  {title:'Hafta 3 — Hesap Sağlığı & Ölçekleme',desc:'Hesabı koru, satış limitini artır, büyüt',days:[15,16,17,18,19,20,21]},
-  {title:'Hafta 4 — Shopify\'a Geçiş',desc:'eBay kâr gördükten sonra kendi mağazarını kur',days:[22,23,24,25,26,27,28]}
+(function(){
+var CAMPS=[
+  {t:'Hafta 1 \u2014 Hesap & \u00dcr\u00fcn Ara\u015ft\u0131rma',d:'eBay hesab\u0131 kur, Amazon tedarik sistemini \u00f6\u011fren',days:[1,2,3,4,5,6,7]},
+  {t:'Hafta 2 \u2014 Otomasyon & Sipari\u015f',d:'AutoDS kur, ilk sipari\u015fleri al ve y\u00f6net',days:[8,9,10,11,12,13,14]},
+  {t:'Hafta 3 \u2014 Hesap Sa\u011fl\u0131\u011f\u0131 & \u00d6l\u00e7ekleme',d:'Hesab\u0131 koru, sat\u0131\u015f limitini art\u0131r, b\u00fcy\u00fct',days:[15,16,17,18,19,20,21]},
+  {t:'Hafta 4 \u2014 Shopify\u2019ya Ge\u00e7i\u015f',d:'eBay k\u00e2r g\u00f6rd\u00fckten sonra kendi ma\u011fazar\u0131n\u0131 kur',days:[22,23,24,25,26,27,28]}
 ];
-var YH_TASKS={
-  1:{title:'eBay Hesap Açılışı',tasks:['eBay hesabını oluştur — adres ve vergi bilgilerini doğru gir','Payoneer hesabı aç, eBay'e bağla','VPN'siz giriş yap — aynı cihazdan, sabit IP'den']},
-  2:{title:'Yol Haritasını Anlamak',tasks:['Sistem tanıtım videosunu izle (neden Amazon tedarik?)','İlk 90 gün planını not al','eBay panel ayarlarını tamamla (banka, kargo, iade)']},
-  3:{title:'Ürün Araştırma: Temel',tasks:['Sıfırdan ürün bulma yöntemini öğren','Fiyat analizi yap: Amazon maliyet vs eBay satış fiyatı','Rakip mağaza incelemesi yap (en az 3 mağaza)']},
-  4:{title:'Ürün Araştırma: İleri',tasks:['Yapay zeka ile ürün bulma tekniğini uygula','MLYNR eBay araştırma aracını kullan','Bugün 5 aday ürün listele ve not al']},
-  5:{title:'VeRO & Markalı Ürün Riski',tasks:['VeRO listesini öğren ve kaydet','Listelemek istediğin ürünlerde marka kontrolü yap','Risk taşıyan ürünleri listenden çıkar']},
-  6:{title:'İlk Ürünleri Listele',tasks:['Manuel listeleme adımlarını uygula','Amazon'dan ilk 3 ürününü eBay'e çek','Başlık, açıklama ve fiyatı düzenle']},
-  7:{title:'Günlük Rutin & Hafta 1 Kontrol',tasks:['Fiyat takibi rutinini kur (sabah kontrolü)','Envanter yönetimini öğren','Kontrol: Modül 1-2-3 tamamlandı mı? ✓']},
-  8:{title:'AutoDS Kurulumu',tasks:['AutoDS hesabı aç, paneli tanı','Non-API bağlantısını kur','AutoDS'i eBay hesabına bağla']},
-  9:{title:'AutoDS Ürün & Envanter',tasks:['AutoDS'e ilk ürünleri ekle','Envanter ayarlarını yap (fiyat kuralı)','Auto order kurulumunu tamamla']},
-  10:{title:'Listeleme: İspanyolca & Varyasyon',tasks:['İspanyolca listeleme yöntemini öğren ve uygula','Varyasyonlu ürün nasıl listelenir? Uygula','Bulk listing için şablon hazırla']},
-  11:{title:'İlk Sipariş Geldi!',tasks:['Amazon'dan manuel sipariş nasıl geçilir — izle ve uygula','Tracking ID girişini yap','Alıcıya onay mesajı gönder']},
-  12:{title:'Sipariş Sorunları & Trackerbot',tasks:['Out of stock durumunda ne yapılır? Öğren','Trackerbot kurulumunu tamamla','Yaygın sipariş sorunları için çözüm şablonu hazırla']},
-  13:{title:'Wholesale Dropshipping',tasks:['Wholesale nedir, farkları öğren','Kullanabileceğin supplier'ları araştır','İlk wholesale ürün denemesini yap']},
-  14:{title:'Kârlılık Hesabı & Hafta 2 Kontrol',tasks:['Satış sonrası net kâr formülünü öğren ve uygula','Payoneer fees hesaplamasını yap','Kontrol: Modül 4-5-6 tamamlandı mı? ✓']},
-  15:{title:'Hesap Yönetimi',tasks:['Gelir-gider Excel tablosunu kur','Satış analizini yap — ne satıyor, ne satmıyor?','Feedback stratejisini öğren']},
-  16:{title:'Müşteri İletişimi',tasks:['Mesaj şablonlarını hazırla (5 senaryo)','İade yönetimi sürecini öğren','Olumsuz feedback ile nasıl başa çıkılır?']},
-  17:{title:'Hesap Sağlığı',tasks:['Flagged olmak ne demek? İzle ve not al','MC011 uyarısı gelirse ne yapılır?','Hesap sağlığı skorunu kontrol et']},
-  18:{title:'Suspend Çözümleri',tasks:['İlk suspend gelirse itiraz süreci nasıl işler?','Suspend itiraz mektubu şablonunu öğren ve hazırla','Önleyici tedbirleri listele']},
-  19:{title:'Taktikler & 5 Altın Kural',tasks:['80/20 kuralını eBay'e uygula','Rekabette öne çıkma taktiklerini öğren','Cashback stratejisini kur']},
-  20:{title:'Satış Limiti & Watches',tasks:['Satış limiti nasıl artırılır? Uygula','Views & watches stratejisini öğren','Bu hafta limit artışı için aksiyon al']},
-  21:{title:'Reklam & Hafta 3 Kontrol',tasks:['eBay Promoted Listings stratejisini öğren','Satılmayan ürünler için aksiyon planı yap','Kontrol: Modül 7-8-9-10 tamamlandı mı? ✓']},
-  22:{title:'Shopify'a Geçiş Kararı',tasks:['eBay'de en az 1 satış var mı? — Kontrol et','Shopify'a geçiş zamanlamasını değerlendir','Geçiş için hazırlık listesi yap']},
-  23:{title:'Shopify Mağaza Kurulumu',tasks:['Shopify hesabı aç (14 günlük deneme)','Tema seç ve temel sayfaları oluştur','Domain bağla']},
-  24:{title:'Ürün Sayfası & Tasarım',tasks:['Dönüşüm odaklı ürün başlığı yaz','Ürün görselleri yükle (en az 5 adet)','Açıklama ve fiyatı düzenle']},
-  25:{title:'Ödeme & Kargo Altyapısı',tasks:['Ödeme sistemini bağla (iyzico/Stripe)','Kargo entegrasyonunu tamamla','Test siparişi ver']},
-  26:{title:'İlk Shopify Ürünü Yayınla',tasks:['Shopify mağazanda ilk ürün canlıya al','Sosyal medya hesaplarını mağazaya bağla','Arkadaşlarına test ettir — geri bildirim al']},
-  27:{title:'Reklam & İlk Trafik',tasks:['Facebook/Instagram reklam hesabını kur','İlk reklam kreatifini hazırla','Test bütçesiyle kampanya başlat']},
-  28:{title:'Analiz & Sonraki 30 Gün',tasks:['Mağaza + eBay verilerini oku ve karşılaştır','Sonraki 30 günün hedeflerini yaz','Progress'ini belgele — başarı hikayeni Canberk ile paylaş']}
+var TASKS={
+  1:{t:'eBay Hesap A\u00e7\u0131l\u0131\u015f\u0131',g:['eBay hesab\u0131n\u0131 olu\u015ftur, adres ve vergi bilgilerini gir','Payoneer hesab\u0131 a\u00e7, eBay\'e ba\u011fla','VPN\'siz giri\u015f yap \u2014 ayn\u0131 cihazdan, sabit IP\'den']},
+  2:{t:'Yol Haritas\u0131n\u0131 Anlamak',g:['Sistem tan\u0131t\u0131m videosunu izle (neden Amazon tedarik?)','\u0130lk 90 g\u00fcn plan\u0131n\u0131 not al','eBay panel ayarlar\u0131n\u0131 tamamla (banka, kargo, iade)']},
+  3:{t:'\u00dcr\u00fcn Ara\u015ft\u0131rma: Temel',g:['\u015e\u0131f\u0131rdan \u00fcr\u00fcn bulma y\u00f6ntemini \u00f6\u011fren','Fiyat analizi yap: Amazon maliyet vs eBay sat\u0131\u015f fiyat\u0131','Rakip ma\u011faza incelemesi yap (en az 3 ma\u011faza)']},
+  4:{t:'\u00dcr\u00fcn Ara\u015ft\u0131rma: \u0130leri',g:['Yapay zeka ile \u00fcr\u00fcn bulma tekni\u011fini uygula','MLYNR eBay ara\u015ft\u0131rma arac\u0131n\u0131 kullan','Bug\u00fcn 5 aday \u00fcr\u00fcn listele ve not al']},
+  5:{t:'VeRO & Markal\u0131 \u00dcr\u00fcn Riski',g:['VeRO listesini \u00f6\u011fren ve kaydet','Listelemek istedi\u011fin \u00fcr\u00fcnlerde marka kontrol\u00fc yap','Risk ta\u015f\u0131yan \u00fcr\u00fcnleri listenden \u00e7\u0131kar']},
+  6:{t:'\u0130lk \u00dcr\u00fcnleri Listele',g:['Manuel listeleme ad\u0131mlar\u0131n\u0131 uygula','Amazon\'dan ilk 3 \u00fcr\u00fcn\u00fcn\u00fc eBay\'e \u00e7ek','Ba\u015fl\u0131k, a\u00e7\u0131klama ve fiyat\u0131 d\u00fczenle']},
+  7:{t:'G\u00fcnl\u00fck Rutin & Hafta 1 Kontrol',g:['Fiyat takibi rutinini kur (sabah kontrol\u00fc)','Envanter y\u00f6netimini \u00f6\u011fren','Kontrol: Mod\u00fcl 1-2-3 tamamland\u0131 m\u0131? \u2713']},
+  8:{t:'AutoDS Kurulumu',g:['AutoDS hesab\u0131 a\u00e7, paneli tan\u0131','Non-API ba\u011flant\u0131s\u0131n\u0131 kur','AutoDS\'i eBay hesab\u0131na ba\u011fla']},
+  9:{t:'AutoDS \u00dcr\u00fcn & Envanter',g:['AutoDS\'e ilk \u00fcr\u00fcnleri ekle','Envanter ayarlar\u0131n\u0131 yap (fiyat kural\u0131)','Auto order kurulumunu tamamla']},
+  10:{t:'Listeleme: \u0130spanyolca & Varyasyon',g:['\u0130spanyolca listeleme y\u00f6ntemini \u00f6\u011fren ve uygula','Varyasyonlu \u00fcr\u00fcn nas\u0131l listelenir? Uygula','Bulk listing i\u00e7in \u015fablon haz\u0131rla']},
+  11:{t:'\u0130lk Sipari\u015f Geldi!',g:['Amazon\'dan manuel sipari\u015f nas\u0131l ge\u00e7ilir \u2014 izle','Tracking ID giri\u015fini yap','Al\u0131c\u0131ya onay mesaj\u0131 g\u00f6nder']},
+  12:{t:'Sipari\u015f Sorunlar\u0131 & Trackerbot',g:['Out of stock durumunda ne yap\u0131l\u0131r? \u00d6\u011fren','Trackerbot kurulumunu tamamla','Yayg\u0131n sipari\u015f sorunlar\u0131 i\u00e7in \u00e7\u00f6z\u00fcm \u015fablonu haz\u0131rla']},
+  13:{t:'Wholesale Dropshipping',g:['Wholesale nedir, farklar\u0131 \u00f6\u011fren','Kullanabilece\u011fin supplier\'lar\u0131 ara\u015ft\u0131r','\u0130lk wholesale \u00fcr\u00fcn denemesini yap']},
+  14:{t:'K\u00e2rl\u0131l\u0131k Hesab\u0131 & Hafta 2 Kontrol',g:['Sat\u0131\u015f sonras\u0131 net k\u00e2r form\u00fcl\u00fcn\u00fc \u00f6\u011fren ve uygula','Payoneer fees hesaplamas\u0131n\u0131 yap','Kontrol: Mod\u00fcl 4-5-6 tamamland\u0131 m\u0131? \u2713']},
+  15:{t:'Hesap Y\u00f6netimi',g:['Gelir-gider Excel tablosunu kur','Sat\u0131\u015f analizini yap \u2014 ne sat\u0131yor, ne satm\u0131yor?','Feedback stratejisini \u00f6\u011fren']},
+  16:{t:'M\u00fc\u015fteri \u0130leti\u015fimi',g:['Mesaj \u015fablonlar\u0131n\u0131 haz\u0131rla (5 senaryo)','\u0130ade y\u00f6netimi s\u00fcrecini \u00f6\u011fren','Olumsuz feedback ile nas\u0131l ba\u015fa \u00e7\u0131k\u0131l\u0131r?']},
+  17:{t:'Hesap Sa\u011fl\u0131\u011f\u0131',g:['Flagged olmak ne demek? \u0130zle ve not al','MC011 uyard\u0131 gelirse ne yap\u0131l\u0131r?','Hesap sa\u011fl\u0131\u011f\u0131 skorunu kontrol et']},
+  18:{t:'Suspend \u00c7\u00f6z\u00fcmleri',g:['\u0130lk suspend gelirse itiraz s\u00fcreci nas\u0131l i\u015fler?','Suspend itiraz mektubu \u015fablonunu \u00f6\u011fren ve haz\u0131rla','\u00d6nleyici tedbirleri listele']},
+  19:{t:'Taktikler & 5 Alt\u0131n Kural',g:['80/20 kural\u0131n\u0131 eBay\'e uygula','Rekabette \u00f6ne \u00e7\u0131kma taktiklerini \u00f6\u011fren','Cashback stratejisini kur']},
+  20:{t:'Sat\u0131\u015f Limiti & Watches',g:['Sat\u0131\u015f limiti nas\u0131l art\u0131r\u0131l\u0131r? Uygula','Views & watches stratejisini \u00f6\u011fren','Bu hafta limit art\u0131\u015f\u0131 i\u00e7in aksiyon al']},
+  21:{t:'Reklam & Hafta 3 Kontrol',g:['eBay Promoted Listings stratejisini \u00f6\u011fren','Satilmayan \u00fcr\u00fcnler i\u00e7in aksiyon plan\u0131 yap','Kontrol: Mod\u00fcl 7-8-9-10 tamamland\u0131 m\u0131? \u2713']},
+  22:{t:'Shopify\'a Ge\u00e7i\u015f Karar\u0131',g:['eBay\'de en az 1 sat\u0131\u015f var m\u0131? \u2014 Kontrol et','Shopify\'a ge\u00e7i\u015f zamanl\u0131mas\u0131n\u0131 de\u011ferlendir','Ge\u00e7i\u015f i\u00e7in haz\u0131rl\u0131k listesi yap']},
+  23:{t:'Shopify Ma\u011faza Kurulumu',g:['Shopify hesab\u0131 a\u00e7 (14 g\u00fcnl\u00fck deneme)','Tema se\u00e7 ve temel sayfalar\u0131 olu\u015ftur','Domain ba\u011fla']},
+  24:{t:'\u00dcr\u00fcn Sayfas\u0131 & Tasar\u0131m',g:['D\u00f6n\u00fc\u015f\u00fcm odakl\u0131 \u00fcr\u00fcn ba\u015fl\u0131\u011f\u0131 yaz','\u00dcr\u00fcn g\u00f6rselleri y\u00fckle (en az 5 adet)','A\u00e7\u0131klama ve fiyat\u0131 d\u00fczenle']},
+  25:{t:'\u00d6deme & Kargo Altyap\u0131s\u0131',g:['\u00d6deme sistemini ba\u011fla (iyzico/Stripe)','Kargo entegrasyonunu tamamla','Test sipari\u015fi ver']},
+  26:{t:'\u0130lk Shopify \u00dcr\u00fcn\u00fc Yay\u0131nla',g:['Shopify ma\u011fazanda ilk \u00fcr\u00fcn canl\u0131ya al','Sosyal medya hesaplar\u0131n\u0131 ma\u011fazaya ba\u011fla','Arkada\u015flar\u0131na test ettir \u2014 geri bildirim al']},
+  27:{t:'Reklam & \u0130lk Trafik',g:['Facebook/Instagram reklam hesab\u0131n\u0131 kur','\u0130lk reklam kreatifini haz\u0131rla','Test b\u00fct\u00e7esiyle kampanya ba\u015flat']},
+  28:{t:'Analiz & Sonraki 30 G\u00fcn',g:['Ma\u011faza + eBay verilerini oku ve kar\u015f\u0131la\u015ft\u0131r','Sonraki 30 g\u00fcn\u00fcn hedeflerini yaz','Progress\u2019ini belgele \u2014 ba\u015far\u0131 hikayeni Canberk ile payla\u015f']}
 };
-var yhCamp=0,yhTasks={},yhDays=[],yhSelDay=null,YH_TODAY=1;
-function yhLoad(){try{var t=localStorage.getItem('mlynr_yh_t');if(t)yhTasks=JSON.parse(t);var d=localStorage.getItem('mlynr_yh_d');if(d)yhDays=JSON.parse(d);}catch(e){}}
-function yhSave(){try{localStorage.setItem('mlynr_yh_t',JSON.stringify(yhTasks));localStorage.setItem('mlynr_yh_d',JSON.stringify(yhDays));}catch(e){}}
-function yhSt(d){if(yhDays.indexOf(d)>-1)return'done';if(d===YH_TODAY)return'current';if(d<YH_TODAY)return'open';return'locked';}
-function yhUpdateToday(){
-  var data=YH_TASKS[YH_TODAY];if(!data)return;
-  var key='d'+YH_TODAY;var done=(yhTasks[key]||[]).length;var tot=data.tasks.length;
-  var e1=document.getElementById('yh-today-daynum');if(e1)e1.textContent=YH_TODAY;
-  var e2=document.getElementById('yh-today-title');if(e2)e2.textContent=data.title;
-  var e3=document.getElementById('yh-today-sub');if(e3)e3.textContent=done+' / '+tot+' gorev tamamlandi';
-  var mini=document.getElementById('yh-today-tasks-mini');
-  if(mini){mini.innerHTML=data.tasks.map(function(_,i){var ck=(yhTasks[key]||[]).indexOf(i)>-1;return'<div class="yh-ttask'+(ck?' done':'')+'">'+( ck?'&#10003;':(i+1))+'</div>';}).join('');}
+var camp=0,tasks={},days=[],sel=null,TODAY=1;
+function load(){try{var t=localStorage.getItem('yh_t');if(t)tasks=JSON.parse(t);var d=localStorage.getItem('yh_d');if(d)days=JSON.parse(d);}catch(e){}}
+function save(){try{localStorage.setItem('yh_t',JSON.stringify(tasks));localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}}
+function st(d){if(days.indexOf(d)>-1)return'done';if(d===TODAY)return'current';if(d<TODAY)return'open';return'locked';}
+function g(id){return document.getElementById(id);}
+function updateToday(){
+  var data=TASKS[TODAY];if(!data)return;
+  var key='d'+TODAY;var done=(tasks[key]||[]).length;
+  var e=g('yh-today-daynum');if(e)e.textContent=TODAY;
+  var t=g('yh-today-title');if(t)t.textContent=data.t;
+  var s=g('yh-today-sub');if(s)s.textContent=done+' / '+data.g.length+' gorev tamamlandi';
+  var m=g('yh-today-tasks-mini');
+  if(m)m.innerHTML=data.g.map(function(_,i){var ck=(tasks[key]||[]).indexOf(i)>-1;return'<div class="yh-ttask'+(ck?' done':'')+'">'+( ck?'&#10003;':(i+1))+'</div>';}).join('');
 }
-function yhGoToday(){
-  var ci=Math.max(0,Math.floor((YH_TODAY-1)/7));
-  if(ci!==yhCamp)yhSwitchCamp(ci);
-  setTimeout(function(){yhShowTask(YH_TODAY);},60);
-  var sec=document.getElementById('yh-section');if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});
+function goToday(){
+  var ci=Math.max(0,Math.floor((TODAY-1)/7));
+  if(ci!==camp)switchCamp(ci);
+  setTimeout(function(){showTask(TODAY);},60);
+  var sec=g('yh-section');if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});
 }
-function yhUpdateOverall(){
-  var done=yhDays.length,pct=Math.round(done/28*100),circ=138.2;
-  var ring=document.getElementById('yh-ring');if(ring)ring.style.strokeDashoffset=circ-(circ*pct/100);
-  var pe=document.getElementById('yh-ring-pct');if(pe)pe.textContent=pct+'%';
-  var de=document.getElementById('yh-total-done');if(de)de.textContent=done;
-  YH_CAMPS.forEach(function(c,i){
-    var cd=c.days.filter(function(d){return yhDays.indexOf(d)>-1;}).length;
-    var pr=document.getElementById('yh-ctab-prog-'+i);if(pr)pr.style.width=Math.round(cd/7*100)+'%';
+window.yhGoToday=goToday;
+function updateOverall(){
+  var done=days.length,pct=Math.round(done/28*100),circ=138.2;
+  var r=g('yh-ring');if(r)r.style.strokeDashoffset=circ-(circ*pct/100);
+  var p=g('yh-ring-pct');if(p)p.textContent=pct+'%';
+  var de=g('yh-total-done');if(de)de.textContent=done;
+  CAMPS.forEach(function(c,i){
+    var cd=c.days.filter(function(d){return days.indexOf(d)>-1;}).length;
+    var pr=g('yh-ctab-prog-'+i);if(pr)pr.style.width=Math.round(cd/7*100)+'%';
     var tab=document.querySelector('.yh-ctab[data-camp="'+i+'"]');
-    if(tab){tab.classList.toggle('yh-tab-done',cd===7);}
+    if(tab)tab.classList.toggle('yh-tab-done',cd===7);
   });
 }
-function yhRenderNodes(){
-  var grid=document.getElementById('yh-days-grid');if(!grid)return;
-  var camp=YH_CAMPS[yhCamp];var campDone=0;
+function renderNodes(){
+  var grid=g('yh-days-grid');if(!grid)return;
+  var c=CAMPS[camp];var campDone=0;
   grid.innerHTML='';
-  camp.days.forEach(function(d){
-    var st=yhSt(d);if(st==='done')campDone++;
+  c.days.forEach(function(d){
+    var s=st(d);if(s==='done')campDone++;
     var node=document.createElement('div');
-    node.className='yh-node '+st+(yhSelDay===d?' selected':'');
-    if(st!=='locked')node.onclick=function(){yhShowTask(d);};
+    node.className='yh-node '+s+(sel===d?' selected':'');
+    if(s!=='locked')node.onclick=(function(dd){return function(){showTask(dd);};})(d);
     var btn=document.createElement('div');btn.className='yh-node-btn';
     var num=document.createElement('div');num.className='yh-node-num';num.textContent=d;
     var lbl=document.createElement('div');lbl.className='yh-node-lbl';
-    lbl.textContent=st==='done'?'TAMAM':st==='current'?'BUGUN':'GUN '+d;
+    lbl.textContent=s==='done'?'TAMAM':s==='current'?'BUGUN':'GUN '+d;
     btn.appendChild(num);btn.appendChild(lbl);
-    if(st==='done'){var chk=document.createElement('div');chk.className='yh-node-check';chk.innerHTML='&#10003;';btn.appendChild(chk);}
+    if(s==='done'){var chk=document.createElement('div');chk.className='yh-node-check';chk.innerHTML='&#10003;';btn.appendChild(chk);}
     node.appendChild(btn);grid.appendChild(node);
   });
-  var fill=document.getElementById('yh-cp-fill');if(fill)fill.style.width=Math.round(campDone/7*100)+'%';
-  var cpTxt=document.getElementById('yh-cp-text');if(cpTxt)cpTxt.textContent=campDone+' / 7';
-  yhUpdateOverall();yhUpdateToday();
+  var f=g('yh-cp-fill');if(f)f.style.width=Math.round(campDone/7*100)+'%';
+  var ct=g('yh-cp-text');if(ct)ct.textContent=campDone+' / 7';
+  updateOverall();updateToday();
 }
-function yhShowTask(d){
-  yhSelDay=d;
-  var panel=document.getElementById('yh-task-panel');if(!panel)return;
-  var data=YH_TASKS[d];
-  if(!data){panel.innerHTML='<div class="yh-task-empty"><div style="opacity:.3">?</div><div>Gorev bulunamadi</div></div>';return;}
-  var key='d'+d;if(!yhTasks[key])yhTasks[key]=[];
-  var st=yhSt(d);
-  var bcls=st==='current'?'yh-pb-today':st==='done'?'yh-pb-done':'yh-pb-open';
-  var blbl=st==='current'?'&#9889; BUGUN':st==='done'?'&#10003; TAMAM':'GUN '+d;
-  var dc=yhTasks[key].length,tot=data.tasks.length;
-  var items=data.tasks.map(function(t,i){var ck=yhTasks[key].indexOf(i)>-1;return'<li class="yh-task-item'+(ck?' ck':'')+'" onclick="yhToggleTask('+d+','+i+')">'+'<div class="yh-task-box">'+(ck?'&#10003;':'')+'</div>'+'<span class="yh-task-text">'+t+'</span>'+'</li>';}).join('');
+function showTask(d){
+  sel=d;
+  var panel=g('yh-task-panel');if(!panel)return;
+  var data=TASKS[d];
+  if(!data){panel.innerHTML='<div class="yh-task-empty"><div style="opacity:.3">?</div><div>Gorev yok</div></div>';return;}
+  var key='d'+d;if(!tasks[key])tasks[key]=[];
+  var s=st(d);
+  var bc=s==='current'?'yh-pb-today':s==='done'?'yh-pb-done':'yh-pb-open';
+  var bl=s==='current'?'&#9889; BUGUN':s==='done'?'&#10003; TAMAM':'GUN '+d;
+  var dc=tasks[key].length,tot=data.g.length;
+  var items=data.g.map(function(txt,i){
+    var ck=tasks[key].indexOf(i)>-1;
+    return'<li class="yh-task-item'+(ck?' ck':'')+'" onclick="yhToggleTask('+d+','+i+')">'
+      +'<div class="yh-task-box">'+(ck?'&#10003;':'')+'</div>'
+      +'<span class="yh-task-text">'+txt+'</span>'
+      +'</li>';
+  }).join('');
   var banner=dc>=tot?'<div class="yh-done-banner">&#10003; Bu gunun tum gorevleri tamamlandi!</div>':'';
-  panel.innerHTML='<div class="yh-panel-head"><div class="yh-panel-badge '+bcls+'">'+blbl+'</div><div class="yh-panel-title">'+data.title+'</div><div class="yh-panel-meta">'+dc+'/'+tot+'</div></div><ul class="yh-task-list">'+items+'</ul>'+banner;
-  yhRenderNodes();
+  panel.innerHTML='<div class="yh-panel-head"><div class="yh-panel-badge '+bc+'">'+bl+'</div><div class="yh-panel-title">'+data.t+'</div><div class="yh-panel-meta">'+dc+'/'+tot+'</div></div><ul class="yh-task-list">'+items+'</ul>'+banner;
+  renderNodes();
 }
-function yhToggleTask(d,i){
-  var key='d'+d;if(!yhTasks[key])yhTasks[key]=[];
-  var idx=yhTasks[key].indexOf(i);
-  if(idx>-1)yhTasks[key].splice(idx,1);else yhTasks[key].push(i);
-  var data=YH_TASKS[d];
-  if(data&&yhTasks[key].length>=data.tasks.length){if(yhDays.indexOf(d)===-1)yhDays.push(d);}
-  else{yhDays=yhDays.filter(function(x){return x!==d;});}
-  yhSave();yhShowTask(d);
-}
-function yhSwitchCamp(id){
-  yhCamp=id;
+window.yhToggleTask=function(d,i){
+  var key='d'+d;if(!tasks[key])tasks[key]=[];
+  var idx=tasks[key].indexOf(i);
+  if(idx>-1)tasks[key].splice(idx,1);else tasks[key].push(i);
+  if(TASKS[d]&&tasks[key].length>=TASKS[d].g.length){if(days.indexOf(d)===-1)days.push(d);}
+  else{days=days.filter(function(x){return x!==d;});}
+  save();showTask(d);
+};
+window.yhSwitchCamp=function(id){
+  camp=id;
   document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
   var at=document.querySelector('.yh-ctab[data-camp="'+id+'"]');if(at)at.classList.add('active');
-  var c=YH_CAMPS[id];
-  var te=document.getElementById('yh-camp-title');if(te)te.textContent=c.title;
-  var de=document.getElementById('yh-camp-desc');if(de)de.textContent=c.desc;
-  var panel=document.getElementById('yh-task-panel');
+  var c=CAMPS[id];
+  var te=g('yh-camp-title');if(te)te.textContent=c.t;
+  var de=g('yh-camp-desc');if(de)de.textContent=c.d;
+  var panel=g('yh-task-panel');
   if(panel)panel.innerHTML='<div class="yh-task-empty"><div style="font-size:20px;opacity:.3">&#8593;</div><div>Bir gune tikla</div></div>';
-  yhSelDay=null;yhRenderNodes();
-}
-(function(){
-  yhLoad();
-  var ci=Math.max(0,Math.floor((YH_TODAY-1)/7));
-  yhCamp=ci;
-  document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
-  var at=document.querySelector('.yh-ctab[data-camp="'+ci+'"]');if(at)at.classList.add('active');
-  var c=YH_CAMPS[ci];
-  var te=document.getElementById('yh-camp-title');if(te)te.textContent=c.title;
-  var de=document.getElementById('yh-camp-desc');if(de)de.textContent=c.desc;
-  yhRenderNodes();
-  yhShowTask(YH_TODAY);
+  sel=null;renderNodes();
+};
+load();
+var ci=Math.max(0,Math.floor((TODAY-1)/7));
+camp=ci;
+document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
+var at=document.querySelector('.yh-ctab[data-camp="'+ci+'"]');if(at)at.classList.add('active');
+var c=CAMPS[ci];
+var te=g('yh-camp-title');if(te)te.textContent=c.t;
+var de=g('yh-camp-desc');if(de)de.textContent=c.d;
+renderNodes();
+showTask(TODAY);
 })();
 
 </script>
