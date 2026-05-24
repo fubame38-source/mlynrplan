@@ -1308,27 +1308,27 @@ body.light .yh-task-item:hover{border-color:rgba(0,0,0,.14)}
     </div>
     <div class="yh-camps-row" id="yh-camps-nav">
       <button class="yh-ctab active" data-camp="0" onclick="yhSwitchCamp(0)">
-        <div class="yh-ctab-inner"><div class="yh-ctab-name">Ana Kamp</div><div class="yh-ctab-range">Gün 1–7</div></div>
+        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 1</div><div class="yh-ctab-range">eBay Başlangıç</div></div>
         <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-0"></div></div>
       </button>
       <button class="yh-ctab" data-camp="1" onclick="yhSwitchCamp(1)">
-        <div class="yh-ctab-inner"><div class="yh-ctab-name">Kamp 1</div><div class="yh-ctab-range">Gün 8–14</div></div>
+        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 2</div><div class="yh-ctab-range">Otomasyon</div></div>
         <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-1"></div></div>
       </button>
       <button class="yh-ctab" data-camp="2" onclick="yhSwitchCamp(2)">
-        <div class="yh-ctab-inner"><div class="yh-ctab-name">Kamp 2</div><div class="yh-ctab-range">Gün 15–21</div></div>
+        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 3</div><div class="yh-ctab-range">Hesap Sağlığı</div></div>
         <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-2"></div></div>
       </button>
       <button class="yh-ctab" data-camp="3" onclick="yhSwitchCamp(3)">
-        <div class="yh-ctab-inner"><div class="yh-ctab-name">Kamp 3</div><div class="yh-ctab-range">Gün 22–28</div></div>
+        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 4</div><div class="yh-ctab-range">Shopify</div></div>
         <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-3"></div></div>
       </button>
     </div>
     <div class="yh-camp-body">
       <div class="yh-map-header">
         <div>
-          <div class="yh-camp-title" id="yh-camp-title">Ana Kamp — Temel Kurulum</div>
-          <div class="yh-camp-desc" id="yh-camp-desc">Sifirdan magaza kurulumunu tamamla</div>
+          <div class="yh-camp-title" id="yh-camp-title">Hafta 1 — Hesap & Ürün Araştırma</div>
+          <div class="yh-camp-desc" id="yh-camp-desc">eBay hesabı kur, Amazon tedarik sistemini öğren</div>
         </div>
         <div class="yh-map-prog">
           <span id="yh-cp-text">0 / 7</span>
@@ -2884,40 +2884,40 @@ function toggleOnboarding(){
 })();
 /* YOL HARITASI JS */
 var YH_CAMPS=[
-  {title:'Ana Kamp — Temel Kurulum',desc:'Sıfırdan mağaza kurulumunu tamamla',days:[1,2,3,4,5,6,7]},
-  {title:'Kamp 1 — Niş & Ürün Seçimi',desc:'Kazanıcı ürünü bul, listeye hazırlan',days:[8,9,10,11,12,13,14]},
-  {title:'Kamp 2 — Mağaza & İçerik',desc:'Mağazani optimize et, içerik üret',days:[15,16,17,18,19,20,21]},
-  {title:'Kamp 3 — Reklam & Ölçekleme',desc:'Reklam aç, test et, ölçekle',days:[22,23,24,25,26,27,28]}
+  {title:'Hafta 1 — Hesap & Ürün Araştırma',desc:'eBay hesabı kur, Amazon tedarik sistemini öğren',days:[1,2,3,4,5,6,7]},
+  {title:'Hafta 2 — Otomasyon & Sipariş',desc:'AutoDS kur, ilk siparişleri al ve yönet',days:[8,9,10,11,12,13,14]},
+  {title:'Hafta 3 — Hesap Sağlığı & Ölçekleme',desc:'Hesabı koru, satış limitini artır, büyüt',days:[15,16,17,18,19,20,21]},
+  {title:'Hafta 4 — Shopify\'a Geçiş',desc:'eBay kâr gördükten sonra kendi mağazarını kur',days:[22,23,24,25,26,27,28]}
 ];
 var YH_TASKS={
-  1:{title:'Şirket & Hesap Kurulumu',tasks:['E-posta ve şifre yöneticisi kur','Shopify hesabı oluştur (14 günlük deneme)','Stripe veya iyzico hesabı aç']},
-  2:{title:'Mağaza Temel Ayarları',tasks:['Shopify tema seç ve yükle','Mağaza adı, logo ve renk paleti belirle','Dil ve para birimi ayarlarını yap']},
-  3:{title:'Ödeme & Kargo Kurulumu',tasks:['Ödeme altyapısını mağazaya bağla','Ücretsiz kargo politikası belirle','İade politikası sayfası oluştur']},
-  4:{title:'Instagram Hesabı',tasks:['İşletme Instagram hesabı aç','Bio ve profil fotoğrafını tamamla','İlk 9 placeholder görseli yükle']},
-  5:{title:'Facebook & Reklam Hesabı',tasks:['Facebook Business Manager kur','Meta Pixel oluştur ve mağazaya ekle','Reklam hesabı limit artışı başvurusu yap']},
-  6:{title:'Hedef Kitle & Rakip Analizi',tasks:['Hedef müşteri profili (persona) oluştur','En az 5 rakip mağazayı incele','Rakiplerin 2 haftalık kreatifleri topla']},
-  7:{title:'İlk Hafta Değlendirme',tasks:['Eksik adımları kontrol listesiyle tara','Canberk ile Zoom check-in\'e katıl','Kamp 1\'e geçiş için hazır mısın? Onayla']},
-  8:{title:'Niş Araştırması',tasks:['MLYNR niş araştırma aracını aç','En az 3 farklı niş belirle','Her niş için talep skoru hesapla']},
-  9:{title:'eBay Ürün Tarama',tasks:['eBay araştırma modülüne gir','Seçtiğin niş\'te 20+ satan ürün bul','Satış hızı ve kar marjını hesapla']},
-  10:{title:'Amazon Doğrulama',tasks:['Amazon\'da aynı ürünleri kontrol et','Fiyat farkı ve arbitraj hesapla','Top 3 ürün listeni oluştur']},
-  11:{title:'Tedarikçi Bulma',tasks:['AliExpress\'te kaynak ürünleri bul','Tedarikçi güvenilirlik puanını kontrol et','Sample sipariş verilecek 1 ürün seç']},
-  12:{title:'Listing Hazırlığı',tasks:['Ürün başlığı ve açıklamasını yaz','7+ yüksek kalite görsel hazırla','Anahtar kelime araştırması yap']},
-  13:{title:'Fiyatlandırma Stratejisi',tasks:['Kar marjı hesaplayıcısını kullan','Rakip fiyatlarını karşılaştır','Lansman fiyatını belirle']},
-  14:{title:'Kamp 1 Bitiş',tasks:['İlk ürününü mağazana ekle','Listing kontrolü yap — hata var mı?','Kamp 2\'ye geçiş onayi al']},
-  15:{title:'Mağaza Optimizasyonu',tasks:['Ana sayfa hero banner tasarımı','Ürün koleksiyonlarını düzenle','Hız testi yap (PageSpeed)']},
-  16:{title:'İçerik Üretimi',tasks:['Ürün için 3 farklı video konsepti yaz','İlk kısa videoyu çek / oluştur','Instagram ve TikTok\'a yükle']},
-  17:{title:'E-posta Pazarlama',tasks:['Klaviyo veya Mailchimp kur','Hoş geldin e-postası sekan sı yaz','Sepeti terk otomasyonu kur']},
-  18:{title:'SEO Temelleri',tasks:['Meta başlık ve açıklamaları yaz','Blog için 1 makale yaz','Google Analytics bağla']},
-  19:{title:'Sosyal Kanıt',tasks:['İlk 5 yorumu topla','Profil fotoğraflarını güncelle','Güven rozeti ve garantileri ekle']},
-  20:{title:'İnfluencer Erişimi',tasks:['Micro-influencer listesi oluştur (10 kişi)','DM şablonu yaz ve gönder','UGC içerik anlaşması müzakere et']},
-  21:{title:'Kamp 2 Bitiş',tasks:['Mağaza son kontrolü yap','Tüm linkleri test et','Kamp 3\'e geçiş onayı al']},
-  22:{title:'İlk Reklam Kurulumu',tasks:['Meta Ads Manager\'i aç','İlk kampanya yapısını kur (CBO)','3 farklı kreatif yükle']},
-  23:{title:'Reklam Yayına',tasks:['Ücreti belirle (günlük 100-200 TL)','Hedef kitle ayarlarını kontrol et','Reklamı başlat, ilk 24 saati izle']},
-  24:{title:'İlk Veriler',tasks:['CTR, CPM ve CPC değerlerine bak','Kötü performanslı kreatifi durdur','En iyi kreatifte bütçeyi artır']},
-  25:{title:'A/B Test',tasks:['Yeni 2 kreatif varyasyon üret','Hook A vs Hook B testi başlat','Sonuçları Adsopify\'da takip et']},
-  26:{title:'Ölçekleme',tasks:['ROAS > 2 olan kampanyayı ölçekle','LLA (Lookalike Audience) oluştur','Retargeting kampanyası kur']},
-  27:{title:'İlk Satış Analizi',tasks:['İlk satış verilerini analiz et','CPA ve AOV hesapla','Kazanıcı ürün testini doğrula']},
-  28:{title:'28 Gün Tamamlandı!',tasks:['Tüm süreci belgele (case study)','Bir sonraki 28 günü planla','Başarı hikayeni Canberk ile paylaş']}
+  1:{title:'eBay Hesap Açılışı',tasks:['eBay hesabını oluştur — adres ve vergi bilgilerini doğru gir','Payoneer hesabı aç, eBay'e bağla','VPN'siz giriş yap — aynı cihazdan, sabit IP'den']},
+  2:{title:'Yol Haritasını Anlamak',tasks:['Sistem tanıtım videosunu izle (neden Amazon tedarik?)','İlk 90 gün planını not al','eBay panel ayarlarını tamamla (banka, kargo, iade)']},
+  3:{title:'Ürün Araştırma: Temel',tasks:['Sıfırdan ürün bulma yöntemini öğren','Fiyat analizi yap: Amazon maliyet vs eBay satış fiyatı','Rakip mağaza incelemesi yap (en az 3 mağaza)']},
+  4:{title:'Ürün Araştırma: İleri',tasks:['Yapay zeka ile ürün bulma tekniğini uygula','MLYNR eBay araştırma aracını kullan','Bugün 5 aday ürün listele ve not al']},
+  5:{title:'VeRO & Markalı Ürün Riski',tasks:['VeRO listesini öğren ve kaydet','Listelemek istediğin ürünlerde marka kontrolü yap','Risk taşıyan ürünleri listenden çıkar']},
+  6:{title:'İlk Ürünleri Listele',tasks:['Manuel listeleme adımlarını uygula','Amazon'dan ilk 3 ürününü eBay'e çek','Başlık, açıklama ve fiyatı düzenle']},
+  7:{title:'Günlük Rutin & Hafta 1 Kontrol',tasks:['Fiyat takibi rutinini kur (sabah kontrolü)','Envanter yönetimini öğren','Kontrol: Modül 1-2-3 tamamlandı mı? ✓']},
+  8:{title:'AutoDS Kurulumu',tasks:['AutoDS hesabı aç, paneli tanı','Non-API bağlantısını kur','AutoDS'i eBay hesabına bağla']},
+  9:{title:'AutoDS Ürün & Envanter',tasks:['AutoDS'e ilk ürünleri ekle','Envanter ayarlarını yap (fiyat kuralı)','Auto order kurulumunu tamamla']},
+  10:{title:'Listeleme: İspanyolca & Varyasyon',tasks:['İspanyolca listeleme yöntemini öğren ve uygula','Varyasyonlu ürün nasıl listelenir? Uygula','Bulk listing için şablon hazırla']},
+  11:{title:'İlk Sipariş Geldi!',tasks:['Amazon'dan manuel sipariş nasıl geçilir — izle ve uygula','Tracking ID girişini yap','Alıcıya onay mesajı gönder']},
+  12:{title:'Sipariş Sorunları & Trackerbot',tasks:['Out of stock durumunda ne yapılır? Öğren','Trackerbot kurulumunu tamamla','Yaygın sipariş sorunları için çözüm şablonu hazırla']},
+  13:{title:'Wholesale Dropshipping',tasks:['Wholesale nedir, farkları öğren','Kullanabileceğin supplier'ları araştır','İlk wholesale ürün denemesini yap']},
+  14:{title:'Kârlılık Hesabı & Hafta 2 Kontrol',tasks:['Satış sonrası net kâr formülünü öğren ve uygula','Payoneer fees hesaplamasını yap','Kontrol: Modül 4-5-6 tamamlandı mı? ✓']},
+  15:{title:'Hesap Yönetimi',tasks:['Gelir-gider Excel tablosunu kur','Satış analizini yap — ne satıyor, ne satmıyor?','Feedback stratejisini öğren']},
+  16:{title:'Müşteri İletişimi',tasks:['Mesaj şablonlarını hazırla (5 senaryo)','İade yönetimi sürecini öğren','Olumsuz feedback ile nasıl başa çıkılır?']},
+  17:{title:'Hesap Sağlığı',tasks:['Flagged olmak ne demek? İzle ve not al','MC011 uyarısı gelirse ne yapılır?','Hesap sağlığı skorunu kontrol et']},
+  18:{title:'Suspend Çözümleri',tasks:['İlk suspend gelirse itiraz süreci nasıl işler?','Suspend itiraz mektubu şablonunu öğren ve hazırla','Önleyici tedbirleri listele']},
+  19:{title:'Taktikler & 5 Altın Kural',tasks:['80/20 kuralını eBay'e uygula','Rekabette öne çıkma taktiklerini öğren','Cashback stratejisini kur']},
+  20:{title:'Satış Limiti & Watches',tasks:['Satış limiti nasıl artırılır? Uygula','Views & watches stratejisini öğren','Bu hafta limit artışı için aksiyon al']},
+  21:{title:'Reklam & Hafta 3 Kontrol',tasks:['eBay Promoted Listings stratejisini öğren','Satılmayan ürünler için aksiyon planı yap','Kontrol: Modül 7-8-9-10 tamamlandı mı? ✓']},
+  22:{title:'Shopify'a Geçiş Kararı',tasks:['eBay'de en az 1 satış var mı? — Kontrol et','Shopify'a geçiş zamanlamasını değerlendir','Geçiş için hazırlık listesi yap']},
+  23:{title:'Shopify Mağaza Kurulumu',tasks:['Shopify hesabı aç (14 günlük deneme)','Tema seç ve temel sayfaları oluştur','Domain bağla']},
+  24:{title:'Ürün Sayfası & Tasarım',tasks:['Dönüşüm odaklı ürün başlığı yaz','Ürün görselleri yükle (en az 5 adet)','Açıklama ve fiyatı düzenle']},
+  25:{title:'Ödeme & Kargo Altyapısı',tasks:['Ödeme sistemini bağla (iyzico/Stripe)','Kargo entegrasyonunu tamamla','Test siparişi ver']},
+  26:{title:'İlk Shopify Ürünü Yayınla',tasks:['Shopify mağazanda ilk ürün canlıya al','Sosyal medya hesaplarını mağazaya bağla','Arkadaşlarına test ettir — geri bildirim al']},
+  27:{title:'Reklam & İlk Trafik',tasks:['Facebook/Instagram reklam hesabını kur','İlk reklam kreatifini hazırla','Test bütçesiyle kampanya başlat']},
+  28:{title:'Analiz & Sonraki 30 Gün',tasks:['Mağaza + eBay verilerini oku ve karşılaştır','Sonraki 30 günün hedeflerini yaz','Progress'ini belgele — başarı hikayeni Canberk ile paylaş']}
 };
 var yhCamp=0,yhTasks={},yhDays=[],yhSelDay=null,YH_TODAY=1;
 function yhLoad(){try{var t=localStorage.getItem('mlynr_yh_t');if(t)yhTasks=JSON.parse(t);var d=localStorage.getItem('mlynr_yh_d');if(d)yhDays=JSON.parse(d);}catch(e){}}
