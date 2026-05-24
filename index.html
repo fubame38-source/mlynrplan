@@ -809,84 +809,111 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .aw-item strong{color:var(--text);font-weight:600}
 @media(max-width:640px){.rules-grid{grid-template-columns:1fr}}
 
-/* ── YOL HARİTASI ── */
-.yh-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px) 0;margin-bottom:16px;position:relative;z-index:1}
-.yh-header{text-align:center;margin-bottom:24px}
-.yh-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
-.yh-title{font-size:clamp(24px,5vw,32px);font-weight:900;color:var(--text);letter-spacing:-1px}
-.yh-sub{font-size:12px;color:var(--text3);margin-top:8px;line-height:1.7}
-.yh-overall{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:16px;flex-wrap:wrap}
-.yh-overall-left{display:flex;align-items:center;gap:14px}
-.yh-ring-wrap{position:relative;width:64px;height:64px;flex-shrink:0}
-.yh-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--green)}
-.yh-overall-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
-.yh-overall-val{font-size:13px;font-weight:600;color:var(--text)}
-.yh-streak{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(245,158,11,.85);background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.18);border-radius:10px;padding:8px 14px}
-.yh-streak-icon{font-size:15px}
-.yh-camps-nav{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.yh-ctab{display:flex;align-items:center;gap:7px;padding:10px 18px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--text3);font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap;letter-spacing:.3px}
-.yh-ctab:hover{color:var(--text2)}
-.yh-ctab.active{color:var(--green);border-bottom-color:var(--green)}
-.yh-cdot{width:7px;height:7px;border-radius:50%;background:var(--text3);transition:all .2s;flex-shrink:0}
-.yh-ctab.active .yh-cdot{background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.5)}
-.yh-ctab.yh-tab-done .yh-cdot{background:rgba(34,197,94,.5)}
-.yh-ctab.yh-tab-done{color:rgba(34,197,94,.6)}
-.yh-camp-body{background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 14px 14px;padding:20px}
-.yh-camp-info{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
-.yh-camp-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
-.yh-camp-desc{font-size:11px;color:var(--text3)}
-.yh-camp-prog{min-width:140px}
-.yh-cp-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:6px}
-.yh-cp-track{background:rgba(255,255,255,.06);border-radius:4px;height:5px;overflow:hidden}
-.yh-cp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,rgba(34,197,94,.6),var(--green));transition:width .5s ease}
-body.light .yh-cp-fill{background:linear-gradient(90deg,#16a34a,#22c55e)}
-.yh-days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:16px}
-.yh-day{aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s,box-shadow .15s;border:1.5px solid transparent;position:relative;min-height:50px}
-.yh-day:hover{transform:scale(1.06)}
-.yh-day.done{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3)}
-.yh-day.current{background:rgba(34,197,94,.08);border-color:var(--green);box-shadow:0 0 16px rgba(34,197,94,.2);animation:yh-pulse 2.2s ease-in-out infinite}
-.yh-day.open{background:var(--surface2);border-color:var(--border)}
-.yh-day.locked{background:rgba(255,255,255,.02);border-color:transparent;opacity:.45}
-@keyframes yh-pulse{0%,100%{box-shadow:0 0 10px rgba(34,197,94,.15)}50%{box-shadow:0 0 20px rgba(34,197,94,.4)}}
-.yh-day-num{font-size:15px;font-weight:700;line-height:1}
-.yh-day.done .yh-day-num{color:var(--green)}
-.yh-day.current .yh-day-num{color:var(--green)}
-.yh-day.open .yh-day-num{color:var(--text2)}
-.yh-day.locked .yh-day-num{color:var(--text3)}
-.yh-day-lbl{font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:.3px;margin-top:3px;opacity:.7}
-.yh-day.done .yh-day-lbl{color:rgba(34,197,94,.8)}
-.yh-day.current .yh-day-lbl{color:rgba(34,197,94,.9)}
-.yh-day.open .yh-day-lbl{color:var(--text3)}
-.yh-day.locked .yh-day-lbl{color:var(--text3)}
-.yh-check{position:absolute;top:4px;right:4px;width:13px;height:13px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff}
-.yh-task-panel{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;min-height:140px;margin-bottom:14px}
-.yh-task-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px 0;color:var(--text3);font-size:12px}
-.yh-task-empty-icon{font-size:26px;opacity:.4}
-.yh-task-day-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.yh-task-badge{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:6px;padding:3px 9px}
-.yh-task-title{font-size:14px;font-weight:700;color:var(--text)}
-.yh-task-list{list-style:none;display:flex;flex-direction:column;gap:7px}
-.yh-task-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .15s,background .15s}
-.yh-task-item:hover{border-color:var(--border2)}
-.yh-task-item.done{opacity:.65}
-.yh-task-item.done .yh-task-text{text-decoration:line-through;color:var(--text3)}
-.yh-task-box{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .15s}
-.yh-task-item.done .yh-task-box{background:var(--green);border-color:var(--green);color:#fff}
-.yh-task-text{font-size:12px;color:var(--text);flex:1;line-height:1.5}
-.yh-legend{display:flex;flex-wrap:wrap;gap:14px}
-.yh-leg-item{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text3)}
-.yh-leg-dot{width:10px;height:10px;border-radius:3px}
-.yh-leg-dot.done{background:rgba(34,197,94,.3);border:1px solid rgba(34,197,94,.5)}
-.yh-leg-dot.current{background:rgba(34,197,94,.1);border:1px solid var(--green)}
-.yh-leg-dot.open{background:var(--surface2);border:1px solid var(--border2)}
-.yh-leg-dot.locked{background:rgba(255,255,255,.03);border:1px solid var(--border)}
-@media(max-width:520px){.yh-days-grid{grid-template-columns:repeat(4,1fr)}.yh-overall{flex-direction:column;align-items:flex-start}.yh-streak{width:100%}}
+/* ══ YOL HARİTASI — premium ══ */
+.yh-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:24px;position:relative;z-index:1}
+.yh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:16px}
+.yh-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.yh-title{font-size:clamp(22px,4vw,28px);font-weight:900;color:var(--white);letter-spacing:-1px}
+.yh-top-right{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.yh-ring-wrap{position:relative;width:56px;height:56px;flex-shrink:0}
+.yh-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--green);font-family:var(--mono)}
+.yh-top-stat-val{font-size:22px;font-weight:900;color:var(--white);line-height:1;letter-spacing:-1px}
+.yh-top-stat-tot{font-size:13px;font-weight:400;color:var(--text3);margin-left:2px}
+.yh-top-stat-lbl{font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;margin-top:2px}
+.yh-today-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--green-ln);border-radius:16px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:20px;cursor:pointer;transition:border-color .2s,transform .15s;-webkit-tap-highlight-color:transparent}
+.yh-today-card:hover{border-color:rgba(34,197,94,.5);transform:translateY(-1px)}
+.yh-today-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(34,197,94,.06),transparent 60%);pointer-events:none}
+.yh-today-pulse{position:absolute;top:20px;right:20px;width:8px;height:8px;border-radius:50%;background:var(--green);animation:yh-blink 1.6s ease-in-out infinite}
+@keyframes yh-blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+.yh-today-left{flex:1;min-width:0}
+.yh-today-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.yh-today-title{font-size:16px;font-weight:800;color:var(--white);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.yh-today-sub{font-size:11px;color:var(--text3)}
+.yh-today-right{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.yh-today-tasks-mini{display:flex;gap:5px}
+.yh-ttask{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text3);transition:all .2s}
+.yh-ttask.done{background:var(--green);border-color:var(--green);color:#fff}
+.yh-today-cta{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);font-weight:600}
+body.light .yh-today-card{background:#fff;border-color:rgba(22,163,74,.25)}
+body.light .yh-today-card::before{background:linear-gradient(135deg,rgba(22,163,74,.05),transparent 60%)}
+.yh-camps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:0}
+.yh-ctab{background:var(--surface);border:1px solid var(--border);border-radius:12px 12px 0 0;padding:12px 14px 0;cursor:pointer;transition:all .2s;text-align:left;font-family:var(--font);border-bottom:none;position:relative;overflow:hidden}
+.yh-ctab:hover{border-color:var(--border2)}
+.yh-ctab.active{background:var(--surface2);border-color:var(--border2);border-bottom-color:transparent}
+.yh-ctab.yh-tab-done .yh-ctab-name{color:rgba(34,197,94,.7)}
+.yh-ctab-inner{padding-bottom:10px}
+.yh-ctab-name{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:2px;transition:color .2s}
+.yh-ctab.active .yh-ctab-name{color:var(--white)}
+.yh-ctab-range{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px}
+.yh-ctab-prog-wrap{height:3px;background:rgba(255,255,255,.04);border-radius:0 0 3px 3px;overflow:hidden}
+.yh-ctab-prog{height:100%;background:var(--green);border-radius:3px;transition:width .5s ease;width:0%}
+body.light .yh-ctab{background:#f8f8f8;border-color:rgba(0,0,0,.08)}
+body.light .yh-ctab.active{background:#fff}
+body.light .yh-ctab-prog-wrap{background:rgba(0,0,0,.05)}
+.yh-camp-body{background:var(--surface2);border:1px solid var(--border2);border-top:none;border-radius:0 0 16px 16px;padding:20px;margin-bottom:16px}
 body.light .yh-camp-body{background:#fff;border-color:rgba(0,0,0,.1)}
-body.light .yh-overall{background:#fff;border-color:rgba(0,0,0,.08)}
+.yh-map-wrap{margin-bottom:20px}
+.yh-map-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.yh-camp-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.yh-camp-desc{font-size:11px;color:var(--text3)}
+.yh-map-prog{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.yh-map-prog span{font-family:var(--mono);font-size:10px;color:var(--text3);white-space:nowrap}
+.yh-cp-track{width:80px;background:rgba(255,255,255,.06);border-radius:4px;height:4px;overflow:hidden}
+.yh-cp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,rgba(34,197,94,.6),var(--green));transition:width .5s ease}
+body.light .yh-cp-track{background:rgba(0,0,0,.07)}
+body.light .yh-cp-fill{background:linear-gradient(90deg,#16a34a,#22c55e)}
+.yh-nodes{display:flex;gap:6px;align-items:flex-start}
+.yh-node{flex:1;display:flex;flex-direction:column;align-items:center;cursor:pointer;position:relative}
+.yh-node-btn{width:100%;aspect-ratio:1;max-width:68px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--border);background:var(--surface);transition:all .2s;position:relative}
+.yh-node:hover .yh-node-btn{transform:scale(1.08);z-index:2}
+.yh-node-num{font-size:16px;font-weight:800;line-height:1}
+.yh-node-lbl{font-size:7px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.yh-node-dayname{font-size:9px;color:var(--text3);margin-top:6px;text-align:center;font-family:var(--mono);white-space:nowrap;overflow:hidden;max-width:100%}
+.yh-node.done .yh-node-btn{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.45)}
+.yh-node.done .yh-node-num{color:var(--green)}
+.yh-node.done .yh-node-lbl{color:rgba(34,197,94,.7)}
+.yh-node.current .yh-node-btn{background:rgba(34,197,94,.1);border-color:var(--green);box-shadow:0 0 0 4px rgba(34,197,94,.12),0 0 20px rgba(34,197,94,.2);animation:yh-node-pulse 2s ease-in-out infinite}
+.yh-node.current .yh-node-num{color:var(--green)}
+.yh-node.current .yh-node-lbl{color:var(--green)}
+.yh-node.open .yh-node-btn{background:var(--surface);border-color:var(--border2)}
+.yh-node.open .yh-node-num{color:var(--text2)}
+.yh-node.open .yh-node-lbl{color:var(--text3)}
+.yh-node.locked .yh-node-btn{opacity:.35;cursor:default}
+.yh-node.locked{cursor:default}
+.yh-node.locked:hover .yh-node-btn{transform:none}
+.yh-node.locked .yh-node-num{color:var(--text3)}
+.yh-node.selected .yh-node-btn{border-color:var(--white) !important;box-shadow:0 0 0 3px rgba(255,255,255,.12) !important}
+@keyframes yh-node-pulse{0%,100%{box-shadow:0 0 0 4px rgba(34,197,94,.12),0 0 16px rgba(34,197,94,.12)}50%{box-shadow:0 0 0 6px rgba(34,197,94,.08),0 0 24px rgba(34,197,94,.28)}}
+.yh-node-check{position:absolute;top:-5px;right:-5px;width:16px;height:16px;background:var(--green);border-radius:50%;border:2px solid var(--surface2);display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:800}
+.yh-task-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
 body.light .yh-task-panel{background:#f8f8f8;border-color:rgba(0,0,0,.08)}
-body.light .yh-task-item{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light .yh-day.open{background:#f0f0f0;border-color:rgba(0,0,0,.08)}
-body.light .yh-day.locked{background:rgba(0,0,0,.02)}
+.yh-task-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:32px 0;color:var(--text3);font-size:12px}
+.yh-task-empty-icon{font-size:20px;opacity:.3}
+.yh-panel-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);background:var(--surface2)}
+body.light .yh-panel-head{background:#f0f0f0;border-color:rgba(0,0,0,.08)}
+.yh-panel-badge{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:6px;font-weight:700;flex-shrink:0}
+.yh-panel-badge.today{color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln)}
+.yh-panel-badge.done{color:rgba(34,197,94,.7);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15)}
+.yh-panel-badge.open{color:var(--text3);background:transparent;border:1px solid var(--border)}
+.yh-panel-title{font-size:14px;font-weight:700;color:var(--text);flex:1}
+.yh-panel-meta{font-size:11px;color:var(--text3);flex-shrink:0;font-family:var(--mono)}
+.yh-task-list{list-style:none;padding:10px;display:flex;flex-direction:column;gap:6px}
+.yh-task-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.yh-task-item:hover{border-color:var(--border2)}
+.yh-task-item.ck{opacity:.6}
+.yh-task-item.ck .yh-task-text{text-decoration:line-through;color:var(--text3)}
+.yh-task-box{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;transition:all .2s}
+.yh-task-item.ck .yh-task-box{background:var(--green);border-color:var(--green);color:#fff}
+.yh-task-text{font-size:13px;color:var(--text);flex:1;line-height:1.4}
+body.light .yh-task-item{background:#fff;border-color:rgba(0,0,0,.07)}
+body.light .yh-task-item:hover{background:#fafafa;border-color:rgba(0,0,0,.14)}
+.yh-done-banner{display:flex;align-items:center;gap:10px;padding:12px 18px;background:rgba(34,197,94,.06);border-top:1px solid var(--green-ln);font-size:12px;color:var(--green)}
+@media(max-width:600px){
+  .yh-camps-row{grid-template-columns:repeat(2,1fr)}
+  .yh-node-dayname{display:none}
+  .yh-today-right{display:none}
+  .yh-nodes{gap:4px}
+}
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -1259,60 +1286,100 @@ body.light .yh-day.locked{background:rgba(0,0,0,.02)}
 
   <!-- YOL HARİTASI -->
   <div class="yh-section" id="yh-section">
-    <div class="yh-header">
-      <div class="yh-eyebrow">🗺 28 Günlük Plan</div>
-      <div class="yh-title">Yol Haritası</div>
-      <p class="yh-sub">Her gün ne yapacağını bil. Adım adım ilerle, kampları tamamla.</p>
-    </div>
-    <div class="yh-overall">
-      <div class="yh-overall-left">
+
+    <!-- BAŞLIK + GENEL BAR -->
+    <div class="yh-top">
+      <div class="yh-top-left">
+        <div class="yh-eyebrow">✦ 28 Günlük Plan</div>
+        <div class="yh-title">Yol Haritası</div>
+      </div>
+      <div class="yh-top-right">
         <div class="yh-ring-wrap">
-          <svg width="64" height="64" viewBox="0 0 64 64">
-            <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
-            <circle id="yh-ring" cx="32" cy="32" r="26" fill="none" stroke="var(--green)" stroke-width="5" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="163.4" transform="rotate(-90 32 32)" style="transition:stroke-dashoffset .8s ease"/>
+          <svg width="56" height="56" viewBox="0 0 56 56">
+            <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="4"/>
+            <circle id="yh-ring" cx="28" cy="28" r="22" fill="none" stroke="var(--green)" stroke-width="4" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2" transform="rotate(-90 28 28)" style="transition:stroke-dashoffset .8s ease"/>
           </svg>
           <div class="yh-ring-pct" id="yh-ring-pct">0%</div>
         </div>
-        <div class="yh-overall-info">
-          <div class="yh-overall-label">Toplam İlerleme</div>
-          <div class="yh-overall-val"><span id="yh-total-done">0</span> / 28 gün tamamlandı</div>
+        <div class="yh-top-stats">
+          <div class="yh-top-stat-val"><span id="yh-total-done">0</span><span class="yh-top-stat-tot">/28</span></div>
+          <div class="yh-top-stat-lbl">gün tamamlandı</div>
         </div>
       </div>
-      <div class="yh-streak" id="yh-streak-box">
-        <span class="yh-streak-icon">🔥</span>
-        <span id="yh-streak-text">Bugünkü görevi tamamla!</span>
+    </div>
+
+    <!-- BUGÜNÜN GÖREVI — ana yönlendirici kart -->
+    <div class="yh-today-card" id="yh-today-card" onclick="yhGoToday()">
+      <div class="yh-today-pulse"></div>
+      <div class="yh-today-left">
+        <div class="yh-today-tag">⚡ BUGÜN · GÜN <span id="yh-today-daynum">1</span></div>
+        <div class="yh-today-title" id="yh-today-title">Şirket & Hesap Kurulumu</div>
+        <div class="yh-today-sub" id="yh-today-sub">0 / 3 görev tamamlandı</div>
+      </div>
+      <div class="yh-today-right">
+        <div class="yh-today-tasks-mini" id="yh-today-tasks-mini"></div>
+        <div class="yh-today-cta">Göreve Başla →</div>
       </div>
     </div>
-    <div class="yh-camps-nav" id="yh-camps-nav">
-      <button class="yh-ctab" data-camp="0" onclick="yhSwitchCamp(0)"><span class="yh-cdot"></span>Ana Kamp</button>
-      <button class="yh-ctab" data-camp="1" onclick="yhSwitchCamp(1)"><span class="yh-cdot"></span>Kamp 1</button>
-      <button class="yh-ctab" data-camp="2" onclick="yhSwitchCamp(2)"><span class="yh-cdot"></span>Kamp 2</button>
-      <button class="yh-ctab" data-camp="3" onclick="yhSwitchCamp(3)"><span class="yh-cdot"></span>Kamp 3</button>
+
+    <!-- KAMP SEKMELERİ -->
+    <div class="yh-camps-row" id="yh-camps-nav">
+      <button class="yh-ctab active" data-camp="0" onclick="yhSwitchCamp(0)">
+        <div class="yh-ctab-inner">
+          <div class="yh-ctab-name">Ana Kamp</div>
+          <div class="yh-ctab-range">Gün 1–7</div>
+        </div>
+        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-0"></div></div>
+      </button>
+      <button class="yh-ctab" data-camp="1" onclick="yhSwitchCamp(1)">
+        <div class="yh-ctab-inner">
+          <div class="yh-ctab-name">Kamp 1</div>
+          <div class="yh-ctab-range">Gün 8–14</div>
+        </div>
+        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-1"></div></div>
+      </button>
+      <button class="yh-ctab" data-camp="2" onclick="yhSwitchCamp(2)">
+        <div class="yh-ctab-inner">
+          <div class="yh-ctab-name">Kamp 2</div>
+          <div class="yh-ctab-range">Gün 15–21</div>
+        </div>
+        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-2"></div></div>
+      </button>
+      <button class="yh-ctab" data-camp="3" onclick="yhSwitchCamp(3)">
+        <div class="yh-ctab-inner">
+          <div class="yh-ctab-name">Kamp 3</div>
+          <div class="yh-ctab-range">Gün 22–28</div>
+        </div>
+        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-3"></div></div>
+      </button>
     </div>
+
+    <!-- KAMP İÇERİĞİ -->
     <div class="yh-camp-body">
-      <div class="yh-camp-info">
-        <div>
-          <div class="yh-camp-title" id="yh-camp-title">Ana Kamp — Temel Kurulum</div>
-          <div class="yh-camp-desc" id="yh-camp-desc">Günler 1–7 · Şirket, mağaza ve hesaplar kurulsun</div>
+
+      <!-- NODE HARİTASI -->
+      <div class="yh-map-wrap">
+        <div class="yh-map-header">
+          <div>
+            <div class="yh-camp-title" id="yh-camp-title">Ana Kamp — Temel Kurulum</div>
+            <div class="yh-camp-desc" id="yh-camp-desc">Sıfırdan mağaza kurulumunu tamamla</div>
+          </div>
+          <div class="yh-map-prog">
+            <span id="yh-cp-text">0 / 7</span>
+            <div class="yh-cp-track"><div class="yh-cp-fill" id="yh-cp-fill" style="width:0%"></div></div>
+          </div>
         </div>
-        <div class="yh-camp-prog">
-          <div class="yh-cp-label"><span>İlerleme</span><span id="yh-cp-text">0 / 7</span></div>
-          <div class="yh-cp-track"><div class="yh-cp-fill" id="yh-cp-fill" style="width:0%"></div></div>
-        </div>
+        <div class="yh-nodes" id="yh-days-grid"></div>
       </div>
-      <div class="yh-days-grid" id="yh-days-grid"></div>
+
+      <!-- GÖREV PANELİ -->
       <div class="yh-task-panel" id="yh-task-panel">
         <div class="yh-task-empty">
-          <div class="yh-task-empty-icon">🗺</div>
-          <div>Bir güne tıkla, görevleri gör</div>
+          <div class="yh-task-empty-icon">↑</div>
+          <div>Yukarıdan bir güne tıkla</div>
         </div>
       </div>
-      <div class="yh-legend">
-        <div class="yh-leg-item"><div class="yh-leg-dot done"></div>Tamamlandı</div>
-        <div class="yh-leg-item"><div class="yh-leg-dot current"></div>Bugün</div>
-        <div class="yh-leg-item"><div class="yh-leg-dot open"></div>Açık</div>
-        <div class="yh-leg-item"><div class="yh-leg-dot locked"></div>Bekliyor</div>
-      </div>
+
     </div>
   </div>
 
@@ -2854,193 +2921,225 @@ function toggleOnboarding(){
   }}catch(e){}
 })();
 
-/* ── YOL HARİTASI ── */
+/* ══ YOL HARİTASI JS ══ */
 var YH_CAMPS=[
-  {title:'Ana Kamp — Temel Kurulum',desc:'Günler 1–7 · Şirket, mağaza ve hesaplar',days:[1,2,3,4,5,6,7]},
-  {title:'Kamp 1 — Niş & Ürün Seçimi',desc:'Günler 8–14 · Kazanan ürünü bul, listeye hazırlan',days:[8,9,10,11,12,13,14]},
-  {title:'Kamp 2 — Mağaza & İçerik',desc:'Günler 15–21 · Mağazanı optimize et, içerik üret',days:[15,16,17,18,19,20,21]},
-  {title:'Kamp 3 — Reklam & Ölçekleme',desc:'Günler 22–28 · Reklam aç, test et, ölçekle',days:[22,23,24,25,26,27,28]}
+  {title:'Ana Kamp — Temel Kurulum',desc:'Sıfırdan mağaza kurulumunu tamamla',days:[1,2,3,4,5,6,7]},
+  {title:'Kamp 1 — Niş & Ürün Seçimi',desc:'Kazanan ürünü bul, listeye hazırlan',days:[8,9,10,11,12,13,14]},
+  {title:'Kamp 2 — Mağaza & İçerik',desc:'Mağazanı optimize et, içerik üret',days:[15,16,17,18,19,20,21]},
+  {title:'Kamp 3 — Reklam & Ölçekleme',desc:'Reklam aç, test et, ölçekle',days:[22,23,24,25,26,27,28]}
 ];
 var YH_TASKS={
   1:{title:'Şirket & Hesap Kurulumu',tasks:['E-posta ve şifre yöneticisi kur','Shopify hesabı oluştur (14 günlük deneme)','Stripe veya iyzico hesabı aç']},
   2:{title:'Mağaza Temel Ayarları',tasks:['Shopify tema seç ve yükle','Mağaza adı, logo ve renk paleti belirle','Dil ve para birimi ayarlarını yap']},
   3:{title:'Ödeme & Kargo Kurulumu',tasks:['Ödeme altyapısını mağazaya bağla','Ücretsiz kargo politikası belirle','İade politikası sayfası oluştur']},
   4:{title:'Instagram Hesabı',tasks:['İşletme Instagram hesabı aç','Bio ve profil fotoğrafını tamamla','İlk 9 placeholder görseli yükle']},
-  5:{title:'Facebook & Reklam Hesabı',tasks:['Facebook Business Manager hesabı kur','Meta Pixel oluştur ve mağazaya ekle','Reklam hesabı limit artışı başvurusu yap']},
+  5:{title:'Facebook & Reklam Hesabı',tasks:['Facebook Business Manager kur','Meta Pixel oluştur ve mağazaya ekle','Reklam hesabı limit artışı başvurusu yap']},
   6:{title:'Hedef Kitle & Rakip Analizi',tasks:['Hedef müşteri profili (persona) oluştur','En az 5 rakip mağazayı incele','Rakiplerin 2 haftalık kreatifleri topla']},
-  7:{title:'İlk Hafta Değerlendirme',tasks:['Eksik adımları kontrol listesiyle tara','Canberk ile Zoom check-in\'e katıl','Kamp 1\'e geçiş için hazır mısın? Onayla']},
+  7:{title:'İlk Hafta Değerlendirme',tasks:['Eksik adımları kontrol listesiyle tara','Canberk ile Zoom check-in'e katıl','Kamp 1'e geçiş için hazır mısın? Onayla']},
   8:{title:'Niş Araştırması',tasks:['MLYNR niş araştırma aracını aç','En az 3 farklı niş belirle','Her niş için talep skoru hesapla']},
-  9:{title:'eBay Ürün Tarama',tasks:['eBay araştırma modülüne gir','Seçtiğin niş\'te 20+ satılan ürün bul','Satış hızı ve kar marjını hesapla']},
-  10:{title:'Amazon Doğrulama',tasks:['Amazon\'da aynı ürünleri kontrol et','Fiyat farkı ve arbitraj hesapla','Top 3 ürün listeni oluştur']},
-  11:{title:'Tedarikçi Bulma',tasks:['AliExpress\'te kaynak ürünleri bul','Tedarikçi güvenilirlik puanını kontrol et','Sample sipariş verilecek 1 ürün seç']},
+  9:{title:'eBay Ürün Tarama',tasks:['eBay araştırma modülüne gir','Seçtiğin niş'te 20+ satılan ürün bul','Satış hızı ve kar marjını hesapla']},
+  10:{title:'Amazon Doğrulama',tasks:['Amazon'da aynı ürünleri kontrol et','Fiyat farkı ve arbitraj hesapla','Top 3 ürün listeni oluştur']},
+  11:{title:'Tedarikçi Bulma',tasks:['AliExpress'te kaynak ürünleri bul','Tedarikçi güvenilirlik puanını kontrol et','Sample sipariş verilecek 1 ürün seç']},
   12:{title:'Listing Hazırlığı',tasks:['Ürün başlığı ve açıklamasını yaz','7+ yüksek kalite görsel hazırla','Anahtar kelime araştırması yap']},
   13:{title:'Fiyatlandırma Stratejisi',tasks:['Kar marjı hesaplayıcısını kullan','Rakip fiyatlarını karşılaştır','Lansman fiyatını belirle']},
-  14:{title:'Kamp 1 Bitiş',tasks:['İlk ürününü mağazana ekle','Listing kontrolü yap — hata var mı?','Kamp 2\'ye geçiş onayı al']},
+  14:{title:'Kamp 1 Bitiş',tasks:['İlk ürününü mağazana ekle','Listing kontrolü yap — hata var mı?','Kamp 2'ye geçiş onayı al']},
   15:{title:'Mağaza Optimizasyonu',tasks:['Ana sayfa hero banner tasarımı','Ürün koleksiyonlarını düzenle','Hız testi yap (PageSpeed)']},
-  16:{title:'İçerik Üretimi',tasks:['Ürün için 3 farklı video konsepti yaz','İlk kısa videoyu çek / oluştur','Instagram ve TikTok\'a yükle']},
+  16:{title:'İçerik Üretimi',tasks:['Ürün için 3 farklı video konsepti yaz','İlk kısa videoyu çek / oluştur','Instagram ve TikTok'a yükle']},
   17:{title:'E-posta Pazarlama',tasks:['Klaviyo veya Mailchimp kur','Hoş geldin e-postası sekansı yaz','Sepeti terk otomasyonu kur']},
   18:{title:'SEO Temelleri',tasks:['Meta başlık ve açıklamaları yaz','Blog için 1 makale yaz','Google Analytics bağla']},
   19:{title:'Sosyal Kanıt',tasks:['İlk 5 yorumu topla (sample & network)','Ürün fotoğraflarını güncelle','Güven rozeti ve garantileri ekle']},
   20:{title:'İnfluencer Erişimi',tasks:['Micro-influencer listesi oluştur (10 kişi)','DM şablonu yaz ve gönder','UGC içerik anlaşması müzakere et']},
-  21:{title:'Kamp 2 Bitiş',tasks:['Mağaza son kontrolü yap','Tüm linkleri test et','Kamp 3\'e geçiş için onay al']},
-  22:{title:'İlk Reklam Kurulumu',tasks:['Meta Ads Manager\'ı aç','İlk kampanya yapısını kur (CBO)','3 farklı kreatif yükle']},
+  21:{title:'Kamp 2 Bitiş',tasks:['Mağaza son kontrolü yap','Tüm linkleri test et','Kamp 3'e geçiş için onay al']},
+  22:{title:'İlk Reklam Kurulumu',tasks:['Meta Ads Manager'ı aç','İlk kampanya yapısını kur (CBO)','3 farklı kreatif yükle']},
   23:{title:'Reklam Yayına',tasks:['Bütçeyi belirle (günlük 100–200₺)','Hedef kitle ayarlarını kontrol et','Reklamı başlat, ilk 24 saati izle']},
   24:{title:'İlk Veriler',tasks:['CTR, CPM ve CPC değerlerine bak','Kötü performanslı kreatifi durdur','En iyi kreatifte bütçeyi artır']},
-  25:{title:'A/B Test',tasks:['Yeni 2 kreatif varyasyon üret','Hook A vs Hook B testi başlat','Sonuçları Adsopify\'da takip et']},
+  25:{title:'A/B Test',tasks:['Yeni 2 kreatif varyasyon üret','Hook A vs Hook B testi başlat','Sonuçları Adsopify'da takip et']},
   26:{title:'Ölçekleme',tasks:['ROAS > 2 olan kampanyayı ölçekle','LLA (Lookalike Audience) oluştur','Retargeting kampanyası kur']},
   27:{title:'İlk Satış Analizi',tasks:['İlk satış verilerini analiz et','CPA ve AOV hesapla','Kazanan ürün testini doğrula']},
-  28:{title:'28 Gün Tamamlandı! 🎉',tasks:['Tüm süreci belgele (case study)','Bir sonraki 28 günü planla','Başarı hikayeni Canberk ile paylaş']}}
-;
-var yhCurrentCamp=0;
-var yhCompletedTasks={};
-var yhCompletedDays=[];
-var yhSelectedDay=null;
+  28:{title:'28 Gün Tamamlandı! 🎉',tasks:['Tüm süreci belgele (case study)','Bir sonraki 28 günü planla','Başarı hikayeni Canberk ile paylaş']}
+};
+var yhCamp=0,yhTasks={},yhDays=[],yhSelDay=null;
+var YH_TODAY=1;
 
-function yhGetCurrentDay(){return 1;}
-
-function yhLoad(){
-  try{
-    var t=localStorage.getItem('mlynr_yh_tasks');
-    if(t)yhCompletedTasks=JSON.parse(t);
-    var d=localStorage.getItem('mlynr_yh_days');
-    if(d)yhCompletedDays=JSON.parse(d);
-  }catch(e){}
-}
-
-function yhSave(){
-  try{
-    localStorage.setItem('mlynr_yh_tasks',JSON.stringify(yhCompletedTasks));
-    localStorage.setItem('mlynr_yh_days',JSON.stringify(yhCompletedDays));
-  }catch(e){}
-}
+function yhLoad(){try{var t=localStorage.getItem('mlynr_yh_t');if(t)yhTasks=JSON.parse(t);var d=localStorage.getItem('mlynr_yh_d');if(d)yhDays=JSON.parse(d);}catch(e){}}
+function yhSave(){try{localStorage.setItem('mlynr_yh_t',JSON.stringify(yhTasks));localStorage.setItem('mlynr_yh_d',JSON.stringify(yhDays));}catch(e){}}
 
 function yhDayStatus(d){
-  var today=yhGetCurrentDay();
-  if(yhCompletedDays.indexOf(d)>-1)return'done';
-  if(d===today)return'current';
-  if(d<today)return'open';
+  if(yhDays.indexOf(d)>-1)return'done';
+  if(d===YH_TODAY)return'current';
+  if(d<YH_TODAY)return'open';
   return'locked';
 }
 
+function yhUpdateToday(){
+  var data=YH_TASKS[YH_TODAY];if(!data)return;
+  var key='d'+YH_TODAY;
+  var done=(yhTasks[key]||[]).length;
+  var total=data.tasks.length;
+  var el=document.getElementById('yh-today-daynum');if(el)el.textContent=YH_TODAY;
+  var tel=document.getElementById('yh-today-title');if(tel)tel.textContent=data.title;
+  var sel=document.getElementById('yh-today-sub');if(sel)sel.textContent=done+' / '+total+' görev tamamlandı';
+  var mini=document.getElementById('yh-today-tasks-mini');
+  if(mini){
+    mini.innerHTML=data.tasks.map(function(_,i){
+      var ck=(yhTasks[key]||[]).indexOf(i)>-1;
+      return'<div class="yh-ttask'+(ck?' done':'')+'">'+( ck?'✓':(i+1))+'</div>';
+    }).join('');
+  }
+}
+
+function yhGoToday(){
+  var campIdx=Math.floor((YH_TODAY-1)/7);
+  if(campIdx!==yhCamp)yhSwitchCamp(campIdx);
+  setTimeout(function(){yhShowTask(YH_TODAY);},50);
+  document.getElementById('yh-section').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
 function yhUpdateOverall(){
-  var done=yhCompletedDays.length;
+  var done=yhDays.length;
   var pct=Math.round(done/28*100);
-  var circ=163.4;
-  var off=circ-(circ*pct/100);
+  var circ=138.2;
   var ring=document.getElementById('yh-ring');
   var pctEl=document.getElementById('yh-ring-pct');
   var doneEl=document.getElementById('yh-total-done');
-  if(ring)ring.style.strokeDashoffset=off;
+  if(ring)ring.style.strokeDashoffset=circ-(circ*pct/100);
   if(pctEl)pctEl.textContent=pct+'%';
   if(doneEl)doneEl.textContent=done;
-}
-
-function yhUpdateTabs(){
   YH_CAMPS.forEach(function(c,i){
+    var cdone=c.days.filter(function(d){return yhDays.indexOf(d)>-1;}).length;
+    var pr=document.getElementById('yh-ctab-prog-'+i);
+    if(pr)pr.style.width=Math.round(cdone/7*100)+'%';
     var tab=document.querySelector('.yh-ctab[data-camp="'+i+'"]');
-    if(!tab)return;
-    tab.classList.remove('yh-tab-done');
-    var allDone=c.days.every(function(d){return yhCompletedDays.indexOf(d)>-1;});
-    if(allDone)tab.classList.add('yh-tab-done');
+    if(tab){tab.classList.remove('yh-tab-done');if(cdone===7)tab.classList.add('yh-tab-done');}
   });
 }
 
-function yhRenderDays(){
-  var grid=document.getElementById('yh-days-grid');
-  if(!grid)return;
-  var camp=YH_CAMPS[yhCurrentCamp];
+function yhRenderNodes(){
+  var grid=document.getElementById('yh-days-grid');if(!grid)return;
+  var camp=YH_CAMPS[yhCamp];
   var campDone=0;
   grid.innerHTML='';
   camp.days.forEach(function(d){
     var st=yhDayStatus(d);
     if(st==='done')campDone++;
     var node=document.createElement('div');
-    node.className='yh-day '+st;
-    node.onclick=function(){yhShowTask(d);};
+    node.className='yh-node '+st;
+    if(yhSelDay===d)node.className+=' selected';
+    node.onclick=st==='locked'?null:function(){yhShowTask(d);};
+
+    var btn=document.createElement('div');
+    btn.className='yh-node-btn';
+
     var num=document.createElement('div');
-    num.className='yh-day-num';
+    num.className='yh-node-num';
     num.textContent=d;
+
     var lbl=document.createElement('div');
-    lbl.className='yh-day-lbl';
-    lbl.textContent='GÜN '+d;
-    node.appendChild(num);
-    node.appendChild(lbl);
+    lbl.className='yh-node-lbl';
+    lbl.textContent=st==='done'?'TAMAM':st==='current'?'BUGÜN':'GÜN '+d;
+
+    btn.appendChild(num);
+    btn.appendChild(lbl);
+
     if(st==='done'){
       var chk=document.createElement('div');
-      chk.className='yh-check';
-      chk.textContent='✓';
-      node.appendChild(chk);
+      chk.className='yh-node-check';chk.textContent='✓';
+      btn.appendChild(chk);
     }
+
+    var name=document.createElement('div');
+    name.className='yh-node-dayname';
+    var data=YH_TASKS[d];
+    name.textContent=data?data.title.split(' ').slice(0,2).join(' '):'';
+
+    node.appendChild(btn);
+    node.appendChild(name);
     grid.appendChild(node);
   });
+
   var fill=document.getElementById('yh-cp-fill');
   var cpTxt=document.getElementById('yh-cp-text');
   if(fill)fill.style.width=Math.round(campDone/7*100)+'%';
   if(cpTxt)cpTxt.textContent=campDone+' / 7';
   yhUpdateOverall();
-  yhUpdateTabs();
+  yhUpdateToday();
 }
 
 function yhShowTask(d){
-  yhSelectedDay=d;
-  var panel=document.getElementById('yh-task-panel');
-  if(!panel)return;
+  yhSelDay=d;
+  var panel=document.getElementById('yh-task-panel');if(!panel)return;
   var data=YH_TASKS[d];
-  if(!data){panel.innerHTML='<div class="yh-task-empty"><div class="yh-task-empty-icon">🗺</div><div>Görev bulunamadı</div></div>';return;}
+  if(!data){panel.innerHTML='<div class="yh-task-empty"><div class="yh-task-empty-icon">↑</div><div>Görev bulunamadı</div></div>';return;}
   var key='d'+d;
-  if(!yhCompletedTasks[key])yhCompletedTasks[key]=[];
+  if(!yhTasks[key])yhTasks[key]=[];
   var st=yhDayStatus(d);
-  var stLabel=st==='done'?'Tamamlandı':st==='current'?'Bugün':'Gün '+d;
+  var badgeCls=st==='current'?'today':st==='done'?'done':'open';
+  var badgeLabel=st==='current'?'⚡ BUGÜN':st==='done'?'✓ TAMAMLANDI':'GÜN '+d;
+  var doneCount=yhTasks[key].length;
+  var total=data.tasks.length;
+  var allDone=doneCount>=total;
+
   var items=data.tasks.map(function(t,i){
-    var done=yhCompletedTasks[key].indexOf(i)>-1;
-    return'<li class="yh-task-item'+(done?' done':'')+'" onclick="yhToggleTask('+d+','+i+')">'
-      +'<div class="yh-task-box">'+(done?'✓':'')+'</div>'
+    var ck=yhTasks[key].indexOf(i)>-1;
+    return'<li class="yh-task-item'+(ck?' ck':'')+'" onclick="yhToggleTask('+d+','+i+')">'
+      +'<div class="yh-task-box">'+(ck?'✓':'')+'</div>'
       +'<span class="yh-task-text">'+t+'</span>'
       +'</li>';
   }).join('');
-  panel.innerHTML='<div class="yh-task-day-header">'
-    +'<div class="yh-task-badge">'+stLabel+'</div>'
-    +'<div class="yh-task-title">'+data.title+'</div>'
+
+  var doneBanner=allDone?'<div class="yh-done-banner">✓ Bu günün tüm görevleri tamamlandı!</div>':'';
+
+  panel.innerHTML='<div class="yh-panel-head">'
+    +'<div class="yh-panel-badge '+badgeCls+'">'+badgeLabel+'</div>'
+    +'<div class="yh-panel-title">'+data.title+'</div>'
+    +'<div class="yh-panel-meta">'+doneCount+'/'+total+'</div>'
     +'</div>'
-    +'<ul class="yh-task-list">'+items+'</ul>';
+    +'<ul class="yh-task-list">'+items+'</ul>'
+    +doneBanner;
+
+  yhRenderNodes();
 }
 
 function yhToggleTask(d,i){
   var key='d'+d;
-  if(!yhCompletedTasks[key])yhCompletedTasks[key]=[];
-  var idx=yhCompletedTasks[key].indexOf(i);
-  if(idx>-1)yhCompletedTasks[key].splice(idx,1);
-  else yhCompletedTasks[key].push(i);
+  if(!yhTasks[key])yhTasks[key]=[];
+  var idx=yhTasks[key].indexOf(i);
+  if(idx>-1)yhTasks[key].splice(idx,1);
+  else yhTasks[key].push(i);
   var data=YH_TASKS[d];
-  var allDone=data&&yhCompletedTasks[key].length>=data.tasks.length;
-  if(allDone){if(yhCompletedDays.indexOf(d)===-1)yhCompletedDays.push(d);}
-  else{yhCompletedDays=yhCompletedDays.filter(function(x){return x!==d;});}
+  var allDone=data&&yhTasks[key].length>=data.tasks.length;
+  if(allDone){if(yhDays.indexOf(d)===-1)yhDays.push(d);}
+  else{yhDays=yhDays.filter(function(x){return x!==d;});}
   yhSave();
-  yhRenderDays();
   yhShowTask(d);
 }
 
 function yhSwitchCamp(id){
-  yhCurrentCamp=id;
+  yhCamp=id;
   document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
-  var activeTab=document.querySelector('.yh-ctab[data-camp="'+id+'"]');
-  if(activeTab)activeTab.classList.add('active');
+  var at=document.querySelector('.yh-ctab[data-camp="'+id+'"]');
+  if(at)at.classList.add('active');
   var c=YH_CAMPS[id];
-  var titleEl=document.getElementById('yh-camp-title');
-  var descEl=document.getElementById('yh-camp-desc');
-  if(titleEl)titleEl.textContent=c.title;
-  if(descEl)descEl.textContent=c.desc;
+  var tEl=document.getElementById('yh-camp-title');var dEl=document.getElementById('yh-camp-desc');
+  if(tEl)tEl.textContent=c.title;if(dEl)dEl.textContent=c.desc;
   var panel=document.getElementById('yh-task-panel');
-  if(panel)panel.innerHTML='<div class="yh-task-empty"><div class="yh-task-empty-icon">🗺</div><div>Bir güne tıkla, görevleri gör</div></div>';
-  yhSelectedDay=null;
-  yhRenderDays();
+  if(panel)panel.innerHTML='<div class="yh-task-empty"><div class="yh-task-empty-icon">↑</div><div>Bir güne tıkla, görevleri gör</div></div>';
+  yhSelDay=null;
+  yhRenderNodes();
 }
 
 (function(){
   yhLoad();
-  var firstTab=document.querySelector('.yh-ctab[data-camp="0"]');
-  if(firstTab)firstTab.classList.add('active');
-  yhRenderDays();
+  var campIdx=Math.max(0,Math.floor((YH_TODAY-1)/7));
+  var at=document.querySelector('.yh-ctab[data-camp="'+campIdx+'"]');
+  document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
+  if(at)at.classList.add('active');
+  yhCamp=campIdx;
+  var c=YH_CAMPS[campIdx];
+  var tEl=document.getElementById('yh-camp-title');var dEl=document.getElementById('yh-camp-desc');
+  if(tEl)tEl.textContent=c.title;if(dEl)dEl.textContent=c.desc;
+  yhRenderNodes();
+  yhShowTask(YH_TODAY);
 })();
 </script>
 </body>
