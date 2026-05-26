@@ -3121,37 +3121,37 @@ function showTask(d){
 
 window.yhAiRehber=function(d){
   var data=TASKS[d];if(!data)return;
-  var area=g('yh-ai-area-'+d);if(!area)return;
+  var area=document.getElementById('yh-ai-area-'+d);if(!area)return;
   var btn=area.previousElementSibling;
   if(btn)btn.style.display='none';
   area.style.display='block';
-  area.innerHTML='<div class="yh-ai-loading">🤖 AI Rehber hazırlanıyor...</div>';
-  
+  area.innerHTML='<div class="yh-ai-loading">🤖 AI Rehber hazirlanıyor...</div>';
   var savedState=null;
   try{var ps=localStorage.getItem('mlynr_progress');if(ps)savedState=JSON.parse(ps);}catch(e){}
   var gunSayisi=savedState?savedState.gunSayisi||d:d;
   var hafta=Math.ceil(d/7);
   var tamamlanan=savedState?savedState.tamamlananGunler||0:0;
-  
   fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      tool:'coach',
-      soru:'Gün '+d+': "'+data.t+'" konusunu adım adım detaylı anlat. Ne yapmalıyım, nelere dikkat etmeliyim?',
-      gunSayisi:gunSayisi,
-      hafta:hafta,
-      tamamlananGunler:tamamlanan
-    })
+    body:JSON.stringify({tool:'coach',soru:'Gun '+d+': '+data.t+' konusunu adim adim anlat.',gunSayisi:gunSayisi,hafta:hafta,tamamlananGunler:tamamlanan})
   })
   .then(function(r){return r.json();})
   .then(function(res){
-    var txt=res.sonuc||'Cevap alınamadı.';
-    area.innerHTML='<div class="yh-ai-response"><div class="yh-ai-badge">🤖 AI Rehber — Gün '+d+'</div><div class="yh-ai-text">'+txt.replace(/\n/g,'<br>')+'</div><button class="yh-ai-kapat" onclick="this.parentElement.parentElement.style.display='none';this.parentElement.parentElement.previousElementSibling.style.display='flex'">Kapat</button></div>';
+    var txt=(res.sonuc||'Cevap alinamadi.').replace(/
+/g,'<br>');
+    area.innerHTML='<div class="yh-ai-response"><div class="yh-ai-badge">🤖 AI Rehber — Gun '+d+'</div><div class="yh-ai-text">'+txt+'</div><button class="yh-ai-kapat" onclick="yhKapatAI('+d+')">Kapat</button></div>';
   })
   .catch(function(){
-    area.innerHTML='<div class="yh-ai-response" style="color:#f87171">Bağlantı hatası. Tekrar dene.</div>';
+    area.innerHTML='<div style="padding:12px;color:#f87171;font-size:13px;">Baglanti hatası. Tekrar dene.</div>';
   });
+};
+window.yhKapatAI=function(d){
+  var area=document.getElementById('yh-ai-area-'+d);
+  if(!area)return;
+  area.style.display='none';
+  var btn=area.previousElementSibling;
+  if(btn)btn.style.display='flex';
 };
 window.yhToggleTask=function(d,i){
   var key='d'+d;if(!tasks[key])tasks[key]=[];
