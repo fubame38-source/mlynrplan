@@ -3138,8 +3138,7 @@ window.yhAiRehber=function(d){
   })
   .then(function(r){return r.json();})
   .then(function(res){
-    var txt=(res.sonuc||'Cevap alinamadi.').replace(/
-/g,'<br>');
+    var txt=(res.sonuc||'Cevap alinamadi.').replace(/\n/g,'<br>');
     area.innerHTML='<div class="yh-ai-response"><div class="yh-ai-badge">🤖 AI Rehber — Gun '+d+'</div><div class="yh-ai-text">'+txt+'</div><button class="yh-ai-kapat" onclick="yhKapatAI('+d+')">Kapat</button></div>';
   })
   .catch(function(){
