@@ -809,100 +809,155 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .aw-item strong{color:var(--text);font-weight:600}
 @media(max-width:640px){.rules-grid{grid-template-columns:1fr}}
 
-/* YOL HARITASI */
-.yh-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:24px;position:relative;z-index:1}
-.yh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:16px}
-.yh-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
-.yh-title{font-size:clamp(22px,4vw,28px);font-weight:900;color:var(--white);letter-spacing:-1px}
-.yh-top-right{display:flex;align-items:center;gap:14px;flex-shrink:0}
-.yh-ring-wrap{position:relative;width:56px;height:56px;flex-shrink:0}
-.yh-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--green);font-family:var(--mono)}
-.yh-top-stat-val{font-size:22px;font-weight:900;color:var(--white);line-height:1;letter-spacing:-1px}
-.yh-top-stat-tot{font-size:13px;color:var(--text3);margin-left:2px}
-.yh-top-stat-lbl{font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;margin-top:2px}
-.yh-today-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--green-ln);border-radius:16px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:20px;cursor:pointer;transition:border-color .2s,transform .15s}
-.yh-today-card:hover{border-color:rgba(34,197,94,.5);transform:translateY(-1px)}
-.yh-today-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(34,197,94,.06),transparent 60%);pointer-events:none}
-.yh-today-pulse{position:absolute;top:20px;right:20px;width:8px;height:8px;border-radius:50%;background:var(--green);animation:yhblink 1.6s ease-in-out infinite}
-@keyframes yhblink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+/* ═══════════════════════════════════════
+   YOL HARITASI — TAM YENİ TASARIM
+═══════════════════════════════════════ */
+.yh-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px) 40px;position:relative;z-index:1}
+
+/* ── HEADER ── */
+.yh-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.yh-header-left{}
+.yh-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.yh-eyebrow::before{content:'';width:20px;height:1px;background:var(--border2)}
+.yh-title{font-size:clamp(26px,5vw,36px);font-weight:900;color:var(--white);letter-spacing:-1.5px;line-height:1}
+.yh-title em{font-style:normal;color:var(--green)}
+
+/* ── GENEL İLERLEME KARTLARI ── */
+.yh-progress-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
+.yh-pstat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;position:relative;overflow:hidden;transition:border-color .2s}
+.yh-pstat::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.02),transparent);pointer-events:none}
+.yh-pstat-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.yh-pstat-val{font-size:28px;font-weight:900;color:var(--white);letter-spacing:-2px;line-height:1}
+.yh-pstat-sub{font-size:11px;color:var(--text3);margin-top:4px}
+.yh-pstat.green .yh-pstat-val{color:var(--green)}
+.yh-pstat.green{border-color:var(--green-ln);background:rgba(34,197,94,.03)}
+.yh-pstat-ring{position:absolute;right:14px;top:50%;transform:translateY(-50%)}
+body.light .yh-pstat{background:#fff;border-color:rgba(0,0,0,.08)}
+
+/* ── BUGÜN KARTI ── */
+.yh-today-wrap{margin-bottom:24px;position:relative}
+.yh-today-card{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.03));border:1px solid rgba(34,197,94,.35);border-radius:18px;padding:24px 28px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);-webkit-tap-highlight-color:transparent}
+.yh-today-card:hover{border-color:rgba(34,197,94,.6);transform:translateY(-2px);box-shadow:0 16px 48px rgba(34,197,94,.12)}
+.yh-today-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:.7}
+.yh-today-inner{display:flex;align-items:center;gap:20px}
 .yh-today-left{flex:1;min-width:0}
-.yh-today-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
-.yh-today-title{font-size:16px;font-weight:800;color:var(--white);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.yh-today-sub{font-size:11px;color:var(--text3)}
-.yh-today-right{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.yh-today-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:20px;padding:4px 12px;margin-bottom:10px}
+.yh-today-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:yhblink 1.4s ease-in-out infinite}
+@keyframes yhblink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.5)}50%{opacity:.6;box-shadow:0 0 0 5px rgba(34,197,94,0)}}
+.yh-today-num{font-family:var(--mono);font-size:11px;color:rgba(34,197,94,.6);margin-bottom:4px;letter-spacing:1px}
+.yh-today-title{font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px;letter-spacing:-.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.yh-today-desc{font-size:12px;color:rgba(255,255,255,.45);line-height:1.5;max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.yh-today-right{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
 .yh-today-tasks-mini{display:flex;gap:5px}
-.yh-ttask{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--text3);transition:all .2s}
-.yh-ttask.done{background:var(--green);border-color:var(--green);color:#fff}
-.yh-today-cta{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);font-weight:600}
-body.light .yh-today-card{background:#fff;border-color:rgba(22,163,74,.25)}
-.yh-camps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.yh-ctab{background:var(--surface);border:1px solid var(--border);border-radius:12px 12px 0 0;padding:12px 14px 0;cursor:pointer;transition:all .2s;text-align:left;font-family:var(--font);border-bottom:none}
-.yh-ctab:hover{border-color:var(--border2)}
-.yh-ctab.active{background:var(--surface2);border-color:var(--border2);border-bottom-color:transparent}
-.yh-ctab.yh-tab-done .yh-ctab-name{color:rgba(34,197,94,.7)}
-.yh-ctab-inner{padding-bottom:10px}
-.yh-ctab-name{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:2px;transition:color .2s}
-.yh-ctab.active .yh-ctab-name{color:var(--white)}
-.yh-ctab-range{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px}
-.yh-ctab-prog-wrap{height:3px;background:rgba(255,255,255,.04);overflow:hidden}
-.yh-ctab-prog{height:100%;background:var(--green);transition:width .5s ease;width:0%}
-body.light .yh-ctab{background:#f8f8f8;border-color:rgba(0,0,0,.08)}
-body.light .yh-ctab.active{background:#fff}
-.yh-camp-body{background:var(--surface2);border:1px solid var(--border2);border-top:none;border-radius:0 0 16px 16px;padding:20px;margin-bottom:16px}
+.yh-ttask{width:24px;height:24px;border-radius:7px;border:1.5px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:rgba(34,197,94,.4);transition:all .2s}
+.yh-ttask.done{background:var(--green);border-color:var(--green);color:#000;font-size:11px}
+.yh-today-cta{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);font-weight:700;padding:8px 14px;border:1px solid rgba(34,197,94,.3);border-radius:8px;transition:all .2s;white-space:nowrap}
+.yh-today-card:hover .yh-today-cta{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.5)}
+body.light .yh-today-card{background:linear-gradient(135deg,rgba(22,163,74,.06),rgba(22,163,74,.02));border-color:rgba(22,163,74,.3)}
+
+/* ── HAFTA SEKMELERİ ── */
+.yh-weeks-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:0}
+.yh-wtab{background:var(--surface);border:1px solid var(--border);border-radius:14px 14px 0 0;padding:14px 16px 0;cursor:pointer;transition:all .2s cubic-bezier(.34,1.2,.64,1);text-align:left;font-family:var(--font);border-bottom:none;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.yh-wtab-accent{position:absolute;top:0;left:0;right:0;height:3px;background:transparent;transition:background .2s;border-radius:14px 14px 0 0}
+.yh-wtab:hover{background:var(--surface2);border-color:rgba(255,255,255,.14);transform:translateY(-2px);border-bottom:none}
+.yh-wtab.active{background:var(--surface2);border-color:var(--border2);border-bottom-color:transparent;transform:none}
+.yh-wtab.active .yh-wtab-accent{background:linear-gradient(90deg,var(--green),rgba(34,197,94,.3))}
+.yh-wtab.done-tab .yh-wtab-accent{background:linear-gradient(90deg,rgba(34,197,94,.5),transparent)}
+.yh-wtab.done-tab .yh-wtab-name{color:rgba(34,197,94,.75)}
+.yh-wtab-inner{padding-bottom:12px}
+.yh-wtab-emoji{font-size:20px;margin-bottom:6px;display:block;line-height:1}
+.yh-wtab-name{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:2px;letter-spacing:-.2px;transition:color .2s}
+.yh-wtab.active .yh-wtab-name{color:var(--white)}
+.yh-wtab-sub{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;line-height:1.4}
+.yh-wtab-bar-wrap{height:3px;background:rgba(255,255,255,.04);overflow:hidden}
+.yh-wtab-bar{height:100%;background:var(--green);transition:width .6s cubic-bezier(.4,0,.2,1);width:0%}
+body.light .yh-wtab{background:#f0f0f0;border-color:rgba(0,0,0,.08)}
+body.light .yh-wtab.active{background:#fff;border-color:rgba(0,0,0,.12)}
+body.light .yh-wtab:hover{background:#e8e8e8}
+
+/* ── KAMP BODY ── */
+.yh-camp-body{background:var(--surface2);border:1px solid var(--border2);border-top:none;border-radius:0 0 18px 18px;padding:24px 20px 20px;margin-bottom:20px}
 body.light .yh-camp-body{background:#fff;border-color:rgba(0,0,0,.1)}
-.yh-map-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
-.yh-camp-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
-.yh-camp-desc{font-size:11px;color:var(--text3)}
-.yh-map-prog{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.yh-map-prog span{font-family:var(--mono);font-size:10px;color:var(--text3);white-space:nowrap}
-.yh-cp-track{width:80px;background:rgba(255,255,255,.06);border-radius:4px;height:4px;overflow:hidden}
-.yh-cp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,rgba(34,197,94,.6),var(--green));transition:width .5s ease}
-body.light .yh-cp-track{background:rgba(0,0,0,.07)}
-.yh-nodes{display:flex;gap:6px;align-items:flex-start;margin-bottom:16px}
-.yh-node{flex:1;display:flex;flex-direction:column;align-items:center;cursor:pointer}
-.yh-node-btn{width:100%;aspect-ratio:1;max-width:68px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--border);background:var(--surface);transition:all .2s;position:relative}
-.yh-node:hover .yh-node-btn{transform:scale(1.08)}
-.yh-node-num{font-size:15px;font-weight:800;line-height:1}
-.yh-node-lbl{font-size:7px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
-.yh-node.done .yh-node-btn{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.45)}
-.yh-node.done .yh-node-num{color:var(--green)}
-.yh-node.done .yh-node-lbl{color:rgba(34,197,94,.7)}
-.yh-node.current .yh-node-btn{background:rgba(34,197,94,.1);border-color:var(--green);animation:yhnp 2s ease-in-out infinite}
-.yh-node.current .yh-node-num{color:var(--green)}
-.yh-node.current .yh-node-lbl{color:var(--green)}
-.yh-node.open .yh-node-btn{background:var(--surface);border-color:var(--border2)}
-.yh-node.open .yh-node-num{color:var(--text2)}
-.yh-node.open .yh-node-lbl{color:var(--text3)}
-.yh-node.locked .yh-node-btn{opacity:.3}
-.yh-node.locked{cursor:default}
-.yh-node.locked:hover .yh-node-btn{transform:none}
-.yh-node.locked .yh-node-num{color:var(--text3)}
-.yh-node.selected .yh-node-btn{border-color:var(--white)!important}
-@keyframes yhnp{0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.12)}50%{box-shadow:0 0 0 6px rgba(34,197,94,.06),0 0 20px rgba(34,197,94,.25)}}
-.yh-node-check{position:absolute;top:-5px;right:-5px;width:15px;height:15px;background:var(--green);border-radius:50%;border:2px solid var(--surface2);display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:800}
-.yh-task-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-body.light .yh-task-panel{background:#f8f8f8;border-color:rgba(0,0,0,.08)}
-.yh-task-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:32px 0;color:var(--text3);font-size:12px}
-.yh-panel-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);background:var(--surface2)}
-body.light .yh-panel-head{background:#f0f0f0;border-color:rgba(0,0,0,.08)}
-.yh-panel-badge{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:6px;font-weight:700;flex-shrink:0}
-.yh-pb-today{color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln)}
-.yh-pb-done{color:rgba(34,197,94,.7);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15)}
-.yh-pb-open{color:var(--text3);background:transparent;border:1px solid var(--border)}
-.yh-panel-title{font-size:14px;font-weight:700;color:var(--text);flex:1}
-.yh-panel-meta{font-size:11px;color:var(--text3);flex-shrink:0;font-family:var(--mono)}
-.yh-task-list{list-style:none;padding:10px;display:flex;flex-direction:column;gap:6px}
-.yh-task-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s}
-.yh-task-item:hover{border-color:var(--border2)}
-.yh-task-item.ck{opacity:.6}
+.yh-camp-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.yh-camp-info{}
+.yh-camp-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:3px;letter-spacing:-.3px}
+.yh-camp-desc{font-size:11px;color:var(--text3);line-height:1.5}
+.yh-camp-prog-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.yh-camp-prog-label{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.yh-camp-prog-track{width:80px;height:5px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.yh-camp-prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,rgba(34,197,94,.5),var(--green));transition:width .6s cubic-bezier(.4,0,.2,1)}
+body.light .yh-camp-prog-track{background:rgba(0,0,0,.08)}
+
+/* ── GÜN KARTLARI ── */
+.yh-days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:16px}
+.yh-day-card{display:flex;flex-direction:column;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
+.yh-day-inner{width:100%;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;border:1.5px solid var(--border);background:rgba(255,255,255,.02);transition:all .22s cubic-bezier(.34,1.2,.64,1);padding:12px 6px 10px;gap:5px;min-height:80px;position:relative;overflow:hidden}
+.yh-day-card:hover .yh-day-inner{transform:translateY(-4px) scale(1.04);border-color:rgba(255,255,255,.22);box-shadow:0 12px 32px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06)}
+.yh-day-num{font-size:20px;font-weight:900;line-height:1;color:var(--text3);font-family:var(--mono);letter-spacing:-1px;transition:color .2s}
+.yh-day-lbl{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);transition:color .2s;font-family:var(--mono)}
+.yh-day-tag{font-size:6.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);opacity:.5;text-align:center;padding:0 2px;line-height:1.3;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+
+/* States */
+.yh-day-card.state-done .yh-day-inner{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.3);box-shadow:0 2px 16px rgba(34,197,94,.1)}
+.yh-day-card.state-done .yh-day-num{color:var(--green)}
+.yh-day-card.state-done .yh-day-lbl{color:rgba(34,197,94,.6)}
+.yh-day-card.state-current .yh-day-inner{background:rgba(34,197,94,.1);border-color:var(--green);border-width:2px;box-shadow:0 0 0 3px rgba(34,197,94,.1),0 4px 24px rgba(34,197,94,.2);animation:yhDayPulse 2.2s ease-in-out infinite}
+.yh-day-card.state-current .yh-day-num{color:var(--green)}
+.yh-day-card.state-current .yh-day-lbl{color:var(--green);font-weight:900}
+@keyframes yhDayPulse{0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.12),0 4px 24px rgba(34,197,94,.2)}50%{box-shadow:0 0 0 6px rgba(34,197,94,.05),0 4px 32px rgba(34,197,94,.3)}}
+.yh-day-card.state-open .yh-day-inner{background:rgba(255,255,255,.02);border-color:var(--border2)}
+.yh-day-card.state-open .yh-day-num{color:var(--text2)}
+.yh-day-card.state-locked .yh-day-inner{opacity:.22;cursor:default}
+.yh-day-card.state-locked{cursor:default}
+.yh-day-card.state-locked:hover .yh-day-inner{transform:none;box-shadow:none}
+.yh-day-card.state-selected .yh-day-inner{border-color:var(--white)!important;border-width:2px!important;box-shadow:0 0 0 3px rgba(255,255,255,.1)!important}
+.yh-day-check{position:absolute;top:-5px;right:-5px;width:18px;height:18px;background:var(--green);border-radius:50%;border:2px solid var(--surface2);display:flex;align-items:center;justify-content:center;font-size:9px;color:#000;font-weight:900}
+body.light .yh-day-inner{background:rgba(0,0,0,.02);border-color:rgba(0,0,0,.08)}
+body.light .yh-day-card.state-done .yh-day-inner{background:rgba(22,163,74,.07);border-color:rgba(22,163,74,.25)}
+body.light .yh-day-card.state-current .yh-day-inner{background:rgba(22,163,74,.1);border-color:#16a34a}
+
+/* ── GÖREV PANELİ ── */
+.yh-task-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .2s}
+body.light .yh-task-panel{background:#fafafa;border-color:rgba(0,0,0,.08)}
+.yh-task-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:40px 0;color:var(--text3);font-size:11px;font-family:var(--mono);letter-spacing:1.5px;text-transform:uppercase}
+.yh-task-empty-arrow{font-size:22px;opacity:.18;margin-bottom:4px}
+.yh-panel-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border);background:linear-gradient(90deg,var(--surface2),rgba(255,255,255,.01))}
+body.light .yh-panel-head{background:#f4f4f4;border-color:rgba(0,0,0,.07)}
+.yh-panel-badge{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 11px;border-radius:7px;font-weight:700;flex-shrink:0}
+.yh-pb-today{color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3)}
+.yh-pb-done{color:rgba(34,197,94,.7);background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.15)}
+.yh-pb-open{color:var(--text3);background:transparent;border:1px solid var(--border2)}
+.yh-panel-title{font-size:14px;font-weight:800;color:var(--text);flex:1;letter-spacing:-.3px}
+.yh-panel-meta{font-size:11px;color:var(--text3);flex-shrink:0;font-family:var(--mono);letter-spacing:.5px}
+.yh-task-list{list-style:none;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.yh-task-item{display:flex;align-items:flex-start;gap:13px;padding:13px 16px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:11px;cursor:pointer;transition:all .18s cubic-bezier(.34,1.2,.64,1);-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
+.yh-task-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:background .2s;border-radius:0 2px 2px 0}
+.yh-task-item:hover{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.05);transform:translateX(4px)}
+.yh-task-item:hover::before{background:rgba(255,255,255,.25)}
+.yh-task-item.ck{opacity:.5;background:rgba(34,197,94,.04);border-color:rgba(34,197,94,.15)}
+.yh-task-item.ck::before{background:var(--green)}
 .yh-task-item.ck .yh-task-text{text-decoration:line-through;color:var(--text3)}
-.yh-task-box{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:transparent;transition:all .2s}
-.yh-task-item.ck .yh-task-box{background:var(--green);border-color:var(--green);color:#fff}
-.yh-task-text{font-size:13px;color:var(--text);flex:1;line-height:1.4}
-body.light .yh-task-item{background:#fff;border-color:rgba(0,0,0,.07)}
-body.light .yh-task-item:hover{border-color:rgba(0,0,0,.14)}
-.yh-done-banner{display:flex;align-items:center;gap:10px;padding:12px 18px;background:rgba(34,197,94,.06);border-top:1px solid var(--green-ln);font-size:12px;color:var(--green)}
-@media(max-width:600px){.yh-camps-row{grid-template-columns:repeat(2,1fr)}.yh-today-right{display:none}.yh-nodes{gap:3px}.yh-node-btn{border-radius:8px}}
+.yh-task-item.ck:hover{transform:none;opacity:.55}
+.yh-task-box{width:21px;height:21px;border-radius:6px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:transparent;transition:all .22s cubic-bezier(.34,1.56,.64,1);margin-top:1px}
+.yh-task-item.ck .yh-task-box{background:var(--green);border-color:var(--green);color:#000;transform:scale(1.1)}
+.yh-task-text{font-size:13px;color:var(--text);flex:1;line-height:1.55}
+body.light .yh-task-item{background:rgba(0,0,0,.015);border-color:rgba(0,0,0,.07)}
+body.light .yh-task-item:hover{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.14)}
+.yh-done-banner{display:flex;align-items:center;gap:10px;padding:14px 22px;background:linear-gradient(90deg,rgba(34,197,94,.1),rgba(34,197,94,.04));border-top:1px solid rgba(34,197,94,.2);font-size:12px;color:var(--green);font-weight:700;letter-spacing:.3px}
+.yh-done-banner-icon{font-size:16px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .yh-progress-row{grid-template-columns:1fr 1fr;gap:8px}
+  .yh-progress-row .yh-pstat:last-child{grid-column:1/-1}
+  .yh-weeks-nav{grid-template-columns:repeat(2,1fr)}
+  .yh-today-right{display:none}
+  .yh-days-grid{grid-template-columns:repeat(4,1fr);gap:5px}
+  .yh-day-inner{min-height:64px;border-radius:9px;padding:10px 4px 8px}
+  .yh-day-num{font-size:16px}
+  .yh-day-tag{display:none}
+  .yh-camp-body{padding:16px 14px 14px}
+}
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -1275,74 +1330,126 @@ body.light .yh-task-item:hover{border-color:rgba(0,0,0,.14)}
 
   <!-- YOL HARITASI -->
   <div class="yh-section" id="yh-section">
-    <div class="yh-top">
-      <div>
-        <div class="yh-eyebrow">&#10022; 28 Gunluk Plan</div>
-        <div class="yh-title">Yol Haritasi</div>
+
+    <!-- Başlık -->
+    <div class="yh-header">
+      <div class="yh-header-left">
+        <div class="yh-eyebrow">28 Günlük Plan</div>
+        <div class="yh-title">Yol <em>Haritası</em></div>
       </div>
-      <div class="yh-top-right">
-        <div class="yh-ring-wrap">
-          <svg width="56" height="56" viewBox="0 0 56 56">
-            <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="4"/>
-            <circle id="yh-ring" cx="28" cy="28" r="22" fill="none" stroke="var(--green)" stroke-width="4" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2" transform="rotate(-90 28 28)" style="transition:stroke-dashoffset .8s ease"/>
+    </div>
+
+    <!-- İstatistik Kartları -->
+    <div class="yh-progress-row">
+      <div class="yh-pstat green">
+        <div class="yh-pstat-label">Tamamlanan</div>
+        <div class="yh-pstat-val"><span id="yh-total-done">0</span><span style="font-size:16px;color:var(--text3);font-weight:500">/28</span></div>
+        <div class="yh-pstat-sub">Gün tamamlandı</div>
+        <div class="yh-pstat-ring">
+          <svg width="52" height="52" viewBox="0 0 52 52">
+            <circle cx="26" cy="26" r="20" fill="none" stroke="rgba(34,197,94,.1)" stroke-width="3.5"/>
+            <circle id="yh-ring" cx="26" cy="26" r="20" fill="none" stroke="var(--green)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="125.7" stroke-dashoffset="125.7" transform="rotate(-90 26 26)" style="transition:stroke-dashoffset .9s cubic-bezier(.4,0,.2,1)"/>
           </svg>
-          <div class="yh-ring-pct" id="yh-ring-pct">0%</div>
-        </div>
-        <div>
-          <div class="yh-top-stat-val"><span id="yh-total-done">0</span><span class="yh-top-stat-tot">/28</span></div>
-          <div class="yh-top-stat-lbl">tamamlandi</div>
+          <div class="yh-ring-pct" id="yh-ring-pct" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--green);font-family:var(--mono);top:0;left:0;right:0;bottom:0">0%</div>
         </div>
       </div>
-    </div>
-    <div class="yh-today-card" id="yh-today-card" onclick="yhGoToday()">
-      <div class="yh-today-pulse"></div>
-      <div class="yh-today-left">
-        <div class="yh-today-tag">&#9889; BUGUN &middot; GUN <span id="yh-today-daynum">1</span></div>
-        <div class="yh-today-title" id="yh-today-title">eBay Hesap Acilisi</div>
-        <div class="yh-today-sub" id="yh-today-sub">0 / 3 gorev tamamlandi</div>
+      <div class="yh-pstat" id="yh-week-stat">
+        <div class="yh-pstat-label">Bu Hafta</div>
+        <div class="yh-pstat-val" id="yh-week-val">—</div>
+        <div class="yh-pstat-sub" id="yh-week-sub">Tamamlanan gün</div>
       </div>
-      <div class="yh-today-right">
-        <div class="yh-today-tasks-mini" id="yh-today-tasks-mini"></div>
-        <div class="yh-today-cta">Goreve Basla &rarr;</div>
+      <div class="yh-pstat" id="yh-streak-stat">
+        <div class="yh-pstat-label">Bugün</div>
+        <div class="yh-pstat-val" id="yh-day-val">—</div>
+        <div class="yh-pstat-sub" id="yh-day-sub">Görev bekliyor</div>
       </div>
     </div>
-    <div class="yh-camps-row" id="yh-camps-nav">
-      <button class="yh-ctab active" data-camp="0" onclick="yhSwitchCamp(0)">
-        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 1</div><div class="yh-ctab-range">eBay Baslangic</div></div>
-        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-0"></div></div>
+
+    <!-- Bugünün Görevi Kartı -->
+    <div class="yh-today-wrap">
+      <div class="yh-today-card" id="yh-today-card" onclick="yhGoToday()">
+        <div class="yh-today-inner">
+          <div class="yh-today-left">
+            <div class="yh-today-badge">
+              <div class="yh-today-badge-dot"></div>
+              BUGÜN · GÜN <span id="yh-today-daynum">1</span>
+            </div>
+            <div class="yh-today-title" id="yh-today-title">eBay Hesap Açılışı</div>
+            <div class="yh-today-desc" id="yh-today-sub">0 / 3 görev tamamlandı</div>
+          </div>
+          <div class="yh-today-right">
+            <div class="yh-today-tasks-mini" id="yh-today-tasks-mini"></div>
+            <div class="yh-today-cta">Göreve Başla →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hafta Sekmeleri -->
+    <div class="yh-weeks-nav" id="yh-camps-nav">
+      <button class="yh-wtab active" data-camp="0" onclick="yhSwitchCamp(0)">
+        <div class="yh-wtab-accent"></div>
+        <div class="yh-wtab-inner">
+          <span class="yh-wtab-emoji">📦</span>
+          <div class="yh-wtab-name">Hafta 1</div>
+          <div class="yh-wtab-sub">eBay Başlangıç</div>
+        </div>
+        <div class="yh-wtab-bar-wrap"><div class="yh-wtab-bar" id="yh-ctab-prog-0"></div></div>
       </button>
-      <button class="yh-ctab" data-camp="1" onclick="yhSwitchCamp(1)">
-        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 2</div><div class="yh-ctab-range">Otomasyon</div></div>
-        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-1"></div></div>
+      <button class="yh-wtab" data-camp="1" onclick="yhSwitchCamp(1)">
+        <div class="yh-wtab-accent"></div>
+        <div class="yh-wtab-inner">
+          <span class="yh-wtab-emoji">⚡</span>
+          <div class="yh-wtab-name">Hafta 2</div>
+          <div class="yh-wtab-sub">Otomasyon</div>
+        </div>
+        <div class="yh-wtab-bar-wrap"><div class="yh-wtab-bar" id="yh-ctab-prog-1"></div></div>
       </button>
-      <button class="yh-ctab" data-camp="2" onclick="yhSwitchCamp(2)">
-        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 3</div><div class="yh-ctab-range">Hesap Sagligi</div></div>
-        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-2"></div></div>
+      <button class="yh-wtab" data-camp="2" onclick="yhSwitchCamp(2)">
+        <div class="yh-wtab-accent"></div>
+        <div class="yh-wtab-inner">
+          <span class="yh-wtab-emoji">🛡️</span>
+          <div class="yh-wtab-name">Hafta 3</div>
+          <div class="yh-wtab-sub">Hesap Sağlığı</div>
+        </div>
+        <div class="yh-wtab-bar-wrap"><div class="yh-wtab-bar" id="yh-ctab-prog-2"></div></div>
       </button>
-      <button class="yh-ctab" data-camp="3" onclick="yhSwitchCamp(3)">
-        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 4</div><div class="yh-ctab-range">Shopify</div></div>
-        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-3"></div></div>
+      <button class="yh-wtab" data-camp="3" onclick="yhSwitchCamp(3)">
+        <div class="yh-wtab-accent"></div>
+        <div class="yh-wtab-inner">
+          <span class="yh-wtab-emoji">🚀</span>
+          <div class="yh-wtab-name">Hafta 4</div>
+          <div class="yh-wtab-sub">Shopify</div>
+        </div>
+        <div class="yh-wtab-bar-wrap"><div class="yh-wtab-bar" id="yh-ctab-prog-3"></div></div>
       </button>
     </div>
+
+    <!-- Kamp İçeriği -->
     <div class="yh-camp-body">
-      <div class="yh-map-header">
-        <div>
-          <div class="yh-camp-title" id="yh-camp-title">Hafta 1 - Hesap ve Urun Arastirma</div>
-          <div class="yh-camp-desc" id="yh-camp-desc">eBay hesabi kur, Amazon tedarik sistemini ogren</div>
+      <div class="yh-camp-meta">
+        <div class="yh-camp-info">
+          <div class="yh-camp-title" id="yh-camp-title">Hafta 1 — Hesap & Ürün Araştırma</div>
+          <div class="yh-camp-desc" id="yh-camp-desc">eBay hesabı kur, Amazon tedarik sistemini öğren</div>
         </div>
-        <div class="yh-map-prog">
-          <span id="yh-cp-text">0 / 7</span>
-          <div class="yh-cp-track"><div class="yh-cp-fill" id="yh-cp-fill" style="width:0%"></div></div>
+        <div class="yh-camp-prog-wrap">
+          <span class="yh-camp-prog-label" id="yh-cp-text">0 / 7</span>
+          <div class="yh-camp-prog-track"><div class="yh-camp-prog-fill" id="yh-cp-fill" style="width:0%"></div></div>
         </div>
       </div>
-      <div class="yh-nodes" id="yh-days-grid"></div>
+
+      <!-- Gün Kartları -->
+      <div class="yh-days-grid" id="yh-days-grid"></div>
+
+      <!-- Görev Paneli -->
       <div class="yh-task-panel" id="yh-task-panel">
         <div class="yh-task-empty">
-          <div style="font-size:20px;opacity:.3">&#8593;</div>
-          <div>Bir gune tikla, gorevleri gor</div>
+          <div class="yh-task-empty-arrow">↑</div>
+          <div>Bir güne tıkla, görevleri gör</div>
         </div>
       </div>
     </div>
+
   </div>
 
   <!-- MLYNR CLUB -->
@@ -2943,15 +3050,21 @@ function goToday(){
 }
 window.yhGoToday=goToday;
 function updateOverall(){
-  var done=days.length,pct=Math.round(done/28*100),circ=138.2;
+  var done2=days.length,pct=Math.round(done2/28*100),circ=125.7;
   var r=g('yh-ring');if(r)r.style.strokeDashoffset=circ-(circ*pct/100);
   var p=g('yh-ring-pct');if(p)p.textContent=pct+'%';
-  var de=g('yh-total-done');if(de)de.textContent=done;
+  var de=g('yh-total-done');if(de)de.textContent=done2;
+  // Hafta stat
+  var wv=g('yh-week-val'),ws=g('yh-week-sub');
+  if(wv&&ws){var wDone=CAMPS[camp].days.filter(function(d){return days.indexOf(d)>-1;}).length;wv.textContent=wDone+'/7';ws.textContent='Bu hafta tamamlandı';}
+  // Gün stat
+  var dv=g('yh-day-val'),dsub=g('yh-day-sub');
+  if(dv&&dsub){var td=TASKS[TODAY];var tdone=(tasks['d'+TODAY]||[]).length,ttot=td?td.g.length:0;dv.textContent=tdone+'/'+ttot;dsub.textContent='Görev tamamlandı';}
   CAMPS.forEach(function(c,i){
     var cd=c.days.filter(function(d){return days.indexOf(d)>-1;}).length;
     var pr=g('yh-ctab-prog-'+i);if(pr)pr.style.width=Math.round(cd/7*100)+'%';
-    var tab=document.querySelector('.yh-ctab[data-camp="'+i+'"]');
-    if(tab)tab.classList.toggle('yh-tab-done',cd===7);
+    var tab=document.querySelector('.yh-wtab[data-camp="'+i+'"]');
+    if(tab)tab.classList.toggle('done-tab',cd===7);
   });
 }
 function renderNodes(){
@@ -2960,16 +3073,19 @@ function renderNodes(){
   grid.innerHTML='';
   c.days.forEach(function(d){
     var s=st(d);if(s==='done')campDone++;
-    var node=document.createElement('div');
-    node.className='yh-node '+s+(sel===d?' selected':'');
-    if(s!=='locked')node.onclick=(function(dd){return function(){showTask(dd);};})(d);
-    var btn=document.createElement('div');btn.className='yh-node-btn';
-    var num=document.createElement('div');num.className='yh-node-num';num.textContent=d;
-    var lbl=document.createElement('div');lbl.className='yh-node-lbl';
-    lbl.textContent=s==='done'?'TAMAM':s==='current'?'BUGUN':'GUN '+d;
-    btn.appendChild(num);btn.appendChild(lbl);
-    if(s==='done'){var chk=document.createElement('div');chk.className='yh-node-check';chk.innerHTML='&#10003;';btn.appendChild(chk);}
-    node.appendChild(btn);grid.appendChild(node);
+    var taskData=TASKS[d];
+    var card=document.createElement('div');
+    card.className='yh-day-card state-'+s+(sel===d?' state-selected':'');
+    card.title=taskData?taskData.t:'';
+    if(s!=='locked')card.onclick=(function(dd){return function(){showTask(dd);};})(d);
+    var inner=document.createElement('div');inner.className='yh-day-inner';
+    var num=document.createElement('div');num.className='yh-day-num';num.textContent=d;
+    var lbl=document.createElement('div');lbl.className='yh-day-lbl';
+    lbl.textContent=s==='done'?'TAMAM':s==='current'?'BUGÜN':'GÜN';
+    inner.appendChild(num);inner.appendChild(lbl);
+    if(taskData){var tag=document.createElement('div');tag.className='yh-day-tag';tag.textContent=taskData.t;inner.appendChild(tag);}
+    if(s==='done'){var chk=document.createElement('div');chk.className='yh-day-check';chk.innerHTML='&#10003;';inner.appendChild(chk);}
+    card.appendChild(inner);grid.appendChild(card);
   });
   var f=g('yh-cp-fill');if(f)f.style.width=Math.round(campDone/7*100)+'%';
   var ct=g('yh-cp-text');if(ct)ct.textContent=campDone+' / 7';
@@ -2979,11 +3095,11 @@ function showTask(d){
   sel=d;
   var panel=g('yh-task-panel');if(!panel)return;
   var data=TASKS[d];
-  if(!data){panel.innerHTML='<div class="yh-task-empty"><div style="opacity:.3">?</div><div>Gorev yok</div></div>';return;}
+  if(!data){panel.innerHTML='<div class="yh-task-empty"><div class="yh-task-empty-arrow">?</div><div>Görev yok</div></div>';return;}
   var key='d'+d;if(!tasks[key])tasks[key]=[];
   var s=st(d);
   var bc=s==='current'?'yh-pb-today':s==='done'?'yh-pb-done':'yh-pb-open';
-  var bl=s==='current'?'&#9889; BUGUN':s==='done'?'&#10003; TAMAM':'GUN '+d;
+  var bl=s==='current'?'⚡ BUGÜN':s==='done'?'✓ TAMAM':'GÜN '+d;
   var dc=tasks[key].length,tot=data.g.length;
   var items=data.g.map(function(txt,i){
     var ck=tasks[key].indexOf(i)>-1;
@@ -2992,7 +3108,7 @@ function showTask(d){
       +'<span class="yh-task-text">'+txt+'</span>'
       +'</li>';
   }).join('');
-  var banner=dc>=tot?'<div class="yh-done-banner">&#10003; Bu gunun tum gorevleri tamamlandi!</div>':'';
+  var banner=dc>=tot?'<div class="yh-done-banner"><span class="yh-done-banner-icon">🎉</span> Bu günün tüm görevleri tamamlandı!</div>':'';
   panel.innerHTML='<div class="yh-panel-head"><div class="yh-panel-badge '+bc+'">'+bl+'</div><div class="yh-panel-title">'+data.t+'</div><div class="yh-panel-meta">'+dc+'/'+tot+'</div></div><ul class="yh-task-list">'+items+'</ul>'+banner;
   renderNodes();
 }
@@ -3006,20 +3122,20 @@ window.yhToggleTask=function(d,i){
 };
 window.yhSwitchCamp=function(id){
   camp=id;
-  document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
-  var at=document.querySelector('.yh-ctab[data-camp="'+id+'"]');if(at)at.classList.add('active');
+  document.querySelectorAll('.yh-wtab').forEach(function(t){t.classList.remove('active');});
+  var at=document.querySelector('.yh-wtab[data-camp="'+id+'"]');if(at)at.classList.add('active');
   var c=CAMPS[id];
   var te=g('yh-camp-title');if(te)te.textContent=c.t;
   var de=g('yh-camp-desc');if(de)de.textContent=c.d;
   var panel=g('yh-task-panel');
-  if(panel)panel.innerHTML='<div class="yh-task-empty"><div style="font-size:20px;opacity:.3">&#8593;</div><div>Bir gune tikla</div></div>';
+  if(panel)panel.innerHTML='<div class="yh-task-empty"><div class="yh-task-empty-arrow">↑</div><div>Bir güne tıkla, görevleri gör</div></div>';
   sel=null;renderNodes();
 };
 load();
 var ci=Math.max(0,Math.floor((TODAY-1)/7));
 camp=ci;
-document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
-var at=document.querySelector('.yh-ctab[data-camp="'+ci+'"]');if(at)at.classList.add('active');
+document.querySelectorAll('.yh-wtab').forEach(function(t){t.classList.remove('active');});
+var at=document.querySelector('.yh-wtab[data-camp="'+ci+'"]');if(at)at.classList.add('active');
 var c=CAMPS[ci];
 var te=g('yh-camp-title');if(te)te.textContent=c.t;
 var de=g('yh-camp-desc');if(de)de.textContent=c.d;
