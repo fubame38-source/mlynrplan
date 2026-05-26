@@ -903,6 +903,24 @@ body.light .yh-task-item{background:#fff;border-color:rgba(0,0,0,.07)}
 body.light .yh-task-item:hover{border-color:rgba(0,0,0,.14)}
 .yh-done-banner{display:flex;align-items:center;gap:10px;padding:12px 18px;background:rgba(34,197,94,.06);border-top:1px solid var(--green-ln);font-size:12px;color:var(--green)}
 @media(max-width:600px){.yh-camps-row{grid-template-columns:repeat(2,1fr)}.yh-today-right{display:none}.yh-nodes{gap:3px}.yh-node-btn{border-radius:8px}}
+
+/* YH Info Boxes */
+.yh-info-box{border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+.yh-ozet{background:rgba(99,102,241,.1);border-left:3px solid #6366f1;}
+.yh-dikkat{background:rgba(251,146,60,.1);border-left:3px solid #fb923c;}
+.yh-info-label{font-size:10px;font-weight:700;letter-spacing:.8px;opacity:.7;margin-bottom:4px;text-transform:uppercase;}
+.yh-info-text{font-size:13px;line-height:1.5;opacity:.9;}
+/* AI Rehber Button */
+.yh-ai-rehber-btn{display:flex;align-items:center;gap:8px;width:100%;padding:12px 16px;margin-top:12px;background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(168,85,247,.15));border:1px solid rgba(99,102,241,.3);border-radius:10px;color:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.yh-ai-rehber-btn:hover{background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(168,85,247,.25));border-color:rgba(99,102,241,.5);}
+/* AI Area */
+.yh-ai-area{margin-top:8px;}
+.yh-ai-loading{padding:16px;text-align:center;opacity:.6;font-size:13px;animation:pulse 1.5s infinite;}
+.yh-ai-response{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:14px;}
+.yh-ai-badge{font-size:10px;font-weight:700;letter-spacing:.8px;opacity:.6;margin-bottom:8px;text-transform:uppercase;}
+.yh-ai-text{font-size:13px;line-height:1.6;}
+.yh-ai-kapat{margin-top:12px;padding:6px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;color:inherit;font-size:12px;cursor:pointer;}
+.yh-ai-kapat:hover{background:rgba(255,255,255,.2);}
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -2884,23 +2902,6 @@ function toggleOnboarding(){
 })();
 
 
-/* YH Info Boxes */
-.yh-info-box{border-radius:10px;padding:12px 14px;margin-bottom:10px;}
-.yh-ozet{background:rgba(99,102,241,.1);border-left:3px solid #6366f1;}
-.yh-dikkat{background:rgba(251,146,60,.1);border-left:3px solid #fb923c;}
-.yh-info-label{font-size:10px;font-weight:700;letter-spacing:.8px;opacity:.7;margin-bottom:4px;text-transform:uppercase;}
-.yh-info-text{font-size:13px;line-height:1.5;opacity:.9;}
-/* AI Rehber Button */
-.yh-ai-rehber-btn{display:flex;align-items:center;gap:8px;width:100%;padding:12px 16px;margin-top:12px;background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(168,85,247,.15));border:1px solid rgba(99,102,241,.3);border-radius:10px;color:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
-.yh-ai-rehber-btn:hover{background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(168,85,247,.25));border-color:rgba(99,102,241,.5);}
-/* AI Area */
-.yh-ai-area{margin-top:8px;}
-.yh-ai-loading{padding:16px;text-align:center;opacity:.6;font-size:13px;animation:pulse 1.5s infinite;}
-.yh-ai-response{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:14px;}
-.yh-ai-badge{font-size:10px;font-weight:700;letter-spacing:.8px;opacity:.6;margin-bottom:8px;text-transform:uppercase;}
-.yh-ai-text{font-size:13px;line-height:1.6;}
-.yh-ai-kapat{margin-top:12px;padding:6px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;color:inherit;font-size:12px;cursor:pointer;}
-.yh-ai-kapat:hover{background:rgba(255,255,255,.2);}
 
 /* YOL HARITASI JS */
 (function(){
