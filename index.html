@@ -809,155 +809,100 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .aw-item strong{color:var(--text);font-weight:600}
 @media(max-width:640px){.rules-grid{grid-template-columns:1fr}}
 
-/* ═══════════════════════════════════════
-   YOL HARITASI — TAM YENİ TASARIM
-═══════════════════════════════════════ */
-.yh-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px) 40px;position:relative;z-index:1}
-
-/* ── HEADER ── */
-.yh-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
-.yh-header-left{}
-.yh-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.yh-eyebrow::before{content:'';width:20px;height:1px;background:var(--border2)}
-.yh-title{font-size:clamp(26px,5vw,36px);font-weight:900;color:var(--white);letter-spacing:-1.5px;line-height:1}
-.yh-title em{font-style:normal;color:var(--green)}
-
-/* ── GENEL İLERLEME KARTLARI ── */
-.yh-progress-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
-.yh-pstat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;position:relative;overflow:hidden;transition:border-color .2s}
-.yh-pstat::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.02),transparent);pointer-events:none}
-.yh-pstat-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.yh-pstat-val{font-size:28px;font-weight:900;color:var(--white);letter-spacing:-2px;line-height:1}
-.yh-pstat-sub{font-size:11px;color:var(--text3);margin-top:4px}
-.yh-pstat.green .yh-pstat-val{color:var(--green)}
-.yh-pstat.green{border-color:var(--green-ln);background:rgba(34,197,94,.03)}
-.yh-pstat-ring{position:absolute;right:14px;top:50%;transform:translateY(-50%)}
-body.light .yh-pstat{background:#fff;border-color:rgba(0,0,0,.08)}
-
-/* ── BUGÜN KARTI ── */
-.yh-today-wrap{margin-bottom:24px;position:relative}
-.yh-today-card{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.03));border:1px solid rgba(34,197,94,.35);border-radius:18px;padding:24px 28px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);-webkit-tap-highlight-color:transparent}
-.yh-today-card:hover{border-color:rgba(34,197,94,.6);transform:translateY(-2px);box-shadow:0 16px 48px rgba(34,197,94,.12)}
-.yh-today-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:.7}
-.yh-today-inner{display:flex;align-items:center;gap:20px}
+/* YOL HARITASI */
+.yh-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:24px;position:relative;z-index:1}
+.yh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:16px}
+.yh-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.yh-title{font-size:clamp(22px,4vw,28px);font-weight:900;color:var(--white);letter-spacing:-1px}
+.yh-top-right{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.yh-ring-wrap{position:relative;width:56px;height:56px;flex-shrink:0}
+.yh-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--green);font-family:var(--mono)}
+.yh-top-stat-val{font-size:22px;font-weight:900;color:var(--white);line-height:1;letter-spacing:-1px}
+.yh-top-stat-tot{font-size:13px;color:var(--text3);margin-left:2px}
+.yh-top-stat-lbl{font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;margin-top:2px}
+.yh-today-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--green-ln);border-radius:16px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:20px;cursor:pointer;transition:border-color .2s,transform .15s}
+.yh-today-card:hover{border-color:rgba(34,197,94,.5);transform:translateY(-1px)}
+.yh-today-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(34,197,94,.06),transparent 60%);pointer-events:none}
+.yh-today-pulse{position:absolute;top:20px;right:20px;width:8px;height:8px;border-radius:50%;background:var(--green);animation:yhblink 1.6s ease-in-out infinite}
+@keyframes yhblink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
 .yh-today-left{flex:1;min-width:0}
-.yh-today-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:20px;padding:4px 12px;margin-bottom:10px}
-.yh-today-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:yhblink 1.4s ease-in-out infinite}
-@keyframes yhblink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.5)}50%{opacity:.6;box-shadow:0 0 0 5px rgba(34,197,94,0)}}
-.yh-today-num{font-family:var(--mono);font-size:11px;color:rgba(34,197,94,.6);margin-bottom:4px;letter-spacing:1px}
-.yh-today-title{font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px;letter-spacing:-.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.yh-today-desc{font-size:12px;color:rgba(255,255,255,.45);line-height:1.5;max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.yh-today-right{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.yh-today-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.yh-today-title{font-size:16px;font-weight:800;color:var(--white);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.yh-today-sub{font-size:11px;color:var(--text3)}
+.yh-today-right{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
 .yh-today-tasks-mini{display:flex;gap:5px}
-.yh-ttask{width:24px;height:24px;border-radius:7px;border:1.5px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:rgba(34,197,94,.4);transition:all .2s}
-.yh-ttask.done{background:var(--green);border-color:var(--green);color:#000;font-size:11px}
-.yh-today-cta{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);font-weight:700;padding:8px 14px;border:1px solid rgba(34,197,94,.3);border-radius:8px;transition:all .2s;white-space:nowrap}
-.yh-today-card:hover .yh-today-cta{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.5)}
-body.light .yh-today-card{background:linear-gradient(135deg,rgba(22,163,74,.06),rgba(22,163,74,.02));border-color:rgba(22,163,74,.3)}
-
-/* ── HAFTA SEKMELERİ ── */
-.yh-weeks-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:0}
-.yh-wtab{background:var(--surface);border:1px solid var(--border);border-radius:14px 14px 0 0;padding:14px 16px 0;cursor:pointer;transition:all .2s cubic-bezier(.34,1.2,.64,1);text-align:left;font-family:var(--font);border-bottom:none;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
-.yh-wtab-accent{position:absolute;top:0;left:0;right:0;height:3px;background:transparent;transition:background .2s;border-radius:14px 14px 0 0}
-.yh-wtab:hover{background:var(--surface2);border-color:rgba(255,255,255,.14);transform:translateY(-2px);border-bottom:none}
-.yh-wtab.active{background:var(--surface2);border-color:var(--border2);border-bottom-color:transparent;transform:none}
-.yh-wtab.active .yh-wtab-accent{background:linear-gradient(90deg,var(--green),rgba(34,197,94,.3))}
-.yh-wtab.done-tab .yh-wtab-accent{background:linear-gradient(90deg,rgba(34,197,94,.5),transparent)}
-.yh-wtab.done-tab .yh-wtab-name{color:rgba(34,197,94,.75)}
-.yh-wtab-inner{padding-bottom:12px}
-.yh-wtab-emoji{font-size:20px;margin-bottom:6px;display:block;line-height:1}
-.yh-wtab-name{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:2px;letter-spacing:-.2px;transition:color .2s}
-.yh-wtab.active .yh-wtab-name{color:var(--white)}
-.yh-wtab-sub{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;line-height:1.4}
-.yh-wtab-bar-wrap{height:3px;background:rgba(255,255,255,.04);overflow:hidden}
-.yh-wtab-bar{height:100%;background:var(--green);transition:width .6s cubic-bezier(.4,0,.2,1);width:0%}
-body.light .yh-wtab{background:#f0f0f0;border-color:rgba(0,0,0,.08)}
-body.light .yh-wtab.active{background:#fff;border-color:rgba(0,0,0,.12)}
-body.light .yh-wtab:hover{background:#e8e8e8}
-
-/* ── KAMP BODY ── */
-.yh-camp-body{background:var(--surface2);border:1px solid var(--border2);border-top:none;border-radius:0 0 18px 18px;padding:24px 20px 20px;margin-bottom:20px}
+.yh-ttask{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--text3);transition:all .2s}
+.yh-ttask.done{background:var(--green);border-color:var(--green);color:#fff}
+.yh-today-cta{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);font-weight:600}
+body.light .yh-today-card{background:#fff;border-color:rgba(22,163,74,.25)}
+.yh-camps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.yh-ctab{background:var(--surface);border:1px solid var(--border);border-radius:12px 12px 0 0;padding:12px 14px 0;cursor:pointer;transition:all .2s;text-align:left;font-family:var(--font);border-bottom:none}
+.yh-ctab:hover{border-color:var(--border2)}
+.yh-ctab.active{background:var(--surface2);border-color:var(--border2);border-bottom-color:transparent}
+.yh-ctab.yh-tab-done .yh-ctab-name{color:rgba(34,197,94,.7)}
+.yh-ctab-inner{padding-bottom:10px}
+.yh-ctab-name{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:2px;transition:color .2s}
+.yh-ctab.active .yh-ctab-name{color:var(--white)}
+.yh-ctab-range{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px}
+.yh-ctab-prog-wrap{height:3px;background:rgba(255,255,255,.04);overflow:hidden}
+.yh-ctab-prog{height:100%;background:var(--green);transition:width .5s ease;width:0%}
+body.light .yh-ctab{background:#f8f8f8;border-color:rgba(0,0,0,.08)}
+body.light .yh-ctab.active{background:#fff}
+.yh-camp-body{background:var(--surface2);border:1px solid var(--border2);border-top:none;border-radius:0 0 16px 16px;padding:20px;margin-bottom:16px}
 body.light .yh-camp-body{background:#fff;border-color:rgba(0,0,0,.1)}
-.yh-camp-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
-.yh-camp-info{}
-.yh-camp-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:3px;letter-spacing:-.3px}
-.yh-camp-desc{font-size:11px;color:var(--text3);line-height:1.5}
-.yh-camp-prog-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.yh-camp-prog-label{font-family:var(--mono);font-size:10px;color:var(--text3)}
-.yh-camp-prog-track{width:80px;height:5px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
-.yh-camp-prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,rgba(34,197,94,.5),var(--green));transition:width .6s cubic-bezier(.4,0,.2,1)}
-body.light .yh-camp-prog-track{background:rgba(0,0,0,.08)}
-
-/* ── GÜN KARTLARI ── */
-.yh-days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:16px}
-.yh-day-card{display:flex;flex-direction:column;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
-.yh-day-inner{width:100%;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;border:1.5px solid var(--border);background:rgba(255,255,255,.02);transition:all .22s cubic-bezier(.34,1.2,.64,1);padding:12px 6px 10px;gap:5px;min-height:80px;position:relative;overflow:hidden}
-.yh-day-card:hover .yh-day-inner{transform:translateY(-4px) scale(1.04);border-color:rgba(255,255,255,.22);box-shadow:0 12px 32px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06)}
-.yh-day-num{font-size:20px;font-weight:900;line-height:1;color:var(--text3);font-family:var(--mono);letter-spacing:-1px;transition:color .2s}
-.yh-day-lbl{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);transition:color .2s;font-family:var(--mono)}
-.yh-day-tag{font-size:6.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);opacity:.5;text-align:center;padding:0 2px;line-height:1.3;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-
-/* States */
-.yh-day-card.state-done .yh-day-inner{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.3);box-shadow:0 2px 16px rgba(34,197,94,.1)}
-.yh-day-card.state-done .yh-day-num{color:var(--green)}
-.yh-day-card.state-done .yh-day-lbl{color:rgba(34,197,94,.6)}
-.yh-day-card.state-current .yh-day-inner{background:rgba(34,197,94,.1);border-color:var(--green);border-width:2px;box-shadow:0 0 0 3px rgba(34,197,94,.1),0 4px 24px rgba(34,197,94,.2);animation:yhDayPulse 2.2s ease-in-out infinite}
-.yh-day-card.state-current .yh-day-num{color:var(--green)}
-.yh-day-card.state-current .yh-day-lbl{color:var(--green);font-weight:900}
-@keyframes yhDayPulse{0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.12),0 4px 24px rgba(34,197,94,.2)}50%{box-shadow:0 0 0 6px rgba(34,197,94,.05),0 4px 32px rgba(34,197,94,.3)}}
-.yh-day-card.state-open .yh-day-inner{background:rgba(255,255,255,.02);border-color:var(--border2)}
-.yh-day-card.state-open .yh-day-num{color:var(--text2)}
-.yh-day-card.state-locked .yh-day-inner{opacity:.22;cursor:default}
-.yh-day-card.state-locked{cursor:default}
-.yh-day-card.state-locked:hover .yh-day-inner{transform:none;box-shadow:none}
-.yh-day-card.state-selected .yh-day-inner{border-color:var(--white)!important;border-width:2px!important;box-shadow:0 0 0 3px rgba(255,255,255,.1)!important}
-.yh-day-check{position:absolute;top:-5px;right:-5px;width:18px;height:18px;background:var(--green);border-radius:50%;border:2px solid var(--surface2);display:flex;align-items:center;justify-content:center;font-size:9px;color:#000;font-weight:900}
-body.light .yh-day-inner{background:rgba(0,0,0,.02);border-color:rgba(0,0,0,.08)}
-body.light .yh-day-card.state-done .yh-day-inner{background:rgba(22,163,74,.07);border-color:rgba(22,163,74,.25)}
-body.light .yh-day-card.state-current .yh-day-inner{background:rgba(22,163,74,.1);border-color:#16a34a}
-
-/* ── GÖREV PANELİ ── */
-.yh-task-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .2s}
-body.light .yh-task-panel{background:#fafafa;border-color:rgba(0,0,0,.08)}
-.yh-task-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:40px 0;color:var(--text3);font-size:11px;font-family:var(--mono);letter-spacing:1.5px;text-transform:uppercase}
-.yh-task-empty-arrow{font-size:22px;opacity:.18;margin-bottom:4px}
-.yh-panel-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border);background:linear-gradient(90deg,var(--surface2),rgba(255,255,255,.01))}
-body.light .yh-panel-head{background:#f4f4f4;border-color:rgba(0,0,0,.07)}
-.yh-panel-badge{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 11px;border-radius:7px;font-weight:700;flex-shrink:0}
-.yh-pb-today{color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3)}
-.yh-pb-done{color:rgba(34,197,94,.7);background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.15)}
-.yh-pb-open{color:var(--text3);background:transparent;border:1px solid var(--border2)}
-.yh-panel-title{font-size:14px;font-weight:800;color:var(--text);flex:1;letter-spacing:-.3px}
-.yh-panel-meta{font-size:11px;color:var(--text3);flex-shrink:0;font-family:var(--mono);letter-spacing:.5px}
-.yh-task-list{list-style:none;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
-.yh-task-item{display:flex;align-items:flex-start;gap:13px;padding:13px 16px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:11px;cursor:pointer;transition:all .18s cubic-bezier(.34,1.2,.64,1);-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
-.yh-task-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:background .2s;border-radius:0 2px 2px 0}
-.yh-task-item:hover{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.05);transform:translateX(4px)}
-.yh-task-item:hover::before{background:rgba(255,255,255,.25)}
-.yh-task-item.ck{opacity:.5;background:rgba(34,197,94,.04);border-color:rgba(34,197,94,.15)}
-.yh-task-item.ck::before{background:var(--green)}
+.yh-map-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.yh-camp-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.yh-camp-desc{font-size:11px;color:var(--text3)}
+.yh-map-prog{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.yh-map-prog span{font-family:var(--mono);font-size:10px;color:var(--text3);white-space:nowrap}
+.yh-cp-track{width:80px;background:rgba(255,255,255,.06);border-radius:4px;height:4px;overflow:hidden}
+.yh-cp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,rgba(34,197,94,.6),var(--green));transition:width .5s ease}
+body.light .yh-cp-track{background:rgba(0,0,0,.07)}
+.yh-nodes{display:flex;gap:6px;align-items:flex-start;margin-bottom:16px}
+.yh-node{flex:1;display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.yh-node-btn{width:100%;aspect-ratio:1;max-width:68px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--border);background:var(--surface);transition:all .2s;position:relative}
+.yh-node:hover .yh-node-btn{transform:scale(1.08)}
+.yh-node-num{font-size:15px;font-weight:800;line-height:1}
+.yh-node-lbl{font-size:7px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.yh-node.done .yh-node-btn{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.45)}
+.yh-node.done .yh-node-num{color:var(--green)}
+.yh-node.done .yh-node-lbl{color:rgba(34,197,94,.7)}
+.yh-node.current .yh-node-btn{background:rgba(34,197,94,.1);border-color:var(--green);animation:yhnp 2s ease-in-out infinite}
+.yh-node.current .yh-node-num{color:var(--green)}
+.yh-node.current .yh-node-lbl{color:var(--green)}
+.yh-node.open .yh-node-btn{background:var(--surface);border-color:var(--border2)}
+.yh-node.open .yh-node-num{color:var(--text2)}
+.yh-node.open .yh-node-lbl{color:var(--text3)}
+.yh-node.locked .yh-node-btn{opacity:.3}
+.yh-node.locked{cursor:default}
+.yh-node.locked:hover .yh-node-btn{transform:none}
+.yh-node.locked .yh-node-num{color:var(--text3)}
+.yh-node.selected .yh-node-btn{border-color:var(--white)!important}
+@keyframes yhnp{0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.12)}50%{box-shadow:0 0 0 6px rgba(34,197,94,.06),0 0 20px rgba(34,197,94,.25)}}
+.yh-node-check{position:absolute;top:-5px;right:-5px;width:15px;height:15px;background:var(--green);border-radius:50%;border:2px solid var(--surface2);display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:800}
+.yh-task-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+body.light .yh-task-panel{background:#f8f8f8;border-color:rgba(0,0,0,.08)}
+.yh-task-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:32px 0;color:var(--text3);font-size:12px}
+.yh-panel-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);background:var(--surface2)}
+body.light .yh-panel-head{background:#f0f0f0;border-color:rgba(0,0,0,.08)}
+.yh-panel-badge{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:6px;font-weight:700;flex-shrink:0}
+.yh-pb-today{color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln)}
+.yh-pb-done{color:rgba(34,197,94,.7);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15)}
+.yh-pb-open{color:var(--text3);background:transparent;border:1px solid var(--border)}
+.yh-panel-title{font-size:14px;font-weight:700;color:var(--text);flex:1}
+.yh-panel-meta{font-size:11px;color:var(--text3);flex-shrink:0;font-family:var(--mono)}
+.yh-task-list{list-style:none;padding:10px;display:flex;flex-direction:column;gap:6px}
+.yh-task-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s}
+.yh-task-item:hover{border-color:var(--border2)}
+.yh-task-item.ck{opacity:.6}
 .yh-task-item.ck .yh-task-text{text-decoration:line-through;color:var(--text3)}
-.yh-task-item.ck:hover{transform:none;opacity:.55}
-.yh-task-box{width:21px;height:21px;border-radius:6px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:transparent;transition:all .22s cubic-bezier(.34,1.56,.64,1);margin-top:1px}
-.yh-task-item.ck .yh-task-box{background:var(--green);border-color:var(--green);color:#000;transform:scale(1.1)}
-.yh-task-text{font-size:13px;color:var(--text);flex:1;line-height:1.55}
-body.light .yh-task-item{background:rgba(0,0,0,.015);border-color:rgba(0,0,0,.07)}
-body.light .yh-task-item:hover{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.14)}
-.yh-done-banner{display:flex;align-items:center;gap:10px;padding:14px 22px;background:linear-gradient(90deg,rgba(34,197,94,.1),rgba(34,197,94,.04));border-top:1px solid rgba(34,197,94,.2);font-size:12px;color:var(--green);font-weight:700;letter-spacing:.3px}
-.yh-done-banner-icon{font-size:16px}
-
-/* ── RESPONSIVE ── */
-@media(max-width:600px){
-  .yh-progress-row{grid-template-columns:1fr 1fr;gap:8px}
-  .yh-progress-row .yh-pstat:last-child{grid-column:1/-1}
-  .yh-weeks-nav{grid-template-columns:repeat(2,1fr)}
-  .yh-today-right{display:none}
-  .yh-days-grid{grid-template-columns:repeat(4,1fr);gap:5px}
-  .yh-day-inner{min-height:64px;border-radius:9px;padding:10px 4px 8px}
-  .yh-day-num{font-size:16px}
-  .yh-day-tag{display:none}
-  .yh-camp-body{padding:16px 14px 14px}
-}
+.yh-task-box{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:transparent;transition:all .2s}
+.yh-task-item.ck .yh-task-box{background:var(--green);border-color:var(--green);color:#fff}
+.yh-task-text{font-size:13px;color:var(--text);flex:1;line-height:1.4}
+body.light .yh-task-item{background:#fff;border-color:rgba(0,0,0,.07)}
+body.light .yh-task-item:hover{border-color:rgba(0,0,0,.14)}
+.yh-done-banner{display:flex;align-items:center;gap:10px;padding:12px 18px;background:rgba(34,197,94,.06);border-top:1px solid var(--green-ln);font-size:12px;color:var(--green)}
+@media(max-width:600px){.yh-camps-row{grid-template-columns:repeat(2,1fr)}.yh-today-right{display:none}.yh-nodes{gap:3px}.yh-node-btn{border-radius:8px}}
 </style>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
@@ -1330,126 +1275,74 @@ body.light .yh-task-item:hover{background:rgba(0,0,0,.04);border-color:rgba(0,0,
 
   <!-- YOL HARITASI -->
   <div class="yh-section" id="yh-section">
-
-    <!-- Başlık -->
-    <div class="yh-header">
-      <div class="yh-header-left">
-        <div class="yh-eyebrow">28 Günlük Plan</div>
-        <div class="yh-title">Yol <em>Haritası</em></div>
+    <div class="yh-top">
+      <div>
+        <div class="yh-eyebrow">&#10022; 28 Gunluk Plan</div>
+        <div class="yh-title">Yol Haritasi</div>
       </div>
-    </div>
-
-    <!-- İstatistik Kartları -->
-    <div class="yh-progress-row">
-      <div class="yh-pstat green">
-        <div class="yh-pstat-label">Tamamlanan</div>
-        <div class="yh-pstat-val"><span id="yh-total-done">0</span><span style="font-size:16px;color:var(--text3);font-weight:500">/28</span></div>
-        <div class="yh-pstat-sub">Gün tamamlandı</div>
-        <div class="yh-pstat-ring">
-          <svg width="52" height="52" viewBox="0 0 52 52">
-            <circle cx="26" cy="26" r="20" fill="none" stroke="rgba(34,197,94,.1)" stroke-width="3.5"/>
-            <circle id="yh-ring" cx="26" cy="26" r="20" fill="none" stroke="var(--green)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="125.7" stroke-dashoffset="125.7" transform="rotate(-90 26 26)" style="transition:stroke-dashoffset .9s cubic-bezier(.4,0,.2,1)"/>
+      <div class="yh-top-right">
+        <div class="yh-ring-wrap">
+          <svg width="56" height="56" viewBox="0 0 56 56">
+            <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="4"/>
+            <circle id="yh-ring" cx="28" cy="28" r="22" fill="none" stroke="var(--green)" stroke-width="4" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2" transform="rotate(-90 28 28)" style="transition:stroke-dashoffset .8s ease"/>
           </svg>
-          <div class="yh-ring-pct" id="yh-ring-pct" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--green);font-family:var(--mono);top:0;left:0;right:0;bottom:0">0%</div>
+          <div class="yh-ring-pct" id="yh-ring-pct">0%</div>
         </div>
-      </div>
-      <div class="yh-pstat" id="yh-week-stat">
-        <div class="yh-pstat-label">Bu Hafta</div>
-        <div class="yh-pstat-val" id="yh-week-val">—</div>
-        <div class="yh-pstat-sub" id="yh-week-sub">Tamamlanan gün</div>
-      </div>
-      <div class="yh-pstat" id="yh-streak-stat">
-        <div class="yh-pstat-label">Bugün</div>
-        <div class="yh-pstat-val" id="yh-day-val">—</div>
-        <div class="yh-pstat-sub" id="yh-day-sub">Görev bekliyor</div>
-      </div>
-    </div>
-
-    <!-- Bugünün Görevi Kartı -->
-    <div class="yh-today-wrap">
-      <div class="yh-today-card" id="yh-today-card" onclick="yhGoToday()">
-        <div class="yh-today-inner">
-          <div class="yh-today-left">
-            <div class="yh-today-badge">
-              <div class="yh-today-badge-dot"></div>
-              BUGÜN · GÜN <span id="yh-today-daynum">1</span>
-            </div>
-            <div class="yh-today-title" id="yh-today-title">eBay Hesap Açılışı</div>
-            <div class="yh-today-desc" id="yh-today-sub">0 / 3 görev tamamlandı</div>
-          </div>
-          <div class="yh-today-right">
-            <div class="yh-today-tasks-mini" id="yh-today-tasks-mini"></div>
-            <div class="yh-today-cta">Göreve Başla →</div>
-          </div>
+        <div>
+          <div class="yh-top-stat-val"><span id="yh-total-done">0</span><span class="yh-top-stat-tot">/28</span></div>
+          <div class="yh-top-stat-lbl">tamamlandi</div>
         </div>
       </div>
     </div>
-
-    <!-- Hafta Sekmeleri -->
-    <div class="yh-weeks-nav" id="yh-camps-nav">
-      <button class="yh-wtab active" data-camp="0" onclick="yhSwitchCamp(0)">
-        <div class="yh-wtab-accent"></div>
-        <div class="yh-wtab-inner">
-          <span class="yh-wtab-emoji">📦</span>
-          <div class="yh-wtab-name">Hafta 1</div>
-          <div class="yh-wtab-sub">eBay Başlangıç</div>
-        </div>
-        <div class="yh-wtab-bar-wrap"><div class="yh-wtab-bar" id="yh-ctab-prog-0"></div></div>
+    <div class="yh-today-card" id="yh-today-card" onclick="yhGoToday()">
+      <div class="yh-today-pulse"></div>
+      <div class="yh-today-left">
+        <div class="yh-today-tag">&#9889; BUGUN &middot; GUN <span id="yh-today-daynum">1</span></div>
+        <div class="yh-today-title" id="yh-today-title">eBay Hesap Acilisi</div>
+        <div class="yh-today-sub" id="yh-today-sub">0 / 3 gorev tamamlandi</div>
+      </div>
+      <div class="yh-today-right">
+        <div class="yh-today-tasks-mini" id="yh-today-tasks-mini"></div>
+        <div class="yh-today-cta">Goreve Basla &rarr;</div>
+      </div>
+    </div>
+    <div class="yh-camps-row" id="yh-camps-nav">
+      <button class="yh-ctab active" data-camp="0" onclick="yhSwitchCamp(0)">
+        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 1</div><div class="yh-ctab-range">eBay Baslangic</div></div>
+        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-0"></div></div>
       </button>
-      <button class="yh-wtab" data-camp="1" onclick="yhSwitchCamp(1)">
-        <div class="yh-wtab-accent"></div>
-        <div class="yh-wtab-inner">
-          <span class="yh-wtab-emoji">⚡</span>
-          <div class="yh-wtab-name">Hafta 2</div>
-          <div class="yh-wtab-sub">Otomasyon</div>
-        </div>
-        <div class="yh-wtab-bar-wrap"><div class="yh-wtab-bar" id="yh-ctab-prog-1"></div></div>
+      <button class="yh-ctab" data-camp="1" onclick="yhSwitchCamp(1)">
+        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 2</div><div class="yh-ctab-range">Otomasyon</div></div>
+        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-1"></div></div>
       </button>
-      <button class="yh-wtab" data-camp="2" onclick="yhSwitchCamp(2)">
-        <div class="yh-wtab-accent"></div>
-        <div class="yh-wtab-inner">
-          <span class="yh-wtab-emoji">🛡️</span>
-          <div class="yh-wtab-name">Hafta 3</div>
-          <div class="yh-wtab-sub">Hesap Sağlığı</div>
-        </div>
-        <div class="yh-wtab-bar-wrap"><div class="yh-wtab-bar" id="yh-ctab-prog-2"></div></div>
+      <button class="yh-ctab" data-camp="2" onclick="yhSwitchCamp(2)">
+        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 3</div><div class="yh-ctab-range">Hesap Sagligi</div></div>
+        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-2"></div></div>
       </button>
-      <button class="yh-wtab" data-camp="3" onclick="yhSwitchCamp(3)">
-        <div class="yh-wtab-accent"></div>
-        <div class="yh-wtab-inner">
-          <span class="yh-wtab-emoji">🚀</span>
-          <div class="yh-wtab-name">Hafta 4</div>
-          <div class="yh-wtab-sub">Shopify</div>
-        </div>
-        <div class="yh-wtab-bar-wrap"><div class="yh-wtab-bar" id="yh-ctab-prog-3"></div></div>
+      <button class="yh-ctab" data-camp="3" onclick="yhSwitchCamp(3)">
+        <div class="yh-ctab-inner"><div class="yh-ctab-name">Hafta 4</div><div class="yh-ctab-range">Shopify</div></div>
+        <div class="yh-ctab-prog-wrap"><div class="yh-ctab-prog" id="yh-ctab-prog-3"></div></div>
       </button>
     </div>
-
-    <!-- Kamp İçeriği -->
     <div class="yh-camp-body">
-      <div class="yh-camp-meta">
-        <div class="yh-camp-info">
-          <div class="yh-camp-title" id="yh-camp-title">Hafta 1 — Hesap & Ürün Araştırma</div>
-          <div class="yh-camp-desc" id="yh-camp-desc">eBay hesabı kur, Amazon tedarik sistemini öğren</div>
+      <div class="yh-map-header">
+        <div>
+          <div class="yh-camp-title" id="yh-camp-title">Hafta 1 - Hesap ve Urun Arastirma</div>
+          <div class="yh-camp-desc" id="yh-camp-desc">eBay hesabi kur, Amazon tedarik sistemini ogren</div>
         </div>
-        <div class="yh-camp-prog-wrap">
-          <span class="yh-camp-prog-label" id="yh-cp-text">0 / 7</span>
-          <div class="yh-camp-prog-track"><div class="yh-camp-prog-fill" id="yh-cp-fill" style="width:0%"></div></div>
+        <div class="yh-map-prog">
+          <span id="yh-cp-text">0 / 7</span>
+          <div class="yh-cp-track"><div class="yh-cp-fill" id="yh-cp-fill" style="width:0%"></div></div>
         </div>
       </div>
-
-      <!-- Gün Kartları -->
-      <div class="yh-days-grid" id="yh-days-grid"></div>
-
-      <!-- Görev Paneli -->
+      <div class="yh-nodes" id="yh-days-grid"></div>
       <div class="yh-task-panel" id="yh-task-panel">
         <div class="yh-task-empty">
-          <div class="yh-task-empty-arrow">↑</div>
-          <div>Bir güne tıkla, görevleri gör</div>
+          <div style="font-size:20px;opacity:.3">&#8593;</div>
+          <div>Bir gune tikla, gorevleri gor</div>
         </div>
       </div>
     </div>
-
   </div>
 
   <!-- MLYNR CLUB -->
@@ -2990,6 +2883,25 @@ function toggleOnboarding(){
   }}catch(e){}
 })();
 
+
+/* YH Info Boxes */
+.yh-info-box{border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+.yh-ozet{background:rgba(99,102,241,.1);border-left:3px solid #6366f1;}
+.yh-dikkat{background:rgba(251,146,60,.1);border-left:3px solid #fb923c;}
+.yh-info-label{font-size:10px;font-weight:700;letter-spacing:.8px;opacity:.7;margin-bottom:4px;text-transform:uppercase;}
+.yh-info-text{font-size:13px;line-height:1.5;opacity:.9;}
+/* AI Rehber Button */
+.yh-ai-rehber-btn{display:flex;align-items:center;gap:8px;width:100%;padding:12px 16px;margin-top:12px;background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(168,85,247,.15));border:1px solid rgba(99,102,241,.3);border-radius:10px;color:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.yh-ai-rehber-btn:hover{background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(168,85,247,.25));border-color:rgba(99,102,241,.5);}
+/* AI Area */
+.yh-ai-area{margin-top:8px;}
+.yh-ai-loading{padding:16px;text-align:center;opacity:.6;font-size:13px;animation:pulse 1.5s infinite;}
+.yh-ai-response{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:14px;}
+.yh-ai-badge{font-size:10px;font-weight:700;letter-spacing:.8px;opacity:.6;margin-bottom:8px;text-transform:uppercase;}
+.yh-ai-text{font-size:13px;line-height:1.6;}
+.yh-ai-kapat{margin-top:12px;padding:6px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;color:inherit;font-size:12px;cursor:pointer;}
+.yh-ai-kapat:hover{background:rgba(255,255,255,.2);}
+
 /* YOL HARITASI JS */
 (function(){
 var CAMPS=[
@@ -2999,34 +2911,118 @@ var CAMPS=[
   {t:'Hafta 4 \u2014 Shopify\u2019ya Ge\u00e7i\u015f',d:'eBay k\u00e2r g\u00f6rd\u00fckten sonra kendi ma\u011fazar\u0131n\u0131 kur',days:[22,23,24,25,26,27,28]}
 ];
 var TASKS={
-  1:{t:'eBay Hesap A\u00e7\u0131l\u0131\u015f\u0131',g:['eBay hesab\u0131n\u0131 olu\u015ftur, t\u00fcm adres bilgilerini eksiksiz gir','Payoneer hesab\u0131 a\u00e7, eBay\'e ba\u011fla','VPN\'siz giri\u015f yap \u2014 ayn\u0131 cihazdan, sabit IP\'den']},
-  2:{t:'Yol Haritas\u0131n\u0131 Anlamak',g:['Sistem tan\u0131t\u0131m videosunu izle (neden Amazon tedarik?)','\u0130lk 90 g\u00fcn plan\u0131n\u0131 not al','eBay panel ayarlar\u0131n\u0131 tamamla (banka, kargo, iade)']},
-  3:{t:'\u00dcr\u00fcn Ara\u015ft\u0131rma: Temel',g:['\u015e\u0131f\u0131rdan \u00fcr\u00fcn bulma y\u00f6ntemini \u00f6\u011fren','Fiyat analizi yap: Amazon maliyet vs eBay sat\u0131\u015f fiyat\u0131','Rakip ma\u011faza incelemesi yap (en az 3 ma\u011faza)']},
-  4:{t:'\u00dcr\u00fcn Ara\u015ft\u0131rma: \u0130leri',g:['Yapay zeka ile \u00fcr\u00fcn bulma tekni\u011fini uygula','MLYNR eBay ara\u015ft\u0131rma arac\u0131n\u0131 kullan','Bug\u00fcn 5 aday \u00fcr\u00fcn listele ve not al']},
-  5:{t:'VeRO & Markal\u0131 \u00dcr\u00fcn Riski',g:['VeRO listesini \u00f6\u011fren ve kaydet','Listelemek istedi\u011fin \u00fcr\u00fcnlerde marka kontrol\u00fc yap','Risk ta\u015f\u0131yan \u00fcr\u00fcnleri listenden \u00e7\u0131kar']},
-  6:{t:'\u0130lk \u00dcr\u00fcnleri Listele',g:['Manuel listeleme ad\u0131mlar\u0131n\u0131 uygula','Amazon\'dan ilk 3 \u00fcr\u00fcn\u00fcn\u00fc eBay\'e \u00e7ek','Ba\u015fl\u0131k, a\u00e7\u0131klama ve fiyat\u0131 d\u00fczenle']},
-  7:{t:'G\u00fcnl\u00fck Rutin & Hafta 1 Kontrol',g:['Fiyat takibi rutinini kur (sabah kontrol\u00fc)','Envanter y\u00f6netimini \u00f6\u011fren','Kontrol: Mod\u00fcl 1-2-3 tamamland\u0131 m\u0131? \u2713']},
-  8:{t:'AutoDS Kurulumu',g:['AutoDS hesab\u0131 a\u00e7, paneli tan\u0131','Non-API ba\u011flant\u0131s\u0131n\u0131 kur','AutoDS\'i eBay hesab\u0131na ba\u011fla']},
-  9:{t:'AutoDS \u00dcr\u00fcn & Envanter',g:['AutoDS\'e ilk \u00fcr\u00fcnleri ekle','Envanter ayarlar\u0131n\u0131 yap (fiyat kural\u0131)','Auto order kurulumunu tamamla']},
-  10:{t:'Listeleme: \u0130spanyolca & Varyasyon',g:['\u0130spanyolca listeleme y\u00f6ntemini \u00f6\u011fren ve uygula','Varyasyonlu \u00fcr\u00fcn nas\u0131l listelenir? Uygula','Bulk listing i\u00e7in \u015fablon haz\u0131rla']},
-  11:{t:'\u0130lk Sipari\u015f Geldi!',g:['Amazon\'dan manuel sipari\u015f nas\u0131l ge\u00e7ilir \u2014 izle','Tracking ID giri\u015fini yap','Al\u0131c\u0131ya onay mesaj\u0131 g\u00f6nder']},
-  12:{t:'Sipari\u015f Sorunlar\u0131 & Trackerbot',g:['Out of stock durumunda ne yap\u0131l\u0131r? \u00d6\u011fren','Trackerbot kurulumunu tamamla','Yayg\u0131n sipari\u015f sorunlar\u0131 i\u00e7in \u00e7\u00f6z\u00fcm \u015fablonu haz\u0131rla']},
-  13:{t:'Wholesale Dropshipping',g:['Wholesale nedir, farklar\u0131 \u00f6\u011fren','Kullanabilece\u011fin supplier\'lar\u0131 ara\u015ft\u0131r','\u0130lk wholesale \u00fcr\u00fcn denemesini yap']},
-  14:{t:'K\u00e2rl\u0131l\u0131k Hesab\u0131 & Hafta 2 Kontrol',g:['Sat\u0131\u015f sonras\u0131 net k\u00e2r form\u00fcl\u00fcn\u00fc \u00f6\u011fren ve uygula','Payoneer fees hesaplamas\u0131n\u0131 yap','Kontrol: Mod\u00fcl 4-5-6 tamamland\u0131 m\u0131? \u2713']},
-  15:{t:'Hesap Y\u00f6netimi',g:['Gelir-gider Excel tablosunu kur','Sat\u0131\u015f analizini yap \u2014 ne sat\u0131yor, ne satm\u0131yor?','Feedback stratejisini \u00f6\u011fren']},
-  16:{t:'M\u00fc\u015fteri \u0130leti\u015fimi',g:['Mesaj \u015fablonlar\u0131n\u0131 haz\u0131rla (5 senaryo)','\u0130ade y\u00f6netimi s\u00fcrecini \u00f6\u011fren','Olumsuz feedback ile nas\u0131l ba\u015fa \u00e7\u0131k\u0131l\u0131r?']},
-  17:{t:'Hesap Sa\u011fl\u0131\u011f\u0131',g:['Flagged olmak ne demek? \u0130zle ve not al','MC011 uyard\u0131 gelirse ne yap\u0131l\u0131r?','Hesap sa\u011fl\u0131\u011f\u0131 skorunu kontrol et']},
-  18:{t:'Suspend \u00c7\u00f6z\u00fcmleri',g:['\u0130lk suspend gelirse itiraz s\u00fcreci nas\u0131l i\u015fler?','Suspend itiraz mektubu \u015fablonunu \u00f6\u011fren ve haz\u0131rla','\u00d6nleyici tedbirleri listele']},
-  19:{t:'Taktikler & 5 Alt\u0131n Kural',g:['80/20 kural\u0131n\u0131 eBay\'e uygula','Rekabette \u00f6ne \u00e7\u0131kma taktiklerini \u00f6\u011fren','Cashback stratejisini kur']},
-  20:{t:'Sat\u0131\u015f Limiti & Watches',g:['Sat\u0131\u015f limiti nas\u0131l art\u0131r\u0131l\u0131r? Uygula','Views & watches stratejisini \u00f6\u011fren','Bu hafta limit art\u0131\u015f\u0131 i\u00e7in aksiyon al']},
-  21:{t:'Reklam & Hafta 3 Kontrol',g:['eBay Promoted Listings stratejisini \u00f6\u011fren','Satilmayan \u00fcr\u00fcnler i\u00e7in aksiyon plan\u0131 yap','Kontrol: Mod\u00fcl 7-8-9-10 tamamland\u0131 m\u0131? \u2713']},
-  22:{t:'Shopify\'a Ge\u00e7i\u015f Karar\u0131',g:['eBay\'de en az 1 sat\u0131\u015f var m\u0131? \u2014 Kontrol et','Shopify\'a ge\u00e7i\u015f zamanl\u0131mas\u0131n\u0131 de\u011ferlendir','Ge\u00e7i\u015f i\u00e7in haz\u0131rl\u0131k listesi yap']},
-  23:{t:'Shopify Ma\u011faza Kurulumu',g:['Shopify hesab\u0131 a\u00e7 (14 g\u00fcnl\u00fck deneme)','Tema se\u00e7 ve temel sayfalar\u0131 olu\u015ftur','Domain ba\u011fla']},
-  24:{t:'\u00dcr\u00fcn Sayfas\u0131 & Tasar\u0131m',g:['D\u00f6n\u00fc\u015f\u00fcm odakl\u0131 \u00fcr\u00fcn ba\u015fl\u0131\u011f\u0131 yaz','\u00dcr\u00fcn g\u00f6rselleri y\u00fckle (en az 5 adet)','A\u00e7\u0131klama ve fiyat\u0131 d\u00fczenle']},
-  25:{t:'\u00d6deme & Kargo Altyap\u0131s\u0131',g:['\u00d6deme sistemini ba\u011fla (iyzico/Stripe)','Kargo entegrasyonunu tamamla','Test sipari\u015fi ver']},
-  26:{t:'\u0130lk Shopify \u00dcr\u00fcn\u00fc Yay\u0131nla',g:['Shopify ma\u011fazanda ilk \u00fcr\u00fcn canl\u0131ya al','Sosyal medya hesaplar\u0131n\u0131 ma\u011fazaya ba\u011fla','Arkada\u015flar\u0131na test ettir \u2014 geri bildirim al']},
-  27:{t:'Reklam & \u0130lk Trafik',g:['Facebook/Instagram reklam hesab\u0131n\u0131 kur','\u0130lk reklam kreatifini haz\u0131rla','Test b\u00fct\u00e7esiyle kampanya ba\u015flat']},
-  28:{t:'Analiz & Sonraki 30 G\u00fcn',g:['Ma\u011faza + eBay verilerini oku ve kar\u015f\u0131la\u015ft\u0131r','Sonraki 30 g\u00fcn\u00fcn hedeflerini yaz','Progress\u2019ini belgele \u2014 ba\u015far\u0131 hikayeni Canberk ile payla\u015f']}
+  1:{t:'eBay Hesap Açılışı',
+     ozet:'eBay hesabını doğru bilgilerle aç, Payoneer bağla ve ilk ayarları tamamla. Bu adım tüm sistemin temeli.',
+     dikkat:'⚠️ VPN KULLANMA — hesap anında suspend olabilir. Aynı cihazdan sadece 1 eBay hesabına gir.',
+     g:['eBay hesabını oluştur, tüm adres bilgilerini eksiksiz gir','Payoneer hesabı aç, eBay'e bağla','VPN'siz giriş yap — aynı cihazdan, sabit IP'den']},
+  2:{t:'Yol Haritasını Anlamak',
+     ozet:'İş modelini kafana otur: Amazon'dan alıp eBay'de sat, stok tutma. Tüm videoları bitirmeden işe başlama.',
+     dikkat:'⚠️ Acele etme. Videoları yarıda bırakıp başlarsan kritik adımları atlarsın, başın ağrır.',
+     g:['Sistem tanıtım videosunu izle (neden Amazon tedarik?)','İlk 90 günün planını not al','eBay panel ayarlarını tamamla (banka, kargo, iade)']},
+  3:{t:'Ürün Araştırma: Temel',
+     ozet:'eBay'de satan ürünü bul, Amazon'da aynısını ucuza gör, aradaki farkı kâr yap. Basit ama sistemli yap.',
+     dikkat:'⚠️ Satmayan ürünü listeleme. Sold items filtresini kullan — en az 10-20 satış görmemiş ürünü geçme.',
+     g:['Sıfırdan ürün bulma yöntemini öğren','Fiyat analizi yap: Amazon maliyet vs eBay satış fiyatı','Rakip mağaza incelemesi yap (en az 3 mağaza)']},
+  4:{t:'Ürün Araştırma: İleri',
+     ozet:'ChatGPT + Google Lens kombinasyonuyla daha hızlı ürün bul. İspanyolca arama taktiğini mutlaka dene.',
+     dikkat:'⚠️ Birebir aynı ürün aramak zorunda değilsin — aynı başlıkta daha iyi/ucuz versiyon bulmak daha karlı.',
+     g:['Yapay zeka ile ürün bulma tekniğini uygula','MLYNR eBay araştırma aracını kullan','Bugün 5 aday ürün listele ve not al']},
+  5:{t:'VeRO & Markalı Ürün Riski',
+     ozet:'Apple, Nike, Samsung gibi markalı ürünleri satma. eBay VeRO sistemi seni bulur, listing kaldırılır veya hesap kapanır.',
+     dikkat:'⚠️ Marka ismi başlıkta yazmasın, UPC kodu GIRME. "Does not apply" yaz gerekirse.',
+     g:['VeRO listesini öğren ve kaydet','Listelemek istediğin ürünlerde marka kontrolü yap','Risk taşıyan ürünleri listenden çıkar']},
+  6:{t:'İlk Ürünleri Listele',
+     ozet:'Ürünü eBay'de manuel listele — başlık, fotoğraf, açıklama, fiyat. Sonra AutoDS'e bağla.',
+     dikkat:'⚠️ Önce eBay'de listele, SONRA AutoDS'e ekle. Ters yaparsan fotoğraf exifleri sorun çıkarır. Marka adı yazmasın.',
+     g:['Manuel listeleme adımlarını uygula','Amazon'dan ilk 3 ürününü eBay'e çek','Başlık, açıklama ve fiyatı düzenle']},
+  7:{t:'Günlük Rutin & Hafta 1 Kontrol',
+     ozet:'Her sabah: mesaj kontrol, email kontrol, out-of-stock kontrol, fiyat kontrol. Bu rutin hesabını korur.',
+     dikkat:'⚠️ Günlük rutini aksatma. 3 gün ihmal edersen hem hesap sağlığı hem kârlılık düşer.',
+     g:['Fiyat takibi rutinini kur (sabah kontrolü)','Envanter yönetimini öğren','Kontrol: Modül 1-2-3 tamamlandı mı? ✓']},
+  8:{t:'AutoDS Kurulumu',
+     ozet:'AutoDS hesabını aç ($1 deneme), Non-API bağlantıyla eBay'e bağla, Chrome uzantısını kur.',
+     dikkat:'⚠️ NON-API seç — API bağlarsan eBay seni radar altına alır. Bilgisayar ve Chrome AÇIK kalmalı.',
+     g:['AutoDS hesabı aç, paneli tanı','Non-API bağlantısını kur','AutoDS'i eBay hesabına bağla']},
+  9:{t:'AutoDS Ürün & Envanter',
+     ozet:'eBay'de listelediğin ürünleri AutoDS'e "untracked" kısmından bağla. ASIN kodu ile eşleştir.',
+     dikkat:'⚠️ Starter 400 paketi al — Price & Stock Monitor bu pakette var. 200'lük pakette YOK.',
+     g:['AutoDS'e ilk ürünleri ekle','Envanter ayarlarını yap (fiyat kuralı)','Auto order kurulumunu tamamla']},
+  10:{t:'Listeleme: İspanyolca & Varyasyon',
+     ozet:'İspanyolca ürün başlığıyla Hispanik pazara açıl — Porto Rico dahil. Varyasyonlarda doğru ASIN seç.',
+     dikkat:'⚠️ Varyasyon eklerken her varyasyonun ASIN'i ayrıdır. Yanlış ASIN yanlış ürün gönderir.',
+     g:['İspanyolca listeleme yöntemini öğren ve uygula','Varyasyonlu ürün nasıl listelenir? Uygula','Bulk listing için şablon hazırla']},
+  11:{t:'İlk Sipariş Geldi!',
+     ozet:'AutoDS'te "Send to Auto Order" tıkla. Tracking ID gelince eBay'e gir. 3 gün içinde girmek zorunlu.',
+     dikkat:'⚠️ Manuel geçişte müşterinin telefon numarasını GIRME. "Gift" seç, faturayı gizle.',
+     g:['Amazon'dan manuel sipariş nasıl geçilir — izle','Tracking ID girişini yap','Alıcıya onay mesajı gönder']},
+  12:{t:'Sipariş Sorunları & Trackerbot',
+     ozet:'Ürün stokta yoksa: önce başka tedarikçi bul, bulamazsan müşteriye mesaj at ve iptal ettir.',
+     dikkat:'⚠️ Kendin iptal edersen hesap sağlığın düşer. TBA kodlarını doğrudan eBay'e GIRME — TrackerBot'tan çevir.',
+     g:['Out of stock durumunda ne yapılır? Öğren','Trackerbot kurulumunu tamamla','Yaygın sipariş sorunları için çözüm şablonu hazırla']},
+  13:{t:'Karlılık Hesabı Derinlemesi',
+     ozet:'ebayfeescalculator.com aç, US seç, %10 sales tax gir, Overseas: Yes yap. Net kâr bu çıkar.',
+     dikkat:'⚠️ AutoDS kredisini de hesaba kat (sipariş başına ~$0.50). Kâr marjın %15 altına düşmesin.',
+     g:['ebayfeescalculator.com ile detaylı hesap yap','Payoneer ücretlerini hesapla','İdeal kâr marjı hedefini belirle']},
+  14:{t:'Kârlılık & Hafta 2 Kontrol',
+     ozet:'Bu haftanın satışlarını analiz et. Ne sattı, ne satmadı? Satmayanları envanterden çıkar.',
+     dikkat:'⚠️ Satmayan ürünü tutma — limit dolduruyor. Karlı ürünleri çoğalt.',
+     g:['Satış sonrası net kâr formülünü öğren ve uygula','Payoneer fees hesaplamasını yap','Kontrol: Modül 4-5-6 tamamlandı mı? ✓']},
+  15:{t:'Hesap Yönetimi',
+     ozet:'Gelir-gider takibi kur, feedback topla, hesap sağlık skorunu her gün kontrol et.',
+     dikkat:'⚠️ Feedback çok önemli. Sipariş delivered olduktan sonra alıcıya feedback bırak — karşılık verme oranı artar.',
+     g:['Gelir-gider Excel tablosunu kur','Satış analizini yap — ne satıyor, ne satmıyor?','Feedback stratejisini öğren']},
+  16:{t:'Müşteri İletişimi',
+     ozet:'Müşteri mesajlarına hızlı ve kibarca cevap ver. İade isteyene label gönder, para iadesi yap.',
+     dikkat:'⚠️ eBay'in kendi label oluşturmasına İZİN VERME — bakiyenden keser. AutoDS'ten label al.',
+     g:['Mesaj şablonlarını hazırla (5 senaryo)','İade yönetimi sürecini öğren','Olumsuz feedback ile nasıl başa çıkılır?']},
+  17:{t:'Hesap Sağlığı',
+     ozet:'Flagged olursan satışlar durur. Manuel listele, otomatik fiyat değişimini kapat, eBay'e refresh iste.',
+     dikkat:'⚠️ Flagged olduysan AutoDS ile listelemeyi DURDUR. 1 hafta tamamen manuel listele.',
+     g:['Flagged olmak ne demek? İzle ve not al','MC011 uyarı gelirse ne yapılır?','Hesap sağlığı skorunu kontrol et']},
+  18:{t:'MC011 & Suspend Çözümleri',
+     ozet:'MC011 gelirse paniklememe. AutoDS'ten fatura indir, eBay'e gönder. Aynı gün cevap ver.',
+     dikkat:'⚠️ Tracking gir, iptal etme, müşterileri memnun et — bunlar olmadan MC011 kaçınılmaz.',
+     g:['İlk suspend gelirse itiraz süreci nasıl işler?','AutoDS'ten fatura nasıl indirilir — öğren','eBay ile iletişim kanallarını öğren (chat, FB, tel)']},
+  19:{t:'Taktikler & 5 Altın Kural',
+     ozet:'Pain point fotoğrafı koy, US lokasyon yaz, title'ı doldur, doğru kategori seç, hızlı cevap ver.',
+     dikkat:'⚠️ Lokasyon kısmına Türkiye yazma — satışlar düşer. New York, Atlanta gibi şehirler yaz.',
+     g:['80/20 kuralını eBay'e uygula','Rekabette öne çıkma taktiklerini öğren','Trend ve özel günleri takip etmeye başla']},
+  20:{t:'Satış Limiti & Watches',
+     ozet:'Satış limitini artırmak için eBay'i ara. Volume pricing ekle — tekrar alınan ürünlerde çok işe yarar.',
+     dikkat:'⚠️ Volume pricing'de %10'u geçme — kârını öldürür. Supplement gibi ürünlerde mutlaka ekle.',
+     g:['Satış limiti nasıl artırılır? Uygula','Views & watches stratejisini öğren','Bu hafta limit artışı için aksiyon al']},
+  21:{t:'Reklam & Hafta 3 Kontrol',
+     ozet:'Kimse reklam vermemişse %7 koy. Rakip varsa eBay'in önerdiği oranı uygula. Karlı ürünlere ver.',
+     dikkat:'⚠️ Karlı olmayan ürüne reklam verme — parayı çöpe atarsın. Önce karlılık hesapla.',
+     g:['eBay Promoted Listings stratejisini öğren','Satılmayan ürünler için aksiyon planı yap','Kontrol: Modül 7-8-9-10 tamamlandı mı? ✓']},
+  22:{t:'Shopify'a Geçiş Kararı',
+     ozet:'eBay'de düzenli satış var mı? Varsa Shopify'a geç zamanı. Yoksa önce eBay'i otur.',
+     dikkat:'⚠️ eBay'de satış görmeden Shopify açma. Önce pazar doğrulaması şart.',
+     g:['eBay'de en az 1 satış var mı? — Kontrol et','Shopify'a geçiş zamanlamasını değerlendir','Geçiş için hazırlık listesi yap']},
+  23:{t:'Shopify Mağaza Kurulumu',
+     ozet:'Shopify hesabı aç (14 gün ücretsiz), tema seç, temel sayfaları oluştur, domain bağla.',
+     dikkat:'⚠️ Ödeme sistemini test et — müşteri ödeme yapamıyorsa tüm emek boşa gider.',
+     g:['Shopify hesabı aç (14 günlük deneme)','Tema seç ve temel sayfaları oluştur','Domain bağla']},
+  24:{t:'Ürün Sayfası & Tasarım',
+     ozet:'Dönüşüm odaklı başlık yaz, en az 5 görsel ekle, açıklama net ve kısa olsun.',
+     dikkat:'⚠️ İlk görsel en önemli — ürünün kullanım anını göster, düz beyaz arka plan yerine.',
+     g:['Dönüşüm odaklı ürün başlığı yaz','Ürün görselleri yükle (en az 5 adet)','Açıklama ve fiyatı düzenle']},
+  25:{t:'Ödeme & Kargo Altyapısı',
+     ozet:'Ödeme sistemini bağla, kargo entegrasyonunu tamamla, test siparişi ver — her şey çalışıyor mu kontrol et.',
+     dikkat:'⚠️ Gerçek para ile test siparişi ver. Sahte test çok şeyi kaçırır.',
+     g:['Ödeme sistemini bağla (iyzico/Stripe)','Kargo entegrasyonunu tamamla','Test siparişi ver']},
+  26:{t:'İlk Shopify Ürününü Yayınla',
+     ozet:'İlk ürünü canlıya al, sosyal medyaya bağla, güvendiğin birine test ettir.',
+     dikkat:'⚠️ Mobile görünümü mutlaka kontrol et — alışverişlerin %70'i telefondan.',
+     g:['Shopify mağazanda ilk ürün canlıya al','Sosyal medya hesaplarını mağazaya bağla','Arkadaşlarına test ettir — geri bildirim al']},
+  27:{t:'Reklam & İlk Trafik',
+     ozet:'Küçük bütçeyle test kampanyası aç. Hangi kreatif daha iyi performans veriyor? Gör ve optimize et.',
+     dikkat:'⚠️ İlk kampanyada büyük bütçe harcama. $5-10/gün ile test et, kazanan kreatifi sonra ölçekle.',
+     g:['Facebook/Instagram reklam hesabını kur','İlk reklam kreatifini hazırla','Test bütçesiyle kampanya başlat']},
+  28:{t:'Analiz & Sonraki 30 Gün',
+     ozet:'28 günü tamamladın! eBay + Shopify verilerini karşılaştır, önümüzdeki 30 günün planını yap.',
+     dikkat:'⚠️ Başarı hikayeni Canberk ile paylaş — hem motivasyon hem topluluk için çok değerli.',
+     g:['Mağaza + eBay verilerini oku ve karşılaştır','Sonraki 30 günün hedeflerini yaz','Progress'ini belgele — başarı hikayeni Canberk ile paylaş']}
 };
 var camp=0,tasks={},days=[],sel=null,TODAY=1;
 function load(){try{var t=localStorage.getItem('yh_t');if(t)tasks=JSON.parse(t);var d=localStorage.getItem('yh_d');if(d)days=JSON.parse(d);}catch(e){}}
@@ -3050,21 +3046,15 @@ function goToday(){
 }
 window.yhGoToday=goToday;
 function updateOverall(){
-  var done2=days.length,pct=Math.round(done2/28*100),circ=125.7;
+  var done=days.length,pct=Math.round(done/28*100),circ=138.2;
   var r=g('yh-ring');if(r)r.style.strokeDashoffset=circ-(circ*pct/100);
   var p=g('yh-ring-pct');if(p)p.textContent=pct+'%';
-  var de=g('yh-total-done');if(de)de.textContent=done2;
-  // Hafta stat
-  var wv=g('yh-week-val'),ws=g('yh-week-sub');
-  if(wv&&ws){var wDone=CAMPS[camp].days.filter(function(d){return days.indexOf(d)>-1;}).length;wv.textContent=wDone+'/7';ws.textContent='Bu hafta tamamlandı';}
-  // Gün stat
-  var dv=g('yh-day-val'),dsub=g('yh-day-sub');
-  if(dv&&dsub){var td=TASKS[TODAY];var tdone=(tasks['d'+TODAY]||[]).length,ttot=td?td.g.length:0;dv.textContent=tdone+'/'+ttot;dsub.textContent='Görev tamamlandı';}
+  var de=g('yh-total-done');if(de)de.textContent=done;
   CAMPS.forEach(function(c,i){
     var cd=c.days.filter(function(d){return days.indexOf(d)>-1;}).length;
     var pr=g('yh-ctab-prog-'+i);if(pr)pr.style.width=Math.round(cd/7*100)+'%';
-    var tab=document.querySelector('.yh-wtab[data-camp="'+i+'"]');
-    if(tab)tab.classList.toggle('done-tab',cd===7);
+    var tab=document.querySelector('.yh-ctab[data-camp="'+i+'"]');
+    if(tab)tab.classList.toggle('yh-tab-done',cd===7);
   });
 }
 function renderNodes(){
@@ -3073,19 +3063,16 @@ function renderNodes(){
   grid.innerHTML='';
   c.days.forEach(function(d){
     var s=st(d);if(s==='done')campDone++;
-    var taskData=TASKS[d];
-    var card=document.createElement('div');
-    card.className='yh-day-card state-'+s+(sel===d?' state-selected':'');
-    card.title=taskData?taskData.t:'';
-    if(s!=='locked')card.onclick=(function(dd){return function(){showTask(dd);};})(d);
-    var inner=document.createElement('div');inner.className='yh-day-inner';
-    var num=document.createElement('div');num.className='yh-day-num';num.textContent=d;
-    var lbl=document.createElement('div');lbl.className='yh-day-lbl';
-    lbl.textContent=s==='done'?'TAMAM':s==='current'?'BUGÜN':'GÜN';
-    inner.appendChild(num);inner.appendChild(lbl);
-    if(taskData){var tag=document.createElement('div');tag.className='yh-day-tag';tag.textContent=taskData.t;inner.appendChild(tag);}
-    if(s==='done'){var chk=document.createElement('div');chk.className='yh-day-check';chk.innerHTML='&#10003;';inner.appendChild(chk);}
-    card.appendChild(inner);grid.appendChild(card);
+    var node=document.createElement('div');
+    node.className='yh-node '+s+(sel===d?' selected':'');
+    if(s!=='locked')node.onclick=(function(dd){return function(){showTask(dd);};})(d);
+    var btn=document.createElement('div');btn.className='yh-node-btn';
+    var num=document.createElement('div');num.className='yh-node-num';num.textContent=d;
+    var lbl=document.createElement('div');lbl.className='yh-node-lbl';
+    lbl.textContent=s==='done'?'TAMAM':s==='current'?'BUGUN':'GUN '+d;
+    btn.appendChild(num);btn.appendChild(lbl);
+    if(s==='done'){var chk=document.createElement('div');chk.className='yh-node-check';chk.innerHTML='&#10003;';btn.appendChild(chk);}
+    node.appendChild(btn);grid.appendChild(node);
   });
   var f=g('yh-cp-fill');if(f)f.style.width=Math.round(campDone/7*100)+'%';
   var ct=g('yh-cp-text');if(ct)ct.textContent=campDone+' / 7';
@@ -3095,11 +3082,11 @@ function showTask(d){
   sel=d;
   var panel=g('yh-task-panel');if(!panel)return;
   var data=TASKS[d];
-  if(!data){panel.innerHTML='<div class="yh-task-empty"><div class="yh-task-empty-arrow">?</div><div>Görev yok</div></div>';return;}
+  if(!data){panel.innerHTML='<div class="yh-task-empty"><div style="opacity:.3">?</div><div>Gorev yok</div></div>';return;}
   var key='d'+d;if(!tasks[key])tasks[key]=[];
   var s=st(d);
   var bc=s==='current'?'yh-pb-today':s==='done'?'yh-pb-done':'yh-pb-open';
-  var bl=s==='current'?'⚡ BUGÜN':s==='done'?'✓ TAMAM':'GÜN '+d;
+  var bl=s==='current'?'&#9889; BUGUN':s==='done'?'&#10003; TAMAM':'GUN '+d;
   var dc=tasks[key].length,tot=data.g.length;
   var items=data.g.map(function(txt,i){
     var ck=tasks[key].indexOf(i)>-1;
@@ -3108,10 +3095,63 @@ function showTask(d){
       +'<span class="yh-task-text">'+txt+'</span>'
       +'</li>';
   }).join('');
-  var banner=dc>=tot?'<div class="yh-done-banner"><span class="yh-done-banner-icon">🎉</span> Bu günün tüm görevleri tamamlandı!</div>':'';
-  panel.innerHTML='<div class="yh-panel-head"><div class="yh-panel-badge '+bc+'">'+bl+'</div><div class="yh-panel-title">'+data.t+'</div><div class="yh-panel-meta">'+dc+'/'+tot+'</div></div><ul class="yh-task-list">'+items+'</ul>'+banner;
+  var banner=dc>=tot?'<div class="yh-done-banner">&#10003; Bu gunun tum gorevleri tamamlandi!</div>':'';
+  
+  // Ozet ve Dikkat bloklari
+  var ozetHtml = data.ozet ? '<div class="yh-info-box yh-ozet"><div class="yh-info-label">📋 BUGÜN NE YAPACAKSIN</div><div class="yh-info-text">'+data.ozet+'</div></div>' : '';
+  var dikkatHtml = data.dikkat ? '<div class="yh-info-box yh-dikkat"><div class="yh-info-label">'+data.dikkat.split(' — ')[0]+'</div><div class="yh-info-text">'+(data.dikkat.split(' — ')[1]||data.dikkat.replace(/⚠️[^—]*/,''))+'</div></div>' : '';
+  
+  // AI Rehber butonu
+  var aiBtn = '<button class="yh-ai-rehber-btn" onclick="yhAiRehber('+d+')">🤖 AI Rehber — Detaylı Anlat</button>';
+  
+  // AI cevap alani
+  var aiArea = '<div id="yh-ai-area-'+d+'" class="yh-ai-area" style="display:none"></div>';
+  
+  panel.innerHTML=
+    '<div class="yh-panel-head"><div class="yh-panel-badge '+bc+'">'+bl+'</div><div class="yh-panel-title">'+data.t+'</div><div class="yh-panel-meta">'+dc+'/'+tot+'</div></div>'
+    +ozetHtml
+    +dikkatHtml
+    +'<ul class="yh-task-list">'+items+'</ul>'
+    +banner
+    +aiBtn
+    +aiArea;
   renderNodes();
 }
+
+window.yhAiRehber=function(d){
+  var data=TASKS[d];if(!data)return;
+  var area=g('yh-ai-area-'+d);if(!area)return;
+  var btn=area.previousElementSibling;
+  if(btn)btn.style.display='none';
+  area.style.display='block';
+  area.innerHTML='<div class="yh-ai-loading">🤖 AI Rehber hazırlanıyor...</div>';
+  
+  var savedState=null;
+  try{var ps=localStorage.getItem('mlynr_progress');if(ps)savedState=JSON.parse(ps);}catch(e){}
+  var gunSayisi=savedState?savedState.gunSayisi||d:d;
+  var hafta=Math.ceil(d/7);
+  var tamamlanan=savedState?savedState.tamamlananGunler||0:0;
+  
+  fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      tool:'coach',
+      soru:'Gün '+d+': "'+data.t+'" konusunu adım adım detaylı anlat. Ne yapmalıyım, nelere dikkat etmeliyim?',
+      gunSayisi:gunSayisi,
+      hafta:hafta,
+      tamamlananGunler:tamamlanan
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(res){
+    var txt=res.sonuc||'Cevap alınamadı.';
+    area.innerHTML='<div class="yh-ai-response"><div class="yh-ai-badge">🤖 AI Rehber — Gün '+d+'</div><div class="yh-ai-text">'+txt.replace(/\n/g,'<br>')+'</div><button class="yh-ai-kapat" onclick="this.parentElement.parentElement.style.display='none';this.parentElement.parentElement.previousElementSibling.style.display='flex'">Kapat</button></div>';
+  })
+  .catch(function(){
+    area.innerHTML='<div class="yh-ai-response" style="color:#f87171">Bağlantı hatası. Tekrar dene.</div>';
+  });
+};
 window.yhToggleTask=function(d,i){
   var key='d'+d;if(!tasks[key])tasks[key]=[];
   var idx=tasks[key].indexOf(i);
@@ -3122,20 +3162,20 @@ window.yhToggleTask=function(d,i){
 };
 window.yhSwitchCamp=function(id){
   camp=id;
-  document.querySelectorAll('.yh-wtab').forEach(function(t){t.classList.remove('active');});
-  var at=document.querySelector('.yh-wtab[data-camp="'+id+'"]');if(at)at.classList.add('active');
+  document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
+  var at=document.querySelector('.yh-ctab[data-camp="'+id+'"]');if(at)at.classList.add('active');
   var c=CAMPS[id];
   var te=g('yh-camp-title');if(te)te.textContent=c.t;
   var de=g('yh-camp-desc');if(de)de.textContent=c.d;
   var panel=g('yh-task-panel');
-  if(panel)panel.innerHTML='<div class="yh-task-empty"><div class="yh-task-empty-arrow">↑</div><div>Bir güne tıkla, görevleri gör</div></div>';
+  if(panel)panel.innerHTML='<div class="yh-task-empty"><div style="font-size:20px;opacity:.3">&#8593;</div><div>Bir gune tikla</div></div>';
   sel=null;renderNodes();
 };
 load();
 var ci=Math.max(0,Math.floor((TODAY-1)/7));
 camp=ci;
-document.querySelectorAll('.yh-wtab').forEach(function(t){t.classList.remove('active');});
-var at=document.querySelector('.yh-wtab[data-camp="'+ci+'"]');if(at)at.classList.add('active');
+document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
+var at=document.querySelector('.yh-ctab[data-camp="'+ci+'"]');if(at)at.classList.add('active');
 var c=CAMPS[ci];
 var te=g('yh-camp-title');if(te)te.textContent=c.t;
 var de=g('yh-camp-desc');if(de)de.textContent=c.d;
