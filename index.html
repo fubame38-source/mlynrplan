@@ -559,6 +559,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   .day{width:100%;box-sizing:border-box}
   .week-name{font-size:18px;white-space:normal;word-break:break-word}
   .hero-title{letter-spacing:-3px}
+  .topbar-inner{gap:0}
+  .level-badge{display:none !important}
+  .support-pill{display:none !important}
+  .theme-toggle{display:none !important}
 }
 
 /* ── SUPPORT OVERLAY ── */
@@ -1011,6 +1015,10 @@ body.light .km-task{background:#fff}
         <button class="hmenu-item" onclick="openEarn();toggleMenu()">💰 Ne Kadar Kazanırım?</button>
         <button class="hmenu-item" onclick="openFirstSale();toggleMenu()">🏆 İlk Satışımı Yaptım!</button>
         <button class="hmenu-item" onclick="openCanberk();toggleMenu()">💬 Canberk'in Mesajı</button>
+        <div class="hmenu-divider"></div>
+        <a href="https://t.me/mlynr_bot" target="_blank" class="hmenu-item" style="text-decoration:none;display:flex;align-items:center;gap:8px" onclick="toggleMenu()">💬 Canlı Destek</a>
+        <a href="#" onclick="openShopifyPortal(event);toggleMenu()" class="hmenu-item" style="text-decoration:none;display:flex;align-items:center;gap:8px">🛍️ Shopify Portalı</a>
+        <button class="hmenu-item" onclick="toggleTheme();toggleMenu()">🌙 Tema Değiştir</button>
         <div class="hmenu-divider"></div>
         <button class="hmenu-item logout" id="logout-btn" onclick="doLogout()">⬅ Çıkış Yap</button>
       </div>
