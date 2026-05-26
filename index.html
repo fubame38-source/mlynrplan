@@ -2051,7 +2051,8 @@ function render(){
     aiCard.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow" style="color:#4ade80">● MLYNR · AI Koç</div><div class="dlc-title">Sorun mu var? AI Koç\'una sor, kişisel cevap al</div></div><div class="dlc-arrow">✦</div>';
     aiCard.addEventListener('click',function(){openSupportBot();});
     var eduCard=document.createElement('a');eduCard.href='https://okul.mlynr.com/products/start-scale-e-ticaret';eduCard.target='_blank';eduCard.className='day-link-card';
-    eduCard.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow">Eğitim Paneli</div><div class="dlc-title">Tüm modüllere erişmek için paneli aç</div></div><div class="dlc-arrow">↗</div>';
+    eduCard.style.cssText='background:#0d0d0d;border-color:#0d0d0d';
+    eduCard.innerHTML='<div class="dlc-body"><div class="dlc-eyebrow" style="color:rgba(255,255,255,.45)">● EĞİTİM PANELİ</div><div class="dlc-title" style="color:#fff">Tüm modüllere erişmek için paneli aç</div></div><div class="dlc-arrow" style="color:rgba(255,255,255,.6)">↗</div>';
     if(rem===0){grid.appendChild(aiCard);grid.appendChild(eduCard);}
     else if(rem===1){grid.appendChild(aiCard);grid.appendChild(eduCard);}
     else if(rem===2){grid.appendChild(aiCard);}
