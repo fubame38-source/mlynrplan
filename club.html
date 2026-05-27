@@ -766,7 +766,8 @@ async function submitPost() {
     sale_price: document.getElementById('f-price').value.trim() || null,
     sale_profit: document.getElementById('f-profit').value.trim() || null,
     sale_orders: document.getElementById('f-orders').value.trim() || null,
-    image_url: imageUrl
+    image_url: imageUrl,
+    approved: ADMIN_EMAILS.includes(me.email) // admin direkt onaylı
   };
   var { data, error } = await sb.from('club_posts').insert(post).select().single();
   btn.disabled = false; btn.textContent = 'Paylaş →';
