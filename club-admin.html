@@ -360,11 +360,27 @@ async function saveSignal() {
   setTimeout(() => ok.style.opacity = '0', 2500);
 }
 
+// ─── BAN USER ──────────────────────────────────────────────────
+async function banUser(userId, email) {
+  if (!confirm(`"${email}" kullanıcısını banlamak istediğine emin misin?\n\nTüm postları silinecek.`)) return;
+  // Kullanıcının tüm postlarını sil
+  var { error } = await sb.from('club_posts').delete().eq('user_id', userId);
+  if (error) { alert('Post silme hatası: ' + error.message); return; }
+  // Kullanıcının yorumlarını sil
+  await sb.from('club_comments').delete().eq('user_id', userId);
+  // Local listeden kaldır
+  allPosts = allPosts.filter(p => p.user_id !== userId);
+  renderPosts(allPosts);
+  buildUserList();
+  updateAdminStats(allPosts);
+  alert(`✓ ${email} banlandı. Tüm içerikleri silindi.\n\nNot: Supabase Authentication > Users'dan da hesabı silmeni öneririz.`);
+}
+
 // ─── USERS ─────────────────────────────────────────────────────
 function buildUserList() {
   var userMap = {};
   allPosts.forEach(p => {
-    if (!userMap[p.user_id]) userMap[p.user_id] = { name: p.user_name, email: p.user_email, posts: 0, sales: 0 };
+    if (!userMap[p.user_id]) userMap[p.user_id] = { name: p.user_name, email: p.user_email, userId: p.user_id, posts: 0, sales: 0 };
     userMap[p.user_id].posts++;
     if (p.post_type==='sale'||p.post_type==='milestone') userMap[p.user_id].sales++;
   });
@@ -373,15 +389,18 @@ function buildUserList() {
   var list = document.getElementById('users-list');
   if (!users.length) { list.innerHTML = '<div class="empty">Henüz üye yok.</div>'; return; }
   list.innerHTML = users.map(u => `
-    <div class="user-row">
+    <div class="user-row" id="ur-${btoa(u.email||'x').replace(/=/g,'')}">
       <div class="u-av" style="background:${avColor(u.name||'U')}">${(u.name||'U').charAt(0).toUpperCase()}</div>
       <div class="u-info">
         <div class="u-name">${esc(u.name||'?')}</div>
         <div class="u-email">${esc(u.email||'')}</div>
       </div>
-      <div class="u-stats">
-        <div class="u-posts">${u.posts} post · ${u.sales} satış</div>
-        <div class="u-lbl">Aktivite</div>
+      <div class="u-stats" style="display:flex;align-items:center;gap:12px">
+        <div style="text-align:right">
+          <div class="u-posts">${u.posts} post · ${u.sales} satış</div>
+          <div class="u-lbl">Aktivite</div>
+        </div>
+        <button class="btn-del" onclick="banUser('${esc(u.userId)}','${esc(u.email||'')}')">🚫 Banla</button>
       </div>
     </div>`).join('');
 }
