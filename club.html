@@ -539,7 +539,12 @@ async function loadPosts() {
 }
 
 function renderFeed() {
-  var filtered = currentTab === 'all' ? allPosts : currentTab === 'mine' ? allPosts.filter(p => p.user_id === me?.id) : allPosts.filter(p => p.post_type === currentTab);
+  var isAdmin = ADMIN_EMAILS.includes(me?.email);
+  var base = currentTab === 'mine' ? allPosts.filter(p => p.user_id === me?.id)
+           : currentTab === 'all'  ? allPosts
+           : allPosts.filter(p => p.post_type === currentTab);
+  // Admin hepsini görür, kullanıcı sadece approved + kendi bekleyenlerini
+  var filtered = isAdmin ? base : base.filter(p => p.approved || p.user_id === me?.id);
   var feed = document.getElementById('feed');
   if (!filtered.length) {
     feed.innerHTML = '<div class="feed-empty">Bu kategoride henüz paylaşım yok.</div>';
@@ -573,6 +578,7 @@ function renderPost(p) {
   var imgHtml = p.image_url ? '<img class="post-img" src="'+esc(p.image_url)+'" alt="" onclick="openLightbox(\''+esc(p.image_url)+'\') ">' : '';
   var typeLabel = {milestone:'🎉 İlk Satış',sale:'💰 Satış',product:'📦 Ürün',question:'❓ Soru',motivation:'🔥 Motivasyon'}[p.post_type]||p.post_type;
   var delHtml = isMine ? '<button class="del-btn" onclick="deletePost(\''+p.id+'\')" title="Sil">🗑</button>' : '';
+  var pendingBanner = (!p.approved && isMine) ? '<div style="background:rgba(180,83,9,.08);border:1px solid rgba(180,83,9,.2);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:11px;font-family:var(--mono);color:#b45309;letter-spacing:.04em">⏳ Onay bekleniyor — admin onayladıktan sonra herkese görünür</div>' : '';
 
   var commentsHtml = comments.map(c => {
     var cInit = (c.user_name||'?').charAt(0).toUpperCase();
@@ -590,6 +596,7 @@ function renderPost(p) {
     ${delHtml}
   </div>
   <div class="post-body">${esc(p.content)}</div>
+  ${pendingBanner}
   ${saleHtml}
   ${imgHtml}
   <div class="post-foot">
