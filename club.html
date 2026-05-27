@@ -174,8 +174,139 @@ body {
 }
 .nav-logout:hover { border-color: var(--border3); color: var(--text); }
 
-/* ── WRAP ── */
-.wrap { max-width: 1120px; margin: 0 auto; padding: 80px 28px 80px; position: relative; z-index: 1; }
+/* ── LAYOUT ── */
+.app-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr 320px;
+  max-width: 1240px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+@media(max-width:1100px){ .app-layout { grid-template-columns: 220px 1fr; } .right-sidebar { display:none; } }
+@media(max-width:720px){ .app-layout { grid-template-columns: 1fr; } .left-sidebar { display:none; } }
+
+/* LEFT SIDEBAR */
+.left-sidebar {
+  padding: 70px 0 40px;
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.left-sidebar::-webkit-scrollbar { display: none; }
+.ls-section { padding: 16px 20px; }
+.ls-logo { font-family: var(--font); font-size: 20px; font-weight: 900; letter-spacing: -.05em; margin-bottom: 4px; }
+.ls-logo span { color: var(--em); }
+.ls-tagline { font-size: 11px; color: var(--text3); line-height: 1.5; margin-bottom: 24px; }
+.ls-nav { display: flex; flex-direction: column; gap: 2px; }
+.ls-btn {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  border-radius: 12px; border: none; background: transparent; cursor: pointer;
+  color: var(--text2); font-family: var(--font); font-size: 14px; font-weight: 600;
+  transition: all .2s; letter-spacing: -.02em; text-align: left; width: 100%;
+}
+.ls-btn:hover { background: var(--s2); color: var(--text); }
+.ls-btn.active { background: var(--s2); color: var(--text); border: 1px solid var(--border); }
+.ls-btn .ls-icon { font-size: 17px; width: 24px; text-align: center; flex-shrink: 0; }
+.ls-divider { height: 1px; background: var(--border); margin: 12px 20px; }
+.ls-stats { display: flex; flex-direction: column; gap: 8px; padding: 0 20px; }
+.ls-stat { display: flex; justify-content: space-between; align-items: center; }
+.ls-stat-lbl { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; }
+.ls-stat-val { font-family: var(--font); font-size: 14px; font-weight: 800; color: var(--text); }
+.ls-post-btn {
+  margin: 20px 20px 0;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--em); color: #000; font-family: var(--font);
+  font-size: 14px; font-weight: 800; padding: 13px; border-radius: 14px;
+  border: none; cursor: pointer; transition: all .25s; letter-spacing: -.02em;
+  box-shadow: 0 0 30px rgba(0,212,168,.2);
+}
+.ls-post-btn:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 6px 40px rgba(0,212,168,.35); }
+.ls-user {
+  margin-top: auto; padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.ls-user-av {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--em); color: #000;
+  font-family: var(--font); font-size: 13px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.ls-user-info { flex: 1; min-width: 0; }
+.ls-user-name { font-size: 13px; font-weight: 700; color: var(--text); letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ls-user-role { font-family: var(--mono); font-size: 9px; color: var(--text3); margin-top: 1px; letter-spacing: .04em; }
+.ls-logout { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 16px; padding: 4px; transition: color .2s; flex-shrink: 0; }
+.ls-logout:hover { color: var(--red); }
+
+/* CENTER FEED */
+.center-feed {
+  padding: 58px 0 60px;
+  border-right: 1px solid var(--border);
+  min-height: 100vh;
+}
+.feed-header {
+  padding: 20px 24px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+  position: sticky; top: 58px; z-index: 10;
+  background: rgba(8,10,15,.85); backdrop-filter: blur(20px);
+}
+.feed-header-title { font-family: var(--font); font-size: 18px; font-weight: 900; letter-spacing: -.04em; margin-bottom: 16px; }
+.tabs {
+  display: flex; gap: 0; margin-bottom: 0;
+  background: transparent; padding: 0;
+  border-radius: 0; border: none;
+  width: 100%; overflow-x: auto;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 12px 18px; border-radius: 0; font-size: 13px; font-weight: 700;
+  font-family: var(--font); cursor: pointer; border: none;
+  background: transparent; color: var(--text3); transition: all .2s;
+  white-space: nowrap; border-bottom: 2px solid transparent; position: relative; bottom: -1px;
+}
+.tab.active { color: var(--text); border-bottom-color: var(--em); }
+.tab:hover:not(.active) { color: var(--text2); background: var(--s1); }
+.feed { display: flex; flex-direction: column; }
+.feed-empty { padding: 60px 24px; text-align: center; color: var(--text3); font-family: var(--mono); font-size: 12px; letter-spacing: .06em; }
+.feed-loading { padding: 40px; text-align: center; color: var(--text3); font-size: 12px; font-family: var(--mono); }
+
+/* POST CARD — Twitter style */
+.post {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  transition: background .2s;
+  animation: fadeUp .35s ease;
+  position: relative;
+  background: transparent;
+}
+.post:hover { background: rgba(255,255,255,.02); }
+.post::before { display: none; }
+.post.mine { border-left: 2px solid var(--em); padding-left: 22px; }
+.post.pending-post { opacity: .7; }
+
+/* RIGHT SIDEBAR */
+.right-sidebar {
+  padding: 70px 20px 40px;
+  position: sticky; top: 0; height: 100vh;
+  overflow-y: auto; display: flex; flex-direction: column; gap: 16px;
+}
+.right-sidebar::-webkit-scrollbar { display: none; }
+
+/* NAV — full width fixed */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 58px;
+  background: rgba(8,10,15,.9); backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 24px; gap: 14px;
+}
+/* Hide old wrap */
+.wrap { display: none; }
 
 /* ── HERO ── */
 .hero {
@@ -616,91 +747,104 @@ body {
 <!-- APP (hidden until auth) -->
 <div id="app" style="display:none">
 
-  <!-- NAV -->
+  <!-- FIXED NAV -->
   <nav class="nav">
     <div class="nav-logo">MLYNR<span>Club</span></div>
     <div class="nav-badge">BETA</div>
     <div class="nav-right">
-      <div class="nav-user">
-        <div class="nav-av" id="nav-av">?</div>
-        <div class="nav-name" id="nav-name">...</div>
-      </div>
-      <button class="nav-admin" id="nav-admin" onclick="window.open('club-admin.html','_blank')" style="display:none;background:transparent;border:1px solid #dc2626;border-radius:8px;padding:5px 12px;font-size:11px;font-family:var(--mono);color:#dc2626;cursor:pointer;transition:all .2s;letter-spacing:.04em">Admin</button>
-      <button class="nav-logout" onclick="doLogout()">Çıkış</button>
+      <button class="nav-admin" id="nav-admin" onclick="window.open('club-admin.html','_blank')" style="display:none">Admin</button>
     </div>
   </nav>
 
-  <div class="wrap">
+  <!-- 3-COLUMN LAYOUT -->
+  <div class="app-layout">
 
-    <!-- HERO -->
-    <div class="hero">
-      <div class="hero-left">
-        <div class="hero-eyebrow"><div class="live-dot"></div>Canlı Topluluk</div>
-        <div class="hero-title">MLYNR<span>Club</span></div>
-        <div class="hero-desc">Satışlarını paylaş, sorularını sor, birlikte büyü. Gerçek kursiyerler, gerçek sonuçlar.</div>
+    <!-- LEFT SIDEBAR -->
+    <div class="left-sidebar">
+      <div class="ls-section">
+        <div class="ls-logo">MLYNR<span>Club</span></div>
+        <div class="ls-tagline">Gerçek kursiyerler,<br>gerçek sonuçlar.</div>
+        <nav class="ls-nav">
+          <button class="ls-btn active" onclick="switchTab(this,'all')"><span class="ls-icon">🏠</span>Ana Feed</button>
+          <button class="ls-btn" onclick="switchTab(this,'milestone')"><span class="ls-icon">🎉</span>İlk Satışlar</button>
+          <button class="ls-btn" onclick="switchTab(this,'sale')"><span class="ls-icon">💰</span>Satışlar</button>
+          <button class="ls-btn" onclick="switchTab(this,'product')"><span class="ls-icon">📦</span>Ürünler</button>
+          <button class="ls-btn" onclick="switchTab(this,'question')"><span class="ls-icon">❓</span>Sorular</button>
+          <button class="ls-btn" onclick="switchTab(this,'motivation')"><span class="ls-icon">🔥</span>Motivasyon</button>
+        </nav>
+        <div class="ls-divider"></div>
+        <nav class="ls-nav">
+          <button class="ls-btn" onclick="switchTab(this,'mine')"><span class="ls-icon">👤</span>Postlarım</button>
+        </nav>
+        <button class="ls-post-btn" onclick="openModal()">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+          Paylaşım Yap
+        </button>
       </div>
-      <button class="post-btn" onclick="openModal()">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-        Paylaşım Yap
-      </button>
+      <div class="ls-divider"></div>
+      <div class="ls-stats">
+        <div class="ls-stat"><span class="ls-stat-lbl">Toplam Post</span><span class="ls-stat-val" id="st-posts">—</span></div>
+        <div class="ls-stat"><span class="ls-stat-lbl">Aktif Üye</span><span class="ls-stat-val" id="st-members">—</span></div>
+        <div class="ls-stat"><span class="ls-stat-lbl">Satış Postu</span><span class="ls-stat-val" id="st-sales">—</span></div>
+        <div class="ls-stat"><span class="ls-stat-lbl">Bugün</span><span class="ls-stat-val" id="st-today">—</span></div>
+      </div>
+      <div class="ls-user">
+        <div class="ls-user-av" id="nav-av">?</div>
+        <div class="ls-user-info">
+          <div class="ls-user-name" id="nav-name">...</div>
+          <div class="ls-user-role">Kursiyer</div>
+        </div>
+        <button class="ls-logout" onclick="doLogout()" title="Çıkış">↪</button>
+      </div>
     </div>
 
-    <!-- STATS -->
-    <div class="stats-row" id="stats-row">
-      <div class="stat"><div class="stat-val" id="st-posts">—</div><div class="stat-lbl">Toplam Paylaşım</div><div class="stat-glow" style="background:var(--em)"></div></div>
-      <div class="stat"><div class="stat-val" id="st-members">—</div><div class="stat-lbl">Aktif Üye</div><div class="stat-glow" style="background:var(--gold)"></div></div>
-      <div class="stat"><div class="stat-val" id="st-sales">—</div><div class="stat-lbl">Paylaşılan Satış</div><div class="stat-glow" style="background:var(--blue)"></div></div>
-      <div class="stat"><div class="stat-val" id="st-today">—</div><div class="stat-lbl">Bugün Paylaşım</div><div class="stat-glow" style="background:var(--purple)"></div></div>
+    <!-- CENTER FEED -->
+    <div class="center-feed">
+      <div class="feed-header">
+        <div class="feed-header-title">Feed</div>
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab(this,'all')">Tümü</button>
+          <button class="tab" onclick="switchTab(this,'milestone')">🎉 İlk Satış</button>
+          <button class="tab" onclick="switchTab(this,'sale')">💰 Satış</button>
+          <button class="tab" onclick="switchTab(this,'product')">📦 Ürün</button>
+          <button class="tab" onclick="switchTab(this,'question')">❓ Soru</button>
+          <button class="tab" onclick="switchTab(this,'motivation')">🔥 Motivasyon</button>
+          <button class="tab" onclick="switchTab(this,'mine')">👤 Postlarım</button>
+        </div>
+      </div>
+      <div class="feed" id="feed">
+        <div class="feed-loading" id="feed-loader">Yükleniyor...</div>
+      </div>
     </div>
 
-    <!-- TABS -->
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab(this,'all')">Tümü</button>
-      <button class="tab" onclick="switchTab(this,'milestone')">🎉 İlk Satış</button>
-      <button class="tab" onclick="switchTab(this,'sale')">💰 Satış</button>
-      <button class="tab" onclick="switchTab(this,'product')">📦 Ürün</button>
-      <button class="tab" onclick="switchTab(this,'question')">❓ Soru</button>
-      <button class="tab" onclick="switchTab(this,'motivation')">🔥 Motivasyon</button>
-      <button class="tab" onclick="switchTab(this,'mine')">👤 Postlarım</button>
-    </div>
+    <!-- RIGHT SIDEBAR -->
+    <div class="right-sidebar">
 
-    <!-- MAIN GRID -->
-    <div class="main-grid">
-      <div>
-        <div class="feed" id="feed">
-          <div class="feed-loading" id="feed-loader">Yükleniyor...</div>
+      <!-- SIGNAL -->
+      <div class="signal-card">
+        <div class="signal-label"><div class="live-dot"></div>Canberk Sinyali</div>
+        <div class="signal-title" id="sig-title">Yükleniyor...</div>
+        <div class="signal-body" id="sig-body"></div>
+        <div class="signal-date" id="sig-date"></div>
+      </div>
+
+      <!-- LEADERBOARD -->
+      <div class="s-card">
+        <div class="s-head">🏆 Bu Hafta Lider Tablosu</div>
+        <div id="leaderboard"><div style="font-size:11px;color:var(--text3);font-family:var(--mono)">Yükleniyor...</div></div>
+      </div>
+
+      <!-- BADGES -->
+      <div class="s-card">
+        <div class="s-head">🎖 Rozetler</div>
+        <div class="badge-grid">
+          <div class="bx" id="b-starter"><span class="bx-emoji">🌱</span><div class="bx-name">Starter</div><div class="bx-req">İlk post</div></div>
+          <div class="bx" id="b-seller"><span class="bx-emoji">⚡</span><div class="bx-name">Seller</div><div class="bx-req">İlk satış</div></div>
+          <div class="bx" id="b-pro"><span class="bx-emoji">🚀</span><div class="bx-name">Pro</div><div class="bx-req">5 satış</div></div>
+          <div class="bx" id="b-elite"><span class="bx-emoji">👑</span><div class="bx-name">Elite</div><div class="bx-req">Canberk onayı</div></div>
         </div>
       </div>
 
-      <!-- SIDEBAR -->
-      <div class="sidebar">
-
-        <!-- SIGNAL -->
-        <div class="signal-card">
-          <div class="signal-label"><div class="live-dot"></div>Canberk Sinyali</div>
-          <div class="signal-title" id="sig-title">Yükleniyor...</div>
-          <div class="signal-body" id="sig-body"></div>
-          <div class="signal-date" id="sig-date"></div>
-        </div>
-
-        <!-- LEADERBOARD -->
-        <div class="s-card">
-          <div class="s-head">🏆 Bu Hafta Lider Tablosu</div>
-          <div id="leaderboard"><div style="font-size:11px;color:var(--text3);font-family:var(--mono)">Yükleniyor...</div></div>
-        </div>
-
-        <!-- BADGES -->
-        <div class="s-card">
-          <div class="s-head">🎖 Rozetler</div>
-          <div class="badge-grid">
-            <div class="bx" id="b-starter"><span class="bx-emoji">🌱</span><div class="bx-name">Starter</div><div class="bx-req">İlk post</div></div>
-            <div class="bx" id="b-seller"><span class="bx-emoji">⚡</span><div class="bx-name">Seller</div><div class="bx-req">İlk satış</div></div>
-            <div class="bx" id="b-pro"><span class="bx-emoji">🚀</span><div class="bx-name">Pro</div><div class="bx-req">5 satış postu</div></div>
-            <div class="bx" id="b-elite"><span class="bx-emoji">👑</span><div class="bx-name">Elite</div><div class="bx-req">Canberk onayı</div></div>
-          </div>
-        </div>
-
-      </div>
     </div>
   </div>
 </div>
@@ -1177,8 +1321,15 @@ function closeLightbox() { document.getElementById('lightbox').classList.remove(
 // ─── TABS ──────────────────────────────────────────────────────
 function switchTab(el, type) {
   currentTab = type;
+  // Tab butonları güncelle
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ls-btn').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
+  // Aynı type'daki diğer butonu da aktif yap
+  document.querySelectorAll('.tab, .ls-btn').forEach(t => {
+    var onclick = t.getAttribute('onclick') || '';
+    if (onclick.includes("'"+type+"'")) t.classList.add('active');
+  });
   renderFeed();
 }
 
