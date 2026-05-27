@@ -155,8 +155,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
     <!-- SECTION TABS -->
     <div class="sec-tabs">
       <button class="sec-tab active" onclick="showSection('posts',this)">📋 Tüm Postlar</button>
+      <button class="sec-tab" onclick="showSection('pending',this)">⏳ Onay Bekleyenler <span id="pending-count" style="background:#b45309;color:#fff;border-radius:999px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
       <button class="sec-tab" onclick="showSection('signal',this)">📡 Canberk Sinyali</button>
       <button class="sec-tab" onclick="showSection('users',this)">👥 Üyeler</button>
+    </div>
+
+    <!-- PENDING SECTION -->
+    <div class="section" id="sec-pending">
+      <div id="pending-list"><div class="loading">Yükleniyor...</div></div>
     </div>
 
     <!-- POSTS SECTION -->
@@ -258,7 +264,47 @@ async function loadPosts() {
     .limit(200);
   allPosts = data || [];
   renderPosts(allPosts);
+  renderPending();
   updateAdminStats(allPosts);
+}
+
+function renderPending() {
+  var pending = allPosts.filter(p => !p.approved);
+  document.getElementById('pending-count').textContent = pending.length;
+  var list = document.getElementById('pending-list');
+  if (!pending.length) { list.innerHTML = '<div class="empty">✅ Onay bekleyen post yok.</div>'; return; }
+  list.innerHTML = pending.map(p => {
+    var typeLabel = {milestone:'🎉 İlk Satış',sale:'💰 Satış',product:'📦 Ürün',question:'❓ Soru',motivation:'🔥 Motivasyon'}[p.post_type]||p.post_type;
+    var imgHtml = p.image_url ? `<img class="pr-img" src="${esc(p.image_url)}" onclick="document.getElementById('lbox-img').src='${esc(p.image_url)}';document.getElementById('lbox').classList.add('show')">` : '';
+    return `<div class="post-row" id="pnd-${p.id}" style="border-color:rgba(180,83,9,.25)">
+      <div class="pr-head">
+        <div class="pr-av" style="background:${avColor(p.user_name||'U')}">${(p.user_name||'U').charAt(0).toUpperCase()}</div>
+        <div class="pr-info">
+          <div class="pr-name">${esc(p.user_name||'?')}</div>
+          <div class="pr-meta">${esc(p.user_email||'')} · ${timeAgo(p.created_at)}</div>
+        </div>
+        <div class="pr-type">${typeLabel}</div>
+      </div>
+      <div class="pr-content">${esc(p.content)}</div>
+      ${imgHtml}
+      <div class="pr-actions">
+        <button style="background:rgba(26,122,74,.1);border:1px solid rgba(26,122,74,.25);color:#1a7a4a;font-family:var(--mono);font-size:11px;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:600;transition:all .2s" onclick="approvePost('${p.id}')">✓ Onayla</button>
+        <button class="btn-del" onclick="adminDelete('${p.id}')">✗ Reddet</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function approvePost(postId) {
+  var { error } = await sb.from('club_posts').update({ approved: true }).eq('id', postId);
+  if (error) { alert('Hata: ' + error.message); return; }
+  var idx = allPosts.findIndex(p => p.id === postId);
+  if (idx > -1) allPosts[idx].approved = true;
+  var el = document.getElementById('pnd-'+postId);
+  if (el) { el.style.opacity='.4'; setTimeout(()=>el.remove(),300); }
+  var cnt = allPosts.filter(p=>!p.approved).length;
+  document.getElementById('pending-count').textContent = cnt;
+  renderPosts(allPosts);
 }
 
 async function loadSignal() {
