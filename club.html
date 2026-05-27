@@ -599,33 +599,84 @@ async function loadPosts() {
 
 function renderFeed() {
   var isAdmin = ADMIN_EMAILS.includes(me?.email);
+  var base = currentTab === 'mine' ? allPosts.filter(p => p.user_id === me?.id)
+           : currentTab === 'all'  ? allPosts
+           : allPosts.filter(p => p.post_type === currentTab);
+  var filtered = isAdmin ? base : base.filter(p => p.approved || p.user_id === me?.id);
+  var feed = document.getElementById('feed');
+  if (!filtered.length) {
+    feed.innerHTML = '<div class="feed-empty">Bu kategoride henüz paylaşım yok.</div>';
+    return;
+  }
+  feed.innerHTML = filtered.map(p => renderPost(p)).join('');
+}
+
+function renderPost(p) {
+  var reactions = p.club_reactions || [];
+  var comments = (p.club_comments || []).sort((a,b) => new Date(a.created_at)-new Date(b.created_at));
+  var fireCnt = reactions.filter(r=>r.emoji==='🔥').length;
+  var powerCnt = reactions.filter(r=>r.emoji==='💪').length;
+  var loveCnt = reactions.filter(r=>r.emoji==='❤️').length;
+  var myFire = reactions.some(r=>r.emoji==='🔥'&&r.user_id===me?.id);
+  var myPower = reactions.some(r=>r.emoji==='💪'&&r.user_id===me?.id);
+  var myLove = reactions.some(r=>r.emoji==='❤️'&&r.user_id===me?.id);
+  var isMine = p.user_id === me?.id;
+  var isAdmin = ADMIN_EMAILS.includes(me?.email);
+  var av = avColor(p.user_name || 'U');
+  var initial = (p.user_name||'U').charAt(0).toUpperCase();
+  var typeLabel = {milestone:'🎉 İlk Satış',sale:'💰 Satış',product:'📦 Ürün',question:'❓ Soru',motivation:'🔥 Motivasyon'}[p.post_type]||p.post_type;
+  var delHtml = isMine ? '<button class="post-del" onclick="deletePost(\''+p.id+'\')" title="Sil">🗑</button>' : '';
+  var pendingBanner = (!p.approved && isMine) ? '<div class="pending-banner">⏳ Onay bekleniyor</div>' : '';
+
+  var extraHtml = '';
+  if (p.post_type === 'milestone') {
+    extraHtml = '<div class="milestone-banner"><div class="mb-title">🎉 İlk Satış!</div><div class="mb-sub">'+esc(p.user_name||'Bir kursiyer')+' ilk satışını yaptı</div></div>';
+    if (p.sale_price||p.sale_profit||p.sale_orders) {
+      extraHtml += '<div class="sale-card">';
+      if(p.sale_price) extraHtml += '<div class="sc-item"><div class="sc-val">'+esc(p.sale_price)+'</div><div class="sc-lbl">Satış</div></div>';
+      if(p.sale_profit) extraHtml += '<div class="sc-item"><div class="sc-val">'+esc(p.sale_profit)+'</div><div class="sc-lbl">Kar</div></div>';
+      if(p.sale_orders) extraHtml += '<div class="sc-item"><div class="sc-val">'+esc(p.sale_orders)+'</div><div class="sc-lbl">Sipariş</div></div>';
+      extraHtml += '</div>';
+    }
+  } else if (p.post_type === 'sale' && (p.sale_price||p.sale_profit||p.sale_orders)) {
+    extraHtml = '<div class="sale-card">';
+    if(p.sale_price) extraHtml += '<div class="sc-item"><div class="sc-val">'+esc(p.sale_price)+'</div><div class="sc-lbl">Satış</div></div>';
+    if(p.sale_profit) extraHtml += '<div class="sc-item"><div class="sc-val">'+esc(p.sale_profit)+'</div><div class="sc-lbl">Kar</div></div>';
+    if(p.sale_orders) extraHtml += '<div class="sc-item"><div class="sc-val">'+esc(p.sale_orders)+'</div><div class="sc-lbl">Sipariş</div></div>';
+    extraHtml += '</div>';
+  }
+
+  var imgHtml = p.image_url ? '<img class="post-img" src="'+esc(p.image_url)+'" alt="" onclick="openLightbox(\''+esc(p.image_url)+'\')">' : '';
+
   var commentsHtml = comments.map(c => {
     var cInit = (c.user_name||'?').charAt(0).toUpperCase();
     var cAv = avColor(c.user_name||'U');
     var canDel = isAdmin || c.user_id === me?.id;
-    var delBtn = canDel ? '<button class="cdel-btn" data-cid="'+c.id+'" data-pid="'+p.id+'" onclick="deleteComment(this)" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:2px 8px;border-radius:6px;margin-left:auto;line-height:1">×</button>' : '';
-    return '<div class="comment"><div class="comment-av" style="background:'+cAv+';color:#000">'+esc(cInit)+'</div><div class="comment-bubble" style="display:flex;align-items:flex-start;gap:6px"><div style="flex:1"><div class="comment-name">'+esc(c.user_name)+'</div><div class="comment-text">'+esc(c.content)+'</div></div>'+delBtn+'</div></div>';
+    var cDelBtn = canDel ? '<button class="comment-del" data-cid="'+c.id+'" data-pid="'+p.id+'" onclick="deleteComment(this)">×</button>' : '';
+    return '<div class="comment"><div class="comment-av" style="background:'+cAv+';color:#fff">'+esc(cInit)+'</div><div class="comment-bubble"><div class="comment-content"><div class="comment-name">'+esc(c.user_name)+'</div><div class="comment-text">'+esc(c.content)+'</div></div>'+cDelBtn+'</div></div>';
   }).join('');
 
   return `<div class="post${isMine?' mine':''}" data-id="${p.id}" data-type="${p.post_type}">
   <div class="post-head">
-    <div class="post-av" style="background:${av};color:#000">${initial}</div>
-    <div class="post-info">
-      <div class="post-name">${esc(p.user_name||'Anonim')} ${badge}</div>
-      <div class="post-time">${timeAgo(p.created_at)}</div>
+    <div class="post-av" style="background:${av}">${initial}</div>
+    <div class="post-meta">
+      <div class="post-name-row">
+        <span class="post-username">${esc(p.user_name||'Anonim')}</span>
+        <span class="post-time">${timeAgo(p.created_at)}</span>
+      </div>
     </div>
-    <div class="post-type-tag pt-${p.post_type}">${typeLabel}</div>
+    <div class="post-type-chip ptc-${p.post_type}">${typeLabel}</div>
     ${delHtml}
   </div>
-  <div class="post-body">${esc(p.content)}</div>
   ${pendingBanner}
-  ${saleHtml}
+  <div class="post-body">${esc(p.content)}</div>
+  ${extraHtml}
   ${imgHtml}
-  <div class="post-foot">
-    <button class="react-btn${myFire?' reacted':''}" onclick="toggleReact(this,'${p.id}','🔥')">🔥 <span>${fireCnt}</span></button>
-    <button class="react-btn${myPower?' reacted':''}" onclick="toggleReact(this,'${p.id}','💪')">💪 <span>${powerCnt}</span></button>
-    <button class="react-btn${myLove?' blue-r':''}" onclick="toggleReact(this,'${p.id}','❤️')">❤️ <span>${loveCnt}</span></button>
-    <button class="comment-toggle" onclick="toggleComments(this,'${p.id}')">💬 ${comments.length} yorum</button>
+  <div class="post-actions">
+    <button class="act-btn${myFire?' fire-on':''}" onclick="toggleReact(this,'${p.id}','🔥')">🔥 <span>${fireCnt}</span></button>
+    <button class="act-btn${myPower?' power-on':''}" onclick="toggleReact(this,'${p.id}','💪')">💪 <span>${powerCnt}</span></button>
+    <button class="act-btn${myLove?' love-on':''}" onclick="toggleReact(this,'${p.id}','❤️')">❤️ <span>${loveCnt}</span></button>
+    <button class="act-comment" onclick="toggleComments(this,'${p.id}')">💬 ${comments.length} yorum</button>
   </div>
   <div class="comments-section" id="cs-${p.id}">
     <div id="cl-${p.id}">${commentsHtml}</div>
