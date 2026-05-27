@@ -290,6 +290,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
         <div class="nav-av" id="nav-av">?</div>
         <div class="nav-name" id="nav-name">...</div>
       </div>
+      <button class="nav-admin" id="nav-admin" onclick="window.open('club-admin.html','_blank')" style="display:none;background:transparent;border:1px solid #dc2626;border-radius:8px;padding:5px 12px;font-size:11px;font-family:var(--mono);color:#dc2626;cursor:pointer;transition:all .2s;letter-spacing:.04em">Admin</button>
       <button class="nav-logout" onclick="doLogout()">Çıkış</button>
     </div>
   </nav>
@@ -325,6 +326,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <button class="tab" onclick="switchTab(this,'product')">📦 Ürün</button>
       <button class="tab" onclick="switchTab(this,'question')">❓ Soru</button>
       <button class="tab" onclick="switchTab(this,'motivation')">🔥 Motivasyon</button>
+      <button class="tab" onclick="switchTab(this,'mine')">👤 Postlarım</button>
     </div>
 
     <!-- MAIN GRID -->
@@ -486,6 +488,8 @@ async function doLogout() {
   document.getElementById('auth-screen').style.display = 'flex';
 }
 
+const ADMIN_EMAILS = ['furkan@mlynr.com','canberk@mlynr.com'];
+
 function onLogin(user) {
   me = user;
   myName = user.user_metadata?.full_name || user.email.split('@')[0];
@@ -493,6 +497,10 @@ function onLogin(user) {
   document.getElementById('app').style.display = 'block';
   document.getElementById('nav-av').textContent = myName.charAt(0).toUpperCase();
   document.getElementById('nav-name').textContent = myName;
+  // Admin butonu göster
+  if (ADMIN_EMAILS.includes(user.email)) {
+    document.getElementById('nav-admin').style.display = 'block';
+  }
   init();
 }
 
@@ -531,7 +539,7 @@ async function loadPosts() {
 }
 
 function renderFeed() {
-  var filtered = currentTab === 'all' ? allPosts : allPosts.filter(p => p.post_type === currentTab);
+  var filtered = currentTab === 'all' ? allPosts : currentTab === 'mine' ? allPosts.filter(p => p.user_id === me?.id) : allPosts.filter(p => p.post_type === currentTab);
   var feed = document.getElementById('feed');
   if (!filtered.length) {
     feed.innerHTML = '<div class="feed-empty">Bu kategoride henüz paylaşım yok.</div>';
@@ -634,6 +642,10 @@ async function sendComment(postId) {
   var inp = document.getElementById('ci-'+postId);
   var txt = inp.value.trim();
   if (!txt) return;
+  if (containsPhone(txt)) {
+    alert('⚠️ Yorumunda telefon numarası tespit edildi. Kişisel iletişim bilgileri paylaşılamaz.');
+    return;
+  }
   inp.value = '';
   var { data, error } = await sb.from('club_comments').insert({ post_id: postId, user_id: me.id, user_name: myName, content: txt }).select().single();
   if (!error && data) {
@@ -657,10 +669,28 @@ async function deletePost(postId) {
 }
 
 // ─── SUBMIT POST ───────────────────────────────────────────────
+// ─── PHONE FILTER ──────────────────────────────────────────────
+function containsPhone(text) {
+  // Türk ve uluslararası numara formatları
+  var patterns = [
+    /(?:\+?90|0)?\s*[5][0-9]{2}\s*[0-9]{3}\s*[0-9]{2}\s*[0-9]{2}/,  // Türk GSM
+    /(?:\+?90|0)?\s*[2-4][0-9]{2}\s*[0-9]{3}\s*[0-9]{2}\s*[0-9]{2}/,  // Sabit hat
+    /\+[1-9][0-9]{1,2}[\s.-]?[0-9]{3,}/,  // Uluslararası
+    /[0-9]{4}[\s.-][0-9]{3}[\s.-][0-9]{2}[\s.-][0-9]{2}/,  // Formatlı
+    /[0-9]{10,11}/  // Birleşik 10-11 hane
+  ];
+  return patterns.some(p => p.test(text.replace(/[()]/g,'')));
+}
+
 async function submitPost() {
   if (!me) return;
   var content = document.getElementById('f-text').value.trim();
   if (!content) { alert('Bir şeyler yaz!'); return; }
+  // Telefon filtresi
+  if (containsPhone(content)) {
+    alert('⚠️ Paylaşımında telefon numarası tespit edildi.\nMLYNRClub kuralları gereği kişisel iletişim bilgileri paylaşılamaz.\nLütfen numarayı kaldırarak tekrar dene.');
+    return;
+  }
   var btn = document.getElementById('submit-btn');
   btn.disabled = true; btn.textContent = 'Gönderiliyor...';
   var imageUrl = null;
