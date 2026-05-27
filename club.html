@@ -41,7 +41,65 @@
   --mono: 'JetBrains Mono', monospace;
   --r: 14px;
   --r2: 20px;
+  --nav-bg: rgba(8,10,15,.9);
+  --sidebar-bg: var(--bg);
+  --shadow: 0 1px 3px rgba(0,0,0,.3);
 }
+
+/* LIGHT THEME */
+body.light {
+  --bg: #f7f6f3;
+  --bg2: #edecea;
+  --s1: rgba(0,0,0,.035);
+  --s2: rgba(0,0,0,.055);
+  --s3: rgba(0,0,0,.08);
+  --border: rgba(0,0,0,.08);
+  --border2: rgba(0,0,0,.14);
+  --border3: rgba(0,0,0,.22);
+  --text: #111116;
+  --text2: #50505a;
+  --text3: #95959f;
+  --em: #00a884;
+  --em2: #008a6c;
+  --em-glow: rgba(0,168,132,.12);
+  --em-dim: rgba(0,168,132,.08);
+  --em-border: rgba(0,168,132,.2);
+  --gold: #b45309;
+  --gold-dim: rgba(180,83,9,.08);
+  --blue: #2563eb;
+  --blue-dim: rgba(37,99,235,.08);
+  --purple: #7c3aed;
+  --purple-dim: rgba(124,58,237,.08);
+  --red: #dc2626;
+  --red-dim: rgba(220,38,38,.08);
+  --nav-bg: rgba(247,246,243,.92);
+  --sidebar-bg: var(--bg);
+  --shadow: 0 1px 4px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.05);
+}
+body.light .ambient { opacity: 0.3; }
+body.light .grid-overlay { display: none; }
+body.light .signal-card { background: rgba(0,168,132,.06); }
+body.light .s-card { background: #fff; box-shadow: var(--shadow); }
+body.light .left-sidebar { background: #fff; }
+body.light .center-feed { background: var(--bg); }
+body.light .right-sidebar { background: var(--bg); }
+body.light .post { border-bottom-color: var(--border); }
+body.light .post:hover { background: rgba(0,0,0,.02); }
+body.light .comment-bubble { background: rgba(0,0,0,.04); }
+body.light .nav { background: var(--nav-bg) !important; box-shadow: 0 1px 0 var(--border); }
+body.light .feed-header { background: rgba(247,246,243,.9) !important; }
+body.light .auth-box { background: #fff; }
+body.light .auth-field input { background: #f5f4f1; }
+body.light .auth-tabs { background: #f0efec; }
+body.light .auth-tab.active { background: #fff; }
+body.light .react-btn { background: rgba(0,0,0,.04); }
+body.light .react-btn:hover { background: rgba(0,0,0,.08); }
+body.light .modal { background: #fff; }
+body.light .form-input, body.light .form-textarea { background: #f5f4f1; }
+body.light .img-drop { background: #f5f4f1; }
+body.light .comment-inp { background: #f5f4f1; }
+body.light .ls-btn:hover { background: rgba(0,0,0,.06); }
+body.light .ls-btn.active { background: rgba(0,0,0,.06); }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
@@ -543,16 +601,17 @@ body {
 .s-card {
   background: rgba(255,255,255,.035); border: 1px solid var(--border);
   border-radius: var(--r2); padding: 20px; backdrop-filter: blur(12px);
-  transition: border-color .2s; position: relative; overflow: hidden;
+  transition: all .2s; position: relative; overflow: hidden;
 }
 .s-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent);
 }
-.s-card:hover { border-color: var(--border2); }
+.s-card:hover { border-color: var(--border2); transform: translateY(-1px); }
 .s-head {
   font-family: var(--mono); font-size: 9px; font-weight: 500;
   letter-spacing: .12em; text-transform: uppercase; color: var(--text3); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 6px;
 }
 
 /* ── SIGNAL ── */
@@ -753,6 +812,7 @@ body {
     <div class="nav-badge">BETA</div>
     <div class="nav-right">
       <button class="nav-admin" id="nav-admin" onclick="window.open('club-admin.html','_blank')" style="display:none">Admin</button>
+      <button onclick="toggleTheme()" id="theme-btn" style="background:var(--s2);border:1px solid var(--border2);border-radius:10px;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all .2s;flex-shrink:0">🌙</button>
     </div>
   </nav>
 
@@ -980,6 +1040,9 @@ function onLogin(user) {
   if (ADMIN_EMAILS.includes(user.email)) {
     document.getElementById('nav-admin').style.display = 'block';
   }
+  // Theme btn sync
+  var btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
   init();
 }
 
@@ -1019,49 +1082,12 @@ async function loadPosts() {
 
 function renderFeed() {
   var isAdmin = ADMIN_EMAILS.includes(me?.email);
-  var base = currentTab === 'mine' ? allPosts.filter(p => p.user_id === me?.id)
-           : currentTab === 'all'  ? allPosts
-           : allPosts.filter(p => p.post_type === currentTab);
-  // Admin hepsini görür, kullanıcı sadece approved + kendi bekleyenlerini
-  var filtered = isAdmin ? base : base.filter(p => p.approved || p.user_id === me?.id);
-  var feed = document.getElementById('feed');
-  if (!filtered.length) {
-    feed.innerHTML = '<div class="feed-empty">Bu kategoride henüz paylaşım yok.</div>';
-    return;
-  }
-  feed.innerHTML = filtered.map(p => renderPost(p)).join('');
-}
-
-function renderPost(p) {
-  var reactions = p.club_reactions || [];
-  var comments = (p.club_comments || []).sort((a,b) => new Date(a.created_at)-new Date(b.created_at));
-  var fireCnt = reactions.filter(r=>r.emoji==='🔥').length;
-  var powerCnt = reactions.filter(r=>r.emoji==='💪').length;
-  var loveCnt = reactions.filter(r=>r.emoji==='❤️').length;
-  var myFire = reactions.some(r=>r.emoji==='🔥'&&r.user_id===me?.id);
-  var myPower = reactions.some(r=>r.emoji==='💪'&&r.user_id===me?.id);
-  var myLove = reactions.some(r=>r.emoji==='❤️'&&r.user_id===me?.id);
-  var isMine = p.user_id === me?.id;
-  var av = avColor(p.user_name || 'U');
-  var initial = (p.user_name||'U').charAt(0).toUpperCase();
-  var badge = getBadgeHtml(p.user_id);
-
-  var saleHtml = '';
-  if ((p.post_type==='sale'||p.post_type==='milestone') && (p.sale_price||p.sale_profit||p.sale_orders)) {
-    saleHtml = '<div class="sale-block">';
-    if(p.sale_price) saleHtml += '<div class="sb-item"><div class="sb-val">'+esc(p.sale_price)+'</div><div class="sb-lbl">Satış</div></div>';
-    if(p.sale_profit) saleHtml += '<div class="sb-item"><div class="sb-val">'+esc(p.sale_profit)+'</div><div class="sb-lbl">Kar</div></div>';
-    if(p.sale_orders) saleHtml += '<div class="sb-item"><div class="sb-val">'+esc(p.sale_orders)+'</div><div class="sb-lbl">Sipariş</div></div>';
-    saleHtml += '</div>';
-  }
-  var imgHtml = p.image_url ? '<img class="post-img" src="'+esc(p.image_url)+'" alt="" onclick="openLightbox(\''+esc(p.image_url)+'\') ">' : '';
-  var typeLabel = {milestone:'🎉 İlk Satış',sale:'💰 Satış',product:'📦 Ürün',question:'❓ Soru',motivation:'🔥 Motivasyon'}[p.post_type]||p.post_type;
-  var delHtml = isMine ? '<button class="del-btn" onclick="deletePost(\''+p.id+'\')" title="Sil">🗑</button>' : '';
-  var pendingBanner = (!p.approved && isMine) ? '<div class="pending-banner">⏳ Onay bekleniyor — admin onayladıktan sonra herkese görünür</div>' : '';
-
   var commentsHtml = comments.map(c => {
     var cInit = (c.user_name||'?').charAt(0).toUpperCase();
-    return '<div class="comment"><div class="comment-av">'+esc(cInit)+'</div><div class="comment-bubble"><div class="comment-name">'+esc(c.user_name)+'</div><div class="comment-text">'+esc(c.content)+'</div></div></div>';
+    var cAv = avColor(c.user_name||'U');
+    var canDel = isAdmin || c.user_id === me?.id;
+    var delBtn = canDel ? '<button class="cdel-btn" data-cid="'+c.id+'" data-pid="'+p.id+'" onclick="deleteComment(this)" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:2px 8px;border-radius:6px;margin-left:auto;line-height:1">×</button>' : '';
+    return '<div class="comment"><div class="comment-av" style="background:'+cAv+';color:#000">'+esc(cInit)+'</div><div class="comment-bubble" style="display:flex;align-items:flex-start;gap:6px"><div style="flex:1"><div class="comment-name">'+esc(c.user_name)+'</div><div class="comment-text">'+esc(c.content)+'</div></div>'+delBtn+'</div></div>';
   }).join('');
 
   return `<div class="post${isMine?' mine':''}" data-id="${p.id}" data-type="${p.post_type}">
@@ -1152,6 +1178,22 @@ async function deletePost(postId) {
   await sb.from('club_posts').delete().eq('id', postId).eq('user_id', me.id);
   allPosts = allPosts.filter(p => p.id !== postId);
   renderFeed();
+}
+
+async function deleteComment(btn) {
+  var commentId = btn.dataset.cid;
+  var postId = btn.dataset.pid;
+  await sb.from('club_comments').delete().eq('id', commentId);
+  var postData = allPosts.find(p=>p.id===postId);
+  if (postData) {
+    postData.club_comments = (postData.club_comments||[]).filter(c=>c.id!==commentId);
+    var postEl = document.querySelector('[data-id="'+postId+'"]');
+    if (postEl) {
+      var wasOpen = document.getElementById('cs-'+postId)?.classList.contains('open');
+      postEl.outerHTML = renderPost(postData);
+      if (wasOpen) { var cs = document.getElementById('cs-'+postId); if(cs) cs.classList.add('open'); }
+    }
+  }
 }
 
 // ─── SUBMIT POST ───────────────────────────────────────────────
@@ -1350,6 +1392,19 @@ function timeAgo(ts) {
 var AV_COLORS = ['#00e676','#64b5f6','#ffd54f','#ce93d8','#ff8a65','#80cbc4','#a5d6a7','#ef9a9a'];
 function avColor(name) { var i=0;for(var c of name)i+=c.charCodeAt(0);return AV_COLORS[i%AV_COLORS.length]; }
 function getBadgeHtml(userId) { return ''; }
+
+// ─── THEME ─────────────────────────────────────────────────────
+function toggleTheme() {
+  var isLight = document.body.classList.toggle('light');
+  document.getElementById('theme-btn').textContent = isLight ? '☀️' : '🌙';
+  localStorage.setItem('club-theme', isLight ? 'light' : 'dark');
+}
+(function(){
+  if (localStorage.getItem('club-theme') === 'light') {
+    document.body.classList.add('light');
+    // btn henüz render olmamış olabilir, onLogin'de set edilecek
+  }
+})();
 
 // ─── SESSION CHECK ─────────────────────────────────────────────
 (async function() {
