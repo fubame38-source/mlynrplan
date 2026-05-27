@@ -342,7 +342,6 @@ body.light .modal{box-shadow:0 20px 60px rgba(0,0,0,.15)}
     <div class="nav-logo">MLYNR<span>Club</span></div>
     <div class="nav-badge">BETA</div>
     <div class="nav-right">
-      <button class="nav-admin" id="nav-admin" onclick="window.open('club-admin.html','_blank')">Admin</button>
       <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
     </div>
   </nav>
@@ -554,9 +553,7 @@ function onLogin(user) {
   document.getElementById('nav-av').textContent = myName.charAt(0).toUpperCase();
   document.getElementById('nav-name').textContent = myName;
   // Admin butonu göster
-  if (ADMIN_EMAILS.includes(user.email)) {
-    document.getElementById('nav-admin').style.display = 'block';
-  }
+  // admin panel: mlynrplan.com/club-admin.html
   // Theme btn sync
   var btn = document.getElementById('theme-btn');
   if (btn) btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
@@ -818,7 +815,7 @@ async function submitPost() {
     sale_profit: document.getElementById('f-profit').value.trim() || null,
     sale_orders: document.getElementById('f-orders').value.trim() || null,
     image_url: imageUrl,
-    approved: ADMIN_EMAILS.includes(me.email) // admin direkt onaylı
+    approved: false // herkes onay bekler
   };
   var { data, error } = await sb.from('club_posts').insert(post).select().single();
   btn.disabled = false; btn.textContent = 'Paylaş →';
