@@ -6,422 +6,336 @@
 <title>MLYNRClub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+/* ── TOKENS ── */
 :root {
-  --bg: #0c0c0e;
-  --surface: #141416;
-  --surface2: #1c1c20;
-  --surface3: #242428;
-  --border: rgba(255,255,255,.06);
-  --border2: rgba(255,255,255,.1);
-  --text: #ececec;
-  --text2: #888890;
-  --text3: #444450;
-  --gold: #f0a500;
-  --gold2: #ffc53d;
-  --gold-bg: rgba(240,165,0,.08);
-  --gold-border: rgba(240,165,0,.2);
+  --bg: #000000;
+  --bg2: #0a0a0a;
+  --card: #111111;
+  --border: #222222;
+  --border2: #333333;
+  --text: #ffffff;
+  --text2: #999999;
+  --text3: #444444;
+  --gold: #f5a623;
+  --gold-light: rgba(245,166,35,.1);
+  --gold-border: rgba(245,166,35,.3);
   --green: #22c55e;
-  --green-bg: rgba(34,197,94,.08);
-  --green-border: rgba(34,197,94,.2);
+  --green-light: rgba(34,197,94,.1);
+  --green-border: rgba(34,197,94,.3);
   --blue: #60a5fa;
-  --blue-bg: rgba(96,165,250,.08);
+  --blue-light: rgba(96,165,250,.1);
   --purple: #a78bfa;
-  --purple-bg: rgba(167,139,250,.08);
+  --purple-light: rgba(167,139,250,.1);
   --red: #f87171;
-  --red-bg: rgba(248,113,113,.08);
+  --red-light: rgba(248,113,113,.1);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.5);
+  --shadow: 0 4px 16px rgba(0,0,0,.6);
   --font: 'Plus Jakarta Sans', sans-serif;
   --mono: 'JetBrains Mono', monospace;
+  --r: 12px;
+  --r2: 16px;
 }
 body.light {
-  --bg: #f8f8f6;
-  --surface: #ffffff;
-  --surface2: #f2f2f0;
-  --surface3: #e8e8e6;
-  --border: rgba(0,0,0,.07);
-  --border2: rgba(0,0,0,.12);
-  --text: #111112;
-  --text2: #555560;
+  --bg: #ffffff;
+  --bg2: #f5f5f5;
+  --card: #ffffff;
+  --border: #e5e5e5;
+  --border2: #d0d0d0;
+  --text: #000000;
+  --text2: #555555;
   --text3: #aaaaaa;
-  --gold: #d4891e;
-  --gold2: #e8a020;
-  --gold-bg: rgba(212,137,30,.07);
-  --gold-border: rgba(212,137,30,.18);
+  --gold: #d4900a;
+  --gold-light: rgba(212,144,10,.08);
+  --gold-border: rgba(212,144,10,.25);
   --green: #16a34a;
-  --green-bg: rgba(22,163,74,.07);
-  --green-border: rgba(22,163,74,.18);
+  --green-light: rgba(22,163,74,.08);
+  --green-border: rgba(22,163,74,.25);
+  --blue: #2563eb;
+  --blue-light: rgba(37,99,235,.08);
+  --purple: #7c3aed;
+  --purple-light: rgba(124,58,237,.08);
+  --red: #dc2626;
+  --red-light: rgba(220,38,38,.08);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+  --shadow: 0 4px 16px rgba(0,0,0,.08);
 }
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: hidden; transition: background .3s, color .3s; }
 
-/* AUTH */
-#auth-screen {
-  position: fixed; inset: 0; z-index: 1000;
-  background: var(--bg); display: flex; align-items: center; justify-content: center; padding: 20px;
-}
-#auth-screen::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(240,165,0,.07), transparent 60%);
-}
-.auth-wrap { width: 100%; max-width: 420px; position: relative; }
-.auth-header { text-align: center; margin-bottom: 28px; }
-.auth-icon { font-size: 40px; display: block; margin-bottom: 12px; }
-.auth-brand { font-size: 26px; font-weight: 800; letter-spacing: -.04em; color: var(--text); }
-.auth-brand span { color: var(--gold); }
-.auth-tagline { font-size: 12px; color: var(--text3); margin-top: 4px; font-family: var(--mono); letter-spacing: .08em; text-transform: uppercase; }
-.auth-box {
-  background: var(--surface); border: 1px solid var(--border2);
-  border-radius: 24px; padding: 32px; position: relative; overflow: hidden;
-}
-.auth-box::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 50%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-.auth-tabs { display: flex; background: var(--surface2); border-radius: 12px; padding: 3px; gap: 3px; margin-bottom: 24px; }
-.auth-tab { flex: 1; padding: 9px; border-radius: 9px; border: none; background: transparent; color: var(--text3); font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; }
-.auth-tab.active { background: var(--surface); color: var(--text); border: 1px solid var(--border2); }
-.auth-field { margin-bottom: 14px; }
-.auth-field label { display: block; font-size: 11px; font-weight: 600; color: var(--text3); margin-bottom: 6px; letter-spacing: .05em; text-transform: uppercase; }
-.auth-field input { width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; padding: 12px 16px; color: var(--text); font-family: var(--font); font-size: 14px; outline: none; transition: all .2s; }
-.auth-field input:focus { border-color: var(--gold-border); box-shadow: 0 0 0 3px var(--gold-bg); }
-.auth-field input::placeholder { color: var(--text3); }
-.auth-btn { width: 100%; background: var(--gold); color: #0c0c0e; font-family: var(--font); font-size: 14px; font-weight: 700; padding: 13px; border-radius: 12px; border: none; cursor: pointer; transition: all .25s; margin-top: 8px; letter-spacing: -.01em; }
-.auth-btn:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(240,165,0,.25); }
-#auth-msg { font-size: 12px; margin-top: 10px; text-align: center; font-family: var(--mono); }
-.auth-err { color: var(--red); }
-.auth-ok { color: var(--green); }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
 
-/* NAV */
-.nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 56px;
-  background: rgba(12,12,14,.9); backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; padding: 0 24px; gap: 10px;
-}
-body.light .nav { background: rgba(248,248,246,.92); box-shadow: 0 1px 0 var(--border); }
-.nav-logo { font-size: 16px; font-weight: 800; letter-spacing: -.04em; color: var(--text); }
-.nav-logo span { color: var(--gold); }
-.nav-pill { font-family: var(--mono); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; background: var(--gold-bg); color: var(--gold); border: 1px solid var(--gold-border); padding: 3px 9px; border-radius: 999px; }
-.nav-right { margin-left: auto; }
-.theme-btn { background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all .2s; }
-.theme-btn:hover { border-color: var(--gold-border); }
+/* ── AUTH ── */
+#auth-screen{position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(245,166,35,.06),transparent);z-index:0}
+.auth-container{width:100%;max-width:400px}
+.auth-header{text-align:center;margin-bottom:32px}
+.auth-logo-mark{width:56px;height:56px;background:var(--gold);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px;box-shadow:0 8px 24px rgba(245,166,35,.2)}
+.auth-title{font-size:24px;font-weight:800;letter-spacing:-.04em;color:var(--text)}
+.auth-title span{color:var(--gold)}
+.auth-sub{font-size:13px;color:var(--text3);margin-top:5px}
+.auth-card{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:28px;box-shadow:0 0 0 1px rgba(255,255,255,.05)}
+.auth-tabs{display:flex;background:var(--bg2);border-radius:10px;padding:3px;gap:3px;margin-bottom:22px}
+.auth-tab{flex:1;padding:8px;border-radius:7px;border:none;background:transparent;color:var(--text3);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.auth-tab.active{background:var(--card);color:var(--text);box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+.auth-field{margin-bottom:14px}
+.auth-field label{display:block;font-size:11px;font-weight:700;color:var(--text3);margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase}
+.auth-field input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:var(--font);font-size:14px;outline:none;transition:all .2s}
+.auth-field input:focus{border-color:var(--gold-border);box-shadow:0 0 0 3px var(--gold-light)}
+.auth-field input::placeholder{color:var(--text3)}
+.auth-btn{width:100%;background:var(--gold);color:#fff;font-family:var(--font);font-size:14px;font-weight:700;padding:12px;border-radius:10px;border:none;cursor:pointer;transition:all .25s;margin-top:8px;letter-spacing:-.01em}
+.auth-btn:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,134,10,.3)}
+#auth-msg{font-size:12px;margin-top:10px;text-align:center;font-family:var(--mono);display:none}
+.auth-err{color:var(--red)} .auth-ok{color:var(--green)}
 
-/* LAYOUT */
-.layout {
-  display: grid; grid-template-columns: 260px 1fr 304px;
-  max-width: 1280px; margin: 0 auto; padding-top: 56px; min-height: 100vh;
-}
-@media (max-width: 1100px) { .layout { grid-template-columns: 240px 1fr; } .right-col { display: none; } }
-@media (max-width: 720px) { .layout { grid-template-columns: 1fr; } .left-col { display: none; } }
+/* ── LAYOUT ── */
+.app{display:none}
+.topbar{display:none}
 
-/* LEFT COL */
-.left-col {
-  border-right: 1px solid var(--border);
-  position: sticky; top: 56px; height: calc(100vh - 56px);
-  overflow-y: auto; display: flex; flex-direction: column;
-  padding: 0;
-}
-.left-col::-webkit-scrollbar { display: none; }
-body.light .left-col { background: var(--surface); }
+/* 3 column */
+.columns{display:grid;grid-template-columns:256px 1fr 288px;min-height:100vh}
+@media(max-width:1080px){.columns{grid-template-columns:256px 1fr}.right-panel{display:none}}
+@media(max-width:700px){.columns{grid-template-columns:1fr}.left-panel{display:none}}
 
-.sidebar-top { padding: 20px 16px 0; }
+/* ── LEFT PANEL ── */
+.left-panel{background:var(--bg2);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;padding:28px 16px 20px}
+.left-panel::-webkit-scrollbar{display:none}
 
-/* Brand block */
-.brand-block { display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin-bottom: 8px; }
-.brand-icon { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--gold), var(--gold2)); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; box-shadow: 0 4px 16px rgba(240,165,0,.2); }
-.brand-text { }
-.brand-name { font-size: 16px; font-weight: 800; letter-spacing: -.04em; color: var(--text); line-height: 1; }
-.brand-name span { color: var(--gold); }
-.brand-sub { font-size: 10px; color: var(--text3); margin-top: 2px; font-family: var(--mono); letter-spacing: .06em; }
+.lp-logo{display:flex;align-items:center;gap:10px;padding:4px 8px;margin-bottom:28px}
+.lp-logo-mark{width:36px;height:36px;background:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 3px 10px rgba(200,134,10,.2)}
+.lp-logo-text{font-size:17px;font-weight:800;letter-spacing:-.04em;color:var(--text)}
+.lp-logo-text span{color:var(--gold)}
 
-/* Nav items */
-.nav-section-title { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; padding: 0 14px; margin: 16px 0 6px; font-family: var(--mono); }
-.nav-items { display: flex; flex-direction: column; gap: 1px; }
-.nav-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 14px; border-radius: 10px; cursor: pointer;
-  border: none; background: transparent; font-family: var(--font); font-size: 13px; font-weight: 500;
-  color: var(--text2); width: 100%; text-align: left; transition: all .15s; position: relative;
-}
-.nav-item:hover { background: var(--surface2); color: var(--text); }
-.nav-item.active { background: var(--gold-bg); color: var(--gold); font-weight: 700; }
-.nav-item.active::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 60%; background: var(--gold); border-radius: 0 3px 3px 0; }
-.nav-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.lp-post-btn{display:flex;align-items:center;gap:8px;justify-content:center;background:var(--gold);color:#fff;font-family:var(--font);font-size:13px;font-weight:700;padding:11px 16px;border-radius:12px;border:none;cursor:pointer;transition:all .2s;width:100%;margin-bottom:24px}
+.lp-post-btn:hover{filter:brightness(1.07);transform:translateY(-1px);box-shadow:0 4px 16px rgba(200,134,10,.25)}
 
-.sidebar-divider { height: 1px; background: var(--border); margin: 12px 16px; }
+.lp-section{margin-bottom:6px}
+.lp-section-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding:0 8px;margin-bottom:4px;font-family:var(--mono)}
+.lp-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;border:none;background:transparent;cursor:pointer;color:var(--text2);font-family:var(--font);font-size:13px;font-weight:500;width:100%;text-align:left;transition:all .15s}
+.lp-item:hover{background:var(--bg2);color:var(--text)}
+.lp-item.active{background:var(--gold-light);color:var(--gold);font-weight:600}
+.lp-item-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
 
-/* CTA button */
-.sidebar-cta {
-  margin: 0 16px 4px;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  background: var(--gold); color: #0c0c0e; font-family: var(--font); font-size: 13px; font-weight: 700;
-  padding: 11px 16px; border-radius: 12px; border: none; cursor: pointer; transition: all .2s; width: calc(100% - 32px);
-}
-.sidebar-cta:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(240,165,0,.22); }
+.lp-sep{height:1px;background:var(--border);margin:16px 0}
 
-/* Stats */
-.sidebar-stats { padding: 16px; }
-.stat-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
-.stat-label { font-size: 11px; color: var(--text3); }
-.stat-value { font-size: 13px; font-weight: 700; color: var(--text); }
+.lp-stats{padding:0 8px}
+.lp-stat{display:flex;justify-content:space-between;padding:4px 0}
+.lp-stat-k{font-size:12px;color:var(--text3)}
+.lp-stat-v{font-size:13px;font-weight:700;color:var(--text)}
 
-/* User block */
-.sidebar-user {
-  margin-top: auto; padding: 14px 16px;
-  border-top: 1px solid var(--border);
-  display: flex; align-items: center; gap: 10px;
-}
-.user-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  color: #0c0c0e; font-size: 14px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.user-info { flex: 1; min-width: 0; }
-.user-name { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.user-role { font-size: 10px; color: var(--text3); margin-top: 1px; font-family: var(--mono); text-transform: uppercase; letter-spacing: .06em; }
-.signout-btn { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 16px; padding: 4px; border-radius: 6px; transition: all .2s; }
-.signout-btn:hover { color: var(--red); background: var(--red-bg); }
+.lp-user{margin-top:auto;padding:12px 10px;background:var(--bg2);border-radius:12px;display:flex;align-items:center;gap:10px;border:1px solid var(--border)}
+.lp-uav{width:34px;height:34px;border-radius:50%;background:var(--gold);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lp-uname{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-urole{font-size:10px;color:var(--text3);margin-top:1px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em}
+.lp-actions{margin-left:auto;display:flex;gap:4px}
+.lp-action-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px;padding:4px;border-radius:6px;transition:all .15s;line-height:1}
+.lp-action-btn:hover{color:var(--text);background:var(--border)}
 
-/* CENTER COL */
-.center-col { border-right: 1px solid var(--border); display: flex; flex-direction: column; min-height: calc(100vh - 56px); }
+/* ── CENTER PANEL ── */
+.center-panel{border-right:1px solid var(--border);display:flex;flex-direction:column;min-height:100vh}
 
-.feed-header {
-  position: sticky; top: 56px; z-index: 50;
-  background: rgba(12,12,14,.9); backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 20px;
-}
-body.light .feed-header { background: rgba(248,248,246,.94); }
-.feed-header-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 0; }
-.feed-title { font-size: 17px; font-weight: 800; letter-spacing: -.04em; }
-.feed-tabs { display: flex; overflow-x: auto; gap: 0; padding-bottom: 0; }
-.feed-tabs::-webkit-scrollbar { display: none; }
-.feed-tab {
-  padding: 12px 14px; border: none; background: transparent;
-  font-family: var(--font); font-size: 12px; font-weight: 600;
-  color: var(--text3); cursor: pointer; white-space: nowrap;
-  border-bottom: 2px solid transparent; position: relative; bottom: -1px;
-  transition: all .15s;
-}
-.feed-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
-.feed-tab:hover:not(.active) { color: var(--text2); }
+.cp-header{padding:20px 24px 0;border-bottom:1px solid var(--border);background:rgba(0,0,0,.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:50}
+body.light .cp-header{background:rgba(15,15,13,.9)}
+.cp-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cp-title{font-size:18px;font-weight:800;letter-spacing:-.04em}
 
-/* FEED */
-.feed { flex: 1; }
-.feed-empty { padding: 60px 20px; text-align: center; color: var(--text3); font-size: 13px; }
-.feed-loading { padding: 48px; text-align: center; color: var(--text3); font-size: 11px; font-family: var(--mono); }
+/* Post compose */
+.compose-bar{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.compose-bar:hover{background:var(--bg2)}
+.compose-av{width:38px;height:38px;border-radius:50%;background:var(--gold);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.compose-input{flex:1;font-family:var(--font);font-size:14px;color:var(--text3);background:none;border:none;outline:none;cursor:pointer}
 
-/* POST CARD */
-.post {
-  border-bottom: 1px solid var(--border);
-  transition: background .12s;
-  animation: postIn .3s ease both;
-}
-@keyframes postIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-.post:hover { background: rgba(255,255,255,.015); }
-body.light .post:hover { background: rgba(0,0,0,.018); }
-.post.mine { border-left: 2px solid var(--gold); }
+/* Tabs */
+.cp-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--border)}
+.cp-tabs::-webkit-scrollbar{display:none}
+.cp-tab{padding:12px 16px;font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;border:none;background:transparent;color:var(--text3);white-space:nowrap;border-bottom:2px solid transparent;position:relative;bottom:-1px;transition:all .15s}
+.cp-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.cp-tab:hover:not(.active){color:var(--text2)}
 
-/* Post header */
-.post-hd { display: flex; align-items: center; gap: 11px; padding: 16px 20px 0; }
-.post-av {
-  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
-  font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; color: #0c0c0e;
-}
-.post-hd-info { flex: 1; min-width: 0; }
-.post-hd-name { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -.02em; }
-.post-hd-time { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 1px; }
-.post-type-badge {
-  font-family: var(--mono); font-size: 9px; font-weight: 600;
-  letter-spacing: .06em; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 999px; flex-shrink: 0; margin-left: auto;
-  border: 1px solid transparent;
-}
-.ptb-milestone { background: var(--gold-bg); color: var(--gold); border-color: var(--gold-border); }
-.ptb-sale { background: var(--green-bg); color: var(--green); border-color: var(--green-border); }
-.ptb-product { background: var(--blue-bg); color: var(--blue); border-color: rgba(96,165,250,.2); }
-.ptb-question { background: var(--purple-bg); color: var(--purple); border-color: rgba(167,139,250,.2); }
-.ptb-motivation { background: var(--red-bg); color: var(--red); border-color: rgba(248,113,113,.2); }
-.post-del-btn { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 15px; padding: 4px 8px; border-radius: 8px; transition: all .15s; margin-left: 4px; }
-.post-del-btn:hover { color: var(--red); background: var(--red-bg); }
+/* ── FEED ── */
+.feed{flex:1}
+.feed-empty{padding:60px 24px;text-align:center;color:var(--text3);font-size:14px}
+.feed-loading{padding:48px;text-align:center;color:var(--text3);font-size:12px;font-family:var(--mono)}
 
-/* Post body */
-.post-body { padding: 10px 20px 0; font-size: 14px; line-height: 1.65; color: var(--text2); white-space: pre-wrap; word-break: break-word; }
-.post-body strong { color: var(--text); font-weight: 700; }
+/* ── POST ── */
+.post{padding:20px 24px;border-bottom:1px solid var(--border);transition:background .12s;animation:fadeIn .3s ease both;cursor:default}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.post:hover{background:rgba(0,0,0,.018)}
+body.light .post:hover{background:rgba(255,255,255,.02)}
+.post.mine{border-left:3px solid var(--gold);padding-left:21px}
 
-/* Post image */
-.post-media { margin: 12px 0 0; }
-.post-media img { width: 100%; max-height: 440px; object-fit: cover; display: block; cursor: zoom-in; transition: opacity .2s; }
-.post-media img:hover { opacity: .94; }
+.post-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.post-av{width:40px;height:40px;border-radius:50%;flex-shrink:0;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff}
+.post-meta{flex:1;min-width:0}
+.post-author{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.02em;line-height:1.2}
+.post-time{font-size:12px;color:var(--text3);margin-top:2px;font-family:var(--mono)}
+.post-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;white-space:nowrap;flex-shrink:0;font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.pb-milestone{background:var(--gold-light);color:var(--gold);border:1px solid var(--gold-border)}
+.pb-sale{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pb-product{background:var(--blue-light);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
+.pb-question{background:var(--purple-light);color:var(--purple);border:1px solid rgba(124,58,237,.2)}
+.pb-motivation{background:var(--red-light);color:var(--red);border:1px solid rgba(220,38,38,.2)}
+.post-menu{background:none;border:none;cursor:pointer;color:var(--text3);padding:4px 8px;border-radius:6px;font-size:15px;transition:all .15s;margin-left:6px;line-height:1}
+.post-menu:hover{color:var(--red);background:var(--red-light)}
 
-/* Pending */
-.post-pending { margin: 10px 20px 0; background: var(--gold-bg); border: 1px solid var(--gold-border); border-radius: 8px; padding: 7px 12px; font-size: 11px; font-family: var(--mono); color: var(--gold); }
-
-/* Sale card */
-.sale-card {
-  margin: 12px 20px 0;
-  background: var(--surface2); border: 1px solid var(--green-border);
-  border-radius: 14px; padding: 16px 20px; display: flex; flex-wrap: wrap;
-  position: relative; overflow: hidden;
-}
-.sale-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--green), transparent); }
-.sale-item { padding: 4px 20px; text-align: center; border-right: 1px solid var(--border2); }
-.sale-item:first-child { padding-left: 0; }
-.sale-item:last-child { border-right: none; }
-.sale-val { font-size: 22px; font-weight: 800; color: var(--green); letter-spacing: -.03em; }
-.sale-lbl { font-size: 9px; font-family: var(--mono); color: var(--text3); text-transform: uppercase; letter-spacing: .08em; margin-top: 2px; }
+.post-text{font-size:14px;line-height:1.7;color:var(--text2);white-space:pre-wrap;word-break:break-word;margin-bottom:14px}
+.post-text .author-name{font-weight:700;color:var(--text)}
 
 /* Milestone */
-.milestone-card {
-  margin: 12px 20px 0;
-  background: linear-gradient(135deg, rgba(240,165,0,.09), rgba(255,197,61,.04));
-  border: 1px solid var(--gold-border); border-radius: 14px; padding: 18px;
-  text-align: center; position: relative; overflow: hidden;
-}
-.milestone-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold2), transparent); }
-.mc-emoji { font-size: 28px; display: block; margin-bottom: 6px; }
-.mc-title { font-size: 16px; font-weight: 800; color: var(--gold); letter-spacing: -.03em; }
-.mc-sub { font-size: 11px; color: var(--text3); margin-top: 4px; font-family: var(--mono); }
+.milestone-card{background:linear-gradient(135deg,var(--gold-light),rgba(0,0,0,0));border:1px solid var(--gold-border);border-radius:14px;padding:20px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden}
+body.light .milestone-card{background:linear-gradient(135deg,rgba(232,160,32,.1),rgba(0,0,0,0))}
+.milestone-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.mc-icon{font-size:30px;display:block;margin-bottom:8px}
+.mc-headline{font-size:16px;font-weight:800;color:var(--gold);letter-spacing:-.03em}
+.mc-desc{font-size:12px;color:var(--text3);margin-top:4px}
 
-/* Post actions */
-.post-actions { display: flex; align-items: center; padding: 10px 14px 14px; gap: 2px; }
-.act { display: inline-flex; align-items: center; gap: 5px; background: transparent; border: none; border-radius: 8px; padding: 6px 10px; font-size: 13px; color: var(--text3); cursor: pointer; font-family: var(--font); font-weight: 500; transition: all .15s; user-select: none; }
-.act:hover { color: var(--text); background: var(--surface2); }
-.act.fire-on { color: #f97316; }
-.act.power-on { color: var(--gold); }
-.act.love-on { color: #f43f5e; }
-.act span { font-size: 12px; font-weight: 600; }
-.act-cmt { margin-left: auto; font-size: 11px; font-family: var(--mono); color: var(--text3); cursor: pointer; background: none; border: none; padding: 6px 10px; transition: color .15s; letter-spacing: .04em; }
-.act-cmt:hover { color: var(--text2); }
+/* Sale stats */
+.sale-stats{display:flex;background:var(--green-light);border:1px solid var(--green-border);border-radius:14px;overflow:hidden;margin-bottom:14px;position:relative}
+body.light .sale-stats{background:rgba(52,211,153,.07)}
+.sale-stats::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--green)}
+.ss-item{flex:1;padding:14px 16px;text-align:center;border-right:1px solid var(--green-border)}
+.ss-item:last-child{border-right:none}
+.ss-val{font-size:20px;font-weight:800;color:var(--green);letter-spacing:-.03em}
+.ss-lbl{font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+
+/* Post image */
+.post-image{width:100%;border-radius:12px;margin-bottom:14px;object-fit:cover;max-height:400px;cursor:zoom-in;transition:opacity .2s;display:block;border:1px solid var(--border)}
+.post-image:hover{opacity:.95}
+
+/* Pending */
+.post-pending{display:inline-flex;align-items:center;gap:6px;background:var(--gold-light);border:1px solid var(--gold-border);border-radius:8px;padding:6px 12px;font-size:11px;font-family:var(--mono);color:var(--gold);margin-bottom:12px}
+
+/* Actions */
+.post-actions{display:flex;align-items:center;gap:0;padding-top:4px;border-top:1px solid var(--border);margin-top:4px}
+.pa-btn{display:inline-flex;align-items:center;gap:5px;background:none;border:none;border-radius:8px;padding:8px 12px;font-size:13px;color:var(--text3);cursor:pointer;font-family:var(--font);font-weight:500;transition:all .15s;user-select:none}
+.pa-btn:hover{color:var(--text);background:var(--bg2)}
+.pa-btn.fire-on{color:#f97316}
+.pa-btn.power-on{color:var(--gold)}
+.pa-btn.love-on{color:#e11d48}
+.pa-btn span{font-size:12px;font-weight:600}
+.pa-cmt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text3);cursor:pointer;background:none;border:none;padding:8px 10px;transition:color .15s;letter-spacing:.04em}
+.pa-cmt:hover{color:var(--text2)}
 
 /* Comments */
-.comments { display: none; border-top: 1px solid var(--border); padding: 14px 20px 8px; }
-.comments.open { display: block; }
-.cmt { display: flex; gap: 10px; margin-bottom: 12px; animation: postIn .2s ease; }
-.cmt-av { width: 28px; height: 28px; border-radius: 50%; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0c0c0e; }
-.cmt-body { flex: 1; }
-.cmt-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-.cmt-text { font-size: 13px; color: var(--text2); line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
-.cmt-del { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 14px; padding: 2px 6px; border-radius: 4px; transition: all .15s; margin-left: auto; flex-shrink: 0; }
-.cmt-del:hover { color: var(--red); }
-.cmt-input-row { display: flex; align-items: center; gap: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-.cmt-input { flex: 1; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 8px 14px; color: var(--text); font-family: var(--font); font-size: 13px; outline: none; transition: all .2s; resize: none; }
-.cmt-input:focus { border-color: var(--gold-border); }
-.cmt-input::placeholder { color: var(--text3); }
-.cmt-send { background: var(--gold); color: #0c0c0e; border: none; border-radius: 999px; padding: 7px 14px; font-family: var(--font); font-size: 12px; font-weight: 700; cursor: pointer; transition: all .2s; white-space: nowrap; }
-.cmt-send:hover { filter: brightness(1.1); }
+.post-comments{display:none;border-top:1px solid var(--border);padding:14px 0 4px}
+.post-comments.open{display:block}
+.cmt{display:flex;gap:10px;margin-bottom:12px;animation:fadeIn .2s ease}
+.cmt-av{width:28px;height:28px;border-radius:50%;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
+.cmt-body{flex:1}
+.cmt-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.cmt-text{font-size:13px;color:var(--text2);line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.cmt-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:2px 5px;border-radius:4px;transition:color .15s;margin-left:auto;flex-shrink:0}
+.cmt-del:hover{color:var(--red)}
+.cmt-form{display:flex;align-items:center;gap:10px;margin-top:8px;padding-top:10px;border-top:1px solid var(--border)}
+.cmt-form-av{width:28px;height:28px;border-radius:50%;background:var(--gold);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cmt-inp{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:7px 14px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;resize:none;transition:all .2s}
+.cmt-inp:focus{border-color:var(--gold-border)}
+.cmt-inp::placeholder{color:var(--text3)}
+.cmt-submit{background:var(--gold);color:#fff;border:none;border-radius:20px;padding:7px 16px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.cmt-submit:hover{filter:brightness(1.08)}
 
-/* RIGHT COL */
-.right-col { padding: 20px 16px; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
-.right-col::-webkit-scrollbar { display: none; }
+/* ── RIGHT PANEL ── */
+.right-panel{padding:24px 16px;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.right-panel::-webkit-scrollbar{display:none}
 
 /* Signal */
-.signal-box {
-  background: var(--surface); border: 1px solid var(--gold-border);
-  border-radius: 16px; padding: 18px; position: relative; overflow: hidden;
-}
-.signal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold2), transparent); }
-.signal-box::after { content: ''; position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(240,165,0,.07), transparent 70%); pointer-events: none; }
-.signal-header { display: flex; align-items: center; gap: 7px; margin-bottom: 12px; }
-.signal-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); animation: pulse 2s infinite; flex-shrink: 0; }
-@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(240,165,0,.5)}50%{box-shadow:0 0 0 5px rgba(240,165,0,0)}}
-.signal-label { font-family: var(--mono); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
-.signal-title { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 8px; letter-spacing: -.03em; line-height: 1.3; position: relative; }
-.signal-body { font-size: 12px; color: var(--text2); line-height: 1.72; position: relative; }
-.signal-date { font-family: var(--mono); font-size: 9px; color: var(--text3); margin-top: 10px; position: relative; }
+.signal-card{background:var(--card);border:1px solid var(--gold-border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-sm)}
+.signal-top{background:linear-gradient(135deg,var(--gold-light),rgba(0,0,0,0));padding:16px 18px 0}
+body.light .signal-top{background:linear-gradient(135deg,rgba(232,160,32,.1),rgba(0,0,0,0))}
+.signal-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.signal-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 2s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.signal-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:8px;letter-spacing:-.03em;line-height:1.3}
+.signal-body{font-size:12px;color:var(--text2);line-height:1.7}
+.signal-bottom{padding:10px 18px 14px}
+.signal-date{font-family:var(--mono);font-size:9px;color:var(--text3)}
 
-/* Widget box */
-.widget-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; transition: border-color .2s; }
-body.light .widget-box { box-shadow: 0 1px 6px rgba(0,0,0,.06); }
-.widget-box:hover { border-color: var(--border2); }
-.widget-title { font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 14px; letter-spacing: -.03em; display: flex; align-items: center; gap: 7px; }
+/* Widget */
+.widget{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--shadow-sm)}
+.widget-title{font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.03em;margin-bottom:14px;display:flex;align-items:center;gap:7px}
 
-/* Leaderboard */
-.lb-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
-.lb-item:last-child { border-bottom: none; }
-.lb-rank { font-size: 12px; font-weight: 800; color: var(--text3); width: 22px; text-align: center; flex-shrink: 0; }
-.lb-av { width: 30px; height: 30px; border-radius: 50%; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0c0c0e; }
-.lb-info { flex: 1; min-width: 0; }
-.lb-name { font-size: 12px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.lb-pts { font-size: 10px; color: var(--text3); font-family: var(--mono); margin-top: 1px; }
-.lb-score { font-size: 13px; font-weight: 800; color: var(--gold); }
+/* LB */
+.lb-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.lb-item:last-child{border-bottom:none}
+.lb-rank{font-size:12px;font-weight:800;color:var(--text3);width:20px;text-align:center}
+.lb-av{width:30px;height:30px;border-radius:50%;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
+.lb-name{font-size:12px;font-weight:700;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-pts{font-size:11px;color:var(--text3);font-family:var(--mono)}
+.lb-me{font-size:11px;font-weight:700;color:var(--gold)}
 
 /* Badges */
-.badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.badge-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 10px; text-align: center; transition: all .2s; position: relative; overflow: hidden; }
-.badge-item.earned { border-color: var(--gold-border); background: var(--gold-bg); }
-.badge-item.earned::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold2)); }
-.badge-emoji { font-size: 24px; display: block; margin-bottom: 6px; }
-.badge-name { font-size: 11px; font-weight: 800; color: var(--text); letter-spacing: -.01em; }
-.badge-req { font-size: 10px; color: var(--text3); margin-top: 2px; line-height: 1.3; }
+.badge-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.badge{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;transition:all .2s;position:relative;overflow:hidden}
+.badge.earned{background:var(--gold-light);border-color:var(--gold-border)}
+.badge.earned::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.badge-emoji{font-size:24px;display:block;margin-bottom:6px}
+.badge-name{font-size:12px;font-weight:700;color:var(--text)}
+.badge-req{font-size:10px;color:var(--text3);margin-top:2px;line-height:1.4}
 
-/* MODAL */
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.8); backdrop-filter: blur(8px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; }
-.overlay.show { display: flex; }
-.modal-box { background: var(--surface); border: 1px solid var(--border2); border-radius: 22px; padding: 26px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; }
-body.light .modal-box { box-shadow: 0 24px 64px rgba(0,0,0,.12); }
-.modal-box::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 50%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-.modal-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
-.modal-hd h3 { font-size: 17px; font-weight: 800; letter-spacing: -.03em; }
-.modal-close { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text2); font-size: 16px; transition: all .2s; }
-.modal-close:hover { background: var(--surface3); color: var(--text); }
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.overlay.show{display:flex}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:26px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.modal-title{font-size:17px;font-weight:800;letter-spacing:-.03em}
+.modal-close{background:var(--bg2);border:1px solid var(--border);border-radius:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:16px;transition:all .2s}
+.modal-close:hover{background:var(--border);color:var(--text)}
 
-.type-picker { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 20px; }
-.type-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 4px; text-align: center; cursor: pointer; font-family: var(--font); font-size: 11px; font-weight: 600; color: var(--text3); transition: all .15s; }
-.type-btn:hover { border-color: var(--border2); color: var(--text); }
-.type-btn.active { background: var(--gold-bg); border-color: var(--gold-border); color: var(--gold); }
-.type-btn .te { display: block; font-size: 18px; margin-bottom: 4px; }
+.type-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:20px}
+.type-opt{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 4px;text-align:center;cursor:pointer;font-family:var(--font);font-size:11px;font-weight:600;color:var(--text3);transition:all .15s}
+.type-opt:hover{border-color:var(--border2);color:var(--text)}
+.type-opt.active{background:var(--gold-light);border-color:var(--gold-border);color:var(--gold)}
+.type-opt .te{display:block;font-size:18px;margin-bottom:4px}
 
-.sale-fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
-.sale-fields.hidden { display: none; }
-.f-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; display: block; }
-.f-input { width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 10px; padding: 10px 12px; color: var(--text); font-family: var(--font); font-size: 13px; outline: none; transition: all .2s; }
-.f-input:focus { border-color: var(--gold-border); box-shadow: 0 0 0 3px var(--gold-bg); }
-.f-input::placeholder { color: var(--text3); }
-.f-textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 10px; padding: 12px 14px; color: var(--text); font-family: var(--font); font-size: 13px; outline: none; resize: vertical; min-height: 100px; line-height: 1.6; transition: all .2s; margin-bottom: 12px; }
-.f-textarea:focus { border-color: var(--gold-border); box-shadow: 0 0 0 3px var(--gold-bg); }
-.f-textarea::placeholder { color: var(--text3); }
-.img-upload-area { border: 2px dashed var(--border2); border-radius: 12px; padding: 22px; text-align: center; cursor: pointer; transition: all .2s; margin-bottom: 12px; position: relative; background: var(--surface2); }
-.img-upload-area:hover { border-color: var(--gold-border); background: var(--gold-bg); }
-.img-upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-.img-upload-area .iu-icon { font-size: 24px; display: block; margin-bottom: 5px; }
-.img-upload-area .iu-txt { font-size: 11px; color: var(--text3); font-family: var(--mono); }
-.img-preview-wrap { position: relative; margin-bottom: 12px; display: none; }
-.img-preview-wrap img { width: 100%; border-radius: 10px; border: 1px solid var(--border2); max-height: 200px; object-fit: cover; }
-.img-remove-btn { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,.65); border: none; border-radius: 6px; color: #fff; cursor: pointer; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-.img-remove-btn:hover { background: var(--red); }
-.submit-btn { width: 100%; background: var(--gold); color: #0c0c0e; font-family: var(--font); font-size: 14px; font-weight: 700; padding: 13px; border-radius: 12px; border: none; cursor: pointer; transition: all .25s; letter-spacing: -.01em; }
-.submit-btn:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(240,165,0,.22); }
-.submit-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+.sale-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.sale-row.hidden{display:none}
+.f-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;display:block}
+.f-input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:all .2s}
+.f-input:focus{border-color:var(--gold-border);box-shadow:0 0 0 3px var(--gold-light)}
+.f-input::placeholder{color:var(--text3)}
+.f-textarea{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--font);font-size:14px;outline:none;resize:vertical;min-height:100px;line-height:1.65;transition:all .2s;margin-bottom:14px}
+.f-textarea:focus{border-color:var(--gold-border);box-shadow:0 0 0 3px var(--gold-light)}
+.f-textarea::placeholder{color:var(--text3)}
+.img-drop{border:2px dashed var(--border2);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px;position:relative;background:var(--bg2)}
+.img-drop:hover{border-color:var(--gold-border);background:var(--gold-light)}
+.img-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-drop-icon{font-size:22px;display:block;margin-bottom:5px}
+.img-drop-txt{font-size:11px;color:var(--text3);font-family:var(--mono)}
+.img-preview-wrap{position:relative;margin-bottom:14px;display:none}
+.img-preview-wrap img{width:100%;border-radius:10px;border:1px solid var(--border);max-height:200px;object-fit:cover}
+.img-remove{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);border:none;border-radius:6px;color:#fff;cursor:pointer;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.img-remove:hover{background:var(--red)}
+.submit-btn{width:100%;background:var(--gold);color:#fff;font-family:var(--font);font-size:14px;font-weight:700;padding:12px;border-radius:10px;border:none;cursor:pointer;transition:all .25s;letter-spacing:-.01em}
+.submit-btn:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 4px 16px rgba(200,134,10,.25)}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
 
-/* LIGHTBOX */
-.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.95); z-index: 999; display: none; align-items: center; justify-content: center; cursor: zoom-out; }
-.lightbox.show { display: flex; }
-.lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 10px; object-fit: contain; }
+/* Lightbox */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:999;display:none;align-items:center;justify-content:center;cursor:zoom-out}
+.lightbox.show{display:flex}
+.lightbox img{max-width:90vw;max-height:90vh;border-radius:10px;object-fit:contain}
 
-/* POST STAGGER */
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+
+/* Stagger */
 .post:nth-child(1){animation-delay:.02s}.post:nth-child(2){animation-delay:.05s}
 .post:nth-child(3){animation-delay:.08s}.post:nth-child(4){animation-delay:.11s}
-.post:nth-child(5){animation-delay:.14s}
-
-/* SCROLLBAR */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
 </style>
 </head>
 <body>
 
 <!-- AUTH -->
 <div id="auth-screen">
-  <div class="auth-wrap">
+  <div class="auth-container">
     <div class="auth-header">
-      <span class="auth-icon">👑</span>
-      <div class="auth-brand">MLYNR<span>Club</span></div>
-      <div class="auth-tagline">Sadece kursiyerler için</div>
+      <div class="auth-logo-mark">👑</div>
+      <div class="auth-title">MLYNR<span>Club</span></div>
+      <div class="auth-sub">Özel topluluk — sadece kursiyerler için</div>
     </div>
-    <div class="auth-box">
+    <div class="auth-card">
       <div class="auth-tabs">
         <button class="auth-tab active" onclick="switchAuthTab('login',this)">Giriş Yap</button>
         <button class="auth-tab" onclick="switchAuthTab('signup',this)">Kayıt Ol</button>
@@ -429,129 +343,129 @@ body.light .modal-box { box-shadow: 0 24px 64px rgba(0,0,0,.12); }
       <div id="auth-login-form">
         <div class="auth-field"><label>E-posta</label><input type="email" id="login-email" placeholder="sen@email.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
         <div class="auth-field"><label>Şifre</label><input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-        <button class="auth-btn" onclick="doLogin()" id="login-btn">Giriş Yap →</button>
+        <button class="auth-btn" id="login-btn" onclick="doLogin()">Giriş Yap →</button>
       </div>
       <div id="auth-signup-form" style="display:none">
         <div class="auth-field"><label>Adın</label><input type="text" id="signup-name" placeholder="Adın Soyadın"></div>
         <div class="auth-field"><label>E-posta</label><input type="email" id="signup-email" placeholder="sen@email.com"></div>
         <div class="auth-field"><label>Şifre</label><input type="password" id="signup-pass" placeholder="en az 6 karakter"></div>
-        <button class="auth-btn" onclick="doSignup()" id="signup-btn">Kayıt Ol →</button>
+        <button class="auth-btn" id="signup-btn" onclick="doSignup()">Kayıt Ol →</button>
       </div>
-      <div id="auth-msg" style="display:none"></div>
+      <div id="auth-msg"></div>
     </div>
   </div>
 </div>
 
 <!-- APP -->
-<div id="app" style="display:none">
-
-  <!-- NAV -->
-  <nav class="nav">
-    <div class="nav-logo">MLYNR<span>Club</span></div>
-    <div class="nav-pill">BETA</div>
-    <div class="nav-right">
-      <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
-    </div>
-  </nav>
-
-  <div class="layout">
+<div class="app" id="app">
+  <div class="columns">
 
     <!-- LEFT -->
-    <div class="left-col">
-      <div class="sidebar-top">
-        <div class="brand-block">
-          <div class="brand-icon">👑</div>
-          <div class="brand-text">
-            <div class="brand-name">MLYNR<span>Club</span></div>
-            <div class="brand-sub">Özel Topluluk</div>
-          </div>
+    <div class="left-panel">
+      <div class="lp-logo">
+        <div class="lp-logo-mark">👑</div>
+        <div>
+          <div class="lp-logo-text">MLYNR<span>Club</span></div>
         </div>
-
-        <div class="nav-section-title">Keşfet</div>
-        <div class="nav-items">
-          <button class="nav-item active" onclick="switchTab(this,'all')"><span class="nav-icon">🏠</span>Ana Feed</button>
-          <button class="nav-item" onclick="switchTab(this,'milestone')"><span class="nav-icon">🎉</span>İlk Satışlar</button>
-          <button class="nav-item" onclick="switchTab(this,'sale')"><span class="nav-icon">💰</span>Satışlar</button>
-          <button class="nav-item" onclick="switchTab(this,'product')"><span class="nav-icon">📦</span>Ürünler</button>
-          <button class="nav-item" onclick="switchTab(this,'question')"><span class="nav-icon">❓</span>Sorular</button>
-          <button class="nav-item" onclick="switchTab(this,'motivation')"><span class="nav-icon">🔥</span>Motivasyon</button>
-        </div>
-
-        <div class="sidebar-divider"></div>
-
-        <div class="nav-items">
-          <button class="nav-item" onclick="switchTab(this,'mine')"><span class="nav-icon">👤</span>Postlarım</button>
-        </div>
-
-        <button class="sidebar-cta" onclick="openModal()">
-          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-          Paylaşım Yap
-        </button>
+        <button class="lp-action-btn" id="theme-btn" onclick="toggleTheme()" style="margin-left:auto" title="Tema">☀️</button>
       </div>
 
-      <div class="sidebar-stats">
-        <div class="sidebar-divider" style="margin:0 0 10px"></div>
-        <div class="stat-row"><span class="stat-label">Toplam Post</span><span class="stat-value" id="st-posts">—</span></div>
-        <div class="stat-row"><span class="stat-label">Aktif Üye</span><span class="stat-value" id="st-members">—</span></div>
-        <div class="stat-row"><span class="stat-label">Satış Postu</span><span class="stat-value" id="st-sales">—</span></div>
-        <div class="stat-row"><span class="stat-label">Bugün</span><span class="stat-value" id="st-today">—</span></div>
+      <button class="lp-post-btn" onclick="openModal()">
+        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        Paylaşım Yap
+      </button>
+
+      <div class="lp-section">
+        <div class="lp-section-label">Keşfet</div>
+        <button class="lp-item active" onclick="switchTab(this,'all')"><span class="lp-item-icon">🏠</span>Ana Sayfa</button>
+        <button class="lp-item" onclick="switchTab(this,'milestone')"><span class="lp-item-icon">🎉</span>İlk Satışlar</button>
+        <button class="lp-item" onclick="switchTab(this,'sale')"><span class="lp-item-icon">💰</span>Satışlar</button>
+        <button class="lp-item" onclick="switchTab(this,'product')"><span class="lp-item-icon">📦</span>Ürünler</button>
+        <button class="lp-item" onclick="switchTab(this,'question')"><span class="lp-item-icon">❓</span>Sorular</button>
+        <button class="lp-item" onclick="switchTab(this,'motivation')"><span class="lp-item-icon">🔥</span>Motivasyon</button>
       </div>
 
-      <div class="sidebar-user">
-        <div class="user-avatar" id="nav-av">?</div>
-        <div class="user-info">
-          <div class="user-name" id="nav-name">...</div>
-          <div class="user-role">Kursiyer</div>
+      <div class="lp-sep"></div>
+
+      <div class="lp-section">
+        <button class="lp-item" onclick="switchTab(this,'mine')"><span class="lp-item-icon">👤</span>Postlarım</button>
+      </div>
+
+      <div class="lp-sep"></div>
+
+      <div class="lp-stats">
+        <div class="lp-stat"><span class="lp-stat-k">Toplam Post</span><span class="lp-stat-v" id="st-posts">—</span></div>
+        <div class="lp-stat"><span class="lp-stat-k">Aktif Üye</span><span class="lp-stat-v" id="st-members">—</span></div>
+        <div class="lp-stat"><span class="lp-stat-k">Satış Postu</span><span class="lp-stat-v" id="st-sales">—</span></div>
+        <div class="lp-stat"><span class="lp-stat-k">Bugün</span><span class="lp-stat-v" id="st-today">—</span></div>
+      </div>
+
+      <div class="lp-sep"></div>
+
+      <div class="lp-user">
+        <div class="lp-uav" id="nav-av">?</div>
+        <div style="flex:1;min-width:0">
+          <div class="lp-uname" id="nav-name">...</div>
+          <div class="lp-urole">Kursiyer</div>
         </div>
-        <button class="signout-btn" onclick="doLogout()" title="Çıkış">↪</button>
+        <div class="lp-actions">
+          <button class="lp-action-btn" onclick="doLogout()" title="Çıkış">↪</button>
+        </div>
       </div>
     </div>
 
     <!-- CENTER -->
-    <div class="center-col">
-      <div class="feed-header">
-        <div class="feed-header-top">
-          <div class="feed-title">Feed</div>
+    <div class="center-panel">
+      <div class="cp-header">
+        <div class="cp-header-row">
+          <div class="cp-title">Feed</div>
         </div>
-        <div class="feed-tabs">
-          <button class="feed-tab active" onclick="switchTab(this,'all')">Tümü</button>
-          <button class="feed-tab" onclick="switchTab(this,'milestone')">🎉 İlk Satış</button>
-          <button class="feed-tab" onclick="switchTab(this,'sale')">💰 Satış</button>
-          <button class="feed-tab" onclick="switchTab(this,'product')">📦 Ürün</button>
-          <button class="feed-tab" onclick="switchTab(this,'question')">❓ Soru</button>
-          <button class="feed-tab" onclick="switchTab(this,'motivation')">🔥 Motivasyon</button>
-          <button class="feed-tab" onclick="switchTab(this,'mine')">👤 Postlarım</button>
+        <div class="cp-tabs">
+          <button class="cp-tab active" onclick="switchTab(this,'all')">Tümü</button>
+          <button class="cp-tab" onclick="switchTab(this,'milestone')">🎉 İlk Satış</button>
+          <button class="cp-tab" onclick="switchTab(this,'sale')">💰 Satış</button>
+          <button class="cp-tab" onclick="switchTab(this,'product')">📦 Ürün</button>
+          <button class="cp-tab" onclick="switchTab(this,'question')">❓ Soru</button>
+          <button class="cp-tab" onclick="switchTab(this,'motivation')">🔥 Motivasyon</button>
+          <button class="cp-tab" onclick="switchTab(this,'mine')">👤 Postlarım</button>
         </div>
       </div>
+
+      <div class="compose-bar" onclick="openModal()">
+        <div class="compose-av" id="compose-av">?</div>
+        <input class="compose-input" placeholder="Neler düşünüyorsun?" readonly>
+      </div>
+
       <div class="feed" id="feed">
         <div class="feed-loading" id="feed-loader">Yükleniyor...</div>
       </div>
     </div>
 
     <!-- RIGHT -->
-    <div class="right-col">
-      <div class="signal-box">
-        <div class="signal-header">
-          <div class="signal-dot"></div>
-          <div class="signal-label">Canberk Sinyali</div>
+    <div class="right-panel">
+      <div class="signal-card">
+        <div class="signal-top">
+          <div class="signal-label"><div class="signal-dot"></div>Canberk Sinyali</div>
+          <div class="signal-title" id="sig-title">Yükleniyor...</div>
+          <div class="signal-body" id="sig-body"></div>
         </div>
-        <div class="signal-title" id="sig-title">Yükleniyor...</div>
-        <div class="signal-body" id="sig-body"></div>
-        <div class="signal-date" id="sig-date"></div>
+        <div class="signal-bottom">
+          <div class="signal-date" id="sig-date"></div>
+        </div>
       </div>
 
-      <div class="widget-box">
+      <div class="widget">
         <div class="widget-title">🏆 Bu Hafta Lider Tablosu</div>
         <div id="leaderboard"><div style="font-size:11px;color:var(--text3);font-family:var(--mono)">Yükleniyor...</div></div>
       </div>
 
-      <div class="widget-box">
+      <div class="widget">
         <div class="widget-title">🎖 Rozetlerin</div>
         <div class="badge-grid">
-          <div class="badge-item" id="b-starter"><span class="badge-emoji">🌱</span><div class="badge-name">Starter</div><div class="badge-req">İlk post</div></div>
-          <div class="badge-item" id="b-seller"><span class="badge-emoji">⚡</span><div class="badge-name">Seller</div><div class="badge-req">İlk satış</div></div>
-          <div class="badge-item" id="b-pro"><span class="badge-emoji">🚀</span><div class="badge-name">Pro</div><div class="badge-req">5 satış postu</div></div>
-          <div class="badge-item" id="b-elite"><span class="badge-emoji">👑</span><div class="badge-name">Elite</div><div class="badge-req">Canberk onayı</div></div>
+          <div class="badge" id="b-starter"><span class="badge-emoji">🌱</span><div class="badge-name">Starter</div><div class="badge-req">İlk post</div></div>
+          <div class="badge" id="b-seller"><span class="badge-emoji">⚡</span><div class="badge-name">Seller</div><div class="badge-req">İlk satış</div></div>
+          <div class="badge" id="b-pro"><span class="badge-emoji">🚀</span><div class="badge-name">Pro</div><div class="badge-req">5 satış postu</div></div>
+          <div class="badge" id="b-elite"><span class="badge-emoji">👑</span><div class="badge-name">Elite</div><div class="badge-req">Canberk onayı</div></div>
         </div>
       </div>
     </div>
@@ -561,33 +475,33 @@ body.light .modal-box { box-shadow: 0 24px 64px rgba(0,0,0,.12); }
 
 <!-- MODAL -->
 <div class="overlay" id="modal" onclick="overlayClick(event)">
-  <div class="modal-box">
-    <div class="modal-hd">
-      <h3>Paylaşım Yap</h3>
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Paylaşım Yap</div>
       <button class="modal-close" onclick="closeModal()">×</button>
     </div>
-    <div class="type-picker">
-      <div class="type-btn active" onclick="selType(this,'milestone')"><span class="te">🎉</span>İlk Satış</div>
-      <div class="type-btn" onclick="selType(this,'sale')"><span class="te">💰</span>Satış</div>
-      <div class="type-btn" onclick="selType(this,'product')"><span class="te">📦</span>Ürün</div>
-      <div class="type-btn" onclick="selType(this,'question')"><span class="te">❓</span>Soru</div>
-      <div class="type-btn" onclick="selType(this,'motivation')"><span class="te">🔥</span>Motivasyon</div>
+    <div class="type-row">
+      <div class="type-opt active" onclick="selType(this,'milestone')"><span class="te">🎉</span>İlk Satış</div>
+      <div class="type-opt" onclick="selType(this,'sale')"><span class="te">💰</span>Satış</div>
+      <div class="type-opt" onclick="selType(this,'product')"><span class="te">📦</span>Ürün</div>
+      <div class="type-opt" onclick="selType(this,'question')"><span class="te">❓</span>Soru</div>
+      <div class="type-opt" onclick="selType(this,'motivation')"><span class="te">🔥</span>Motivasyon</div>
     </div>
-    <div class="sale-fields" id="sale-fields">
+    <div class="sale-row" id="sale-fields">
       <div><label class="f-label">Satış Fiyatı</label><input class="f-input" type="text" id="f-price" placeholder="$49.99"></div>
       <div><label class="f-label">Net Kar</label><input class="f-input" type="text" id="f-profit" placeholder="$18.00"></div>
       <div><label class="f-label">Sipariş</label><input class="f-input" type="text" id="f-orders" placeholder="3"></div>
     </div>
     <label class="f-label">Paylaşmak istediğin</label>
     <textarea class="f-textarea" id="f-text" placeholder="Deneyimini paylaş..."></textarea>
-    <div class="img-upload-area" id="img-drop">
+    <div class="img-drop" id="img-drop">
       <input type="file" id="img-file" accept="image/*" onchange="onFileSelect(this)">
-      <span class="iu-icon">📸</span>
-      <div class="iu-txt">Görsel ekle — sipariş kanıtı, ekran görüntüsü</div>
+      <span class="img-drop-icon">📸</span>
+      <div class="img-drop-txt">Görsel ekle — sipariş kanıtı, ekran görüntüsü</div>
     </div>
     <div class="img-preview-wrap" id="img-preview-wrap">
       <img id="img-preview" alt="">
-      <button class="img-remove-btn" onclick="removeImg()">×</button>
+      <button class="img-remove" onclick="removeImg()">×</button>
     </div>
     <button class="submit-btn" id="submit-btn" onclick="submitPost()">Paylaş →</button>
   </div>
@@ -677,13 +591,16 @@ function onLogin(user) {
   myName = user.user_metadata?.full_name || user.email.split('@')[0];
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
+  document.getElementById('app').style.display = 'block';
   document.getElementById('nav-av').textContent = myName.charAt(0).toUpperCase();
   document.getElementById('nav-name').textContent = myName;
+  var cav = document.getElementById('compose-av');
+  if(cav){cav.textContent=myName.charAt(0).toUpperCase();cav.style.background=avColor(myName);}
   // Admin butonu göster
   // admin panel: mlynrplan.com/club-admin.html
   // Theme btn sync
   var btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+  if (btn) btn.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
   init();
 }
 
@@ -746,33 +663,32 @@ function renderPost(p) {
   var myLove = reactions.some(r=>r.emoji==='❤️'&&r.user_id===me?.id);
   var isMine = p.user_id === me?.id;
   var isAdmin = ADMIN_EMAILS.includes(me?.email);
-  var av = avColor(p.user_name || 'U');
+  var av = avColor(p.user_name||'U');
   var initial = (p.user_name||'U').charAt(0).toUpperCase();
-  var typeLabels = {milestone:'🎉 İlk Satış',sale:'💰 Satış',product:'📦 Ürün',question:'❓ Soru',motivation:'🔥 Motivasyon'};
-  var typeLabel = typeLabels[p.post_type] || p.post_type;
-  var delBtn = isMine ? '<button class="post-del-btn" onclick="deletePost(\'' + p.id + '\')">🗑</button>' : '';
+  var typeMap = {milestone:'🎉 İlk Satış',sale:'💰 Satış',product:'📦 Ürün',question:'❓ Soru',motivation:'🔥 Motivasyon'};
+  var typeLabel = typeMap[p.post_type] || p.post_type;
+  var delBtn = isMine ? '<button class="post-menu" onclick="deletePost(\'' + p.id + '\')" title="Sil">🗑</button>' : '';
   var pendingHtml = (!p.approved && isMine) ? '<div class="post-pending">⏳ Onay bekleniyor</div>' : '';
 
-  // Special cards
   var specialHtml = '';
   if (p.post_type === 'milestone') {
-    specialHtml = '<div class="milestone-card"><span class="mc-emoji">🎉</span><div class="mc-title">İlk Satış!</div><div class="mc-sub">'+esc(p.user_name||'Bir kursiyer')+' ilk satışını gerçekleştirdi</div></div>';
+    specialHtml = '<div class="milestone-card"><span class="mc-icon">🎉</span><div class="mc-headline">İlk Satış!</div><div class="mc-desc">'+esc(p.user_name||'Bir kursiyer')+' ilk satışını gerçekleştirdi</div></div>';
     if (p.sale_price||p.sale_profit||p.sale_orders) {
-      specialHtml += '<div class="sale-card" style="margin-top:10px">';
-      if(p.sale_price) specialHtml += '<div class="sale-item"><div class="sale-val">'+esc(p.sale_price)+'</div><div class="sale-lbl">Satış</div></div>';
-      if(p.sale_profit) specialHtml += '<div class="sale-item"><div class="sale-val">'+esc(p.sale_profit)+'</div><div class="sale-lbl">Kar</div></div>';
-      if(p.sale_orders) specialHtml += '<div class="sale-item"><div class="sale-val">'+esc(p.sale_orders)+'</div><div class="sale-lbl">Sipariş</div></div>';
+      specialHtml += '<div class="sale-stats">';
+      if(p.sale_price) specialHtml += '<div class="ss-item"><div class="ss-val">'+esc(p.sale_price)+'</div><div class="ss-lbl">Satış</div></div>';
+      if(p.sale_profit) specialHtml += '<div class="ss-item"><div class="ss-val">'+esc(p.sale_profit)+'</div><div class="ss-lbl">Kar</div></div>';
+      if(p.sale_orders) specialHtml += '<div class="ss-item"><div class="ss-val">'+esc(p.sale_orders)+'</div><div class="ss-lbl">Sipariş</div></div>';
       specialHtml += '</div>';
     }
   } else if (p.post_type === 'sale' && (p.sale_price||p.sale_profit||p.sale_orders)) {
-    specialHtml = '<div class="sale-card">';
-    if(p.sale_price) specialHtml += '<div class="sale-item"><div class="sale-val">'+esc(p.sale_price)+'</div><div class="sale-lbl">Satış</div></div>';
-    if(p.sale_profit) specialHtml += '<div class="sale-item"><div class="sale-val">'+esc(p.sale_profit)+'</div><div class="sale-lbl">Kar</div></div>';
-    if(p.sale_orders) specialHtml += '<div class="sale-item"><div class="sale-val">'+esc(p.sale_orders)+'</div><div class="sale-lbl">Sipariş</div></div>';
+    specialHtml = '<div class="sale-stats">';
+    if(p.sale_price) specialHtml += '<div class="ss-item"><div class="ss-val">'+esc(p.sale_price)+'</div><div class="ss-lbl">Satış</div></div>';
+    if(p.sale_profit) specialHtml += '<div class="ss-item"><div class="ss-val">'+esc(p.sale_profit)+'</div><div class="ss-lbl">Kar</div></div>';
+    if(p.sale_orders) specialHtml += '<div class="ss-item"><div class="ss-val">'+esc(p.sale_orders)+'</div><div class="ss-lbl">Sipariş</div></div>';
     specialHtml += '</div>';
   }
 
-  var imgHtml = p.image_url ? '<div class="post-media"><img src="'+esc(p.image_url)+'" loading="lazy" onclick="openLightbox(\'' + esc(p.image_url) + '\')"></div>' : '';
+  var imgHtml = p.image_url ? '<img class="post-image" src="'+esc(p.image_url)+'" loading="lazy" onclick="openLightbox(\'' + esc(p.image_url) + '\')">' : '';
 
   var cmtsHtml = comments.map(c => {
     var cav = avColor(c.user_name||'U');
@@ -781,31 +697,35 @@ function renderPost(p) {
     return '<div class="cmt"><div class="cmt-av" style="background:'+cav+'">'+esc(ci)+'</div><div class="cmt-body"><div class="cmt-name">'+esc(c.user_name)+'</div><div class="cmt-text">'+esc(c.content)+'</div></div>'+cd+'</div>';
   }).join('');
 
+  var myAv = avColor(myName||'U');
+  var myInit = (myName||'?').charAt(0).toUpperCase();
+
   return `<div class="post${isMine?' mine':''}" data-id="${p.id}" data-type="${p.post_type}">
-  <div class="post-hd">
+  <div class="post-header">
     <div class="post-av" style="background:${av}">${initial}</div>
-    <div class="post-hd-info">
-      <div class="post-hd-name">${esc(p.user_name||'Anonim')}</div>
-      <div class="post-hd-time">${timeAgo(p.created_at)}</div>
+    <div class="post-meta">
+      <div class="post-author">${esc(p.user_name||'Anonim')}</div>
+      <div class="post-time">${timeAgo(p.created_at)}</div>
     </div>
-    <div class="post-type-badge ptb-${p.post_type}">${typeLabel}</div>
+    <div class="post-badge pb-${p.post_type}">${typeLabel}</div>
     ${delBtn}
   </div>
   ${pendingHtml}
-  <div class="post-body"><strong></strong> ${esc(p.content)}</div>
+  <div class="post-text">${esc(p.content)}</div>
   ${specialHtml}
   ${imgHtml}
   <div class="post-actions">
-    <button class="act${myFire?' fire-on':''}" onclick="toggleReact(this,'${p.id}','🔥')">🔥 <span>${fireCnt}</span></button>
-    <button class="act${myPower?' power-on':''}" onclick="toggleReact(this,'${p.id}','💪')">💪 <span>${powerCnt}</span></button>
-    <button class="act${myLove?' love-on':''}" onclick="toggleReact(this,'${p.id}','❤️')">❤️ <span>${loveCnt}</span></button>
-    <button class="act-cmt" onclick="toggleComments(this,'${p.id}')">💬 ${comments.length} yorum</button>
+    <button class="pa-btn${myFire?' fire-on':''}" onclick="toggleReact(this,'${p.id}','🔥')">🔥 <span>${fireCnt}</span></button>
+    <button class="pa-btn${myPower?' power-on':''}" onclick="toggleReact(this,'${p.id}','💪')">💪 <span>${powerCnt}</span></button>
+    <button class="pa-btn${myLove?' love-on':''}" onclick="toggleReact(this,'${p.id}','❤️')">❤️ <span>${loveCnt}</span></button>
+    <button class="pa-cmt" onclick="toggleComments(this,'${p.id}')">💬 ${comments.length} yorum</button>
   </div>
-  <div class="comments" id="cs-${p.id}">
+  <div class="post-comments" id="cs-${p.id}">
     <div id="cl-${p.id}">${cmtsHtml}</div>
-    <div class="cmt-input-row">
-      <textarea class="cmt-input" id="ci-${p.id}" placeholder="Yorum yaz..." rows="1" onkeydown="commentKey(event,'${p.id}')"></textarea>
-      <button class="cmt-send" onclick="sendComment('${p.id}')">Gönder</button>
+    <div class="cmt-form">
+      <div class="cmt-form-av" style="background:${myAv}">${myInit}</div>
+      <textarea class="cmt-inp" id="ci-${p.id}" placeholder="Yorum yaz..." rows="1" onkeydown="commentKey(event,'${p.id}')"></textarea>
+      <button class="cmt-submit" onclick="sendComment('${p.id}')">Gönder</button>
     </div>
   </div>
 </div>`;
@@ -982,8 +902,9 @@ async function loadLeaderboard() {
     <div class="lb-item">
       <div class="lb-rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
       <div class="lb-av" style="background:${avColor(u.name)}">${u.name.charAt(0).toUpperCase()}</div>
-      <div class="lb-info"><div class="lb-name">${esc(u.name)}</div><div class="lb-pts">${u.score} puan</div></div>
-      ${uid===me?.id?'<div class="lb-score">Sen!</div>':''}
+      <div class="lb-name">${esc(u.name)}</div>
+      <div class="lb-pts">${u.score} puan</div>
+      ${uid===me?.id?'<div class="lb-me">Sen!</div>':''}
     </div>`).join('') : '<div style="font-size:11px;color:var(--text3);font-family:var(--mono)">Henüz puan yok</div>';
   document.getElementById('leaderboard').innerHTML = html;
 }
@@ -1055,14 +976,11 @@ function closeLightbox() { document.getElementById('lightbox').classList.remove(
 // ─── TABS ──────────────────────────────────────────────────────
 function switchTab(el, type) {
   currentTab = type;
-  // Tab butonları güncelle
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.ls-btn').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.cp-tab,.lp-item').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  // Aynı type'daki diğer butonu da aktif yap
-  document.querySelectorAll('.tab, .ls-btn').forEach(t => {
-    var onclick = t.getAttribute('onclick') || '';
-    if (onclick.includes("'"+type+"'")) t.classList.add('active');
+  document.querySelectorAll('.cp-tab,.lp-item').forEach(t => {
+    var oc = t.getAttribute('onclick') || '';
+    if (oc.includes("'"+type+"'")) t.classList.add('active');
   });
   renderFeed();
 }
@@ -1088,13 +1006,12 @@ function getBadgeHtml(userId) { return ''; }
 // ─── THEME ─────────────────────────────────────────────────────
 function toggleTheme() {
   var isLight = document.body.classList.toggle('light');
-  document.getElementById('theme-btn').textContent = isLight ? '☀️' : '🌙';
+  document.getElementById('theme-btn').textContent = isLight ? '🌙' : '☀️';
   localStorage.setItem('club-theme', isLight ? 'light' : 'dark');
 }
 (function(){
   if (localStorage.getItem('club-theme') === 'light') {
     document.body.classList.add('light');
-    // btn henüz render olmamış olabilir, onLogin'de set edilecek
   }
 })();
 
