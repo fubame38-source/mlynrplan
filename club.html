@@ -72,55 +72,70 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 /* ══ SIDEBAR ══════════════════════════════════════════════════ */
 .sidebar{
   background:#111;
-  border-right:1px solid #1e1e1e;
+  border-right:1px solid #1c1c1c;
   position:sticky;top:0;height:100vh;
   display:flex;flex-direction:column;
   overflow-y:auto;
 }
 .sidebar::-webkit-scrollbar{display:none;}
 
-.sidebar-top{padding:20px 14px;}
-.brand{display:flex;align-items:center;gap:10px;padding:8px;margin-bottom:24px;}
-.brand-icon{width:36px;height:36px;background:var(--neon);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#0d0d0d;flex-shrink:0;box-shadow:0 0 12px rgba(200,240,0,.2);}
-.brand-full{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.03em;}
+.sidebar-top{padding:16px 12px 0;}
+.brand{display:flex;align-items:center;gap:9px;padding:6px 8px;margin-bottom:20px;}
+.brand-icon{width:32px;height:32px;background:var(--neon);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#0d0d0d;flex-shrink:0;}
+.brand-full{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.03em;}
 .brand-full span{color:var(--neon);}
 
-.nav-group{margin-bottom:6px;}
-.nav-group-title{font-size:9px;font-weight:700;color:#444;letter-spacing:.12em;text-transform:uppercase;padding:0 10px;margin-bottom:4px;font-family:var(--mono);}
-.nav-link{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;border:none;background:transparent;cursor:pointer;color:#666;font-family:var(--font);font-size:13px;font-weight:500;width:100%;text-align:left;transition:all .15s;position:relative;}
-.nav-link:hover{background:#1a1a1a;color:#ccc;}
-.nav-link.active{background:var(--neon);color:#0d0d0d;font-weight:700;}
-.nav-link.active .nav-icon{filter:none;}
-.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
-.nav-badge{margin-left:auto;background:#333;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;font-family:var(--mono);}
-.nav-link.active .nav-badge{background:rgba(0,0,0,.2);color:#0d0d0d;}
+.nav-group{margin-bottom:4px;}
+.nav-group-title{display:none;}
+.nav-link{
+  display:flex;align-items:center;gap:10px;padding:8px 10px;
+  border-radius:8px;border:none;background:transparent;
+  cursor:pointer;color:#555;font-family:var(--font);
+  font-size:13px;font-weight:500;width:100%;text-align:left;
+  transition:all .15s;position:relative;margin-bottom:1px;
+}
+.nav-link:hover{background:#1a1a1a;color:#999;}
+.nav-link.active{
+  background:transparent;color:#ddd;font-weight:600;
+  border-left:2px solid var(--neon);padding-left:8px;
+}
+.nav-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;opacity:.7;}
+.nav-link.active .nav-icon{opacity:1;}
+.nav-label{font-size:13px;}
+.nav-badge{margin-left:auto;background:#2a2a2a;color:#666;font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;font-family:var(--mono);}
 
-.sidebar-divider{height:1px;background:#1e1e1e;margin:12px 14px;}
+.sidebar-divider{height:1px;background:#1c1c1c;margin:10px 12px;}
 
-/* Hedef widget */
-.daily-goal{margin:0 14px 12px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;padding:14px;}
-.dg-title{font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:var(--mono);}
-.dg-numbers{display:flex;align-items:baseline;gap:6px;margin-bottom:8px;}
-.dg-current{font-size:28px;font-weight:900;color:var(--neon);letter-spacing:-.04em;}
-.dg-total{font-size:14px;color:#444;font-weight:600;}
-.dg-label{font-size:11px;color:#555;margin-bottom:6px;}
-.dg-bar{height:4px;background:#2a2a2a;border-radius:99px;overflow:hidden;}
+/* Günlük hedef widget */
+.daily-goal{
+  margin:0 12px 12px;background:#161616;border:1px solid #2a2a2a;
+  border-radius:10px;padding:12px;
+}
+.dg-title{font-size:9px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;font-family:var(--mono);}
+.dg-numbers{display:flex;align-items:baseline;gap:4px;margin-bottom:4px;}
+.dg-current{font-size:24px;font-weight:900;color:var(--neon);letter-spacing:-.04em;line-height:1;}
+.dg-total{font-size:13px;color:#444;font-weight:500;}
+.dg-label{font-size:11px;color:#444;margin-bottom:8px;}
+.dg-bar{height:3px;background:#222;border-radius:99px;overflow:hidden;}
 .dg-bar-fill{height:100%;background:var(--neon);border-radius:99px;transition:width .5s ease;}
-.dg-sub{font-size:11px;color:#555;margin-top:6px;}
+.dg-sub{font-size:11px;color:#444;margin-top:6px;line-height:1.4;}
 
-.sidebar-bottom{padding:14px;border-top:1px solid #1e1e1e;margin-top:auto;}
-.sidebar-user{display:flex;align-items:center;gap:10px;padding:10px;background:#1a1a1a;border-radius:12px;cursor:pointer;transition:background .15s;}
-.sidebar-user:hover{background:#222;}
-.su-av{width:36px;height:36px;border-radius:50%;background:var(--neon);color:#0d0d0d;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sidebar-bottom{padding:12px;border-top:1px solid #1c1c1c;margin-top:auto;}
+.sidebar-user{
+  display:flex;align-items:center;gap:9px;padding:8px 10px;
+  background:#161616;border-radius:8px;cursor:pointer;transition:background .15s;
+}
+.sidebar-user:hover{background:#1c1c1c;}
+.su-av{width:32px;height:32px;border-radius:50%;background:var(--neon);color:#0d0d0d;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .su-info{flex:1;min-width:0;}
-.su-name{font-size:13px;font-weight:700;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.su-role{font-size:10px;color:#555;margin-top:1px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;}
-.su-arrow{color:#555;font-size:14px;}
+.su-name{font-size:13px;font-weight:600;color:#bbb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.su-role{font-size:9px;color:#444;margin-top:1px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;}
+.su-arrow{color:#333;font-size:13px;}
 .sidebar-bottom-text{display:flex;gap:6px;margin-top:8px;}
-.sb-action{flex:1;background:transparent;border:1px solid #2a2a2a;border-radius:8px;padding:7px;font-size:11px;color:#555;cursor:pointer;font-family:var(--font);transition:all .15s;text-align:center;}
-.sb-action:hover{border-color:#444;color:#ccc;}
+.sb-action{flex:1;background:transparent;border:1px solid #1e1e1e;border-radius:6px;padding:6px;font-size:11px;color:#444;cursor:pointer;font-family:var(--font);transition:all .15s;text-align:center;}
+.sb-action:hover{border-color:#333;color:#888;}
 
-/* ══ MAIN CONTENT ════════════════════════════════════════════ */
+/* ══ MAIN CONTENT  ════════════════════════════════════════════ */
 .main-content{display:flex;flex-direction:column;min-height:100vh;overflow:hidden;}
 
 /* ── Topbar ── */
@@ -411,16 +426,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
         </div>
 
         <div class="nav-group">
-          <div class="nav-group-title">Ana Menü</div>
           <button class="nav-link active" onclick="showPage('home')"><span class="nav-icon">🏠</span><span class="nav-label">Ana Sayfa</span></button>
-          <button class="nav-link" onclick="showPage('feed')"><span class="nav-icon">📰</span><span class="nav-label">Topluluk Feed</span></button>
+          <button class="nav-link" onclick="showPage('feed')"><span class="nav-icon">📰</span><span class="nav-label">Feed</span></button>
           <button class="nav-link" onclick="showPage('feed');switchTab(this,'mine')"><span class="nav-icon">👤</span><span class="nav-label">Postlarım</span></button>
         </div>
-
         <div class="sidebar-divider"></div>
-
         <div class="nav-group">
-          <div class="nav-group-title">Kategoriler</div>
           <button class="nav-link" onclick="showPage('feed');switchTab(null,'milestone')"><span class="nav-icon">🎉</span><span class="nav-label">İlk Satışlar</span></button>
           <button class="nav-link" onclick="showPage('feed');switchTab(null,'sale')"><span class="nav-icon">💰</span><span class="nav-label">Satışlar</span></button>
           <button class="nav-link" onclick="showPage('feed');switchTab(null,'product')"><span class="nav-icon">📦</span><span class="nav-label">Ürünler</span></button>
