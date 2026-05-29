@@ -7,8 +7,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MLYNR">
-<title>MLYNR Community</title>
-<link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;MLYNR Community&quot;,&quot;short_name&quot;:&quot;MLYNR&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0f&quot;,&quot;theme_color&quot;:&quot;%230a0a0f&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23fff'/%3E%3Ctext y='.9em' font-size='80' x='10'%3EM%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;any&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
+<title>MLYNR Club</title>
+<link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;MLYNR Club&quot;,&quot;short_name&quot;:&quot;MLYNR&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0f&quot;,&quot;theme_color&quot;:&quot;%230a0a0f&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23fff'/%3E%3Ctext y='.9em' font-size='80' x='10'%3EM%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;any&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -427,7 +427,9 @@ body.light-mode .post.mine{
   width:42px;height:42px;border-radius:50%;flex-shrink:0;
   font-size:15px;font-weight:800;
   display:flex;align-items:center;justify-content:center;color:#fff;
+  overflow:hidden;
 }
+.post-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
 .post-av-info{flex:1;min-width:0;}
 .post-author{font-size:14px;font-weight:700;color:var(--text);line-height:1.2;}
 .post-time{font-size:11px;color:var(--text3);margin-top:2px;}
@@ -1048,7 +1050,7 @@ body.light-mode .pb-chip.earned{
   <div class="auth-wrap">
     <div class="auth-logo-row">
       <div class="auth-m-icon">M</div>
-      <div class="auth-brand-name">MLYNR Community</div>
+      <div class="auth-brand-name">MLYNR Club</div>
     </div>
     <div class="auth-headline">
       <h1>Kendini geliştir.<br><span>Geleceğini dönüştür.</span></h1>
@@ -1494,6 +1496,14 @@ function onLogin(user) {
     var el = document.getElementById(id);
     if (el) { el.textContent = displayName.charAt(0).toUpperCase(); el.style.background = avColor(myName); el.style.color = '#fff'; }
   });
+  // Sidebar avatar: fotoğraf varsa göster
+  var navAv = document.getElementById('nav-av');
+  if (navAv) {
+    var savedPhoto = localStorage.getItem('mlynr-avatar-'+user.id);
+    if (savedPhoto) {
+      navAv.innerHTML = '<img src="'+savedPhoto+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" onerror="this.parentElement.innerHTML=\''+displayName.charAt(0).toUpperCase()+'\';">';
+    }
+  }
   document.getElementById('nav-name').textContent = displayName;
   var wn = document.getElementById('welcome-name');
   if (wn) wn.textContent = displayName;
@@ -1788,6 +1798,10 @@ function renderPost(p) {
   var av = avColor(p.user_name||'U');
   var displayAuthor = formatName(p.user_name||'Anonim');
   var init = displayAuthor.charAt(0).toUpperCase();
+  var savedPhoto = localStorage.getItem('mlynr-avatar-'+p.user_id);
+  var avHtml = savedPhoto
+    ? `<div class="post-av" style="background:${av};padding:0;"><img src="${savedPhoto}" onerror="this.parentElement.innerHTML='${init}';this.parentElement.style.padding='';"></div>`
+    : `<div class="post-av" style="background:${av}">${init}</div>`;
   var adminBadgeHtml = isPostAdmin ? '<span class="admin-badge">⚡ Admin</span>' : '';
   var userBadgesHtml = getUserBadgeHtml(p.user_id);
   var typeMap = {milestone:'🎉 İlk Satış',sale:'💰 Satış',product:'📦 Ürün',question:'❓ Soru',motivation:'🔥 Motivasyon'};
@@ -1835,7 +1849,7 @@ function renderPost(p) {
   var expandBtn = isLong ? `<button class="post-expand-btn" onclick="expandPost(this)">Daha fazla gör →</button>` : '';
   return `<div class="post${isMine?' mine':''}" data-id="${p.id}" data-type="${safeType}">
   <div class="post-hd">
-    <div class="post-av" style="background:${av}">${init}</div>
+    ${avHtml}
     <div class="post-av-info">
       <div class="post-author">${esc(displayAuthor)}${adminBadgeHtml}${userBadgesHtml}</div>
       <div class="post-time">${timeAgo(p.created_at)}</div>
@@ -1875,7 +1889,8 @@ async function toggleReact(btn, postId, emoji) {
   if (!me) return;
   var isActive = btn.classList.contains('fire-on') || btn.classList.contains('power-on') || btn.classList.contains('love-on');
   var span = btn.querySelector('span');
-  var n = parseInt(span.textContent) || 0;
+  var n = span ? parseInt(span.textContent) || 0 : 0;
+  if (!span) { span = document.createElement('span'); btn.appendChild(span); }
   var cls = emoji==='🔥'?'fire-on':emoji==='💪'?'power-on':'love-on';
   if (isActive) {
     btn.classList.remove(cls); span.textContent = Math.max(0, n-1);
@@ -2339,6 +2354,9 @@ async function uploadProfilePhoto(input) {
       if (avImg) { avImg.src = e.target.result; avImg.style.display = 'block'; }
       if (avLetter) avLetter.style.display = 'none';
       localStorage.setItem('mlynr-avatar-'+me.id, e.target.result);
+      // Sidebar nav avatar güncelle
+      var navAv = document.getElementById('nav-av');
+      if (navAv) navAv.innerHTML = '<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
     };
     reader.readAsDataURL(file);
     return;
@@ -2351,6 +2369,9 @@ async function uploadProfilePhoto(input) {
   if (avImg) { avImg.src = photoUrl; avImg.style.display = 'block'; }
   if (avLetter) avLetter.style.display = 'none';
   localStorage.setItem('mlynr-avatar-'+me.id, photoUrl);
+  // Sidebar nav avatar güncelle
+  var navAv = document.getElementById('nav-av');
+  if (navAv) navAv.innerHTML = '<img src="'+photoUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
 }
 
 // ─── BANNER / SIGNAL ───────────────────────────────────────────
