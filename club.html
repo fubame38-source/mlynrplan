@@ -409,8 +409,9 @@ body.light-mode .fc-tag{background:var(--surface3);color:var(--text2);border-col
   transform:translateY(-1px);
 }
 .post.mine::before{
-  content:'';position:absolute;left:0;top:16px;bottom:16px;
-  width:3px;background:var(--text);border-radius:0 3px 3px 0;
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;background:var(--text);
+  border-radius:var(--radius-lg) 0 0 var(--radius-lg);
 }
 
 /* Post header */
@@ -1282,7 +1283,7 @@ body.light-mode .pb-chip.earned{
       </div>
 
     <!-- ── PROFİL SAYFASI ── -->
-      <div id="page-profile" class="page-content">
+      <div id="page-profile" class="page-content" style="display:none">
         <div class="profile-hero">
           <div class="profile-av-row">
             <div class="profile-av-big" id="pr-av">?</div>
@@ -1901,16 +1902,29 @@ function containsPhone(text) {
   return [/(?:\+?90)?5[0-9]{9}/,/(?:\+?90)?[2-4][0-9]{9}/,/\+[1-9][0-9]{9,}/,/[0-9]{10,}/].some(p=>p.test(digits)) ||
     [/5\d{2}\s+\d{3}\s+\d{2}\s+\d{2}/,/\d{3}\s+\d{3}\s+\d{2}\s+\d{2}/].some(p=>p.test(text));
 }
+var lastPostTime = 0;
 async function submitPost() {
   if (!me) return;
+  var now = Date.now();
+  if (now - lastPostTime < 30000) {
+    alert('⚠️ Çok hızlı! Lütfen ' + Math.ceil((30000-(now-lastPostTime))/1000) + ' saniye bekle.');
+    return;
+  }
   var content = document.getElementById('f-text').value.trim();
   if (!content) { alert('Bir şeyler yaz!'); return; }
+  if (content.length > 2000) { alert('⚠️ Paylaşım en fazla 2000 karakter olabilir.'); return; }
   if (containsPhone(content)) { alert('⚠️ Telefon numarası paylaşılamaz.'); return; }
   var btn = document.getElementById('submit-btn');
   btn.disabled = true; btn.textContent = 'Gönderiliyor...';
   var imageUrl = null;
   if (selectedFile) {
-    var ext = selectedFile.name.split('.').pop();
+    var allowedTypes = ['image/jpeg','image/png','image/webp','image/gif'];
+    if (!allowedTypes.includes(selectedFile.type)) {
+      alert('⚠️ Sadece JPG, PNG, WEBP veya GIF yükleyebilirsin.');
+      btn.disabled=false; btn.textContent='Paylaş →'; return;
+    }
+    var extMap = {'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif'};
+    var ext = extMap[selectedFile.type] || 'jpg';
     var path = me.id+'/'+Date.now()+'.'+ext;
     var {data:upData,error:upErr} = await sb.storage.from('club-images').upload(path,selectedFile);
     if (!upErr) { var {data:urlData}=sb.storage.from('club-images').getPublicUrl(path); imageUrl=urlData.publicUrl; }
@@ -1921,11 +1935,12 @@ async function submitPost() {
     sale_price:document.getElementById('f-price').value.trim()||null,
     sale_profit:document.getElementById('f-profit').value.trim()||null,
     sale_orders:document.getElementById('f-orders').value.trim()||null,
-    image_url:imageUrl, approved:false
+    image_url:imageUrl
   };
   var {data,error} = await sb.from('club_posts').insert(post).select().single();
   btn.disabled=false; btn.textContent='Paylaş →';
   if (error) { alert('Hata: '+error.message); return; }
+  lastPostTime = Date.now();
   data.club_reactions=[]; data.club_comments=[];
   allPosts.unshift(data);
   renderFeed(); renderHomeFeeds(); updateStats(); updateHomeStats(); updateDailyGoal();
@@ -2003,13 +2018,14 @@ function loadMembers() {
 
 // ─── BADGES ────────────────────────────────────────────────────
 // Badge tanımları: {id, emoji, label, color}
+// Öncelik sırası: en solda en yüksek (elite > pro > seller > motivator > supporter > starter)
 var BADGE_DEFS = [
-  { id:'starter',   emoji:'🌱', label:'Starter',   color:'#16a34a', req:'İlk post' },
-  { id:'seller',    emoji:'⚡', label:'Seller',    color:'#d97706', req:'İlk satış' },
+  { id:'elite',     emoji:'🏆', label:'Elite',     color:'#7c3aed', req:'10+ post' },
   { id:'pro',       emoji:'🚀', label:'Pro',       color:'#2563eb', req:'5 satış' },
+  { id:'seller',    emoji:'⚡', label:'Seller',    color:'#d97706', req:'İlk satış' },
   { id:'motivator', emoji:'🔥', label:'Motivator', color:'#dc2626', req:'3 motivasyon' },
   { id:'supporter', emoji:'🤝', label:'Supporter', color:'#0891b2', req:'3+ yorum' },
-  { id:'veteran',   emoji:'🏆', label:'Veteran',   color:'#7c3aed', req:'10+ post' },
+  { id:'starter',   emoji:'🌱', label:'Starter',   color:'#16a34a', req:'İlk post' },
 ];
 
 // userId → Set of earned badge ids (cache)
@@ -2024,7 +2040,7 @@ function computeBadgesFromPosts(userPosts, commentCount) {
   if (sales.length >= 5)      earned.add('pro');
   if (motiv.length >= 3)      earned.add('motivator');
   if (commentCount >= 3)      earned.add('supporter');
-  if (userPosts.length >= 10) earned.add('veteran');
+  if (userPosts.length >= 10) earned.add('elite');
   return earned;
 }
 
@@ -2043,11 +2059,10 @@ function buildBadgeCache() {
 function getUserBadgeHtml(userId) {
   var earned = badgeCache[userId];
   if (!earned || earned.size === 0) return '';
-  return Array.from(earned).map(id => {
-    var def = BADGE_DEFS.find(b=>b.id===id);
-    if (!def) return '';
-    return `<span class="user-badge" style="--badge-color:${def.color}" title="${def.label}: ${def.req}"><span class="ub-emoji">${def.emoji}</span>${def.label}</span>`;
-  }).join('');
+  // BADGE_DEFS sırası öncelik sırası — ilk eşleşeni göster
+  var def = BADGE_DEFS.find(b => earned.has(b.id));
+  if (!def) return '';
+  return `<span class="user-badge" style="--badge-color:${def.color}" title="${def.label}: ${def.req}"><span class="ub-emoji">${def.emoji}</span>${def.label}</span>`;
 }
 
 async function checkBadges() {
