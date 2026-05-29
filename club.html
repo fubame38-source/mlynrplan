@@ -65,7 +65,7 @@ body{background:#0a0a0f;color:#f4f4f8;font-family:var(--font);min-height:100vh;-
 body.light-mode{background:#f2f2f7;color:#0a0a0f;}
 
 /* ══ AUTH ══════════════════════════════════════════════════════ */
-#auth-screen{position:fixed;inset:0;z-index:1000;background:#0d0d0d !important;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;}
+#auth-screen{position:fixed;inset:0;z-index:1000;background:#0d0d0d !important;display:none;align-items:center;justify-content:center;padding:20px;overflow:hidden;}
 body.light-mode #auth-screen{background:#0d0d0d !important;}
 body.light-mode .auth-brand-name{color:#fff !important;}
 body.light-mode .auth-headline h1{color:#fff !important;}
@@ -2823,6 +2823,8 @@ function toggleTheme() {
       if (prof?.approved) { onLogin(u); }
       else { showPendingScreen(u); }
     }
+  } else {
+    document.getElementById('auth-screen').style.display = 'flex';
   }
 })();
 
