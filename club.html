@@ -2,8 +2,13 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MLYNR">
 <title>MLYNR Community</title>
+<link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;MLYNR Community&quot;,&quot;short_name&quot;:&quot;MLYNR&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0f&quot;,&quot;theme_color&quot;:&quot;%230a0a0f&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23fff'/%3E%3Ctext y='.9em' font-size='80' x='10'%3EM%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;any&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -682,9 +687,175 @@ body.light-mode .sig-date{color:var(--text3);}
 .lightbox.show{display:flex;}
 .lightbox img{max-width:90vw;max-height:90vh;border-radius:12px;object-fit:contain;}
 
+
+/* ══ MOBILE BOTTOM NAV ═══════════════════════════════════════ */
+.mobile-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(10,10,15,.92);
+  backdrop-filter:blur(20px) saturate(1.8);
+  border-top:1px solid rgba(255,255,255,.07);
+  padding:8px 0 max(8px, env(safe-area-inset-bottom));
+}
+body.light-mode .mobile-nav{
+  background:rgba(242,242,247,.92);
+  border-top-color:var(--border);
+}
+.mobile-nav-inner{display:flex;justify-content:space-around;align-items:center;}
+.mn-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;border:none;cursor:pointer;padding:6px 16px;
+  color:rgba(255,255,255,.3);font-family:var(--font);
+  font-size:10px;font-weight:600;letter-spacing:.02em;
+  transition:color .18s;min-width:56px;
+}
+body.light-mode .mn-btn{color:var(--text3);}
+.mn-btn.active{color:#fff;}
+body.light-mode .mn-btn.active{color:var(--text);}
+.mn-icon{font-size:22px;line-height:1;}
+.mn-post-btn{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--accent);color:var(--accent-fg);
+  border:none;cursor:pointer;font-size:22px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(0,0,0,.4);
+  transition:transform .2s,box-shadow .2s;
+}
+.mn-post-btn:active{transform:scale(.93);}
+
+@media(max-width:600px){
+  .mobile-nav{display:block;}
+  .sidebar{display:none!important;}
+  .app-grid{grid-template-columns:1fr!important;}
+  .topbar{padding:12px 16px;}
+  .topbar-search{display:none;}
+  .topbar-title{font-size:16px;}
+  .page-content{padding:16px 14px 80px;}
+  .content-grid{grid-template-columns:1fr!important;}
+  .right-sidebar{display:none!important;}
+  .stats-row{grid-template-columns:repeat(2,1fr)!important;gap:10px;}
+  .featured-grid{grid-template-columns:1fr!important;}
+  .stat-card{border-radius:18px;padding:16px 18px;}
+}
+
+/* ══ BANNER (Canberk weekly) ═════════════════════════════════ */
+.banner-wrap{margin-bottom:28px;}
+.banner-card{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#111 0%,#1e1e26 60%,#1a1a2e 100%);
+  border:1.5px solid rgba(255,255,255,.08);
+  border-radius:var(--radius-lg);
+  padding:28px 32px;
+  min-height:120px;display:flex;align-items:center;gap:24px;
+}
+body.light-mode .banner-card{
+  background:linear-gradient(135deg,#0a0a0f 0%,#1a1a2e 100%);
+}
+.banner-card::before{
+  content:'';position:absolute;top:-60px;right:-40px;
+  width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 70%);
+  pointer-events:none;
+}
+.banner-card::after{
+  content:'MLYNR';position:absolute;right:24px;bottom:-16px;
+  font-size:96px;font-weight:900;letter-spacing:-.06em;
+  color:rgba(255,255,255,.025);line-height:1;pointer-events:none;
+  font-family:var(--font);
+}
+.banner-av{
+  width:52px;height:52px;border-radius:50%;flex-shrink:0;
+  background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:900;color:#fff;
+}
+.banner-content{flex:1;position:relative;z-index:1;}
+.banner-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);font-family:var(--mono);margin-bottom:8px;
+}
+.banner-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);animation:pulse 2s infinite;}
+.banner-title{font-size:20px;font-weight:800;color:#fff;line-height:1.3;letter-spacing:-.03em;margin-bottom:6px;}
+.banner-body{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;max-width:520px;}
+.banner-date{font-size:10px;color:rgba(255,255,255,.2);font-family:var(--mono);margin-top:10px;}
+.banner-admin-bar{
+  background:rgba(255,255,255,.04);border:1.5px dashed rgba(255,255,255,.1);
+  border-radius:var(--radius);padding:14px 18px;
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+  transition:all .2s;min-height:80px;
+}
+.banner-admin-bar:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.2);}
+.banner-admin-bar-text{font-size:13px;color:rgba(255,255,255,.3);}
+body.light-mode .banner-admin-bar{background:var(--surface2);border-color:var(--border2);}
+body.light-mode .banner-admin-bar-text{color:var(--text3);}
+
+/* ══ PROFILE PAGE ════════════════════════════════════════════ */
+#page-profile{display:none;}
+.profile-hero{
+  background:linear-gradient(135deg,#111 0%,#1c1c26 100%);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:32px;margin-bottom:20px;
+  position:relative;overflow:hidden;
+}
+body.light-mode .profile-hero{background:var(--surface);border-color:var(--border);}
+.profile-hero::before{
+  content:'';position:absolute;top:-80px;right:-60px;
+  width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.03) 0%,transparent 70%);
+  pointer-events:none;
+}
+.profile-av-row{display:flex;align-items:flex-end;gap:20px;margin-bottom:20px;}
+.profile-av-big{
+  width:72px;height:72px;border-radius:20px;
+  font-size:28px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;flex-shrink:0;border:3px solid rgba(255,255,255,.15);
+}
+.profile-av-info{}
+.profile-name{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.04em;line-height:1.2;}
+body.light-mode .profile-name{color:var(--text);}
+.profile-role{font-size:12px;color:rgba(255,255,255,.35);margin-top:4px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;}
+body.light-mode .profile-role{color:var(--text3);}
+.profile-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+@media(max-width:600px){.profile-stats-row{grid-template-columns:repeat(2,1fr);}}
+.profile-stat{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  border-radius:var(--radius);padding:14px 16px;text-align:center;
+}
+body.light-mode .profile-stat{background:var(--surface2);border-color:var(--border);}
+.ps-val{font-size:24px;font-weight:900;color:#fff;letter-spacing:-.04em;}
+body.light-mode .ps-val{color:var(--text);}
+.ps-lbl{font-size:10px;color:rgba(255,255,255,.3);margin-top:4px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);}
+body.light-mode .ps-lbl{color:var(--text3);}
+.profile-badges-section{margin-bottom:20px;}
+.profile-badges-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:12px;letter-spacing:-.02em;}
+body.light-mode .profile-badges-title{color:var(--text);}
+.profile-badge-row{display:flex;gap:10px;flex-wrap:wrap;}
+.pb-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:999px;padding:7px 14px;
+  font-size:12px;font-weight:600;color:rgba(255,255,255,.5);
+  opacity:.4;transition:all .2s;
+}
+body.light-mode .pb-chip{background:var(--surface2);border-color:var(--border);color:var(--text3);}
+.pb-chip.earned{opacity:1;color:#fff;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);}
+body.light-mode .pb-chip.earned{color:var(--text);background:var(--surface3);border-color:var(--border2);}
+.profile-posts-section{}
+.profile-posts-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px;letter-spacing:-.02em;}
+
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px;}body.light-mode .banner-title{color:#fff;}
+body.light-mode .banner-role{color:rgba(255,255,255,.4);}
+body.light-mode .profile-hero{background:var(--surface);}
+body.light-mode .profile-stat{background:var(--surface2);border-color:var(--border);}
+body.light-mode .ps-val{color:var(--text);}
+body.light-mode .ps-lbl{color:var(--text3);}
+body.light-mode .profile-badges-title{color:var(--text);}
+
 
 .post:nth-child(1){animation-delay:.03s}.post:nth-child(2){animation-delay:.07s}
 .post:nth-child(3){animation-delay:.11s}.post:nth-child(4){animation-delay:.15s}
@@ -805,7 +976,10 @@ body.light-mode .auth-footer{color:#888;}
             <span class="nav-icon">📰</span><span class="nav-label">Feed</span>
           </button>
           <button class="nav-link" onclick="showPage('feed');switchTab(this,'mine')">
-            <span class="nav-icon">👤</span><span class="nav-label">Postlarım</span>
+            <span class="nav-icon">📝</span><span class="nav-label">Postlarım</span>
+          </button>
+          <button class="nav-link" onclick="showPage('profile')">
+            <span class="nav-icon">👤</span><span class="nav-label">Profilim</span>
           </button>
         </div>
         <div class="sidebar-divider"></div>
@@ -845,7 +1019,7 @@ body.light-mode .auth-footer{color:#888;}
       </div>
 
       <div class="sidebar-bottom">
-        <div class="sidebar-user">
+        <div class="sidebar-user" onclick="showPage('profile')" title="Profilimi Gör">
           <div class="su-av" id="nav-av">?</div>
           <div class="su-info">
             <div class="su-name" id="nav-name">...</div>
@@ -884,6 +1058,25 @@ body.light-mode .auth-footer{color:#888;}
           <div class="welcome-text">
             <h2>Hoş geldin, <span id="welcome-name">Kursiyer</span>! 👋</h2>
             <p>Bugün öğren, paylaş, birlikte büyüyelim.</p>
+          </div>
+        </div>
+
+        <!-- Canberk Banner -->
+        <div class="banner-wrap" id="banner-wrap">
+          <div id="banner-content">
+            <div class="banner-admin-bar" id="banner-admin-bar" style="display:none" onclick="openBannerEdit()">
+              <span style="font-size:22px">✏️</span>
+              <span class="banner-admin-bar-text">Haftalık mesajı düzenlemek için tıkla...</span>
+            </div>
+            <div class="banner-card" id="banner-card" style="display:none">
+              <div class="banner-av">C</div>
+              <div class="banner-content">
+                <div class="banner-badge"><span class="banner-dot"></span> Canberk Sinyali</div>
+                <div class="banner-title" id="banner-title">Yükleniyor...</div>
+                <div class="banner-body" id="banner-body"></div>
+                <div class="banner-date" id="banner-date"></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1014,7 +1207,76 @@ body.light-mode .auth-footer{color:#888;}
         </div>
       </div>
 
+    <!-- ── PROFİL SAYFASI ── -->
+      <div id="page-profile" class="page-content">
+        <div class="profile-hero">
+          <div class="profile-av-row">
+            <div class="profile-av-big" id="pr-av">?</div>
+            <div class="profile-av-info">
+              <div class="profile-name" id="pr-name">...</div>
+              <div class="profile-role">Kursiyer · MLYNR</div>
+            </div>
+          </div>
+          <div class="profile-stats-row">
+            <div class="profile-stat"><div class="ps-val" id="pr-posts">—</div><div class="ps-lbl">Paylaşım</div></div>
+            <div class="profile-stat"><div class="ps-val" id="pr-sales">—</div><div class="ps-lbl">Satış Postu</div></div>
+            <div class="profile-stat"><div class="ps-val" id="pr-reactions">—</div><div class="ps-lbl">Tepki Aldı</div></div>
+            <div class="profile-stat"><div class="ps-val" id="pr-rank">#—</div><div class="ps-lbl">Bu Hafta</div></div>
+          </div>
+          <div class="profile-badges-section">
+            <div class="profile-badges-title">🎖 Rozetler</div>
+            <div class="profile-badge-row">
+              <div class="pb-chip" id="pbc-starter">🌱 Starter</div>
+              <div class="pb-chip" id="pbc-seller">⚡ Seller</div>
+              <div class="pb-chip" id="pbc-pro">🚀 Pro</div>
+              <div class="pb-chip" id="pbc-supporter">🤝 Supporter</div>
+              <div class="pb-chip" id="pbc-motivator">🔥 Motivator</div>
+              <div class="pb-chip" id="pbc-veteran">🏆 Veteran</div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-posts-section">
+          <div class="profile-posts-title">📝 Paylaşımlarım</div>
+          <div class="feed" id="feed-profile">
+            <div class="feed-loader">Yükleniyor...</div>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-inner">
+      <button class="mn-btn active" id="mn-home" onclick="showPage('home');setMobileActive('home')">
+        <span class="mn-icon">🏠</span>Ana Sayfa
+      </button>
+      <button class="mn-btn" id="mn-feed" onclick="showPage('feed');setMobileActive('feed')">
+        <span class="mn-icon">📰</span>Feed
+      </button>
+      <button class="mn-post-btn" onclick="openModal()">+</button>
+      <button class="mn-btn" id="mn-profile" onclick="showPage('profile');setMobileActive('profile')">
+        <span class="mn-icon">👤</span>Profil
+      </button>
+      <button class="mn-btn" id="mn-theme" onclick="toggleTheme()">
+        <span class="mn-icon">☀️</span>Tema
+      </button>
+    </div>
+  </nav>
+</div>
+
+<!-- BANNER EDIT MODAL (sadece admin) -->
+<div class="overlay" id="banner-modal" onclick="if(event.target===this)closeBannerModal()">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>Haftalık Mesajı Düzenle</h3>
+      <button class="modal-x" onclick="closeBannerModal()">×</button>
+    </div>
+    <label class="f-label">Başlık</label>
+    <input class="f-input" id="bm-title" placeholder="Bu haftaki konu..." style="margin-bottom:12px">
+    <label class="f-label">Mesaj</label>
+    <textarea class="f-textarea" id="bm-body" placeholder="Kursiyerlere mesajın..."></textarea>
+    <button class="submit-btn" id="bm-save" onclick="saveBanner()">Kaydet →</button>
   </div>
 </div>
 
@@ -1123,7 +1385,7 @@ function onLogin(user) {
   document.getElementById('app').style.display = 'block';
   ['nav-av','compose-av'].forEach(id => {
     var el = document.getElementById(id);
-    if (el) { el.textContent = myName.charAt(0).toUpperCase(); el.style.background = '#c8f000'; el.style.color = '#0d0d0d'; }
+    if (el) { el.textContent = myName.charAt(0).toUpperCase(); el.style.background = avColor(myName); el.style.color = '#fff'; }
   });
   document.getElementById('nav-name').textContent = myName;
   var wn = document.getElementById('welcome-name');
@@ -1134,11 +1396,11 @@ function onLogin(user) {
 // ─── INIT ──────────────────────────────────────────────────────
 async function init() {
   loadSignal();
+  loadBanner();
   await loadPosts();
   loadLeaderboard();
   loadLeaderboard2();
   checkBadges();
-  loadMembers();
   subscribeRealtime();
   updateDailyGoal();
   loadTrending();
@@ -1147,15 +1409,24 @@ async function init() {
 // ─── PAGES ─────────────────────────────────────────────────────
 function showPage(page) {
   currentPage = page;
-  document.getElementById('page-home').style.display = page === 'home' ? '' : 'none';
-  document.getElementById('page-feed').style.display = page === 'feed' ? '' : 'none';
-  var titles = { home: 'Ana Sayfa', feed: 'Topluluk Feed' };
+  ['home','feed','profile'].forEach(p => {
+    var el = document.getElementById('page-'+p);
+    if (el) el.style.display = (p === page) ? '' : 'none';
+  });
+  var titles = { home: 'Ana Sayfa', feed: 'Topluluk Feed', profile: 'Profilim' };
   document.getElementById('topbar-title').textContent = titles[page] || page;
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  var map = { home: 0, feed: 1 };
+  var map = { home: 0, feed: 1, profile: 2 };
   var links = document.querySelectorAll('.nav-link');
   if (map[page] !== undefined) links[map[page]]?.classList.add('active');
   if (page === 'feed') renderFeed();
+  if (page === 'profile') loadProfile();
+}
+function setMobileActive(page) {
+  ['home','feed','profile'].forEach(p => {
+    var el = document.getElementById('mn-'+p);
+    if (el) el.classList.toggle('active', p === page);
+  });
 }
 
 // ─── SIGNAL ────────────────────────────────────────────────────
@@ -1635,6 +1906,97 @@ function scrollToPost(id) {
     var el = document.querySelector('[data-id="'+id+'"]');
     if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.outline='2px solid var(--text3)'; setTimeout(()=>el.style.outline='',1200); }
   },100);
+}
+
+// ─── PROFILE ───────────────────────────────────────────────────
+async function loadProfile() {
+  if (!me) return;
+  var av = document.getElementById('pr-av');
+  var nm = document.getElementById('pr-name');
+  if (av) { av.textContent = myName.charAt(0).toUpperCase(); av.style.background = avColor(myName); }
+  if (nm) nm.textContent = myName;
+
+  // Stats
+  var myPosts = allPosts.filter(p => p.user_id === me.id);
+  var mySales = myPosts.filter(p => p.post_type === 'sale' || p.post_type === 'milestone');
+  var totalReactions = myPosts.reduce((s,p) => s + (p.club_reactions||[]).length, 0);
+  var el = (id,v) => { var e = document.getElementById(id); if(e) e.textContent = v; };
+  el('pr-posts', myPosts.length);
+  el('pr-sales', mySales.length);
+  el('pr-reactions', totalReactions);
+
+  // Rank this week
+  var weekAgo = new Date(Date.now()-7*24*60*60*1000).toISOString();
+  var recent = allPosts.filter(p => p.created_at >= weekAgo);
+  var scores = {};
+  recent.forEach(p => { if(!scores[p.user_id]) scores[p.user_id]=0; scores[p.user_id]+=(p.post_type==='milestone'||p.post_type==='sale')?3:1; });
+  var sorted = Object.keys(scores).sort((a,b)=>scores[b]-scores[a]);
+  var rank = sorted.indexOf(me.id);
+  el('pr-rank', rank >= 0 ? '#'+(rank+1) : '#—');
+
+  // Badges
+  var badgeMap = {
+    'pbc-starter': myPosts.length>=1,
+    'pbc-seller': mySales.length>=1,
+    'pbc-pro': mySales.length>=5,
+    'pbc-motivator': myPosts.filter(p=>p.post_type==='motivation').length>=3,
+    'pbc-veteran': myPosts.length>=10,
+  };
+  try {
+    var {count} = await sb.from('club_comments').select('id',{count:'exact',head:true}).eq('user_id',me.id);
+    badgeMap['pbc-supporter'] = count >= 3;
+  } catch(e){}
+  Object.entries(badgeMap).forEach(([id,earned]) => {
+    document.getElementById(id)?.classList.toggle('earned', earned);
+  });
+
+  // Posts feed
+  var fp = document.getElementById('feed-profile');
+  if (fp) {
+    if (!myPosts.length) { fp.innerHTML = '<div class="feed-empty">Henüz paylaşım yapmadın.</div>'; }
+    else { fp.innerHTML = myPosts.map(p => renderPost(p)).join(''); }
+  }
+}
+
+// ─── BANNER ────────────────────────────────────────────────────
+async function loadBanner() {
+  var isAdmin = ADMIN_EMAILS.includes(me?.email);
+  var { data } = await sb.from('club_signal').select('*').eq('id',1).single();
+  var card = document.getElementById('banner-card');
+  var adminBar = document.getElementById('banner-admin-bar');
+  if (data && data.title) {
+    if (card) card.style.display = 'flex';
+    if (adminBar) adminBar.style.display = isAdmin ? 'flex' : 'none';
+    var t = document.getElementById('banner-title');
+    var b = document.getElementById('banner-body');
+    var d = document.getElementById('banner-date');
+    if(t) t.textContent = data.title;
+    if(b) b.textContent = data.body || '';
+    if(d) d.textContent = 'Güncellendi: ' + timeAgo(data.updated_at);
+  } else {
+    if (card) card.style.display = 'none';
+    if (adminBar && isAdmin) adminBar.style.display = 'flex';
+    else if (adminBar) adminBar.style.display = 'none';
+  }
+}
+function openBannerEdit() {
+  var t = document.getElementById('banner-title')?.textContent || '';
+  var b = document.getElementById('banner-body')?.textContent || '';
+  document.getElementById('bm-title').value = t === 'Yükleniyor...' ? '' : t;
+  document.getElementById('bm-body').value = b;
+  document.getElementById('banner-modal').classList.add('show');
+}
+function closeBannerModal() { document.getElementById('banner-modal').classList.remove('show'); }
+async function saveBanner() {
+  var title = document.getElementById('bm-title').value.trim();
+  var body = document.getElementById('bm-body').value.trim();
+  if (!title) { alert('Başlık gerekli'); return; }
+  var btn = document.getElementById('bm-save');
+  btn.textContent = '...'; btn.disabled = true;
+  var { error } = await sb.from('club_signal').upsert({ id:1, title, body, updated_at: new Date().toISOString() });
+  btn.textContent = 'Kaydet →'; btn.disabled = false;
+  if (!error) { closeBannerModal(); await loadBanner(); loadSignal(); }
+  else { alert('Hata: ' + error.message); }
 }
 
 // ─── THEME ──────────────────────────────────────────────────────
