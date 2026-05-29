@@ -971,6 +971,25 @@ body.light-mode .auth-headline h1{color:#111;}
 body.light-mode .auth-brand-name{color:#111;}
 body.light-mode .auth-footer{color:#888;}
 
+/* ── ADMIN BADGE ── */
+.admin-badge{
+  display:inline-flex;align-items:center;
+  font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:999px;
+  background:linear-gradient(135deg,#7c3aed,#4f46e5);
+  color:#fff;margin-left:7px;
+  letter-spacing:.02em;vertical-align:middle;
+  box-shadow:0 1px 6px rgba(124,58,237,.3);
+}
+
+/* ── SIG EDIT BUTTON ── */
+.sig-edit-btn{
+  margin-left:auto;background:none;border:none;
+  cursor:pointer;font-size:13px;padding:2px 5px;
+  border-radius:5px;opacity:.45;transition:opacity .15s;line-height:1;
+}
+.sig-edit-btn:hover{opacity:1;background:rgba(255,255,255,.1);}
+
 </style>
 </head>
 <body>
@@ -1120,25 +1139,6 @@ body.light-mode .auth-footer{color:#888;}
           </div>
         </div>
 
-        <!-- Canberk Banner -->
-        <div class="banner-wrap" id="banner-wrap">
-          <div id="banner-content">
-            <div class="banner-admin-bar" id="banner-admin-bar" style="display:none" onclick="openBannerEdit()">
-              <span style="font-size:22px">✏️</span>
-              <span class="banner-admin-bar-text">Haftalık mesajı düzenlemek için tıkla...</span>
-            </div>
-            <div class="banner-card" id="banner-card" style="display:none">
-              <div class="banner-av">C</div>
-              <div class="banner-content">
-                <div class="banner-badge"><span class="banner-dot"></span> Canberk Sinyali</div>
-                <div class="banner-title" id="banner-title">Yükleniyor...</div>
-                <div class="banner-body" id="banner-body"></div>
-                <div class="banner-date" id="banner-date"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Kişisel stats -->
         <div class="stats-row" id="home-stats">
           <div class="stat-card">
@@ -1174,14 +1174,15 @@ body.light-mode .auth-footer{color:#888;}
           </div>
 
           <div class="right-sidebar">
-            <!-- Canberk signal -->
-            <div class="signal-card">
+            <!-- Canberk signal card (compact) -->
+            <div class="signal-card" id="signal-card-home">
               <div class="signal-inner">
                 <div class="sig-top">
                   <div class="sig-dot"></div>
                   <div class="sig-badge">Canberk Sinyali</div>
+                  <button class="sig-edit-btn" id="sig-edit-btn" style="display:none" onclick="openBannerEdit()" title="Düzenle">✏️</button>
                 </div>
-                <div class="sig-title" id="sig-title">Yükleniyor...</div>
+                <div class="sig-title" id="sig-title">—</div>
                 <div class="sig-body" id="sig-body"></div>
               </div>
               <div class="sig-footer"><div class="sig-date" id="sig-date"></div></div>
@@ -1736,11 +1737,14 @@ function renderPost(p) {
   var myLove = reactions.some(r=>r.emoji==='❤️'&&r.user_id===me?.id);
   var isMine = p.user_id === me?.id;
   var isAdmin = ADMIN_EMAILS.includes(me?.email);
+  var isPostAdmin = ADMIN_EMAILS.includes(p.user_email||'');
   var av = avColor(p.user_name||'U');
   var init = (p.user_name||'U').charAt(0).toUpperCase();
+  var adminBadgeHtml = isPostAdmin ? '<span class="admin-badge">⚡ Admin</span>' : '';
   var typeMap = {milestone:'🎉 İlk Satış',sale:'💰 Satış',product:'📦 Ürün',question:'❓ Soru',motivation:'🔥 Motivasyon'};
   var typeLabel = typeMap[p.post_type]||p.post_type;
-  var delBtn = isAdmin ? `<button class="post-del" onclick="deletePost('${p.id}')" title="Sil">
+  var canDelete = isMine || isAdmin;
+  var delBtn = canDelete ? `<button class="post-del" onclick="deletePost('${p.id}','${p.user_id}')" title="Sil">
       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
     </button>` : '';
   var pendingHtml = (!p.approved && isMine) ? '<div class="pending-pill">⏳ Onay bekleniyor</div>' : '';
@@ -1781,10 +1785,10 @@ function renderPost(p) {
   <div class="post-hd">
     <div class="post-av" style="background:${av}">${init}</div>
     <div class="post-av-info">
-      <div class="post-author">${esc(p.user_name||'Anonim')}</div>
+      <div class="post-author">${esc(p.user_name||'Anonim')}${adminBadgeHtml}</div>
       <div class="post-time">${timeAgo(p.created_at)}</div>
     </div>
-    ${isAdmin ? `<button class="post-del" onclick="deletePost('${p.id}')" title="Sil">
+    ${canDelete ? `<button class="post-del" onclick="deletePost('${p.id}','${p.user_id}')" title="Sil">
       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
     </button>` : ''}
   </div>
@@ -1868,14 +1872,15 @@ async function deleteComment(btn) {
 }
 
 // ─── DELETE POST ───────────────────────────────────────────────
-async function deletePost(postId) {
+async function deletePost(postId, postUserId) {
   var isAdmin = ADMIN_EMAILS.includes(me?.email);
+  var isMine = postUserId === me?.id;
+  if (!isAdmin && !isMine) { alert('Bu postu silme yetkiniz yok.'); return; }
   if (!confirm('Bu paylaşımı silmek istediğine emin misin?')) return;
-  // Admin: delete any post; Owner: only own
-  var q = sb.from('club_posts').delete().eq('id',postId);
-  if (!isAdmin) q = q.eq('user_id',me.id);
+  var q = sb.from('club_posts').delete().eq('id', postId);
+  if (!isAdmin) q = q.eq('user_id', me.id);
   await q;
-  allPosts = allPosts.filter(p=>p.id!==postId);
+  allPosts = allPosts.filter(p => p.id !== postId);
   renderFeed(); renderHomeFeeds(); updateStats(); updateHomeStats();
 }
 
@@ -2179,31 +2184,17 @@ async function loadProfile() {
   }
 }
 
-// ─── BANNER ────────────────────────────────────────────────────
+// ─── BANNER / SIGNAL ───────────────────────────────────────────
 async function loadBanner() {
   var isAdmin = ADMIN_EMAILS.includes(me?.email);
-  var { data } = await sb.from('club_signal').select('*').eq('id',1).single();
-  var card = document.getElementById('banner-card');
-  var adminBar = document.getElementById('banner-admin-bar');
-  if (data && data.title) {
-    if (card) card.style.display = 'flex';
-    if (adminBar) adminBar.style.display = isAdmin ? 'flex' : 'none';
-    var t = document.getElementById('banner-title');
-    var b = document.getElementById('banner-body');
-    var d = document.getElementById('banner-date');
-    if(t) t.textContent = data.title;
-    if(b) b.textContent = data.body || '';
-    if(d) d.textContent = 'Güncellendi: ' + timeAgo(data.updated_at);
-  } else {
-    if (card) card.style.display = 'none';
-    if (adminBar && isAdmin) adminBar.style.display = 'flex';
-    else if (adminBar) adminBar.style.display = 'none';
-  }
+  var editBtn = document.getElementById('sig-edit-btn');
+  if (editBtn) editBtn.style.display = isAdmin ? 'block' : 'none';
+  // loadSignal already fills sig-title/sig-body/sig-date
 }
 function openBannerEdit() {
-  var t = document.getElementById('banner-title')?.textContent || '';
-  var b = document.getElementById('banner-body')?.textContent || '';
-  document.getElementById('bm-title').value = t === 'Yükleniyor...' ? '' : t;
+  var t = document.getElementById('sig-title')?.textContent || '';
+  var b = document.getElementById('sig-body')?.textContent || '';
+  document.getElementById('bm-title').value = (t === '—' || t === 'Yükleniyor...') ? '' : t;
   document.getElementById('bm-body').value = b;
   document.getElementById('banner-modal').classList.add('show');
 }
@@ -2216,7 +2207,7 @@ async function saveBanner() {
   btn.textContent = '...'; btn.disabled = true;
   var { error } = await sb.from('club_signal').upsert({ id:1, title, body, updated_at: new Date().toISOString() });
   btn.textContent = 'Kaydet →'; btn.disabled = false;
-  if (!error) { closeBannerModal(); await loadBanner(); loadSignal(); }
+  if (!error) { closeBannerModal(); loadSignal(); }
   else { alert('Hata: ' + error.message); }
 }
 
