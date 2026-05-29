@@ -1049,6 +1049,119 @@ body.light-mode .pb-chip.earned{
 }
 .sig-edit-btn:hover{opacity:1;background:rgba(255,255,255,.1);}
 
+
+/* ══ MOBİL HAMBURGER DRAWER ══════════════════════════════════ */
+.mob-drawer-overlay{
+  display:none;position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,.5);backdrop-filter:blur(4px);
+}
+.mob-drawer-overlay.open{display:block;}
+.mob-drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:301;
+  width:280px;max-width:85vw;
+  background:#141418;
+  border-left:1px solid rgba(255,255,255,.08);
+  transform:translateX(100%);
+  transition:transform .28s cubic-bezier(.22,1,.36,1);
+  display:flex;flex-direction:column;
+  box-shadow:-8px 0 40px rgba(0,0,0,.4);
+}
+body.light-mode .mob-drawer{background:#fff;border-left-color:var(--border);}
+.mob-drawer.open{transform:translateX(0);}
+
+.mob-drawer-top{
+  padding:20px 20px 16px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:space-between;
+}
+body.light-mode .mob-drawer-top{border-bottom-color:var(--border);}
+.mob-drawer-brand{
+  font-size:16px;font-weight:800;color:#fff;letter-spacing:-.03em;
+}
+body.light-mode .mob-drawer-brand{color:var(--text);}
+.mob-drawer-brand span{color:rgba(255,255,255,.35);}
+body.light-mode .mob-drawer-brand span{color:var(--text3);}
+.mob-drawer-close{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,.07);border:none;
+  color:rgba(255,255,255,.6);font-size:18px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+body.light-mode .mob-drawer-close{background:var(--surface2);color:var(--text2);}
+
+.mob-drawer-user{
+  margin:16px;padding:14px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:background .15s;
+}
+body.light-mode .mob-drawer-user{background:var(--surface2);border-color:var(--border);}
+.mob-drawer-user:hover{background:rgba(255,255,255,.09);}
+.mob-du-av{
+  width:40px;height:40px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;color:#fff;flex-shrink:0;
+}
+.mob-du-info{flex:1;min-width:0;}
+.mob-du-name{font-size:13px;font-weight:700;color:rgba(255,255,255,.9);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+body.light-mode .mob-du-name{color:var(--text);}
+.mob-du-role{font-size:10px;color:rgba(255,255,255,.3);
+  font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+body.light-mode .mob-du-role{color:var(--text3);}
+
+.mob-drawer-nav{flex:1;padding:8px 12px;}
+.mob-dnav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 12px;border-radius:12px;
+  border:none;background:transparent;
+  width:100%;text-align:left;cursor:pointer;
+  color:rgba(255,255,255,.5);font-family:var(--font);
+  font-size:14px;font-weight:500;transition:all .15s;
+  margin-bottom:2px;
+}
+body.light-mode .mob-dnav-item{color:var(--text2);}
+.mob-dnav-item:hover{background:rgba(255,255,255,.07);color:#fff;}
+body.light-mode .mob-dnav-item:hover{background:var(--surface2);color:var(--text);}
+.mob-dnav-item.danger{color:#f87171;}
+.mob-dnav-item.danger:hover{background:rgba(239,68,68,.1);color:#ef4444;}
+.mob-dnav-icon{
+  width:34px;height:34px;border-radius:10px;
+  background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+body.light-mode .mob-dnav-icon{background:var(--surface2);}
+.mob-drawer-bottom{
+  padding:16px;border-top:1px solid rgba(255,255,255,.06);
+}
+body.light-mode .mob-drawer-bottom{border-top-color:var(--border);}
+.mob-drawer-version{font-size:10px;color:rgba(255,255,255,.2);
+  font-family:var(--mono);text-align:center;}
+body.light-mode .mob-drawer-version{color:var(--text3);}
+
+/* Topbar brand text (mobilde görünür) */
+.topbar-brand{
+  display:none;
+  font-size:15px;font-weight:800;color:var(--text);
+  letter-spacing:-.03em;margin-right:8px;flex-shrink:0;
+}
+.topbar-brand span{color:var(--text3);font-weight:500;}
+@media(max-width:600px){
+  .topbar-brand{display:block;}
+  .mob-hamburger{display:flex;}
+}
+.mob-hamburger{
+  display:none;
+  width:36px;height:36px;background:var(--surface2);
+  border:1.5px solid var(--border);border-radius:50%;
+  align-items:center;justify-content:center;
+  cursor:pointer;font-size:18px;flex-shrink:0;
+  transition:background .15s;
+}
+.mob-hamburger:hover{background:var(--surface3);}
 </style>
 </head>
 <body>
@@ -1156,7 +1269,9 @@ body.light-mode .pb-chip.earned{
 
       <!-- Topbar -->
       <div class="topbar">
+        <div class="topbar-brand">MLYNR <span>Club</span></div>
         <div class="topbar-title" id="topbar-title">Ana Sayfa</div>
+        <button class="mob-hamburger" onclick="openDrawer()" aria-label="Menü">☰</button>
         <div class="topbar-search" id="search-box">
           <span class="topbar-search-icon">🔍</span>
           <input placeholder="Ara..." id="search-input" oninput="onSearchInput(this.value)" onfocus="showSearchPanel()" autocomplete="off">
@@ -1345,6 +1460,48 @@ body.light-mode .pb-chip.earned{
   </nav>
 </div>
 
+
+<!-- MOBİL HAMBURGER DRAWER -->
+<div class="mob-drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="mob-drawer" id="mob-drawer">
+  <div class="mob-drawer-top">
+    <div class="mob-drawer-brand">MLYNR <span>Club</span></div>
+    <button class="mob-drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="mob-drawer-user" onclick="closeDrawer();showPage('profile')">
+    <div class="mob-du-av" id="drawer-av" style="background:#1a7a4a">?</div>
+    <div class="mob-du-info">
+      <div class="mob-du-name" id="drawer-name">Yükleniyor...</div>
+      <div class="mob-du-role">Üye</div>
+    </div>
+    <span style="color:rgba(255,255,255,.3);font-size:14px;">›</span>
+  </div>
+  <div class="mob-drawer-nav">
+    <button class="mob-dnav-item" onclick="closeDrawer();showPage('home')">
+      <span class="mob-dnav-icon">🏠</span> Ana Sayfa
+    </button>
+    <button class="mob-dnav-item" onclick="closeDrawer();showPage('feed')">
+      <span class="mob-dnav-icon">📰</span> Feed
+    </button>
+    <button class="mob-dnav-item" onclick="closeDrawer();showPage('profile')">
+      <span class="mob-dnav-icon">👤</span> Profilim
+    </button>
+    <button class="mob-dnav-item" onclick="closeDrawer();openModal()">
+      <span class="mob-dnav-icon">✏️</span> Paylaşım Yap
+    </button>
+    <button class="mob-dnav-item" onclick="closeDrawer();toggleTheme()">
+      <span class="mob-dnav-icon" id="drawer-theme-icon">☀️</span> Tema Değiştir
+    </button>
+    <div style="height:1px;background:rgba(255,255,255,.06);margin:8px 0;"></div>
+    <button class="mob-dnav-item danger" onclick="closeDrawer();doLogout()">
+      <span class="mob-dnav-icon">↪️</span> Çıkış Yap
+    </button>
+  </div>
+  <div class="mob-drawer-bottom">
+    <div class="mob-drawer-version">MLYNR Club · v1.0</div>
+  </div>
+</div>
+
 <!-- BANNER EDIT MODAL (sadece admin) -->
 <div class="overlay" id="banner-modal" onclick="if(event.target===this)closeBannerModal()">
   <div class="modal">
@@ -1476,6 +1633,34 @@ async function doSignup() {
   if (data.session) { onLogin(data.user); }
   else { showAuthMsg('Email onayı gönderildi!', true); }
 }
+
+// ─── MOBİL DRAWER ──────────────────────────────────────────────
+function openDrawer() {
+  document.getElementById('mob-drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Kullanıcı bilgilerini güncelle
+  if (me) {
+    var dn = document.getElementById('drawer-name');
+    var dav = document.getElementById('drawer-av');
+    if (dn) dn.textContent = formatName(myName);
+    if (dav) {
+      dav.style.background = avColor(myName);
+      var savedPhoto = localStorage.getItem('mlynr-avatar-'+me.id);
+      if (savedPhoto) {
+        dav.innerHTML = '<img src="'+savedPhoto+'" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">';
+      } else {
+        dav.textContent = formatName(myName).charAt(0).toUpperCase();
+      }
+    }
+  }
+}
+function closeDrawer() {
+  document.getElementById('mob-drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 async function doLogout() {
   await sb.auth.signOut(); me = null; myName = '';
   document.getElementById('app').style.display = 'none';
