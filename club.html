@@ -1193,6 +1193,43 @@ body.light-mode .mob-drawer-version{color:var(--text3);}
   .topbar{display:none !important;}
   .mob-topbar{display:flex !important;}
 }
+
+/* ══ ONAY BEKLEME EKRANI ════════════════════════════════════ */
+#pending-screen{
+  position:fixed;inset:0;z-index:1000;
+  background:#0d0d0d;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+.pending-wrap{
+  width:100%;max-width:420px;text-align:center;
+}
+.pending-icon{
+  width:72px;height:72px;border-radius:20px;
+  background:#1a1a1a;border:1px solid #2a2a2a;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 24px;
+}
+.pending-title{
+  font-size:24px;font-weight:800;color:#fff;
+  letter-spacing:-.04em;margin-bottom:10px;
+}
+.pending-sub{
+  font-size:14px;color:#666;line-height:1.6;margin-bottom:28px;
+}
+.pending-email-box{
+  background:#161616;border:1px solid #2a2a2a;
+  border-radius:12px;padding:14px 18px;
+  font-family:var(--mono);font-size:13px;
+  color:#888;margin-bottom:24px;
+}
+.pending-logout{
+  background:transparent;border:1px solid #333;
+  color:#666;font-family:var(--font);font-size:13px;
+  padding:10px 24px;border-radius:10px;cursor:pointer;
+  transition:all .2s;
+}
+.pending-logout:hover{border-color:#555;color:#aaa;}
 </style>
 </head>
 <body>
@@ -1655,6 +1692,14 @@ async function doLogin() {
     showAuthMsg('Hata: ' + error.message); return;
   }
   loginAttempts = 0;
+  // Admin ise direkt gir
+  if (ADMIN_EMAILS.includes(data.user.email)) { onLogin(data.user); return; }
+  // Onay kontrolü
+  var { data: profile } = await sb.from('club_members').select('approved').eq('user_id', data.user.id).single();
+  if (!profile || profile.approved === false) {
+    showPendingScreen(data.user);
+    return;
+  }
   onLogin(data.user);
 }
 async function doSignup() {
@@ -1672,8 +1717,23 @@ async function doSignup() {
   var { data, error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
   btn.textContent = 'Kayıt Ol →'; btn.disabled = false;
   if (error) { showAuthMsg('Hata: ' + error.message); return; }
-  if (data.session) { onLogin(data.user); }
-  else { showAuthMsg('Email onayı gönderildi!', true); }
+  if (data.user) {
+    // club_members tablosuna kaydet (onaysız)
+    await sb.from('club_members').upsert({
+      user_id: data.user.id,
+      email: data.user.email,
+      name: name,
+      approved: false,
+      created_at: new Date().toISOString()
+    });
+  }
+  if (data.session) {
+    // Otomatik session açıldıysa onay kontrolü yap
+    if (ADMIN_EMAILS.includes(data.user.email)) { onLogin(data.user); return; }
+    showPendingScreen(data.user);
+    return;
+  }
+  showAuthMsg('Kayıt alındı! Admin onayından sonra giriş yapabilirsin.', true);
 }
 
 // ─── MOBİL DRAWER ──────────────────────────────────────────────
@@ -1703,6 +1763,19 @@ function closeDrawer() {
   document.body.style.overflow = '';
 }
 
+
+// ─── ONAY BEKLEME ──────────────────────────────────────────────
+function showPendingScreen(user) {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('pending-screen').style.display = 'flex';
+  var el = document.getElementById('pending-email-show');
+  if (el) el.textContent = user.email;
+}
+async function doPendingLogout() {
+  await sb.auth.signOut();
+  document.getElementById('pending-screen').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+}
 async function doLogout() {
   await sb.auth.signOut(); me = null; myName = '';
   document.getElementById('app').style.display = 'none';
@@ -2650,9 +2723,30 @@ function toggleTheme() {
 // ─── SESSION ───────────────────────────────────────────────────
 (async function(){
   var {data}=await sb.auth.getSession();
-  if(data?.session?.user){onLogin(data.session.user);}
+  if(data?.session?.user){
+    var u = data.session.user;
+    if (ADMIN_EMAILS.includes(u.email)) { onLogin(u); }
+    else {
+      var { data: prof } = await sb.from('club_members').select('approved').eq('user_id', u.id).single();
+      if (prof?.approved) { onLogin(u); }
+      else { showPendingScreen(u); }
+    }
+  }
 })();
 
 </script>
+
+<!-- ONAY BEKLEME EKRANI -->
+<div id="pending-screen" style="display:none;position:fixed;inset:0;z-index:1000;background:#0d0d0d;align-items:center;justify-content:center;padding:20px;">
+  <div class="pending-wrap">
+    <div class="pending-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </div>
+    <div class="pending-title">Onay Bekleniyor</div>
+    <div class="pending-sub">Hesabın admin onayı bekliyor.<br>En kısa sürede incelenecek ve haberdar edileceksin.</div>
+    <div class="pending-email-box" id="pending-email-show">—</div>
+    <button class="pending-logout" onclick="doPendingLogout()">Çıkış Yap</button>
+  </div>
+</div>
 </body>
 </html>
