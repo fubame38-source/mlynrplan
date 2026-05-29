@@ -157,6 +157,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <button class="sec-tab active" onclick="showSection('posts',this)">📋 Tüm Postlar</button>
       <button class="sec-tab" onclick="showSection('pending',this)">⏳ Onay Bekleyenler <span id="pending-count" style="background:#b45309;color:#fff;border-radius:999px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
       <button class="sec-tab" onclick="showSection('signal',this)">📡 Canberk Sinyali</button>
+      <button class="sec-tab" onclick="showSection('ann',this)">📌 Duyurular <span id="ann-count" style="background:#6366f1;color:#fff;border-radius:999px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
       <button class="sec-tab" onclick="showSection('users',this)">👥 Üyeler</button>
       <button class="sec-tab" onclick="showSection('members',this)">✅ Üye Onayı <span id="members-count" style="background:#1a7a4a;color:#fff;border-radius:999px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
     </div>
@@ -267,6 +268,7 @@ async function loadAll() {
   await Promise.all([loadPosts(), loadSignal()]);
   buildUserList();
   loadMembers();
+  loadAdminAnnouncements();
 }
 
 async function loadPosts() {
@@ -460,6 +462,59 @@ async function rejectMember(id, email) {
   var { error } = await sb.from('club_members').update({ approved: false }).eq('id', id);
   if (error) { alert('Hata: ' + error.message); return; }
   loadMembers();
+}
+
+
+// ─── DUYURULAR ──────────────────────────────────────────────────
+async function loadAdminAnnouncements() {
+  var { data } = await sb.from('club_announcements').select('*').order('created_at', { ascending: false });
+  var cnt = document.getElementById('ann-count');
+  if (cnt) cnt.textContent = (data||[]).length;
+  var list = document.getElementById('ann-admin-list');
+  if (!list) return;
+  if (!data || !data.length) { list.innerHTML = '<div class="empty">Henüz duyuru yok.</div>'; return; }
+  list.innerHTML = data.map(a => `
+    <div class="post-row" id="ann-${a.id}">
+      <div class="pr-head">
+        <div class="pr-av" style="background:#6366f1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;">📌</div>
+        <div class="pr-info">
+          <div class="pr-name">${esc(a.title)}</div>
+          <div class="pr-meta">${timeAgo(a.created_at)}</div>
+        </div>
+      </div>
+      <div class="pr-content">${esc(a.body)}</div>
+      <div class="pr-actions">
+        <button class="btn-del" onclick="deleteAnnouncement('${a.id}')">🗑 Sil</button>
+      </div>
+    </div>`).join('');
+}
+
+async function addAnnouncement() {
+  var title = document.getElementById('ann-title-inp').value.trim();
+  var body = document.getElementById('ann-body-inp').value.trim();
+  if (!title || !body) { alert('Başlık ve içerik doldur!'); return; }
+  var btn = document.querySelector('#sec-ann .save-btn');
+  btn.textContent = '...'; btn.disabled = true;
+  var { error } = await sb.from('club_announcements').insert({
+    title, body, created_at: new Date().toISOString()
+  });
+  btn.textContent = 'Duyuru Ekle →'; btn.disabled = false;
+  if (error) { alert('Hata: ' + error.message); return; }
+  document.getElementById('ann-title-inp').value = '';
+  document.getElementById('ann-body-inp').value = '';
+  var ok = document.getElementById('ann-save-ok');
+  ok.style.opacity = '1'; setTimeout(() => ok.style.opacity = '0', 2500);
+  loadAdminAnnouncements();
+}
+
+async function deleteAnnouncement(id) {
+  if (!confirm('Bu duyuruyu silmek istediğine emin misin?')) return;
+  var el = document.getElementById('ann-'+id);
+  if (el) { el.style.opacity = '.4'; el.style.pointerEvents = 'none'; }
+  var { error } = await sb.from('club_announcements').delete().eq('id', id);
+  if (error) { alert('Hata: ' + error.message); if(el){el.style.opacity='1';el.style.pointerEvents='';} return; }
+  if (el) el.remove();
+  loadAdminAnnouncements();
 }
 
 // ─── BAN USER ──────────────────────────────────────────────────
