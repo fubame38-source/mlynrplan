@@ -369,7 +369,7 @@ body.light-mode .fc-tag{background:var(--surface3);color:var(--text2);border-col
 .compose-row:hover .compose-plus{transform:rotate(90deg);}
 
 /* Feed list */
-.feed{display:flex;flex-direction:column;gap:12px;}
+.feed{display:flex;flex-direction:column;gap:12px;width:100%;min-width:0;}
 
 /* ── POST CARD ── */
 .post{
@@ -380,6 +380,9 @@ body.light-mode .fc-tag{background:var(--surface3);color:var(--text2);border-col
   transition:box-shadow .22s, border-color .22s, transform .22s;
   animation:postIn .35s cubic-bezier(.22,1,.36,1) both;
   position:relative;
+  width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
 }
 @keyframes postIn{
   from{opacity:0;transform:translateY(8px);}
@@ -1507,11 +1510,15 @@ async function init() {
   checkBadges();
   subscribeRealtime();
   updateDailyGoal();
+  // Son açık sayfayı geri yükle
+  var savedPage = localStorage.getItem('mlynr-page') || 'home';
+  showPage(savedPage);
 }
 
 // ─── PAGES ─────────────────────────────────────────────────────
 function showPage(page) {
   currentPage = page;
+  localStorage.setItem('mlynr-page', page);
   ['home','feed','profile'].forEach(p => {
     var el = document.getElementById('page-'+p);
     if (el) el.style.display = (p === page) ? '' : 'none';
@@ -1531,6 +1538,7 @@ function showPageMine() {
   // "Postlarım" butonu: feed'e git ve mine tabını seç
   currentTab = 'mine';
   currentPage = 'feed';
+  localStorage.setItem('mlynr-page', 'feed');
   ['home','feed','profile'].forEach(p => {
     var el = document.getElementById('page-'+p);
     if (el) el.style.display = (p === 'feed') ? '' : 'none';
