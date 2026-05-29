@@ -1152,6 +1152,7 @@ body.light-mode .mob-drawer-version{color:var(--text3);}
 @media(max-width:600px){
   .topbar-brand{display:block;}
   .mob-hamburger{display:flex;}
+  .notif-wrap{display:none;}
 }
 .mob-hamburger{
   display:none;
@@ -1271,19 +1272,19 @@ body.light-mode .mob-drawer-version{color:var(--text3);}
       <div class="topbar">
         <div class="topbar-brand">MLYNR <span>Club</span></div>
         <div class="topbar-title" id="topbar-title">Ana Sayfa</div>
-        <button class="mob-hamburger" onclick="openDrawer()" aria-label="Menü">☰</button>
         <div class="topbar-search" id="search-box">
           <span class="topbar-search-icon">🔍</span>
           <input placeholder="Ara..." id="search-input" oninput="onSearchInput(this.value)" onfocus="showSearchPanel()" autocomplete="off">
         </div>
         <div id="search-panel" class="search-panel" style="display:none"></div>
-        <div style="position:relative">
+        <div style="position:relative" class="notif-wrap">
           <div class="topbar-icon-btn" id="notif-btn" onclick="toggleNotifPanel()" title="Bildirimler">🔔<span class="notif-dot" id="notif-dot" style="display:none"></span></div>
           <div class="notif-panel" id="notif-panel" style="display:none">
             <div class="notif-panel-hd">Bildirimler</div>
             <div id="notif-list"><div style="padding:28px 16px;text-align:center;color:var(--text3);font-size:13px">Henüz bildirim yok</div></div>
           </div>
         </div>
+        <button class="mob-hamburger" onclick="openDrawer()" aria-label="Menü">☰</button>
         <button class="topbar-post-btn" onclick="openModal()">
           <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
           Paylaşım Yap
