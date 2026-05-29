@@ -13,380 +13,342 @@
 html{scroll-behavior:smooth}
 
 :root{
-  --bg:#0d0d0d;
-  --bg2:#111111;
-  --card:#161616;
-  --card2:#1c1c1c;
-  --border:#242424;
-  --border2:#2e2e2e;
-  --text:#f0f0f0;
-  --text2:#888888;
-  --text3:#444444;
+  --bg:#f5f5f5;
+  --surface:#ffffff;
+  --surface2:#f0f0f0;
+  --border:#e8e8e8;
+  --border2:#ddd;
+  --text:#111;
+  --text2:#555;
+  --text3:#999;
   --neon:#c8f000;
-  --neon2:#d4ff00;
-  --neon-dim:rgba(200,240,0,.08);
-  --neon-border:rgba(200,240,0,.25);
-  --green:#22c55e;
-  --green-dim:rgba(34,197,94,.1);
-  --green-border:rgba(34,197,94,.3);
-  --red:#f87171;
-  --red-dim:rgba(248,113,113,.08);
-  --blue:#60a5fa;
-  --blue-dim:rgba(96,165,250,.08);
-  --purple:#a78bfa;
-  --purple-dim:rgba(167,139,250,.08);
+  --neon-dark:#0d0d0d;
+  --card-dark:#1a1a1a;
+  --card-dark2:#222;
+  --shadow:0 1px 4px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.05);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.12);
   --font:'Inter',sans-serif;
   --mono:'JetBrains Mono',monospace;
-  --shadow:0 2px 8px rgba(0,0,0,.4);
-  --shadow2:0 8px 32px rgba(0,0,0,.6);
 }
 
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;-webkit-font-smoothing:antialiased;}
 
-/* ── AUTH ── */
-#auth-screen{
-  position:fixed;inset:0;z-index:1000;background:var(--bg);
-  display:flex;align-items:center;justify-content:center;padding:20px;
-  background-image:radial-gradient(ellipse 80% 60% at 50% -20%, rgba(200,240,0,.06), transparent 60%);
-}
-.auth-wrap{width:100%;max-width:440px;}
-
-.auth-hero{text-align:center;margin-bottom:32px;}
-.auth-logo-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px;}
-.auth-m{
-  width:48px;height:48px;background:var(--neon);border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;font-weight:900;color:#0d0d0d;letter-spacing:-.04em;
-  box-shadow:0 0 24px rgba(200,240,0,.3);
-}
-.auth-brand{font-size:22px;font-weight:800;letter-spacing:-.03em;}
-.auth-brand span{color:var(--neon);}
-.auth-tagline{font-size:28px;font-weight:800;letter-spacing:-.04em;line-height:1.2;margin-bottom:6px;}
-.auth-tagline span{color:var(--neon);}
-.auth-sub{font-size:14px;color:var(--text2);line-height:1.5;}
-
-.auth-card{
-  background:var(--card);border:1px solid var(--border2);
-  border-radius:20px;padding:28px;position:relative;overflow:hidden;
-}
-.auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--neon),transparent);}
-
-.auth-tabs{display:flex;background:var(--bg2);border-radius:10px;padding:3px;gap:3px;margin-bottom:22px;}
-.auth-tab{flex:1;padding:9px;border-radius:7px;border:none;background:transparent;color:var(--text3);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+/* ══ AUTH ══════════════════════════════════════════════════════ */
+#auth-screen{position:fixed;inset:0;z-index:1000;background:#0d0d0d;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;}
+#auth-screen::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(200,240,0,.08),transparent 70%);pointer-events:none;}
+.auth-wrap{width:100%;max-width:440px;position:relative;}
+.auth-logo-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:24px;}
+.auth-m-icon{width:44px;height:44px;background:var(--neon);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#0d0d0d;box-shadow:0 0 20px rgba(200,240,0,.25);}
+.auth-brand-name{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.03em;}
+.auth-headline{text-align:center;margin-bottom:28px;}
+.auth-headline h1{font-size:32px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-.04em;margin-bottom:8px;}
+.auth-headline h1 span{color:var(--neon);}
+.auth-headline p{font-size:14px;color:#666;line-height:1.5;}
+.auth-box{background:#161616;border:1px solid #2a2a2a;border-radius:20px;padding:28px;position:relative;}
+.auth-box::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:2px;background:linear-gradient(90deg,transparent,var(--neon),transparent);}
+.auth-tabs{display:flex;background:#0d0d0d;border-radius:10px;padding:3px;gap:3px;margin-bottom:22px;}
+.auth-tab{flex:1;padding:9px;border-radius:7px;border:none;background:transparent;color:#666;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
 .auth-tab.active{background:var(--neon);color:#0d0d0d;}
 .auth-field{margin-bottom:14px;}
-.auth-field label{display:block;font-size:10px;font-weight:700;color:var(--text3);margin-bottom:6px;letter-spacing:.1em;text-transform:uppercase;}
-.auth-input{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--font);font-size:14px;outline:none;transition:all .2s;}
-.auth-input:focus{border-color:var(--neon-border);box-shadow:0 0 0 3px var(--neon-dim);}
-.auth-input::placeholder{color:var(--text3);}
-.auth-btn{width:100%;background:var(--neon);color:#0d0d0d;font-family:var(--font);font-size:14px;font-weight:800;padding:13px;border-radius:10px;border:none;cursor:pointer;transition:all .25s;margin-top:8px;letter-spacing:-.01em;}
+.auth-field label{display:block;font-size:10px;font-weight:700;color:#555;margin-bottom:6px;letter-spacing:.1em;text-transform:uppercase;}
+.auth-input{width:100%;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:10px;padding:12px 14px;color:#fff;font-family:var(--font);font-size:14px;outline:none;transition:all .2s;}
+.auth-input:focus{border-color:rgba(200,240,0,.4);box-shadow:0 0 0 3px rgba(200,240,0,.08);}
+.auth-input::placeholder{color:#444;}
+.auth-btn{width:100%;background:var(--neon);color:#0d0d0d;font-family:var(--font);font-size:14px;font-weight:800;padding:13px;border-radius:10px;border:none;cursor:pointer;transition:all .25s;margin-top:8px;}
 .auth-btn:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 6px 24px rgba(200,240,0,.3);}
 #auth-msg{font-size:12px;margin-top:10px;text-align:center;font-family:var(--mono);display:none;}
-.auth-err{color:var(--red);}.auth-ok{color:var(--green);}
+.auth-err{color:#f87171;}.auth-ok{color:var(--neon);}
+.auth-footer{text-align:center;margin-top:18px;font-size:13px;color:#444;}
+.auth-footer span{color:var(--neon);font-weight:700;}
 
-.auth-bottom{text-align:center;margin-top:20px;font-size:13px;color:var(--text3);}
-.auth-bottom span{color:var(--neon);font-weight:700;}
+/* ══ APP ══════════════════════════════════════════════════════ */
+#app{display:none;min-height:100vh;}
 
-/* ── APP ── */
-#app{display:none;}
+/* ── Layout: koyu sol sidebar + açık içerik ── */
+.app-grid{display:grid;grid-template-columns:260px 1fr;min-height:100vh;}
+@media(max-width:900px){.app-grid{grid-template-columns:72px 1fr;}.nav-label{display:none;}.brand-full{display:none;}.sidebar-bottom-text{display:none;}}
+@media(max-width:600px){.app-grid{grid-template-columns:1fr;}.sidebar{display:none;}}
 
-/* ── LAYOUT ── */
-.layout{display:grid;grid-template-columns:260px 1fr 296px;max-width:1280px;margin:0 auto;min-height:100vh;}
-@media(max-width:1100px){.layout{grid-template-columns:72px 1fr;}.right-col{display:none;}.nav-label{display:none;}.brand-text{display:none;}.lc-stats,.lc-bottom-label{display:none;}}
-@media(max-width:700px){.layout{grid-template-columns:1fr;}.left-col{display:none;}}
-
-/* ── SOL ── */
-.left-col{
-  border-right:1px solid var(--border);
+/* ══ SIDEBAR ══════════════════════════════════════════════════ */
+.sidebar{
+  background:#111;
+  border-right:1px solid #1e1e1e;
   position:sticky;top:0;height:100vh;
   display:flex;flex-direction:column;
-  background:var(--bg);
+  overflow-y:auto;
 }
-.left-col::-webkit-scrollbar{display:none;}
-.lc-scroll{flex:1;overflow-y:auto;padding:16px 12px;}
-.lc-scroll::-webkit-scrollbar{display:none;}
+.sidebar::-webkit-scrollbar{display:none;}
 
-.brand{display:flex;align-items:center;gap:10px;padding:8px;margin-bottom:20px;}
-.brand-icon{
-  width:36px;height:36px;background:var(--neon);border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;font-weight:900;color:#0d0d0d;flex-shrink:0;
-  box-shadow:0 0 14px rgba(200,240,0,.2);
-}
-.brand-text{font-size:16px;font-weight:800;letter-spacing:-.03em;}
-.brand-text span{color:var(--neon);}
+.sidebar-top{padding:20px 14px;}
+.brand{display:flex;align-items:center;gap:10px;padding:8px;margin-bottom:24px;}
+.brand-icon{width:36px;height:36px;background:var(--neon);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#0d0d0d;flex-shrink:0;box-shadow:0 0 12px rgba(200,240,0,.2);}
+.brand-full{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.03em;}
+.brand-full span{color:var(--neon);}
 
-.nav-section{margin-bottom:6px;}
-.nav-label-sm{font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding:0 8px;margin-bottom:4px;font-family:var(--mono);}
-.nav-item{
-  display:flex;align-items:center;gap:11px;padding:9px 10px;
-  border-radius:10px;border:none;background:transparent;
-  cursor:pointer;color:var(--text2);font-family:var(--font);
-  font-size:13px;font-weight:500;width:100%;text-align:left;transition:all .15s;
-}
-.nav-item:hover{background:var(--card);color:var(--text);}
-.nav-item.active{background:var(--neon-dim);color:var(--neon);font-weight:700;border:1px solid var(--neon-border);}
+.nav-group{margin-bottom:6px;}
+.nav-group-title{font-size:9px;font-weight:700;color:#444;letter-spacing:.12em;text-transform:uppercase;padding:0 10px;margin-bottom:4px;font-family:var(--mono);}
+.nav-link{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;border:none;background:transparent;cursor:pointer;color:#666;font-family:var(--font);font-size:13px;font-weight:500;width:100%;text-align:left;transition:all .15s;position:relative;}
+.nav-link:hover{background:#1a1a1a;color:#ccc;}
+.nav-link.active{background:var(--neon);color:#0d0d0d;font-weight:700;}
+.nav-link.active .nav-icon{filter:none;}
 .nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.nav-badge{margin-left:auto;background:#333;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;font-family:var(--mono);}
+.nav-link.active .nav-badge{background:rgba(0,0,0,.2);color:#0d0d0d;}
 
-.lc-divider{height:1px;background:var(--border);margin:12px 0;}
+.sidebar-divider{height:1px;background:#1e1e1e;margin:12px 14px;}
 
-.post-cta{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  background:var(--neon);color:#0d0d0d;font-family:var(--font);
-  font-size:13px;font-weight:800;padding:12px;border-radius:10px;
-  border:none;cursor:pointer;transition:all .2s;width:100%;
-  box-shadow:0 0 20px rgba(200,240,0,.15);letter-spacing:-.01em;
-}
-.post-cta:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 6px 24px rgba(200,240,0,.25);}
+/* Hedef widget */
+.daily-goal{margin:0 14px 12px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;padding:14px;}
+.dg-title{font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:var(--mono);}
+.dg-numbers{display:flex;align-items:baseline;gap:6px;margin-bottom:8px;}
+.dg-current{font-size:28px;font-weight:900;color:var(--neon);letter-spacing:-.04em;}
+.dg-total{font-size:14px;color:#444;font-weight:600;}
+.dg-label{font-size:11px;color:#555;margin-bottom:6px;}
+.dg-bar{height:4px;background:#2a2a2a;border-radius:99px;overflow:hidden;}
+.dg-bar-fill{height:100%;background:var(--neon);border-radius:99px;transition:width .5s ease;}
+.dg-sub{font-size:11px;color:#555;margin-top:6px;}
 
-.lc-stats{padding:0 4px;}
-.lc-stat{display:flex;justify-content:space-between;align-items:center;padding:4px 2px;}
-.lc-stat-k{font-size:11px;color:var(--text3);}
-.lc-stat-v{font-size:12px;font-weight:700;color:var(--text);}
+.sidebar-bottom{padding:14px;border-top:1px solid #1e1e1e;margin-top:auto;}
+.sidebar-user{display:flex;align-items:center;gap:10px;padding:10px;background:#1a1a1a;border-radius:12px;cursor:pointer;transition:background .15s;}
+.sidebar-user:hover{background:#222;}
+.su-av{width:36px;height:36px;border-radius:50%;background:var(--neon);color:#0d0d0d;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.su-info{flex:1;min-width:0;}
+.su-name{font-size:13px;font-weight:700;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.su-role{font-size:10px;color:#555;margin-top:1px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;}
+.su-arrow{color:#555;font-size:14px;}
+.sidebar-bottom-text{display:flex;gap:6px;margin-top:8px;}
+.sb-action{flex:1;background:transparent;border:1px solid #2a2a2a;border-radius:8px;padding:7px;font-size:11px;color:#555;cursor:pointer;font-family:var(--font);transition:all .15s;text-align:center;}
+.sb-action:hover{border-color:#444;color:#ccc;}
 
-.lc-user{
-  padding:12px;border-top:1px solid var(--border);
-  display:flex;align-items:center;gap:10px;
-  background:var(--bg);
-}
-.lc-uav{
-  width:34px;height:34px;border-radius:50%;background:var(--neon);
-  color:#0d0d0d;font-size:13px;font-weight:800;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.lc-uname{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lc-urole{font-size:9px;color:var(--text3);margin-top:1px;text-transform:uppercase;letter-spacing:.06em;font-family:var(--mono);}
-.lc-ubtns{margin-left:auto;display:flex;gap:4px;}
-.lc-ubtn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;padding:4px 5px;border-radius:6px;transition:all .15s;}
-.lc-ubtn:hover{color:var(--neon);background:var(--neon-dim);}
+/* ══ MAIN CONTENT ════════════════════════════════════════════ */
+.main-content{display:flex;flex-direction:column;min-height:100vh;overflow:hidden;}
 
-/* ── ORTA ── */
-.mid-col{border-right:1px solid var(--border);min-height:100vh;display:flex;flex-direction:column;}
-
-.col-header{
+/* ── Topbar ── */
+.topbar{
+  display:flex;align-items:center;gap:16px;
+  padding:16px 28px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:50;
-  background:rgba(13,13,13,.9);backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);padding:0 20px;
 }
-.col-header-row{padding:14px 0 0;margin-bottom:12px;display:flex;align-items:center;}
-.col-title{font-size:18px;font-weight:800;letter-spacing:-.03em;}
+.topbar-title{font-size:18px;font-weight:800;letter-spacing:-.03em;flex:1;}
+.topbar-title span{color:var(--text3);font-size:14px;font-weight:500;margin-left:8px;}
+.topbar-search{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:8px 16px;width:220px;}
+.topbar-search input{background:none;border:none;outline:none;font-family:var(--font);font-size:13px;color:var(--text);width:100%;}
+.topbar-search input::placeholder{color:var(--text3);}
+.topbar-search-icon{color:var(--text3);font-size:14px;}
+.topbar-icon-btn{width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .15s;}
+.topbar-icon-btn:hover{border-color:var(--border2);}
 
-.feed-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);}
+/* ── Ana sayfa içeriği ── */
+.page-content{padding:24px 28px;flex:1;}
+
+/* Hoşgeldin */
+.welcome-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;}
+.welcome-text h2{font-size:22px;font-weight:800;letter-spacing:-.04em;margin-bottom:4px;}
+.welcome-text p{font-size:14px;color:var(--text2);}
+.topbar-post-btn{background:var(--neon);color:#0d0d0d;border:none;border-radius:10px;padding:10px 20px;font-family:var(--font);font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;}
+.topbar-post-btn:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 4px 16px rgba(200,240,0,.2);}
+
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);}
+.stat-card-val{font-size:28px;font-weight:900;letter-spacing:-.05em;color:var(--text);line-height:1;}
+.stat-card-val small{font-size:13px;font-weight:500;color:var(--text3);display:block;margin-top:2px;}
+.stat-card-lbl{font-size:11px;color:var(--text3);margin-top:6px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;}
+
+/* Öne çıkanlar / featured cards */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.section-title{font-size:16px;font-weight:800;letter-spacing:-.03em;}
+.section-link{font-size:13px;color:var(--text3);cursor:pointer;transition:color .15s;}
+.section-link:hover{color:var(--text);}
+
+.featured-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+.featured-card{background:var(--card-dark);border-radius:16px;padding:18px;position:relative;overflow:hidden;cursor:pointer;transition:transform .2s;}
+.featured-card:hover{transform:translateY(-2px);}
+.fc-tag{display:inline-flex;align-items:center;gap:5px;background:var(--neon);color:#0d0d0d;font-size:10px;font-weight:800;padding:3px 10px;border-radius:999px;margin-bottom:10px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;}
+.fc-tag.orange{background:#ff6b35;color:#fff;}
+.fc-tag.blue{background:#60a5fa;color:#0d0d0d;}
+.fc-title{font-size:16px;font-weight:800;color:#fff;line-height:1.3;letter-spacing:-.02em;margin-bottom:10px;}
+.fc-meta{font-size:12px;color:#666;margin-bottom:12px;}
+.fc-author{display:flex;align-items:center;gap:8px;margin-top:auto;}
+.fc-av{width:28px;height:28px;border-radius:50%;background:var(--neon);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#0d0d0d;}
+.fc-author-info{font-size:12px;color:#888;}
+.fc-author-name{font-size:12px;color:#ccc;font-weight:600;}
+.fc-bg-letter{position:absolute;right:-10px;bottom:-20px;font-size:100px;font-weight:900;color:rgba(255,255,255,.03);line-height:1;user-select:none;}
+
+/* İki kolon: feed + sağ ── */
+.content-grid{display:grid;grid-template-columns:1fr 300px;gap:20px;}
+@media(max-width:1100px){.content-grid{grid-template-columns:1fr;}.right-sidebar{display:none;}}
+
+/* ── FEED SECTION ── */
+.feed-section{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);}
+.feed-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0;}
+.feed-tabs{display:flex;overflow-x:auto;gap:0;flex:1;}
 .feed-tabs::-webkit-scrollbar{display:none;}
-.ftab{
-  padding:11px 14px;border:none;background:transparent;
-  font-family:var(--font);font-size:12px;font-weight:500;
-  color:var(--text3);cursor:pointer;white-space:nowrap;
-  border-bottom:2px solid transparent;position:relative;bottom:-1px;transition:all .15s;
-}
-.ftab.active{color:var(--neon);border-bottom-color:var(--neon);font-weight:700;}
+.ftab{padding:8px 16px;border:none;background:transparent;font-family:var(--font);font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s;}
+.ftab.active{color:var(--text);border-bottom-color:#0d0d0d;font-weight:700;}
 .ftab:hover:not(.active){color:var(--text2);}
 
-.compose{
-  display:flex;align-items:center;gap:12px;padding:14px 20px;
-  border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;
-}
-.compose:hover{background:var(--card);}
-.compose-av{
-  width:38px;height:38px;border-radius:50%;background:var(--neon);
-  flex-shrink:0;font-size:14px;font-weight:800;
-  display:flex;align-items:center;justify-content:center;color:#0d0d0d;
-}
-.compose-bar{
-  flex:1;background:var(--card2);border:1px solid var(--border2);
-  border-radius:999px;padding:9px 18px;font-size:14px;color:var(--text3);
-}
+.compose-row{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.compose-row:hover{background:var(--surface2);}
+.compose-av{width:36px;height:36px;border-radius:50%;background:var(--neon);flex-shrink:0;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#0d0d0d;}
+.compose-placeholder{flex:1;font-size:14px;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:8px 16px;}
 
-/* ── FEED ── */
-.feed{flex:1;}
-.feed-empty{padding:48px 20px;text-align:center;color:var(--text3);font-size:14px;}
-.feed-loader{padding:40px;text-align:center;color:var(--text3);font-size:11px;font-family:var(--mono);}
-
-/* ── POST ── */
-.post{
-  padding:16px 20px;border-bottom:1px solid var(--border);
-  transition:all .15s;animation:fadeIn .3s ease both;
-}
+/* Post */
+.post{padding:16px 20px;border-bottom:1px solid var(--border);transition:background .12s;animation:fadeIn .3s ease both;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
-.post:hover{background:var(--card);}
-.post.mine{border-left:2px solid var(--neon);padding-left:18px;}
+.post:hover{background:#fafafa;}
+.post:last-child{border-bottom:none;}
+.post.mine{border-left:3px solid var(--neon);padding-left:17px;}
 
 .post-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.post-av{
-  width:38px;height:38px;border-radius:50%;flex-shrink:0;
-  font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#0d0d0d;
-}
+.post-av{width:38px;height:38px;border-radius:50%;flex-shrink:0;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff;}
 .post-av-info{flex:1;min-width:0;}
 .post-author{font-size:14px;font-weight:700;color:var(--text);}
 .post-time{font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:1px;}
-.post-badge{
-  font-size:9px;font-weight:700;padding:3px 8px;border-radius:999px;
-  flex-shrink:0;margin-left:auto;font-family:var(--mono);
-  letter-spacing:.06em;text-transform:uppercase;
-}
-.pb-milestone{background:var(--neon-dim);color:var(--neon);border:1px solid var(--neon-border);}
-.pb-sale{background:var(--green-dim);color:var(--green);border:1px solid var(--green-border);}
-.pb-product{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(96,165,250,.2);}
-.pb-question{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(167,139,250,.2);}
-.pb-motivation{background:var(--red-dim);color:var(--red);border:1px solid rgba(248,113,113,.2);}
+.post-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;flex-shrink:0;margin-left:auto;font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase;border:1px solid transparent;}
+.pb-milestone{background:#fff8e6;color:#c8870a;border-color:#f5c842;}
+.pb-sale{background:#f0fdf4;color:#16a34a;border-color:#86efac;}
+.pb-product{background:#eff6ff;color:#2563eb;border-color:#93c5fd;}
+.pb-question{background:#f5f3ff;color:#7c3aed;border-color:#c4b5fd;}
+.pb-motivation{background:#fef2f2;color:#dc2626;border-color:#fca5a5;}
 .post-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:4px 7px;border-radius:6px;margin-left:6px;transition:all .15s;}
-.post-del:hover{color:var(--red);background:var(--red-dim);}
+.post-del:hover{color:#dc2626;background:#fef2f2;}
 
 .post-body{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:12px;white-space:pre-wrap;word-break:break-word;}
 
 /* Milestone */
-.milestone-card{
-  background:var(--neon-dim);border:1px solid var(--neon-border);
-  border-radius:14px;padding:18px;margin-bottom:12px;
-  text-align:center;position:relative;overflow:hidden;
-}
+.milestone-card{background:linear-gradient(135deg,#1a1a1a,#111);border:1px solid #2a2a2a;border-radius:14px;padding:18px;margin-bottom:12px;text-align:center;position:relative;overflow:hidden;}
 .milestone-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--neon),transparent);}
-.mc-emoji{font-size:30px;display:block;margin-bottom:6px;}
+.mc-emoji{font-size:28px;display:block;margin-bottom:6px;}
 .mc-title{font-size:16px;font-weight:800;color:var(--neon);}
-.mc-sub{font-size:12px;color:var(--text3);margin-top:3px;}
+.mc-sub{font-size:12px;color:#666;margin-top:3px;}
 
-/* Sale stats */
-.sale-stats{
-  background:var(--green-dim);border:1px solid var(--green-border);
-  border-left:3px solid var(--green);border-radius:12px;
-  display:flex;flex-wrap:wrap;margin-bottom:12px;overflow:hidden;
-}
-.ss-item{flex:1;padding:12px 14px;text-align:center;border-right:1px solid var(--green-border);min-width:70px;}
+/* Sale */
+.sale-stats{background:#f0fdf4;border:1px solid #86efac;border-left:3px solid #16a34a;border-radius:12px;display:flex;flex-wrap:wrap;margin-bottom:12px;overflow:hidden;}
+.ss-item{flex:1;padding:12px 14px;text-align:center;border-right:1px solid #dcfce7;min-width:70px;}
 .ss-item:last-child{border-right:none;}
-.ss-val{font-size:18px;font-weight:800;color:var(--green);letter-spacing:-.02em;}
+.ss-val{font-size:18px;font-weight:800;color:#16a34a;letter-spacing:-.02em;}
 .ss-lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);margin-top:2px;}
 
-.pending-pill{
-  display:inline-flex;align-items:center;gap:5px;
-  background:var(--neon-dim);border:1px solid var(--neon-border);
-  border-radius:6px;padding:4px 10px;font-size:10px;
-  font-family:var(--mono);color:var(--neon);margin-bottom:10px;
-}
+.pending-pill{display:inline-flex;align-items:center;gap:5px;background:#fff8e6;border:1px solid #f5c842;border-radius:6px;padding:4px 10px;font-size:11px;font-family:var(--mono);color:#c8870a;margin-bottom:10px;}
+.post-img{width:100%;border-radius:12px;margin-bottom:12px;object-fit:cover;max-height:360px;cursor:zoom-in;border:1px solid var(--border);display:block;transition:opacity .15s;}
+.post-img:hover{opacity:.93;}
 
-.post-img{width:100%;border-radius:12px;margin-bottom:12px;object-fit:cover;max-height:380px;cursor:zoom-in;border:1px solid var(--border2);display:block;transition:opacity .15s;}
-.post-img:hover{opacity:.9;}
-
-/* Actions */
 .post-acts{display:flex;align-items:center;padding-top:10px;border-top:1px solid var(--border);gap:2px;}
 .act{display:inline-flex;align-items:center;gap:5px;background:transparent;border:none;border-radius:8px;padding:6px 10px;font-size:13px;color:var(--text3);cursor:pointer;font-family:var(--font);transition:all .15s;user-select:none;}
-.act:hover{color:var(--neon);background:var(--neon-dim);}
+.act:hover{background:var(--surface2);color:var(--text);}
 .act.fire-on{color:#f97316;}
-.act.power-on{color:var(--neon);}
-.act.love-on{color:#f43f5e;}
+.act.power-on{color:#c8870a;}
+.act.love-on{color:#e11d48;}
 .act span{font-size:12px;font-weight:600;}
 .act-cmt{margin-left:auto;font-size:11px;color:var(--text3);cursor:pointer;background:none;border:none;padding:6px 8px;font-family:var(--mono);transition:color .15s;}
-.act-cmt:hover{color:var(--neon);}
+.act-cmt:hover{color:var(--text2);}
 
 /* Comments */
 .cmts{display:none;border-top:1px solid var(--border);padding:12px 0 4px;}
 .cmts.open{display:block;}
 .cmt{display:flex;gap:10px;margin-bottom:10px;}
-.cmt-av{width:28px;height:28px;border-radius:50%;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#0d0d0d;}
-.cmt-wrap{flex:1;}
+.cmt-av{width:28px;height:28px;border-radius:50%;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;}
+.cmt-body{flex:1;}
 .cmt-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;display:flex;align-items:center;gap:6px;}
 .cmt-text{font-size:13px;color:var(--text2);line-height:1.5;white-space:pre-wrap;word-break:break-word;}
 .cmt-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;padding:1px 4px;border-radius:4px;margin-left:auto;transition:color .15s;}
-.cmt-del:hover{color:var(--red);}
+.cmt-del:hover{color:#dc2626;}
 .cmt-form{display:flex;align-items:center;gap:10px;padding-top:10px;border-top:1px solid var(--border);}
 .cmt-form-av{width:28px;height:28px;border-radius:50%;background:var(--neon);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#0d0d0d;}
-.cmt-inp{flex:1;background:var(--card2);border:1px solid var(--border2);border-radius:999px;padding:7px 14px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;resize:none;transition:all .2s;}
-.cmt-inp:focus{border-color:var(--neon-border);}
+.cmt-inp{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:7px 14px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;resize:none;transition:all .2s;}
+.cmt-inp:focus{border-color:#c8870a;}
 .cmt-inp::placeholder{color:var(--text3);}
 .cmt-send{background:var(--neon);color:#0d0d0d;border:none;border-radius:999px;padding:7px 14px;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;transition:all .2s;}
 .cmt-send:hover{filter:brightness(1.08);}
 
-/* ── SAĞ ── */
-.right-col{padding:18px 16px;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
-.right-col::-webkit-scrollbar{display:none;}
+.feed-empty{padding:48px 20px;text-align:center;color:var(--text3);font-size:14px;}
+.feed-loader{padding:40px;text-align:center;color:var(--text3);font-size:11px;font-family:var(--mono);}
 
-/* Signal */
-.signal-box{
-  background:var(--card);border:1px solid var(--neon-border);
-  border-radius:16px;overflow:hidden;position:relative;
-}
-.signal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--neon),transparent);}
-.signal-top{background:var(--neon-dim);padding:14px 16px 12px;}
-.sig-lbl{display:flex;align-items:center;gap:6px;font-size:9px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--neon);margin-bottom:10px;}
-.sig-dot{width:6px;height:6px;border-radius:50%;background:var(--neon);animation:pulse 2s infinite;}
+/* ── SAĞ SIDEBAR ── */
+.right-sidebar{display:flex;flex-direction:column;gap:14px;}
+
+/* Aktif üyeler */
+.widget-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);}
+.wc-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.wc-title{font-size:14px;font-weight:800;letter-spacing:-.02em;}
+.wc-link{font-size:12px;color:var(--text3);cursor:pointer;}
+.wc-link:hover{color:var(--text);}
+
+/* Members avatars */
+.members-grid{padding:14px 16px;display:flex;flex-wrap:wrap;gap:8px;}
+.member-av{width:36px;height:36px;border-radius:50%;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;transition:transform .15s;}
+.member-av:hover{transform:scale(1.1);}
+
+/* Canberk signal */
+.signal-card{background:var(--card-dark);border:1px solid #2a2a2a;border-radius:16px;overflow:hidden;position:relative;box-shadow:var(--shadow);}
+.signal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--neon),transparent);}
+.signal-inner{padding:16px;}
+.sig-top{display:flex;align-items:center;gap:7px;margin-bottom:10px;}
+.sig-dot{width:7px;height:7px;border-radius:50%;background:var(--neon);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-.sig-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px;line-height:1.3;}
-.sig-body{font-size:12px;color:var(--text2);line-height:1.65;}
-.signal-btm{padding:10px 16px;border-top:1px solid var(--neon-border);}
-.sig-date{font-size:9px;color:var(--text3);font-family:var(--mono);}
+.sig-badge{font-size:9px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--neon);font-weight:700;}
+.sig-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:8px;line-height:1.3;}
+.sig-body{font-size:13px;color:#888;line-height:1.65;}
+.sig-footer{padding:10px 16px;border-top:1px solid #1e1e1e;}
+.sig-date{font-size:10px;color:#444;font-family:var(--mono);}
 
-/* Widget */
-.widget{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
-.widget-title{font-size:14px;font-weight:800;padding:13px 16px;border-bottom:1px solid var(--border);letter-spacing:-.02em;}
-
-/* Stats */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);}
-.stat-cell{padding:12px 8px;text-align:center;border-right:1px solid var(--border);}
-.stat-cell:last-child{border-right:none;}
-.stat-val{font-size:16px;font-weight:800;color:var(--neon);}
-.stat-lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);margin-top:2px;}
-
-/* LB */
-.lb-row{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--border);transition:background .15s;}
-.lb-row:hover{background:var(--card2);}
-.lb-row:last-child{border-bottom:none;}
-.lb-rank{font-size:12px;font-weight:700;color:var(--text3);width:20px;text-align:center;}
-.lb-av{width:30px;height:30px;border-radius:50%;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#0d0d0d;}
+/* Liderlik */
+.lb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);transition:background .15s;}
+.lb-item:hover{background:var(--surface2);}
+.lb-item:last-child{border-bottom:none;}
+.lb-num{font-size:13px;font-weight:800;color:var(--text3);width:22px;text-align:center;flex-shrink:0;}
+.lb-av{width:32px;height:32px;border-radius:50%;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;}
 .lb-info{flex:1;min-width:0;}
-.lb-name{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lb-pts{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:1px;}
-.lb-me{font-size:11px;font-weight:800;color:var(--neon);}
+.lb-name{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-pts{font-size:11px;color:var(--text3);font-family:var(--mono);}
+.lb-me{font-size:12px;font-weight:800;color:var(--neon);}
+.lb-score{font-size:13px;font-weight:800;color:var(--text);}
 
-/* Badges */
-.badge-grid{display:grid;grid-template-columns:1fr 1fr;}
-.badge-item{padding:12px 10px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background .15s;}
-.badge-item:nth-child(2n){border-right:none;}
-.badge-item:nth-last-child(-n+2){border-bottom:none;}
-.badge-item:hover{background:var(--card2);}
-.badge-item.earned{background:var(--neon-dim);}
-.badge-item.earned .bx-name{color:var(--neon);}
+/* Rozetler */
+.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.badge-item{background:var(--surface);padding:12px 8px;text-align:center;transition:background .15s;}
+.badge-item:hover{background:var(--surface2);}
+.badge-item.earned{background:#fffbeb;}
+.badge-item.earned .bx-name{color:#c8870a;font-weight:800;}
 .bx-emoji{font-size:20px;display:block;margin-bottom:4px;}
-.bx-name{font-size:11px;font-weight:700;color:var(--text);}
+.bx-name{font-size:11px;font-weight:600;color:var(--text);}
 .bx-req{font-size:9px;color:var(--text3);margin-top:1px;}
 
-/* ── MODAL ── */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:48px 20px;}
+/* ══ MODAL ═══════════════════════════════════════════════════ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:48px 20px;overflow-y:auto;}
 .overlay.show{display:flex;}
-.modal{
-  background:var(--card);border:1px solid var(--border2);
-  border-radius:20px;padding:24px;width:100%;max-width:560px;
-  max-height:calc(100vh - 96px);overflow-y:auto;box-shadow:var(--shadow2);position:relative;
-}
-.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--neon),transparent);}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:24px;width:100%;max-width:560px;box-shadow:var(--shadow-lg);}
 .modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
 .modal-hd h3{font-size:18px;font-weight:800;letter-spacing:-.03em;}
-.modal-x{background:var(--card2);border:1px solid var(--border2);border-radius:8px;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:16px;transition:all .2s;}
-.modal-x:hover{border-color:var(--neon-border);color:var(--neon);}
-
+.modal-x{background:var(--surface2);border:1px solid var(--border);border-radius:8px;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:16px;transition:all .2s;}
+.modal-x:hover{background:var(--border);}
 .type-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
-.type-btn{background:transparent;border:1px solid var(--border2);border-radius:999px;padding:7px 14px;font-family:var(--font);font-size:12px;font-weight:600;color:var(--text3);cursor:pointer;transition:all .15s;}
-.type-btn:hover{border-color:var(--neon-border);color:var(--neon);}
-.type-btn.active{background:var(--neon-dim);border-color:var(--neon-border);color:var(--neon);}
-
+.type-btn{background:transparent;border:1px solid var(--border2);border-radius:999px;padding:7px 14px;font-family:var(--font);font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .15s;}
+.type-btn:hover{border-color:#c8870a;color:#c8870a;}
+.type-btn.active{background:#fff8e6;border-color:#f5c842;color:#c8870a;}
 .sale-fields{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
 .sale-fields.hidden{display:none;}
 .f-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;display:block;}
-.f-input{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:all .2s;}
-.f-input:focus{border-color:var(--neon-border);box-shadow:0 0 0 3px var(--neon-dim);}
+.f-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:all .2s;}
+.f-input:focus{border-color:#c8870a;box-shadow:0 0 0 3px rgba(200,135,10,.08);}
 .f-input::placeholder{color:var(--text3);}
-.f-textarea{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--font);font-size:14px;outline:none;resize:vertical;min-height:100px;line-height:1.65;transition:all .2s;margin-bottom:14px;}
-.f-textarea:focus{border-color:var(--neon-border);box-shadow:0 0 0 3px var(--neon-dim);}
+.f-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--font);font-size:14px;outline:none;resize:vertical;min-height:100px;line-height:1.65;transition:all .2s;margin-bottom:14px;}
+.f-textarea:focus{border-color:#c8870a;box-shadow:0 0 0 3px rgba(200,135,10,.08);}
 .f-textarea::placeholder{color:var(--text3);}
-.img-drop{border:2px dashed var(--border2);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px;position:relative;background:var(--bg2);}
-.img-drop:hover{border-color:var(--neon-border);background:var(--neon-dim);}
+.img-drop{border:2px dashed var(--border2);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px;position:relative;background:var(--surface2);}
+.img-drop:hover{border-color:#c8870a;background:#fff8e6;}
 .img-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .img-drop-icon{font-size:22px;display:block;margin-bottom:5px;}
 .img-drop-txt{font-size:12px;color:var(--text3);font-family:var(--mono);}
 .img-preview-wrap{position:relative;margin-bottom:14px;display:none;}
-.img-preview-wrap img{width:100%;border-radius:10px;border:1px solid var(--border2);max-height:200px;object-fit:cover;}
-.img-remove{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.7);border:none;border-radius:50%;color:#fff;cursor:pointer;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:14px;}
-.img-remove:hover{background:var(--red);}
+.img-preview-wrap img{width:100%;border-radius:10px;border:1px solid var(--border);max-height:200px;object-fit:cover;}
+.img-remove{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);border:none;border-radius:50%;color:#fff;cursor:pointer;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.img-remove:hover{background:#dc2626;}
 .submit-btn{width:100%;background:var(--neon);color:#0d0d0d;font-family:var(--font);font-size:14px;font-weight:800;padding:13px;border-radius:999px;border:none;cursor:pointer;transition:all .25s;}
-.submit-btn:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 6px 24px rgba(200,240,0,.25);}
+.submit-btn:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,240,0,.2);}
 .submit-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
 
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:999;display:none;align-items:center;justify-content:center;cursor:zoom-out;}
@@ -403,18 +365,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 </head>
 <body>
 
-<!-- AUTH -->
+<!-- ══ AUTH ══ -->
 <div id="auth-screen">
   <div class="auth-wrap">
-    <div class="auth-hero">
-      <div class="auth-logo-row">
-        <div class="auth-m">M</div>
-        <div class="auth-brand">MLYNR <span>Community</span></div>
-      </div>
-      <div class="auth-tagline">Öğren. Paylaş.<br><span>Birlikte büyü.</span></div>
-      <div class="auth-sub" style="margin-top:10px">Gerçek kursiyerler · Gerçek satışlar · Gerçek başarı</div>
+    <div class="auth-logo-row">
+      <div class="auth-m-icon">M</div>
+      <div class="auth-brand-name">MLYNR Community</div>
     </div>
-    <div class="auth-card">
+    <div class="auth-headline">
+      <h1>Kendini geliştir.<br><span>Geleceğini dönüştür.</span></h1>
+      <p>Gerçek kursiyerler · Gerçek satışlar · Gerçek başarı hikâyeleri</p>
+    </div>
+    <div class="auth-box">
       <div class="auth-tabs">
         <button class="auth-tab active" onclick="switchAuthTab('login',this)">Giriş Yap</button>
         <button class="auth-tab" onclick="switchAuthTab('signup',this)">Kayıt Ol</button>
@@ -432,133 +394,239 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       </div>
       <div id="auth-msg"></div>
     </div>
-    <div class="auth-bottom">Sen yoksan <span>bir eksiğiz.</span> #MLYNRileMümkün</div>
+    <div class="auth-footer">Sen yoksan <span>bir eksiğiz.</span> #MLYNRileMümkün</div>
   </div>
 </div>
 
-<!-- APP -->
+<!-- ══ APP ══ -->
 <div id="app">
-  <div class="layout">
+  <div class="app-grid">
 
-    <!-- SOL -->
-    <div class="left-col">
-      <div class="lc-scroll">
+    <!-- ── SIDEBAR ── -->
+    <div class="sidebar">
+      <div class="sidebar-top">
         <div class="brand">
           <div class="brand-icon">M</div>
-          <div class="brand-text">MLYNR <span>Community</span></div>
+          <div class="brand-full">MLYNR <span>Community</span></div>
         </div>
 
-        <div class="nav-section">
-          <div class="nav-label-sm">Keşfet</div>
-          <button class="nav-item active" onclick="switchTab(this,'all')"><span class="nav-icon">🏠</span><span class="nav-label">Ana Sayfa</span></button>
-          <button class="nav-item" onclick="switchTab(this,'milestone')"><span class="nav-icon">🎉</span><span class="nav-label">İlk Satışlar</span></button>
-          <button class="nav-item" onclick="switchTab(this,'sale')"><span class="nav-icon">💰</span><span class="nav-label">Satışlar</span></button>
-          <button class="nav-item" onclick="switchTab(this,'product')"><span class="nav-icon">📦</span><span class="nav-label">Ürünler</span></button>
-          <button class="nav-item" onclick="switchTab(this,'question')"><span class="nav-icon">❓</span><span class="nav-label">Sorular</span></button>
-          <button class="nav-item" onclick="switchTab(this,'motivation')"><span class="nav-icon">🔥</span><span class="nav-label">Motivasyon</span></button>
+        <div class="nav-group">
+          <div class="nav-group-title">Ana Menü</div>
+          <button class="nav-link active" onclick="showPage('home')"><span class="nav-icon">🏠</span><span class="nav-label">Ana Sayfa</span></button>
+          <button class="nav-link" onclick="showPage('feed')"><span class="nav-icon">📰</span><span class="nav-label">Topluluk Feed</span></button>
+          <button class="nav-link" onclick="showPage('feed');switchTab(this,'mine')"><span class="nav-icon">👤</span><span class="nav-label">Postlarım</span></button>
         </div>
 
-        <div class="lc-divider"></div>
+        <div class="sidebar-divider"></div>
 
-        <div class="nav-section" style="margin-bottom:16px">
-          <button class="nav-item" onclick="switchTab(this,'mine')"><span class="nav-icon">👤</span><span class="nav-label">Postlarım</span></button>
+        <div class="nav-group">
+          <div class="nav-group-title">Kategoriler</div>
+          <button class="nav-link" onclick="showPage('feed');switchTab(null,'milestone')"><span class="nav-icon">🎉</span><span class="nav-label">İlk Satışlar</span></button>
+          <button class="nav-link" onclick="showPage('feed');switchTab(null,'sale')"><span class="nav-icon">💰</span><span class="nav-label">Satışlar</span></button>
+          <button class="nav-link" onclick="showPage('feed');switchTab(null,'product')"><span class="nav-icon">📦</span><span class="nav-label">Ürünler</span></button>
+          <button class="nav-link" onclick="showPage('feed');switchTab(null,'question')"><span class="nav-icon">❓</span><span class="nav-label">Sorular</span></button>
+          <button class="nav-link" onclick="showPage('feed');switchTab(null,'motivation')"><span class="nav-icon">🔥</span><span class="nav-label">Motivasyon</span></button>
         </div>
 
-        <button class="post-cta" onclick="openModal()">
-          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
-          <span class="nav-label">Paylaşım Yap</span>
+        <div class="sidebar-divider"></div>
+
+        <!-- Günlük Hedef -->
+        <div class="daily-goal">
+          <div class="dg-title">Bugünkü Hedef</div>
+          <div class="dg-numbers">
+            <div class="dg-current" id="dg-current">0</div>
+            <div class="dg-total">/10</div>
+          </div>
+          <div class="dg-label">paylaşım yapıldı</div>
+          <div class="dg-bar"><div class="dg-bar-fill" id="dg-bar" style="width:0%"></div></div>
+          <div class="dg-sub" id="dg-sub">Bugün ilk paylaşımını yap!</div>
+        </div>
+
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-user">
+          <div class="su-av" id="nav-av">?</div>
+          <div class="su-info">
+            <div class="su-name" id="nav-name">...</div>
+            <div class="su-role">Kursiyer</div>
+          </div>
+          <span class="su-arrow">›</span>
+        </div>
+        <div class="sidebar-bottom-text">
+          <button class="sb-action" onclick="alert('Tema değiştir')">🎨 Tema</button>
+          <button class="sb-action" onclick="doLogout()">↪ Çıkış</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MAIN ── -->
+    <div class="main-content">
+
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="topbar-title" id="topbar-title">Ana Sayfa</div>
+        <div class="topbar-search">
+          <span class="topbar-search-icon">🔍</span>
+          <input placeholder="Ara..." readonly>
+        </div>
+        <div class="topbar-icon-btn">🔔</div>
+        <button class="topbar-post-btn" onclick="openModal()">
+          <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
+          Paylaşım Yap
         </button>
+      </div>
 
-        <div class="lc-divider"></div>
+      <!-- ── ANA SAYFA ── -->
+      <div id="page-home" class="page-content">
 
-        <div class="lc-stats">
-          <div class="lc-stat"><span class="lc-stat-k">Toplam Post</span><span class="lc-stat-v" id="st-posts">—</span></div>
-          <div class="lc-stat"><span class="lc-stat-k">Aktif Üye</span><span class="lc-stat-v" id="st-members">—</span></div>
-          <div class="lc-stat"><span class="lc-stat-k">Satış Postu</span><span class="lc-stat-v" id="st-sales">—</span></div>
-          <div class="lc-stat"><span class="lc-stat-k">Bugün</span><span class="lc-stat-v" id="st-today">—</span></div>
+        <div class="welcome-row">
+          <div class="welcome-text">
+            <h2>Hoş geldin, <span id="welcome-name">Kursiyer</span>! 👋</h2>
+            <p>Bugün öğren, paylaş, birlikte büyüyelim.</p>
+          </div>
+        </div>
+
+        <!-- Kişisel stats -->
+        <div class="stats-row" id="home-stats">
+          <div class="stat-card">
+            <div class="stat-card-val" id="hs-posts">—<small>toplam</small></div>
+            <div class="stat-card-lbl">Paylaşımın</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-val" id="hs-sales">—<small>paylaşım</small></div>
+            <div class="stat-card-lbl">Satış Postun</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-val" id="hs-members">—<small>üye</small></div>
+            <div class="stat-card-lbl">Topluluk</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-val" id="hs-rank">#—<small>bu hafta</small></div>
+            <div class="stat-card-lbl">Sıralamanız</div>
+          </div>
+        </div>
+
+        <!-- Öne çıkanlar -->
+        <div class="section-header">
+          <div class="section-title">✨ Senin için öne çıkanlar</div>
+          <div class="section-link" onclick="showPage('feed')">Tümünü Gör →</div>
+        </div>
+        <div class="featured-grid" id="featured-posts">
+          <div style="grid-column:1/-1;padding:32px;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:14px;color:var(--text3);font-size:13px">Yükleniyor...</div>
+        </div>
+
+        <!-- Feed + Sağ -->
+        <div class="content-grid">
+          <div>
+            <div class="section-header">
+              <div class="section-title">📰 Son Paylaşımlar</div>
+              <div class="section-link" onclick="showPage('feed')">Tüm Feed →</div>
+            </div>
+            <div class="feed-section">
+              <div class="feed" id="feed-home">
+                <div class="feed-loader">Yükleniyor...</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="right-sidebar">
+            <!-- Aktif üyeler -->
+            <div class="widget-card">
+              <div class="wc-header">
+                <div class="wc-title">👥 Aktif Üyeler</div>
+                <div class="wc-link">Tümü →</div>
+              </div>
+              <div class="members-grid" id="members-grid">
+                <div style="font-size:12px;color:var(--text3);padding:4px">Yükleniyor...</div>
+              </div>
+            </div>
+
+            <!-- Canberk signal -->
+            <div class="signal-card">
+              <div class="signal-inner">
+                <div class="sig-top">
+                  <div class="sig-dot"></div>
+                  <div class="sig-badge">Canberk Sinyali</div>
+                </div>
+                <div class="sig-title" id="sig-title">Yükleniyor...</div>
+                <div class="sig-body" id="sig-body"></div>
+              </div>
+              <div class="sig-footer"><div class="sig-date" id="sig-date"></div></div>
+            </div>
+
+            <!-- Liderlik -->
+            <div class="widget-card">
+              <div class="wc-header"><div class="wc-title">🏆 Bu Hafta Lider</div></div>
+              <div id="leaderboard"><div class="feed-loader">Yükleniyor...</div></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Rozetler -->
+        <div style="margin-top:24px">
+          <div class="section-header">
+            <div class="section-title">🎖 Rozet Koleksiyonun</div>
+          </div>
+          <div class="widget-card">
+            <div class="badge-grid">
+              <div class="badge-item" id="b-starter"><span class="bx-emoji">🌱</span><div class="bx-name">Starter</div><div class="bx-req">İlk post</div></div>
+              <div class="badge-item" id="b-seller"><span class="bx-emoji">⚡</span><div class="bx-name">Seller</div><div class="bx-req">İlk satış</div></div>
+              <div class="badge-item" id="b-pro"><span class="bx-emoji">🚀</span><div class="bx-name">Pro</div><div class="bx-req">5 satış</div></div>
+              <div class="badge-item" id="b-supporter"><span class="bx-emoji">🤝</span><div class="bx-name">Supporter</div><div class="bx-req">3+ yorum</div></div>
+              <div class="badge-item" id="b-motivator"><span class="bx-emoji">🔥</span><div class="bx-name">Motivator</div><div class="bx-req">3 motivasyon</div></div>
+              <div class="badge-item" id="b-veteran"><span class="bx-emoji">🏆</span><div class="bx-name">Veteran</div><div class="bx-req">10+ post</div></div>
+              <div class="badge-item" id="b-elite"><span class="bx-emoji">👑</span><div class="bx-name">Elite</div><div class="bx-req">Canberk onayı</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── FEED PAGE ── -->
+      <div id="page-feed" class="page-content" style="display:none">
+        <div class="content-grid">
+          <div>
+            <div class="feed-section">
+              <div class="feed-header">
+                <div class="feed-tabs">
+                  <button class="ftab active" onclick="switchTab(this,'all')">Tümü</button>
+                  <button class="ftab" onclick="switchTab(this,'milestone')">🎉 İlk Satış</button>
+                  <button class="ftab" onclick="switchTab(this,'sale')">💰 Satış</button>
+                  <button class="ftab" onclick="switchTab(this,'product')">📦 Ürün</button>
+                  <button class="ftab" onclick="switchTab(this,'question')">❓ Soru</button>
+                  <button class="ftab" onclick="switchTab(this,'motivation')">🔥 Motivasyon</button>
+                  <button class="ftab" onclick="switchTab(this,'mine')">👤 Benim</button>
+                </div>
+              </div>
+              <div class="compose-row" onclick="openModal()">
+                <div class="compose-av" id="compose-av">?</div>
+                <div class="compose-placeholder">Neler düşünüyorsun?</div>
+              </div>
+              <div class="feed" id="feed">
+                <div class="feed-loader" id="feed-loader">Yükleniyor...</div>
+              </div>
+            </div>
+          </div>
+          <div class="right-sidebar">
+            <div class="signal-card">
+              <div class="signal-inner">
+                <div class="sig-top"><div class="sig-dot"></div><div class="sig-badge">Canberk Sinyali</div></div>
+                <div class="sig-title" id="sig-title2">Yükleniyor...</div>
+                <div class="sig-body" id="sig-body2"></div>
+              </div>
+              <div class="sig-footer"><div class="sig-date" id="sig-date2"></div></div>
+            </div>
+            <div class="widget-card">
+              <div class="wc-header"><div class="wc-title">🏆 Bu Hafta</div></div>
+              <div id="leaderboard2"><div class="feed-loader">Yükleniyor...</div></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="lc-user">
-        <div class="lc-uav" id="nav-av">?</div>
-        <div style="flex:1;min-width:0">
-          <div class="lc-uname" id="nav-name">...</div>
-          <div class="lc-urole">Kursiyer</div>
-        </div>
-        <div class="lc-ubtns">
-          <button class="lc-ubtn" id="theme-btn" onclick="alert('Tema: Tek renk şeması — MLYNR brand')">🎨</button>
-          <button class="lc-ubtn" onclick="doLogout()" title="Çıkış">↪</button>
-        </div>
-      </div>
     </div>
-
-    <!-- ORTA -->
-    <div class="mid-col">
-      <div class="col-header">
-        <div class="col-header-row">
-          <div class="col-title">Feed</div>
-        </div>
-        <div class="feed-tabs">
-          <button class="ftab active" onclick="switchTab(this,'all')">Tümü</button>
-          <button class="ftab" onclick="switchTab(this,'milestone')">🎉 İlk Satış</button>
-          <button class="ftab" onclick="switchTab(this,'sale')">💰 Satış</button>
-          <button class="ftab" onclick="switchTab(this,'product')">📦 Ürün</button>
-          <button class="ftab" onclick="switchTab(this,'question')">❓ Soru</button>
-          <button class="ftab" onclick="switchTab(this,'motivation')">🔥 Motivasyon</button>
-          <button class="ftab" onclick="switchTab(this,'mine')">👤 Benim</button>
-        </div>
-      </div>
-
-      <div class="compose" onclick="openModal()">
-        <div class="compose-av" id="compose-av">?</div>
-        <div class="compose-bar">Neler düşünüyorsun?</div>
-      </div>
-
-      <div class="feed" id="feed">
-        <div class="feed-loader" id="feed-loader">Yükleniyor...</div>
-      </div>
-    </div>
-
-    <!-- SAĞ -->
-    <div class="right-col">
-      <div class="signal-box">
-        <div class="signal-top">
-          <div class="sig-lbl"><div class="sig-dot"></div>Canberk Sinyali</div>
-          <div class="sig-title" id="sig-title">Yükleniyor...</div>
-          <div class="sig-body" id="sig-body"></div>
-        </div>
-        <div class="signal-btm"><div class="sig-date" id="sig-date"></div></div>
-      </div>
-
-      <div class="widget">
-        <div class="widget-title">📊 Topluluk</div>
-        <div class="stats-row">
-          <div class="stat-cell"><div class="stat-val" id="st-posts2">—</div><div class="stat-lbl">Post</div></div>
-          <div class="stat-cell"><div class="stat-val" id="st-members2">—</div><div class="stat-lbl">Üye</div></div>
-          <div class="stat-cell"><div class="stat-val" id="st-sales2">—</div><div class="stat-lbl">Satış</div></div>
-          <div class="stat-cell"><div class="stat-val" id="st-today2">—</div><div class="stat-lbl">Bugün</div></div>
-        </div>
-      </div>
-
-      <div class="widget">
-        <div class="widget-title">🏆 Bu Hafta</div>
-        <div id="leaderboard"><div style="padding:14px 16px;font-size:12px;color:var(--text3)">Yükleniyor...</div></div>
-      </div>
-
-      <div class="widget">
-        <div class="widget-title">🎖 Rozetlerin</div>
-        <div class="badge-grid">
-          <div class="badge-item" id="b-starter"><span class="bx-emoji">🌱</span><div class="bx-name">Starter</div><div class="bx-req">İlk post</div></div>
-          <div class="badge-item" id="b-seller"><span class="bx-emoji">⚡</span><div class="bx-name">Seller</div><div class="bx-req">İlk satış</div></div>
-          <div class="badge-item" id="b-pro"><span class="bx-emoji">🚀</span><div class="bx-name">Pro</div><div class="bx-req">5 satış</div></div>
-          <div class="badge-item" id="b-supporter"><span class="bx-emoji">🤝</span><div class="bx-name">Supporter</div><div class="bx-req">3+ yorum</div></div>
-          <div class="badge-item" id="b-motivator"><span class="bx-emoji">🔥</span><div class="bx-name">Motivator</div><div class="bx-req">3 motivasyon</div></div>
-          <div class="badge-item" id="b-veteran"><span class="bx-emoji">🏆</span><div class="bx-name">Veteran</div><div class="bx-req">10+ post</div></div>
-          <div class="badge-item" id="b-elite"><span class="bx-emoji">👑</span><div class="bx-name">Elite</div><div class="bx-req">Canberk onayı</div></div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
@@ -600,12 +668,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   <img id="lightbox-img" alt="">
 </div>
 
-
 <script>
-
 // ─── CONFIG ────────────────────────────────────────────────────
 const SB_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNTcxNzksImV4cCI6MjA4ODczMzE3OX0.JbtrF-ymC11M7HM9MhT5_I1hD8e5oOQz0q-d7Ty5E2Q';
+const ADMIN_EMAILS = ['furkan@mlynr.com','canberk@mlynr.com'];
 const sb = supabase.createClient(SB_URL, SB_KEY);
 
 // ─── STATE ─────────────────────────────────────────────────────
@@ -615,7 +682,7 @@ let currentTab = 'all';
 let selectedType = 'milestone';
 let selectedFile = null;
 let allPosts = [];
-let myReactions = {};
+let currentPage = 'home';
 
 // ─── AUTH ──────────────────────────────────────────────────────
 function switchAuthTab(mode, el) {
@@ -625,12 +692,9 @@ function switchAuthTab(mode, el) {
   document.getElementById('auth-signup-form').style.display = mode === 'signup' ? '' : 'none';
   hideAuthMsg();
 }
-
 function showAuthMsg(msg, isOk) {
   var el = document.getElementById('auth-msg');
-  el.textContent = msg;
-  el.className = isOk ? 'auth-ok' : 'auth-err';
-  el.style.display = 'block';
+  el.textContent = msg; el.className = isOk ? 'auth-ok' : 'auth-err'; el.style.display = 'block';
 }
 function hideAuthMsg() { document.getElementById('auth-msg').style.display = 'none'; }
 
@@ -639,53 +703,43 @@ async function doLogin() {
   var pass = document.getElementById('login-pass').value;
   if (!email || !pass) { showAuthMsg('Email ve şifreyi gir'); return; }
   var btn = document.getElementById('login-btn');
-  btn.textContent = '...';
-  btn.disabled = true;
+  btn.textContent = '...'; btn.disabled = true;
   var { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  btn.textContent = 'Giriş Yap →';
-  btn.disabled = false;
+  btn.textContent = 'Giriş Yap →'; btn.disabled = false;
   if (error) { showAuthMsg('Hata: ' + error.message); return; }
   onLogin(data.user);
 }
-
 async function doSignup() {
   var name = document.getElementById('signup-name').value.trim();
   var email = document.getElementById('signup-email').value.trim();
   var pass = document.getElementById('signup-pass').value;
   if (!name || !email || !pass) { showAuthMsg('Tüm alanları doldur'); return; }
-  if (pass.length < 6) { showAuthMsg('Şifre en az 6 karakter olmalı'); return; }
+  if (pass.length < 6) { showAuthMsg('Şifre en az 6 karakter'); return; }
   var btn = document.getElementById('signup-btn');
-  btn.textContent = '...';
-  btn.disabled = true;
+  btn.textContent = '...'; btn.disabled = true;
   var { data, error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
-  btn.textContent = 'Kayıt Ol →';
-  btn.disabled = false;
+  btn.textContent = 'Kayıt Ol →'; btn.disabled = false;
   if (error) { showAuthMsg('Hata: ' + error.message); return; }
   if (data.session) { onLogin(data.user); }
-  else { showAuthMsg('Email onayı gönderildi! Gelen kutunu kontrol et.', true); }
+  else { showAuthMsg('Email onayı gönderildi!', true); }
 }
-
 async function doLogout() {
-  await sb.auth.signOut();
-  me = null; myName = '';
+  await sb.auth.signOut(); me = null; myName = '';
   document.getElementById('app').style.display = 'none';
   document.getElementById('auth-screen').style.display = 'flex';
 }
-
-const ADMIN_EMAILS = ['furkan@mlynr.com','canberk@mlynr.com'];
-
 function onLogin(user) {
   me = user;
   myName = user.user_metadata?.full_name || user.email.split('@')[0];
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  document.getElementById('nav-av').textContent = myName.charAt(0).toUpperCase();
+  ['nav-av','compose-av'].forEach(id => {
+    var el = document.getElementById(id);
+    if (el) { el.textContent = myName.charAt(0).toUpperCase(); el.style.background = '#c8f000'; el.style.color = '#0d0d0d'; }
+  });
   document.getElementById('nav-name').textContent = myName;
-  ['compose-av','nav-av'].forEach(id=>{var el=document.getElementById(id);if(el){el.textContent=myName.charAt(0).toUpperCase();el.style.background='#c8f000';el.style.color='#0d0d0d';}});
-  // Admin butonu göster
-  // admin panel: mlynrplan.com/club-admin.html
-  // Theme btn sync
-  var btn = document.getElementById('theme-btn'); if(btn) btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  var wn = document.getElementById('welcome-name');
+  if (wn) wn.textContent = myName;
   init();
 }
 
@@ -694,33 +748,55 @@ async function init() {
   loadSignal();
   await loadPosts();
   loadLeaderboard();
+  loadLeaderboard2();
   checkBadges();
+  loadMembers();
   subscribeRealtime();
+  updateDailyGoal();
+}
+
+// ─── PAGES ─────────────────────────────────────────────────────
+function showPage(page) {
+  currentPage = page;
+  document.getElementById('page-home').style.display = page === 'home' ? '' : 'none';
+  document.getElementById('page-feed').style.display = page === 'feed' ? '' : 'none';
+  var titles = { home: 'Ana Sayfa', feed: 'Topluluk Feed' };
+  document.getElementById('topbar-title').textContent = titles[page] || page;
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  var map = { home: 0, feed: 1 };
+  var links = document.querySelectorAll('.nav-link');
+  if (map[page] !== undefined) links[map[page]]?.classList.add('active');
+  if (page === 'feed') renderFeed();
 }
 
 // ─── SIGNAL ────────────────────────────────────────────────────
 async function loadSignal() {
   var { data } = await sb.from('club_signal').select('*').eq('id', 1).single();
   if (data) {
-    document.getElementById('sig-title').textContent = data.title;
-    document.getElementById('sig-body').textContent = data.body;
-    document.getElementById('sig-date').textContent = 'Güncellendi: ' + timeAgo(data.updated_at);
+    ['','2'].forEach(s => {
+      var t = document.getElementById('sig-title'+s);
+      var b = document.getElementById('sig-body'+s);
+      var d = document.getElementById('sig-date'+s);
+      if (t) t.textContent = data.title;
+      if (b) b.textContent = data.body;
+      if (d) d.textContent = 'Güncellendi: ' + timeAgo(data.updated_at);
+    });
   }
 }
 
 // ─── POSTS ─────────────────────────────────────────────────────
 async function loadPosts() {
-  document.getElementById('feed-loader').style.display = 'block';
-  var { data, error } = await sb
+  var { data } = await sb
     .from('club_posts')
     .select('*, club_reactions(emoji, user_id), club_comments(id, user_id, user_name, content, created_at)')
     .order('created_at', { ascending: false })
-    .limit(50);
-  document.getElementById('feed-loader').style.display = 'none';
-  if (error || !data) { document.getElementById('feed').innerHTML = '<div class="feed-empty">Henüz paylaşım yok. İlk sen paylaş! 🚀</div>'; return; }
-  allPosts = data;
+    .limit(60);
+  allPosts = data || [];
   renderFeed();
-  updateStats(data);
+  renderHomeFeeds();
+  updateStats();
+  updateHomeStats();
+  updateDailyGoal();
 }
 
 function renderFeed() {
@@ -730,13 +806,48 @@ function renderFeed() {
            : allPosts.filter(p => p.post_type === currentTab);
   var filtered = isAdmin ? base : base.filter(p => p.approved || p.user_id === me?.id);
   var feed = document.getElementById('feed');
-  if (!filtered.length) {
-    feed.innerHTML = '<div class="feed-empty">Bu kategoride henüz paylaşım yok.</div>';
-    return;
-  }
+  if (!feed) return;
+  if (!filtered.length) { feed.innerHTML = '<div class="feed-empty">Henüz paylaşım yok.</div>'; return; }
   feed.innerHTML = filtered.map(p => renderPost(p)).join('');
 }
 
+function renderHomeFeeds() {
+  // Ana sayfa için son 5 post
+  var isAdmin = ADMIN_EMAILS.includes(me?.email);
+  var posts = isAdmin ? allPosts : allPosts.filter(p => p.approved || p.user_id === me?.id);
+  var recent = posts.slice(0, 5);
+  var homeFeed = document.getElementById('feed-home');
+  if (homeFeed) {
+    if (!recent.length) { homeFeed.innerHTML = '<div class="feed-empty">Henüz paylaşım yok. İlk sen paylaş!</div>'; }
+    else { homeFeed.innerHTML = recent.map(p => renderPost(p)).join(''); }
+  }
+  // Featured cards
+  var featured = posts.filter(p => p.post_type === 'milestone' || p.post_type === 'sale').slice(0, 3);
+  var fg = document.getElementById('featured-posts');
+  if (fg) {
+    if (!featured.length) {
+      fg.innerHTML = '<div style="grid-column:1/-1;padding:32px;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:14px;color:var(--text3);font-size:13px">Henüz öne çıkan paylaşım yok.</div>';
+    } else {
+      var tags = {milestone:'🎉 İLK SATIŞ', sale:'💰 SATIŞ', product:'📦 ÜRÜN', question:'❓ SORU', motivation:'🔥 MOTİVASYON'};
+      fg.innerHTML = featured.map(p => {
+        var av = avColor(p.user_name||'U');
+        var init = (p.user_name||'U').charAt(0).toUpperCase();
+        return `<div class="featured-card">
+          <div class="fc-tag">${tags[p.post_type]||p.post_type}</div>
+          <div class="fc-title">${esc(p.content.slice(0,80))}${p.content.length>80?'...':''}</div>
+          <div class="fc-meta">${timeAgo(p.created_at)}</div>
+          <div class="fc-author">
+            <div class="fc-av" style="background:${av}">${init}</div>
+            <div class="fc-author-name">${esc(p.user_name||'Anonim')}</div>
+          </div>
+          <div class="fc-bg-letter">M</div>
+        </div>`;
+      }).join('');
+    }
+  }
+}
+
+// ─── RENDER POST ───────────────────────────────────────────────
 function renderPost(p) {
   var reactions = p.club_reactions || [];
   var comments = (p.club_comments || []).sort((a,b) => new Date(a.created_at)-new Date(b.created_at));
@@ -752,7 +863,7 @@ function renderPost(p) {
   var init = (p.user_name||'U').charAt(0).toUpperCase();
   var typeMap = {milestone:'🎉 İlk Satış',sale:'💰 Satış',product:'📦 Ürün',question:'❓ Soru',motivation:'🔥 Motivasyon'};
   var typeLabel = typeMap[p.post_type]||p.post_type;
-  var delBtn = isMine ? '<button class="post-del" onclick="deletePost(\'' + p.id + '\')">🗑</button>' : '';
+  var delBtn = isMine ? '<button class="post-del" onclick="deletePost(\''+p.id+'\')">🗑</button>' : '';
   var pendingHtml = (!p.approved && isMine) ? '<div class="pending-pill">⏳ Onay bekleniyor</div>' : '';
 
   var specialHtml = '';
@@ -773,7 +884,7 @@ function renderPost(p) {
     specialHtml += '</div>';
   }
 
-  var imgHtml = p.image_url ? '<img class="post-img" src="'+esc(p.image_url)+'" loading="lazy" onclick="openLightbox(\'' + esc(p.image_url) + '\')">' : '';
+  var imgHtml = p.image_url ? '<img class="post-img" src="'+esc(p.image_url)+'" loading="lazy" onclick="openLightbox(\''+esc(p.image_url)+'\')">' : '';
   var myAv = avColor(myName||'U');
   var myInit = (myName||'?').charAt(0).toUpperCase();
 
@@ -781,7 +892,7 @@ function renderPost(p) {
     var cav = avColor(c.user_name||'U');
     var ci = (c.user_name||'?').charAt(0).toUpperCase();
     var cd = (isAdmin||c.user_id===me?.id) ? '<button class="cmt-del" data-cid="'+c.id+'" data-pid="'+p.id+'" onclick="deleteComment(this)">×</button>' : '';
-    return '<div class="cmt"><div class="cmt-av" style="background:'+cav+'">'+esc(ci)+'</div><div class="cmt-wrap"><div class="cmt-name">'+esc(c.user_name)+cd+'</div><div class="cmt-text">'+esc(c.content)+'</div></div></div>';
+    return '<div class="cmt"><div class="cmt-av" style="background:'+cav+'">'+esc(ci)+'</div><div class="cmt-body"><div class="cmt-name">'+esc(c.user_name)+cd+'</div><div class="cmt-text">'+esc(c.content)+'</div></div></div>';
   }).join('');
 
   return `<div class="post${isMine?' mine':''}" data-id="${p.id}" data-type="${p.post_type}">
@@ -818,210 +929,192 @@ function renderPost(p) {
 // ─── REACTIONS ─────────────────────────────────────────────────
 async function toggleReact(btn, postId, emoji) {
   if (!me) return;
-  var isActive = btn.classList.contains('reacted') || btn.classList.contains('blue-r');
+  var isActive = btn.classList.contains('fire-on') || btn.classList.contains('power-on') || btn.classList.contains('love-on');
   var span = btn.querySelector('span');
   var n = parseInt(span.textContent) || 0;
+  var cls = emoji==='🔥'?'fire-on':emoji==='💪'?'power-on':'love-on';
   if (isActive) {
-    btn.classList.remove('reacted','blue-r');
-    span.textContent = Math.max(0, n - 1);
-    await sb.from('club_reactions').delete().eq('post_id', postId).eq('user_id', me.id).eq('emoji', emoji);
+    btn.classList.remove(cls); span.textContent = Math.max(0, n-1);
+    await sb.from('club_reactions').delete().eq('post_id',postId).eq('user_id',me.id).eq('emoji',emoji);
   } else {
-    btn.classList.add(emoji==='❤️'?'blue-r':'reacted');
-    span.textContent = n + 1;
-    await sb.from('club_reactions').upsert({ post_id: postId, user_id: me.id, emoji }, { onConflict: 'post_id,user_id,emoji' });
+    btn.classList.add(cls); span.textContent = n+1;
+    await sb.from('club_reactions').upsert({post_id:postId,user_id:me.id,emoji},{onConflict:'post_id,user_id,emoji'});
   }
 }
 
 // ─── COMMENTS ──────────────────────────────────────────────────
 function toggleComments(btn, postId) {
   var cs = document.getElementById('cs-'+postId);
-  cs.classList.toggle('open');
-  if (cs.classList.contains('open')) {
-    var inp = document.getElementById('ci-'+postId);
-    if(inp) setTimeout(()=>inp.focus(),100);
-  }
+  cs?.classList.toggle('open');
+  if (cs?.classList.contains('open')) setTimeout(()=>document.getElementById('ci-'+postId)?.focus(),100);
 }
 function commentKey(e, postId) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendComment(postId); }
+  if (e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendComment(postId);}
 }
 async function sendComment(postId) {
   if (!me) return;
   var inp = document.getElementById('ci-'+postId);
-  var txt = inp.value.trim();
+  var txt = inp?.value.trim();
   if (!txt) return;
-  if (containsPhone(txt)) {
-    alert('⚠️ Yorumunda telefon numarası tespit edildi. Kişisel iletişim bilgileri paylaşılamaz.');
-    return;
-  }
+  if (containsPhone(txt)) { alert('⚠️ Telefon numarası paylaşılamaz.'); return; }
   inp.value = '';
-  var { data, error } = await sb.from('club_comments').insert({ post_id: postId, user_id: me.id, user_name: myName, content: txt }).select().single();
+  var { data, error } = await sb.from('club_comments').insert({post_id:postId,user_id:me.id,user_name:myName,content:txt}).select().single();
   if (!error && data) {
     var cl = document.getElementById('cl-'+postId);
-    var cInit = myName.charAt(0).toUpperCase();
-    cl.insertAdjacentHTML('beforeend', `<div class="comment"><div class="comment-av">${esc(cInit)}</div><div class="comment-bubble"><div class="comment-name">${esc(myName)}</div><div class="comment-text">${esc(txt)}</div></div></div>`);
-    var toggle = document.querySelector(`[onclick="toggleComments(this,'${postId}')"]`);
-    if(toggle) {
-      var cnt = cl.querySelectorAll('.comment').length;
-      toggle.textContent = '💬 ' + cnt + ' yorum';
-    }
+    var cav = avColor(myName||'U');
+    var ci = myName.charAt(0).toUpperCase();
+    cl?.insertAdjacentHTML('beforeend','<div class="cmt"><div class="cmt-av" style="background:'+cav+'">'+ci+'</div><div class="cmt-body"><div class="cmt-name">'+esc(myName)+'</div><div class="cmt-text">'+esc(txt)+'</div></div></div>');
+    var idx = allPosts.findIndex(p=>p.id===postId);
+    if (idx>-1) allPosts[idx].club_comments = [...(allPosts[idx].club_comments||[]),data];
+  }
+}
+async function deleteComment(btn) {
+  var cid = btn.dataset.cid, pid = btn.dataset.pid;
+  await sb.from('club_comments').delete().eq('id',cid);
+  var idx = allPosts.findIndex(p=>p.id===pid);
+  if (idx>-1) {
+    allPosts[idx].club_comments = (allPosts[idx].club_comments||[]).filter(c=>c.id!==cid);
+    var postEl = document.querySelector('[data-id="'+pid+'"]');
+    if (postEl) { var open = document.getElementById('cs-'+pid)?.classList.contains('open'); postEl.outerHTML = renderPost(allPosts[idx]); if(open){document.getElementById('cs-'+pid)?.classList.add('open');} }
   }
 }
 
-// ─── DELETE ────────────────────────────────────────────────────
+// ─── DELETE POST ───────────────────────────────────────────────
 async function deletePost(postId) {
   if (!confirm('Bu paylaşımı silmek istediğine emin misin?')) return;
-  await sb.from('club_posts').delete().eq('id', postId).eq('user_id', me.id);
-  allPosts = allPosts.filter(p => p.id !== postId);
-  renderFeed();
-}
-
-async function deleteComment(btn) {
-  var commentId = btn.dataset.cid;
-  var postId = btn.dataset.pid;
-  await sb.from('club_comments').delete().eq('id', commentId);
-  var postData = allPosts.find(p=>p.id===postId);
-  if (postData) {
-    postData.club_comments = (postData.club_comments||[]).filter(c=>c.id!==commentId);
-    var postEl = document.querySelector('[data-id="'+postId+'"]');
-    if (postEl) {
-      var wasOpen = document.getElementById('cs-'+postId)?.classList.contains('open');
-      postEl.outerHTML = renderPost(postData);
-      if (wasOpen) { var cs = document.getElementById('cs-'+postId); if(cs) cs.classList.add('open'); }
-    }
-  }
+  await sb.from('club_posts').delete().eq('id',postId).eq('user_id',me.id);
+  allPosts = allPosts.filter(p=>p.id!==postId);
+  renderFeed(); renderHomeFeeds(); updateStats(); updateHomeStats();
 }
 
 // ─── SUBMIT POST ───────────────────────────────────────────────
-// ─── PHONE FILTER ──────────────────────────────────────────────
 function containsPhone(text) {
-  // Tüm boşluk, tire, nokta, parantezi kaldır — sadece rakamları kontrol et
-  var digits = text.replace(/[\s\-\.\(\)]/g, '');
-  // Rakam dizisi kontrolü
-  var patterns = [
-    /(?:\+?90)?5[0-9]{9}/,        // Türk GSM: 05xx veya +905xx veya 905xx
-    /(?:\+?90)?[2-4][0-9]{9}/,    // Türk sabit: 0212, 0312 vb.
-    /\+[1-9][0-9]{9,}/,           // Uluslararası +1xxx
-    /[0-9]{10,}/                   // 10+ rakam yan yana (boşuk kaldırıldıktan sonra)
-  ];
-  // Orijinal metinde de ara (boşluklu format: 505 899 46 10)
-  var patterns2 = [
-    /5\d{2}\s+\d{3}\s+\d{2}\s+\d{2}/,   // 5xx xxx xx xx
-    /5\d{2}\s+\d{7}/,                     // 5xx xxxxxxx
-    /\d{3}\s+\d{3}\s+\d{2}\s+\d{2}/,    // xxx xxx xx xx
-    /\d{4}\s+\d{3}\s+\d{2}\s+\d{2}/,    // xxxx xxx xx xx
-    /0\s*5\d{2}/                           // 0 5xx
-  ];
-  return patterns.some(p => p.test(digits)) || patterns2.some(p => p.test(text));
+  var digits = text.replace(/[\s\-\.\(\)]/g,'');
+  return [/(?:\+?90)?5[0-9]{9}/,/(?:\+?90)?[2-4][0-9]{9}/,/\+[1-9][0-9]{9,}/,/[0-9]{10,}/].some(p=>p.test(digits)) ||
+    [/5\d{2}\s+\d{3}\s+\d{2}\s+\d{2}/,/\d{3}\s+\d{3}\s+\d{2}\s+\d{2}/].some(p=>p.test(text));
 }
-
 async function submitPost() {
   if (!me) return;
   var content = document.getElementById('f-text').value.trim();
   if (!content) { alert('Bir şeyler yaz!'); return; }
-  // Telefon filtresi
-  if (containsPhone(content)) {
-    alert('⚠️ Paylaşımında telefon numarası tespit edildi.\nMLYNRClub kuralları gereği kişisel iletişim bilgileri paylaşılamaz.\nLütfen numarayı kaldırarak tekrar dene.');
-    return;
-  }
+  if (containsPhone(content)) { alert('⚠️ Telefon numarası paylaşılamaz.'); return; }
   var btn = document.getElementById('submit-btn');
   btn.disabled = true; btn.textContent = 'Gönderiliyor...';
   var imageUrl = null;
   if (selectedFile) {
     var ext = selectedFile.name.split('.').pop();
-    var path = me.id + '/' + Date.now() + '.' + ext;
-    var { data: upData, error: upErr } = await sb.storage.from('club-images').upload(path, selectedFile);
-    if (!upErr) {
-      var { data: urlData } = sb.storage.from('club-images').getPublicUrl(path);
-      imageUrl = urlData.publicUrl;
-    }
+    var path = me.id+'/'+Date.now()+'.'+ext;
+    var {data:upData,error:upErr} = await sb.storage.from('club-images').upload(path,selectedFile);
+    if (!upErr) { var {data:urlData}=sb.storage.from('club-images').getPublicUrl(path); imageUrl=urlData.publicUrl; }
   }
   var post = {
-    user_id: me.id,
-    user_name: myName,
-    user_email: me.email,
-    post_type: selectedType,
-    content,
-    sale_price: document.getElementById('f-price').value.trim() || null,
-    sale_profit: document.getElementById('f-profit').value.trim() || null,
-    sale_orders: document.getElementById('f-orders').value.trim() || null,
-    image_url: imageUrl,
-    approved: false // herkes onay bekler
+    user_id:me.id, user_name:myName, user_email:me.email,
+    post_type:selectedType, content,
+    sale_price:document.getElementById('f-price').value.trim()||null,
+    sale_profit:document.getElementById('f-profit').value.trim()||null,
+    sale_orders:document.getElementById('f-orders').value.trim()||null,
+    image_url:imageUrl, approved:false
   };
-  var { data, error } = await sb.from('club_posts').insert(post).select().single();
-  btn.disabled = false; btn.textContent = 'Paylaş →';
-  if (error) { alert('Hata: ' + error.message); return; }
-  data.club_reactions = []; data.club_comments = [];
+  var {data,error} = await sb.from('club_posts').insert(post).select().single();
+  btn.disabled=false; btn.textContent='Paylaş →';
+  if (error) { alert('Hata: '+error.message); return; }
+  data.club_reactions=[]; data.club_comments=[];
   allPosts.unshift(data);
-  renderFeed();
-  updateStats(allPosts);
-  closeModal();
-  checkBadges();
+  renderFeed(); renderHomeFeeds(); updateStats(); updateHomeStats(); updateDailyGoal();
+  closeModal(); checkBadges();
 }
 
 // ─── STATS ─────────────────────────────────────────────────────
-function updateStats(posts) {
+function updateStats() {
   var today = new Date().toDateString();
-  var todayPosts = posts.filter(p => new Date(p.created_at).toDateString() === today);
-  var salesPosts = posts.filter(p => p.post_type==='sale'||p.post_type==='milestone');
-  var uniqueUsers = [...new Set(posts.map(p=>p.user_id))];
-  ['','2'].forEach(s => {
-    var e = id => document.getElementById(id+s);
-    if(e('st-posts')) e('st-posts').textContent = posts.length;
-    if(e('st-members')) e('st-members').textContent = uniqueUsers.length;
-    if(e('st-sales')) e('st-sales').textContent = salesPosts.length;
-    if(e('st-today')) e('st-today').textContent = todayPosts.length;
-  });
+  var sales = allPosts.filter(p=>p.post_type==='sale'||p.post_type==='milestone');
+  var users = [...new Set(allPosts.map(p=>p.user_id))];
+  var todayP = allPosts.filter(p=>new Date(p.created_at).toDateString()===today);
+}
+function updateHomeStats() {
+  var myPosts = allPosts.filter(p=>p.user_id===me?.id);
+  var mySales = myPosts.filter(p=>p.post_type==='sale'||p.post_type==='milestone');
+  var users = [...new Set(allPosts.map(p=>p.user_id))];
+  var hp = document.getElementById('hs-posts'); if(hp) hp.innerHTML = myPosts.length+'<small>toplam</small>';
+  var hs = document.getElementById('hs-sales'); if(hs) hs.innerHTML = mySales.length+'<small>paylaşım</small>';
+  var hm = document.getElementById('hs-members'); if(hm) hm.innerHTML = users.length+'<small>üye</small>';
+  // Rank hesapla
+  var scores = {};
+  var weekAgo = new Date(Date.now()-7*24*60*60*1000).toISOString();
+  var weekPosts = allPosts.filter(p=>p.created_at>weekAgo);
+  weekPosts.forEach(p=>{scores[p.user_id]=(scores[p.user_id]||0)+(p.post_type==='sale'||p.post_type==='milestone'?3:1);});
+  var sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  var myRank = sorted.findIndex(([uid])=>uid===me?.id);
+  var hr = document.getElementById('hs-rank'); if(hr) hr.innerHTML = (myRank>=0?'#'+(myRank+1):'—')+'<small>bu hafta</small>';
+}
+function updateDailyGoal() {
+  var today = new Date().toDateString();
+  var todayCount = allPosts.filter(p=>p.user_id===me?.id&&new Date(p.created_at).toDateString()===today).length;
+  var goal = 10;
+  var pct = Math.min(100, (todayCount/goal)*100);
+  var cur = document.getElementById('dg-current'); if(cur) cur.textContent = todayCount;
+  var bar = document.getElementById('dg-bar'); if(bar) bar.style.width = pct+'%';
+  var sub = document.getElementById('dg-sub');
+  if (sub) {
+    if (todayCount===0) sub.textContent = 'Bugün ilk paylaşımını yap!';
+    else if (todayCount>=goal) sub.textContent = '🎉 Harika gidiyorsun!';
+    else sub.textContent = 'Hedefe '+(goal-todayCount)+' paylaşım kaldı';
+  }
 }
 
 // ─── LEADERBOARD ───────────────────────────────────────────────
-async function loadLeaderboard() {
-  var weekAgo = new Date(Date.now() - 7*24*60*60*1000).toISOString();
-  var { data } = await sb.from('club_posts').select('user_id, user_name, post_type').gte('created_at', weekAgo);
-  if (!data) return;
-  var scores = {};
-  data.forEach(p => {
-    if (!scores[p.user_id]) scores[p.user_id] = { name: p.user_name, score: 0 };
-    scores[p.user_id].score += (p.post_type==='milestone'||p.post_type==='sale') ? 3 : 1;
-  });
-  var sorted = Object.entries(scores).sort((a,b)=>b[1].score-a[1].score).slice(0,5);
-  var rankClass = ['top1','top2','top3','',''];
-  var html = sorted.length ? sorted.map(([uid,u],i) => `
-    <div class="lb-row">
-      <div class="lb-rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+async function loadLeaderboard() { await _renderLB('leaderboard'); }
+async function loadLeaderboard2() { await _renderLB('leaderboard2'); }
+async function _renderLB(id) {
+  var el = document.getElementById(id); if(!el) return;
+  var weekAgo = new Date(Date.now()-7*24*60*60*1000).toISOString();
+  var {data} = await sb.from('club_posts').select('user_id,user_name,post_type').gte('created_at',weekAgo);
+  if(!data){el.innerHTML='<div style="padding:14px 16px;font-size:12px;color:var(--text3)">Henüz puan yok</div>';return;}
+  var scores={};
+  data.forEach(p=>{if(!scores[p.user_id])scores[p.user_id]={name:p.user_name,score:0};scores[p.user_id].score+=(p.post_type==='milestone'||p.post_type==='sale')?3:1;});
+  var sorted=Object.entries(scores).sort((a,b)=>b[1].score-a[1].score).slice(0,5);
+  if(!sorted.length){el.innerHTML='<div style="padding:14px 16px;font-size:12px;color:var(--text3)">Henüz puan yok</div>';return;}
+  el.innerHTML=sorted.map(([uid,u],i)=>`
+    <div class="lb-item">
+      <div class="lb-num">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
       <div class="lb-av" style="background:${avColor(u.name)}">${u.name.charAt(0).toUpperCase()}</div>
       <div class="lb-info"><div class="lb-name">${esc(u.name)}</div><div class="lb-pts">${u.score} puan</div></div>
-      ${uid===me?.id?'<div class="lb-me">Sen!</div>':''}
-    </div>`).join('') : '<div style="padding:14px 16px;font-size:12px;color:var(--text3)">Henüz puan yok</div>';
-  document.getElementById('leaderboard').innerHTML = html;
+      ${uid===me?.id?'<div class="lb-me">Sen!</div>':'<div class="lb-score">'+u.score+'</div>'}
+    </div>`).join('');
+}
+
+// ─── MEMBERS ───────────────────────────────────────────────────
+function loadMembers() {
+  var users = {};
+  allPosts.forEach(p=>{ if(!users[p.user_id]) users[p.user_id]={name:p.user_name,count:0}; users[p.user_id].count++; });
+  var sorted = Object.values(users).sort((a,b)=>b.count-a.count).slice(0,10);
+  var mg = document.getElementById('members-grid');
+  if (!mg) return;
+  mg.innerHTML = sorted.map(u => `<div class="member-av" style="background:${avColor(u.name)}" title="${esc(u.name)}">${u.name.charAt(0).toUpperCase()}</div>`).join('');
 }
 
 // ─── BADGES ────────────────────────────────────────────────────
 async function checkBadges() {
   if (!me) return;
-  var { data } = await sb.from('club_posts').select('post_type').eq('user_id', me.id);
+  var {data} = await sb.from('club_posts').select('post_type').eq('user_id',me.id);
   if (!data) return;
-  var sales = data.filter(p=>p.post_type==='sale'||p.post_type==='milestone');
-  var motiv = data.filter(p=>p.post_type==='motivation');
-  if (data.length>=1) document.getElementById('b-starter')?.classList.add('earned');
-  if (sales.length>=1) document.getElementById('b-seller')?.classList.add('earned');
-  if (sales.length>=5) document.getElementById('b-pro')?.classList.add('earned');
-  if (motiv.length>=3) document.getElementById('b-motivator')?.classList.add('earned');
-  if (data.length>=10) document.getElementById('b-veteran')?.classList.add('earned');
-  try {
-    var { count } = await sb.from('club_comments').select('id',{count:'exact',head:true}).eq('user_id',me.id);
-    if (count>=3) document.getElementById('b-supporter')?.classList.add('earned');
-  } catch(e) {}
+  var sales=data.filter(p=>p.post_type==='sale'||p.post_type==='milestone');
+  var motiv=data.filter(p=>p.post_type==='motivation');
+  if(data.length>=1) document.getElementById('b-starter')?.classList.add('earned');
+  if(sales.length>=1) document.getElementById('b-seller')?.classList.add('earned');
+  if(sales.length>=5) document.getElementById('b-pro')?.classList.add('earned');
+  if(motiv.length>=3) document.getElementById('b-motivator')?.classList.add('earned');
+  if(data.length>=10) document.getElementById('b-veteran')?.classList.add('earned');
+  try { var {count}=await sb.from('club_comments').select('id',{count:'exact',head:true}).eq('user_id',me.id); if(count>=3) document.getElementById('b-supporter')?.classList.add('earned'); } catch(e){}
 }
 
 // ─── REALTIME ──────────────────────────────────────────────────
 function subscribeRealtime() {
-  sb.channel('club').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'club_posts' }, (payload) => {
-    if (payload.new.user_id === me?.id) return;
-    payload.new.club_reactions = [];
-    payload.new.club_comments = [];
+  sb.channel('club').on('postgres_changes',{event:'INSERT',schema:'public',table:'club_posts'},(payload)=>{
+    if(payload.new.user_id===me?.id) return;
+    payload.new.club_reactions=[]; payload.new.club_comments=[];
     allPosts.unshift(payload.new);
-    renderFeed();
-    updateStats(allPosts);
+    renderFeed(); renderHomeFeeds(); updateStats(); updateHomeStats();
   }).subscribe();
 }
 
@@ -1029,81 +1122,69 @@ function subscribeRealtime() {
 function openModal() { document.getElementById('modal').classList.add('show'); }
 function closeModal() {
   document.getElementById('modal').classList.remove('show');
-  document.getElementById('f-text').value = '';
-  document.getElementById('f-price').value = '';
-  document.getElementById('f-profit').value = '';
-  document.getElementById('f-orders').value = '';
+  document.getElementById('f-text').value='';
+  ['f-price','f-profit','f-orders'].forEach(id=>{var el=document.getElementById(id);if(el)el.value='';});
   removeImg();
 }
-function overlayClick(e) { if(e.target===document.getElementById('modal')) closeModal(); }
+function overlayClick(e){ if(e.target===document.getElementById('modal')) closeModal(); }
 function selType(el, type) {
-  selectedType = type;
+  selectedType=type;
   document.querySelectorAll('.type-btn').forEach(o=>o.classList.remove('active'));
   el.classList.add('active');
-  var showSale = type==='sale'||type==='milestone';
-  var sf = document.getElementById('sale-fields'); if(sf) sf.style.display = showSale ? 'grid' : 'none';
+  var sf=document.getElementById('sale-fields');
+  if(sf) sf.style.display=(type==='sale'||type==='milestone')?'grid':'none';
+}
+
+// ─── SWITCH TAB ────────────────────────────────────────────────
+function switchTab(el, type) {
+  currentTab = type;
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.ftab').forEach(t=>{
+    var oc=t.getAttribute('onclick')||'';
+    if(oc.includes("'"+type+"'")) t.classList.add('active');
+  });
+  if (currentPage === 'feed') renderFeed();
 }
 
 // ─── IMAGE ─────────────────────────────────────────────────────
 function onFileSelect(input) {
-  var file = input.files[0];
-  if (!file) return;
-  selectedFile = file;
-  var r = new FileReader();
-  r.onload = e => {
-    document.getElementById('img-preview').src = e.target.result;
-    document.getElementById('img-preview-wrap').style.display = 'block';
-    document.getElementById('img-drop').style.display = 'none';
+  var file=input.files[0]; if(!file) return;
+  selectedFile=file;
+  var r=new FileReader();
+  r.onload=e=>{
+    document.getElementById('img-preview').src=e.target.result;
+    document.getElementById('img-preview-wrap').style.display='block';
+    document.getElementById('img-drop').style.display='none';
   };
   r.readAsDataURL(file);
 }
 function removeImg() {
-  selectedFile = null;
-  document.getElementById('img-preview').src = '';
-  document.getElementById('img-preview-wrap').style.display = 'none';
-  document.getElementById('img-drop').style.display = 'block';
-  document.getElementById('img-file').value = '';
+  selectedFile=null;
+  document.getElementById('img-preview').src='';
+  document.getElementById('img-preview-wrap').style.display='none';
+  document.getElementById('img-drop').style.display='block';
+  var f=document.getElementById('img-file'); if(f) f.value='';
 }
-function openLightbox(url) { document.getElementById('lightbox-img').src=url; document.getElementById('lightbox').classList.add('show'); }
-function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); }
-
-// ─── TABS ──────────────────────────────────────────────────────
-function switchTab(el, type) {
-  currentTab = type;
-  document.querySelectorAll('.ftab,.nav-item').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('.ftab,.nav-item').forEach(t => {
-    var oc = t.getAttribute('onclick') || '';
-    if (oc.includes("'"+type+"'")) t.classList.add('active');
-  });
-  renderFeed();
-}
+function openLightbox(url){document.getElementById('lightbox-img').src=url;document.getElementById('lightbox').classList.add('show');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('show');}
 
 // ─── HELPERS ───────────────────────────────────────────────────
-function esc(str) {
-  if(!str) return '';
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function timeAgo(ts) {
-  var d = new Date(ts), now = new Date();
-  var diff = Math.floor((now-d)/1000);
-  if(diff<60) return 'az önce';
-  if(diff<3600) return Math.floor(diff/60)+' dk önce';
-  if(diff<86400) return Math.floor(diff/3600)+' sa önce';
-  if(diff<604800) return Math.floor(diff/86400)+' gün önce';
+function esc(str){if(!str)return'';return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function timeAgo(ts){
+  var d=new Date(ts),now=new Date(),diff=Math.floor((now-d)/1000);
+  if(diff<60)return'az önce';if(diff<3600)return Math.floor(diff/60)+' dk önce';
+  if(diff<86400)return Math.floor(diff/3600)+' sa önce';
+  if(diff<604800)return Math.floor(diff/86400)+' gün önce';
   return d.toLocaleDateString('tr-TR');
 }
-var AV_COLORS = ['#00e676','#64b5f6','#ffd54f','#ce93d8','#ff8a65','#80cbc4','#a5d6a7','#ef9a9a'];
-function avColor(name) { var i=0;for(var c of name)i+=c.charCodeAt(0);return AV_COLORS[i%AV_COLORS.length]; }
-function getBadgeHtml(userId) { return ''; }
+var AV=['#16a34a','#2563eb','#c8870a','#7c3aed','#dc2626','#0891b2','#059669','#d97706'];
+function avColor(name){var i=0;for(var c of(name||''))i+=c.charCodeAt(0);return AV[i%AV.length];}
 
-// ─── THEME ─────────────────────────────────────────────────────
-function toggleTheme() { /* MLYNR single theme */ }
-
-// ─── SESSION CHECK ─────────────────────────────────────────────
-(async function() {
-  var { data } = await sb.auth.getSession();
-  if (data?.session?.user) { onLogin(data.session.user); }
+// ─── SESSION ───────────────────────────────────────────────────
+(async function(){
+  var {data}=await sb.auth.getSession();
+  if(data?.session?.user){onLogin(data.session.user);}
 })();
 
 </script>
