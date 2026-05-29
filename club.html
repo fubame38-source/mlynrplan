@@ -256,7 +256,7 @@ body.light-mode .sb-action:hover{border-color:var(--border2);color:var(--text2);
   display:flex;align-items:center;gap:9px;
   background:var(--surface2);border:1.5px solid var(--border);
   border-radius:999px;padding:8px 16px;width:220px;
-  transition:all .2s;
+  transition:all .2s;position:relative;
 }
 .topbar-search:focus-within{border-color:var(--border2);background:var(--surface);}
 .topbar-search input{background:none;border:none;outline:none;font-family:var(--font);font-size:13px;color:var(--text);width:100%;}
@@ -585,7 +585,7 @@ body.light-mode .fc-tag{background:var(--surface3);color:var(--text2);border-col
 .wc-link{font-size:12px;color:var(--text3);cursor:pointer;transition:color .15s;}
 .wc-link:hover{color:var(--text);}
 
-/* Canberk signal card */
+/* Canberk signal card — compact on homepage */
 .signal-card{
   background:linear-gradient(145deg,#141418,#1a1a22);
   border:1.5px solid rgba(255,255,255,.07);
@@ -597,21 +597,73 @@ body.light-mode .signal-card{background:var(--surface);border-color:var(--border
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
 }
 body.light-mode .signal-card::before{background:linear-gradient(90deg,transparent,var(--accent),transparent);}
-.signal-inner{padding:18px;}
-.sig-top{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
-.sig-dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 2.4s infinite;}
+.signal-inner{padding:14px 16px;}
+.sig-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.sig-dot{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 2.4s infinite;}
 body.light-mode .sig-dot{background:var(--accent);}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
 .sig-badge{font-size:9px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);font-weight:700;}
 body.light-mode .sig-badge{color:var(--text3);}
-.sig-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:8px;line-height:1.35;letter-spacing:-.02em;}
+.sig-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:5px;line-height:1.35;letter-spacing:-.01em;}
 body.light-mode .sig-title{color:var(--text);}
-.sig-body{font-size:13px;color:rgba(255,255,255,.45);line-height:1.65;}
+.sig-body{font-size:12px;color:rgba(255,255,255,.4);line-height:1.55;}
 body.light-mode .sig-body{color:var(--text2);}
-.sig-footer{padding:10px 18px;border-top:1px solid rgba(255,255,255,.06);}
+.sig-footer{padding:8px 16px;border-top:1px solid rgba(255,255,255,.06);}
 body.light-mode .sig-footer{border-top-color:var(--border);}
 .sig-date{font-size:10px;color:rgba(255,255,255,.2);font-family:var(--mono);}
 body.light-mode .sig-date{color:var(--text3);}
+
+/* ── SEARCH PANEL ── */
+.search-panel{
+  position:absolute;top:calc(100% + 8px);left:0;right:0;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow-lg);
+  z-index:200;max-height:380px;overflow-y:auto;
+  min-width:320px;
+}
+.sp-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;cursor:pointer;transition:background .15s;
+  border-bottom:1px solid var(--border);
+}
+.sp-item:last-child{border-bottom:none;}
+.sp-item:hover{background:var(--surface2);}
+.sp-av{width:32px;height:32px;border-radius:50%;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;}
+.sp-info{flex:1;min-width:0;}
+.sp-title{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sp-meta{font-size:11px;color:var(--text3);margin-top:1px;}
+.sp-empty{padding:24px;text-align:center;color:var(--text3);font-size:13px;}
+.topbar-search{position:relative;}
+
+/* ── NOTIFICATION PANEL ── */
+.notif-dot{
+  position:absolute;top:4px;right:4px;
+  width:8px;height:8px;border-radius:50%;
+  background:#ef4444;border:2px solid var(--surface2);
+}
+.notif-panel{
+  position:absolute;top:calc(100% + 8px);right:0;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow-lg);
+  z-index:200;width:320px;max-height:420px;overflow-y:auto;
+}
+.notif-panel-hd{
+  padding:12px 16px;border-bottom:1px solid var(--border);
+  font-size:13px;font-weight:700;color:var(--text);
+}
+.notif-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 16px;border-bottom:1px solid var(--border);
+  cursor:pointer;transition:background .15s;
+}
+.notif-item:hover{background:var(--surface2);}
+.notif-item:last-child{border-bottom:none;}
+.notif-item.unread{background:rgba(255,255,255,.03);}
+body.light-mode .notif-item.unread{background:rgba(0,0,0,.03);}
+.notif-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.notif-txt{font-size:12px;color:var(--text2);line-height:1.5;}
+.notif-txt strong{color:var(--text);}
+.notif-time{font-size:10px;color:var(--text3);margin-top:3px;font-family:var(--mono);}
 
 /* Leaderboard */
 .lb-item{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border);transition:background .15s;}
@@ -969,16 +1021,16 @@ body.light-mode .auth-footer{color:#888;}
         </div>
 
         <div class="nav-group">
-          <button class="nav-link active" onclick="showPage('home')">
+          <button class="nav-link active" data-page="home" onclick="showPage('home')">
             <span class="nav-icon">🏠</span><span class="nav-label">Ana Sayfa</span>
           </button>
-          <button class="nav-link" onclick="showPage('feed')">
+          <button class="nav-link" data-page="feed" onclick="showPage('feed')">
             <span class="nav-icon">📰</span><span class="nav-label">Feed</span>
           </button>
-          <button class="nav-link" onclick="showPage('feed');switchTab(this,'mine')">
+          <button class="nav-link" data-page="mine" onclick="showPageMine()">
             <span class="nav-icon">📝</span><span class="nav-label">Postlarım</span>
           </button>
-          <button class="nav-link" onclick="showPage('profile')">
+          <button class="nav-link" data-page="profile" onclick="showPage('profile')">
             <span class="nav-icon">👤</span><span class="nav-label">Profilim</span>
           </button>
         </div>
@@ -1040,11 +1092,18 @@ body.light-mode .auth-footer{color:#888;}
       <!-- Topbar -->
       <div class="topbar">
         <div class="topbar-title" id="topbar-title">Ana Sayfa</div>
-        <div class="topbar-search">
+        <div class="topbar-search" id="search-box">
           <span class="topbar-search-icon">🔍</span>
-          <input placeholder="Ara..." readonly>
+          <input placeholder="Ara..." id="search-input" oninput="onSearchInput(this.value)" onfocus="showSearchPanel()" autocomplete="off">
         </div>
-        <div class="topbar-icon-btn">🔔</div>
+        <div id="search-panel" class="search-panel" style="display:none"></div>
+        <div style="position:relative">
+          <div class="topbar-icon-btn" id="notif-btn" onclick="toggleNotifPanel()" title="Bildirimler">🔔<span class="notif-dot" id="notif-dot" style="display:none"></span></div>
+          <div class="notif-panel" id="notif-panel" style="display:none">
+            <div class="notif-panel-hd">Bildirimler</div>
+            <div id="notif-list"><div style="padding:28px 16px;text-align:center;color:var(--text3);font-size:13px">Henüz bildirim yok</div></div>
+          </div>
+        </div>
         <button class="topbar-post-btn" onclick="openModal()">
           <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
           Paylaşım Yap
@@ -1415,12 +1474,31 @@ function showPage(page) {
   });
   var titles = { home: 'Ana Sayfa', feed: 'Topluluk Feed', profile: 'Profilim' };
   document.getElementById('topbar-title').textContent = titles[page] || page;
+  // Nav active: map by data-page attribute
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  var map = { home: 0, feed: 1, profile: 2 };
-  var links = document.querySelectorAll('.nav-link');
-  if (map[page] !== undefined) links[map[page]]?.classList.add('active');
+  var active = document.querySelector('.nav-link[data-page="'+page+'"]');
+  if (active) active.classList.add('active');
   if (page === 'feed') renderFeed();
   if (page === 'profile') loadProfile();
+}
+function showPageMine() {
+  // "Postlarım" butonu: feed'e git ve mine tabını seç
+  currentTab = 'mine';
+  currentPage = 'feed';
+  ['home','feed','profile'].forEach(p => {
+    var el = document.getElementById('page-'+p);
+    if (el) el.style.display = (p === 'feed') ? '' : 'none';
+  });
+  document.getElementById('topbar-title').textContent = 'Postlarım';
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  var active = document.querySelector('.nav-link[data-page="mine"]');
+  if (active) active.classList.add('active');
+  // Feed tablarını güncelle
+  document.querySelectorAll('.ftab').forEach(t => {
+    var oc = t.getAttribute('onclick')||'';
+    t.classList.toggle('active', oc.includes("'mine'"));
+  });
+  renderFeed();
 }
 function setMobileActive(page) {
   ['home','feed','profile'].forEach(p => {
@@ -1428,6 +1506,126 @@ function setMobileActive(page) {
     if (el) el.classList.toggle('active', p === page);
   });
 }
+
+// ─── SEARCH ────────────────────────────────────────────────────
+var searchTimer = null;
+function onSearchInput(val) {
+  clearTimeout(searchTimer);
+  var panel = document.getElementById('search-panel');
+  if (!val.trim()) { panel.style.display = 'none'; return; }
+  searchTimer = setTimeout(() => doSearch(val.trim()), 200);
+}
+function doSearch(q) {
+  var panel = document.getElementById('search-panel');
+  var lower = q.toLowerCase();
+  var results = allPosts.filter(p =>
+    (p.content||'').toLowerCase().includes(lower) ||
+    (p.user_name||'').toLowerCase().includes(lower)
+  ).slice(0, 8);
+  if (!results.length) {
+    panel.innerHTML = '<div class="sp-empty">Sonuç bulunamadı</div>';
+  } else {
+    var typeMap = {milestone:'🎉',sale:'💰',product:'📦',question:'❓',motivation:'🔥'};
+    panel.innerHTML = results.map(p => {
+      var av = avColor(p.user_name||'U');
+      var init = (p.user_name||'U').charAt(0).toUpperCase();
+      var preview = (p.content||'').slice(0,60) + (p.content?.length > 60 ? '...' : '');
+      return `<div class="sp-item" onclick="searchGoTo('${p.id}')">
+        <div class="sp-av" style="background:${av}">${init}</div>
+        <div class="sp-info">
+          <div class="sp-title">${(typeMap[p.post_type]||'')} ${esc(preview)}</div>
+          <div class="sp-meta">${esc(p.user_name||'Anonim')} · ${timeAgo(p.created_at)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  panel.style.display = 'block';
+}
+function showSearchPanel() {
+  var val = document.getElementById('search-input')?.value.trim();
+  if (val) doSearch(val);
+}
+function searchGoTo(id) {
+  document.getElementById('search-panel').style.display = 'none';
+  document.getElementById('search-input').value = '';
+  showPage('feed');
+  currentTab = 'all';
+  document.querySelectorAll('.ftab').forEach(t => {
+    var oc = t.getAttribute('onclick')||'';
+    t.classList.toggle('active', oc.includes("'all'"));
+  });
+  renderFeed();
+  setTimeout(() => {
+    var el = document.querySelector('[data-id="'+id+'"]');
+    if (el) { el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.outline='2px solid var(--border2)'; setTimeout(()=>el.style.outline='',1400); }
+  }, 150);
+}
+// Close search panel when clicking outside
+document.addEventListener('click', function(e) {
+  var box = document.getElementById('search-box');
+  var panel = document.getElementById('search-panel');
+  if (box && panel && !box.contains(e.target)) panel.style.display = 'none';
+});
+
+// ─── NOTIFICATIONS ─────────────────────────────────────────────
+var notifOpen = false;
+var notifData = []; // {type, postId, actorName, emoji, time}
+
+function toggleNotifPanel() {
+  notifOpen = !notifOpen;
+  var panel = document.getElementById('notif-panel');
+  panel.style.display = notifOpen ? 'block' : 'none';
+  if (notifOpen) { renderNotifPanel(); markNotifRead(); }
+}
+function pushNotif(type, actorName, postId, extra) {
+  notifData.unshift({ type, actorName, postId, extra, time: new Date().toISOString(), read: false });
+  if (notifData.length > 30) notifData = notifData.slice(0, 30);
+  var dot = document.getElementById('notif-dot');
+  if (dot) dot.style.display = 'block';
+}
+function markNotifRead() {
+  notifData.forEach(n => n.read = true);
+  var dot = document.getElementById('notif-dot');
+  if (dot) dot.style.display = 'none';
+}
+function renderNotifPanel() {
+  var list = document.getElementById('notif-list');
+  if (!list) return;
+  if (!notifData.length) {
+    list.innerHTML = '<div style="padding:28px 16px;text-align:center;color:var(--text3);font-size:13px">Henüz bildirim yok</div>';
+    return;
+  }
+  var icons = { reaction:'🔥', comment:'💬', newpost:'📝' };
+  list.innerHTML = notifData.map(n => {
+    var icon = icons[n.type] || '🔔';
+    var txt = '';
+    if (n.type === 'reaction') txt = `<strong>${esc(n.actorName)}</strong> gönderine ${n.extra||'🔥'} tepki verdi`;
+    else if (n.type === 'comment') txt = `<strong>${esc(n.actorName)}</strong> gönderine yorum yaptı`;
+    else if (n.type === 'newpost') txt = `<strong>${esc(n.actorName)}</strong> yeni bir paylaşım yaptı`;
+    return `<div class="notif-item${n.read?'':' unread'}" onclick="notifGoTo('${n.postId||''}')">
+      <div class="notif-icon">${icon}</div>
+      <div>
+        <div class="notif-txt">${txt}</div>
+        <div class="notif-time">${timeAgo(n.time)}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function notifGoTo(postId) {
+  notifOpen = false;
+  document.getElementById('notif-panel').style.display = 'none';
+  if (postId) scrollToPost(postId);
+}
+// Close notif panel when clicking outside
+document.addEventListener('click', function(e) {
+  var btn = document.getElementById('notif-btn');
+  var panel = document.getElementById('notif-panel');
+  if (btn && panel && !btn.parentElement.contains(e.target)) {
+    notifOpen = false;
+    panel.style.display = 'none';
+  }
+});
+
 
 // ─── SIGNAL ────────────────────────────────────────────────────
 async function loadSignal() {
@@ -1542,7 +1740,9 @@ function renderPost(p) {
   var init = (p.user_name||'U').charAt(0).toUpperCase();
   var typeMap = {milestone:'🎉 İlk Satış',sale:'💰 Satış',product:'📦 Ürün',question:'❓ Soru',motivation:'🔥 Motivasyon'};
   var typeLabel = typeMap[p.post_type]||p.post_type;
-  var delBtn = isMine ? '<button class="post-del" onclick="deletePost(\''+p.id+'\')">🗑</button>' : '';
+  var delBtn = isAdmin ? `<button class="post-del" onclick="deletePost('${p.id}')" title="Sil">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+    </button>` : '';
   var pendingHtml = (!p.approved && isMine) ? '<div class="pending-pill">⏳ Onay bekleniyor</div>' : '';
 
   var specialHtml = '';
@@ -1584,7 +1784,7 @@ function renderPost(p) {
       <div class="post-author">${esc(p.user_name||'Anonim')}</div>
       <div class="post-time">${timeAgo(p.created_at)}</div>
     </div>
-    ${isMine || isAdmin ? `<button class="post-del" onclick="deletePost('${p.id}')" title="Sil">
+    ${isAdmin ? `<button class="post-del" onclick="deletePost('${p.id}')" title="Sil">
       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
     </button>` : ''}
   </div>
@@ -1669,8 +1869,12 @@ async function deleteComment(btn) {
 
 // ─── DELETE POST ───────────────────────────────────────────────
 async function deletePost(postId) {
+  var isAdmin = ADMIN_EMAILS.includes(me?.email);
   if (!confirm('Bu paylaşımı silmek istediğine emin misin?')) return;
-  await sb.from('club_posts').delete().eq('id',postId).eq('user_id',me.id);
+  // Admin: delete any post; Owner: only own
+  var q = sb.from('club_posts').delete().eq('id',postId);
+  if (!isAdmin) q = q.eq('user_id',me.id);
+  await q;
   allPosts = allPosts.filter(p=>p.id!==postId);
   renderFeed(); renderHomeFeeds(); updateStats(); updateHomeStats();
 }
@@ -1798,12 +2002,29 @@ async function checkBadges() {
 
 // ─── REALTIME ──────────────────────────────────────────────────
 function subscribeRealtime() {
-  sb.channel('club').on('postgres_changes',{event:'INSERT',schema:'public',table:'club_posts'},(payload)=>{
-    if(payload.new.user_id===me?.id) return;
-    payload.new.club_reactions=[]; payload.new.club_comments=[];
-    allPosts.unshift(payload.new);
-    renderFeed(); renderHomeFeeds(); updateStats(); updateHomeStats();
-  }).subscribe();
+  sb.channel('club')
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'club_posts'},(payload)=>{
+      if(payload.new.user_id===me?.id) return;
+      payload.new.club_reactions=[]; payload.new.club_comments=[];
+      allPosts.unshift(payload.new);
+      renderFeed(); renderHomeFeeds(); updateStats(); updateHomeStats();
+      // Bildirim: yeni post
+      pushNotif('newpost', payload.new.user_name||'Biri', payload.new.id);
+    })
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'club_reactions'},(payload)=>{
+      // Eğer kendi postuma tepki geldiyse bildir
+      var myPost = allPosts.find(p=>p.id===payload.new.post_id && p.user_id===me?.id);
+      if (myPost && payload.new.user_id !== me?.id) {
+        pushNotif('reaction', payload.new.user_name||'Biri', payload.new.post_id, payload.new.emoji);
+      }
+    })
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'club_comments'},(payload)=>{
+      var myPost = allPosts.find(p=>p.id===payload.new.post_id && p.user_id===me?.id);
+      if (myPost && payload.new.user_id !== me?.id) {
+        pushNotif('comment', payload.new.user_name||'Biri', payload.new.post_id);
+      }
+    })
+    .subscribe();
 }
 
 // ─── MODAL ─────────────────────────────────────────────────────
