@@ -65,7 +65,11 @@ body{background:#0a0a0f;color:#f4f4f8;font-family:var(--font);min-height:100vh;-
 body.light-mode{background:#f2f2f7;color:#0a0a0f;}
 
 /* ══ AUTH ══════════════════════════════════════════════════════ */
-#auth-screen{position:fixed;inset:0;z-index:1000;background:#0d0d0d;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;}
+#auth-screen{position:fixed;inset:0;z-index:1000;background:#0d0d0d !important;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;}
+body.light-mode #auth-screen{background:#0d0d0d !important;}
+body.light-mode .auth-brand-name{color:#fff !important;}
+body.light-mode .auth-headline h1{color:#fff !important;}
+body.light-mode .auth-footer{color:#444 !important;}
 #auth-screen::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(200,240,0,.08),transparent 70%);pointer-events:none;}
 .auth-wrap{width:100%;max-width:440px;position:relative;}
 .auth-logo-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:24px;}
@@ -1269,13 +1273,6 @@ body.light-mode .pb-chip.earned{
             </div>
           </div>
           <div class="right-sidebar">
-            <!-- Trending -->
-            <div class="widget-card" id="trending-widget">
-              <div class="wc-header">
-                <div class="wc-title">🔥 Trend Postlar</div>
-              </div>
-              <div id="trending-list"><div class="feed-loader" style="padding:20px">Yükleniyor...</div></div>
-            </div>
             <!-- Canberk signal -->
             <div class="signal-card">
               <div class="signal-inner">
@@ -1409,7 +1406,14 @@ body.light-mode .pb-chip.earned{
 const SB_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNTcxNzksImV4cCI6MjA4ODczMzE3OX0.JbtrF-ymC11M7HM9MhT5_I1hD8e5oOQz0q-d7Ty5E2Q';
 const ADMIN_EMAILS = ['furkan@mlynr.com','canberk@mlynr.com'];
-const sb = supabase.createClient(SB_URL, SB_KEY);
+const sb = supabase.createClient(SB_URL, SB_KEY, {
+  auth: {
+    storageKey: 'mlynr-club-auth',
+    storage: window.localStorage,
+    autoRefreshToken: true,
+    persistSession: true,
+  }
+});
 
 // ─── STATE ─────────────────────────────────────────────────────
 let me = null;
@@ -1434,23 +1438,39 @@ function showAuthMsg(msg, isOk) {
 }
 function hideAuthMsg() { document.getElementById('auth-msg').style.display = 'none'; }
 
+var loginAttempts = 0;
+var loginLockUntil = 0;
 async function doLogin() {
-  var email = document.getElementById('login-email').value.trim();
+  var now = Date.now();
+  if (now < loginLockUntil) {
+    showAuthMsg('Çok fazla deneme. ' + Math.ceil((loginLockUntil-now)/1000) + ' saniye bekle.');
+    return;
+  }
+  var email = document.getElementById('login-email').value.trim().toLowerCase();
   var pass = document.getElementById('login-pass').value;
   if (!email || !pass) { showAuthMsg('Email ve şifreyi gir'); return; }
   var btn = document.getElementById('login-btn');
   btn.textContent = '...'; btn.disabled = true;
   var { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
   btn.textContent = 'Giriş Yap →'; btn.disabled = false;
-  if (error) { showAuthMsg('Hata: ' + error.message); return; }
+  if (error) {
+    loginAttempts++;
+    if (loginAttempts >= 5) { loginLockUntil = Date.now() + 60000; loginAttempts = 0; }
+    showAuthMsg('Hata: ' + error.message); return;
+  }
+  loginAttempts = 0;
   onLogin(data.user);
 }
 async function doSignup() {
   var name = document.getElementById('signup-name').value.trim();
-  var email = document.getElementById('signup-email').value.trim();
+  var email = document.getElementById('signup-email').value.trim().toLowerCase();
   var pass = document.getElementById('signup-pass').value;
   if (!name || !email || !pass) { showAuthMsg('Tüm alanları doldur'); return; }
-  if (pass.length < 6) { showAuthMsg('Şifre en az 6 karakter'); return; }
+  if (name.length < 2 || name.length > 50) { showAuthMsg('İsim 2-50 karakter olmalı'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthMsg('Geçerli bir email gir'); return; }
+  if (pass.length < 8) { showAuthMsg('Şifre en az 8 karakter olmalı'); return; }
+  // HTML/script injection engelle
+  if (/<|>|script|javascript/i.test(name)) { showAuthMsg('Geçersiz karakter'); return; }
   var btn = document.getElementById('signup-btn');
   btn.textContent = '...'; btn.disabled = true;
   var { data, error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
@@ -1490,7 +1510,6 @@ async function init() {
   checkBadges();
   subscribeRealtime();
   updateDailyGoal();
-  loadTrending();
 }
 
 // ─── PAGES ─────────────────────────────────────────────────────
@@ -1772,7 +1791,9 @@ function renderPost(p) {
   var adminBadgeHtml = isPostAdmin ? '<span class="admin-badge">⚡ Admin</span>' : '';
   var userBadgesHtml = getUserBadgeHtml(p.user_id);
   var typeMap = {milestone:'🎉 İlk Satış',sale:'💰 Satış',product:'📦 Ürün',question:'❓ Soru',motivation:'🔥 Motivasyon'};
-  var typeLabel = typeMap[p.post_type]||p.post_type;
+  var validTypes = ['milestone','sale','product','question','motivation'];
+  var safeType = validTypes.includes(p.post_type) ? p.post_type : 'question';
+  var typeLabel = typeMap[safeType] || safeType;
   var canDelete = isMine || isAdmin;
   var delBtn = canDelete ? `<button class="post-del" onclick="deletePost('${p.id}','${p.user_id}')" title="Sil">
       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -1797,7 +1818,8 @@ function renderPost(p) {
     specialHtml += '</div>';
   }
 
-  var imgHtml = p.image_url ? '<img class="post-img" src="'+esc(p.image_url)+'" loading="lazy" onclick="openLightbox(\''+esc(p.image_url)+'\')">' : '';
+  var safeImgUrl = (p.image_url && /^https:\/\//i.test(p.image_url)) ? p.image_url : null;
+  var imgHtml = safeImgUrl ? '<img class="post-img" src="'+esc(safeImgUrl)+'" loading="lazy" onclick="openLightbox(\''+esc(safeImgUrl)+'\')">' : '';
   var myAv = avColor(myName||'U');
   var myInit = (myName||'?').charAt(0).toUpperCase();
 
@@ -1811,7 +1833,7 @@ function renderPost(p) {
   var isLong = p.content && p.content.length > 280;
   var bodyClass = isLong ? 'post-body collapsed' : 'post-body';
   var expandBtn = isLong ? `<button class="post-expand-btn" onclick="expandPost(this)">Daha fazla gör →</button>` : '';
-  return `<div class="post${isMine?' mine':''}" data-id="${p.id}" data-type="${p.post_type}">
+  return `<div class="post${isMine?' mine':''}" data-id="${p.id}" data-type="${safeType}">
   <div class="post-hd">
     <div class="post-av" style="background:${av}">${init}</div>
     <div class="post-av-info">
@@ -1822,7 +1844,7 @@ function renderPost(p) {
       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
     </button>` : ''}
   </div>
-  <span class="post-badge pb-${p.post_type}">${typeLabel}</span>
+  <span class="post-badge pb-${safeType}">${typeLabel}</span>
   ${pendingHtml}
   <div class="${bodyClass}" id="pb-${p.id}">${esc(p.content)}</div>
   ${expandBtn}
@@ -1873,12 +1895,18 @@ function toggleComments(btn, postId) {
 function commentKey(e, postId) {
   if (e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendComment(postId);}
 }
+var lastCommentTime = 0;
 async function sendComment(postId) {
   if (!me) return;
   var inp = document.getElementById('ci-'+postId);
   var txt = inp?.value.trim();
   if (!txt) return;
+  if (txt.length > 500) { alert('⚠️ Yorum en fazla 500 karakter olabilir.'); return; }
+  // Yorum spam koruması
+  var now = Date.now();
+  if (now - lastCommentTime < 5000) { alert('⚠️ Çok hızlı yorum yapıyorsun, biraz bekle.'); return; }
   if (containsPhone(txt)) { alert('⚠️ Telefon numarası paylaşılamaz.'); return; }
+  lastCommentTime = now;
   inp.value = '';
   var { data, error } = await sb.from('club_comments').insert({post_id:postId,user_id:me.id,user_name:myName,content:txt}).select().single();
   if (!error && data) {
@@ -1947,12 +1975,15 @@ async function submitPost() {
     var {data:upData,error:upErr} = await sb.storage.from('club-images').upload(path,selectedFile);
     if (!upErr) { var {data:urlData}=sb.storage.from('club-images').getPublicUrl(path); imageUrl=urlData.publicUrl; }
   }
+  var salePrice = document.getElementById('f-price').value.trim().slice(0,20)||null;
+  var saleProfit = document.getElementById('f-profit').value.trim().slice(0,20)||null;
+  var saleOrders = document.getElementById('f-orders').value.trim().slice(0,10)||null;
   var post = {
     user_id:me.id, user_name:myName, user_email:me.email,
     post_type:selectedType, content,
-    sale_price:document.getElementById('f-price').value.trim()||null,
-    sale_profit:document.getElementById('f-profit').value.trim()||null,
-    sale_orders:document.getElementById('f-orders').value.trim()||null,
+    sale_price:salePrice,
+    sale_profit:saleProfit,
+    sale_orders:saleOrders,
     image_url:imageUrl
   };
   var {data,error} = await sb.from('club_posts').insert(post).select().single();
@@ -2116,20 +2147,22 @@ function subscribeRealtime() {
   sb.channel('club')
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'club_posts'},(payload)=>{
       if(payload.new.user_id===me?.id) return;
+      // Gelen veriyi doğrula
+      if (!payload.new.id || !payload.new.user_id) return;
       payload.new.club_reactions=[]; payload.new.club_comments=[];
       allPosts.unshift(payload.new);
       renderFeed(); renderHomeFeeds(); updateStats(); updateHomeStats();
-      // Bildirim: yeni post
       pushNotif('newpost', payload.new.user_name||'Biri', payload.new.id);
     })
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'club_reactions'},(payload)=>{
-      // Eğer kendi postuma tepki geldiyse bildir
+      if (!payload.new.post_id || !payload.new.user_id) return;
       var myPost = allPosts.find(p=>p.id===payload.new.post_id && p.user_id===me?.id);
       if (myPost && payload.new.user_id !== me?.id) {
         pushNotif('reaction', payload.new.user_name||'Biri', payload.new.post_id, payload.new.emoji);
       }
     })
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'club_comments'},(payload)=>{
+      if (!payload.new.post_id || !payload.new.user_id) return;
       var myPost = allPosts.find(p=>p.id===payload.new.post_id && p.user_id===me?.id);
       if (myPost && payload.new.user_id !== me?.id) {
         pushNotif('comment', payload.new.user_name||'Biri', payload.new.post_id);
@@ -2215,30 +2248,7 @@ function expandPost(btn) {
   btn.style.display = 'none';
 }
 
-// ─── TRENDING ──────────────────────────────────────────────────
-function loadTrending() {
-  var el = document.getElementById('trending-list');
-  if (!el) return;
-  var weekAgo = new Date(Date.now()-7*24*60*60*1000).toISOString();
-  var recent = allPosts.filter(p => p.created_at >= weekAgo);
-  var scored = recent.map(p => ({
-    ...p,
-    score: (p.club_reactions||[]).length * 2 + (p.club_comments||[]).length
-  })).sort((a,b)=>b.score-a.score).slice(0,5);
-  if (!scored.length) { el.innerHTML='<div style="padding:14px 16px;font-size:12px;color:var(--text3)">Henüz trend yok</div>'; return; }
-  el.innerHTML = scored.map(p => {
-    var av = avColor(p.user_name||'U');
-    var init = (p.user_name||'U').charAt(0).toUpperCase();
-    var preview = (p.content||'').slice(0,48) + (p.content?.length > 48 ? '...' : '');
-    return `<div class="trending-item" onclick="scrollToPost('${p.id}')">
-      <div class="tr-av" style="background:${av}">${init}</div>
-      <div class="tr-info">
-        <div class="tr-title">${esc(preview)}</div>
-        <div class="tr-meta">${esc(p.user_name||'Anonim')}</div>
-      </div>
-    </div>`;
-  }).join('');
-}
+// ─── SCROLL TO POST ────────────────────────────────────────────
 function scrollToPost(id) {
   showPage('feed');
   setTimeout(()=>{
