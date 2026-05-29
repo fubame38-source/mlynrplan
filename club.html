@@ -14,8 +14,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
 
 :root{
   --bg:#f2f2f7;
@@ -276,6 +276,7 @@ body.light-mode .sb-action:hover{border-color:var(--border2);color:var(--text2);
   transition:all .2s;cursor:default;
 }
 .stat-card:hover{box-shadow:var(--shadow);transform:translateY(-1px);}
+@media(hover:none){.stat-card:hover{transform:none;box-shadow:var(--shadow-sm);}}
 .stat-card-val{font-size:32px;font-weight:900;letter-spacing:-.06em;color:var(--text);line-height:1;}
 .stat-card-val small{font-size:12px;font-weight:500;color:var(--text3);display:block;margin-top:4px;letter-spacing:0;}
 .stat-card-lbl{font-size:10px;color:var(--text3);margin-top:8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;}
@@ -299,6 +300,7 @@ body.light-mode .sb-action:hover{border-color:var(--border2);color:var(--text2);
 }
 body:not(.light-mode) .featured-card{background:#181820;border-color:#26262e;}
 .featured-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--border2);}
+@media(hover:none){.featured-card:hover{transform:none;box-shadow:none;border-color:var(--border);}}
 .fc-tag{
   display:inline-flex;align-items:center;gap:5px;
   font-size:10px;font-weight:700;padding:4px 10px;border-radius:999px;
@@ -321,7 +323,7 @@ body.light-mode .fc-tag{background:var(--surface3);color:var(--text2);border-col
 /* ══ FEED SECTION ══════════════════════════════════════════════ */
 
 /* Feed tabs — pill row */
-.feed-tabs-wrap{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;margin-bottom:16px;}
+.feed-tabs-wrap{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;margin-bottom:16px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .feed-tabs-wrap::-webkit-scrollbar{display:none;}
 .ftab{
   padding:6px 16px;border:1.5px solid var(--border);border-radius:999px;
@@ -387,6 +389,9 @@ body.light-mode .fc-tag{background:var(--surface3);color:var(--text2);border-col
   box-shadow:0 6px 24px rgba(0,0,0,.1);
   border-color:var(--border2);
   transform:translateY(-1px);
+}
+@media(hover:none){
+  .post:hover{transform:none;box-shadow:none;border-color:var(--border);}
 }
 .post.mine{
   border-color:var(--text) !important;
@@ -767,13 +772,26 @@ body.light-mode .mn-btn.active{color:var(--text);}
   .app-grid{grid-template-columns:1fr!important;}
   .topbar{padding:12px 16px;}
   .topbar-search{display:none;}
+  .topbar-post-btn{display:none;}
   .topbar-title{font-size:16px;}
-  .page-content{padding:16px 14px 80px;}
+  .page-content{padding:14px 12px 90px;}
   .content-grid{grid-template-columns:1fr!important;}
   .right-sidebar{display:none!important;}
   .stats-row{grid-template-columns:repeat(2,1fr)!important;gap:10px;}
   .featured-grid{grid-template-columns:1fr!important;}
   .stat-card{border-radius:18px;padding:16px 18px;}
+  .post{padding:16px 14px 12px;border-radius:18px;}
+  .post-acts{gap:0;}
+  .act{padding:6px 10px;font-size:12px;}
+  .act-cmt{padding:6px 10px;font-size:12px;}
+  .feed-tabs-wrap{gap:4px;}
+  .ftab{padding:5px 12px;font-size:11px;}
+  .compose-row{padding:10px 14px;}
+  .banner-card{padding:20px 18px;gap:14px;}
+  .banner-title{font-size:16px;}
+  .welcome-text h2{font-size:20px;}
+  .modal{border-radius:20px 20px 0 0;margin-top:auto;max-height:92vh;overflow-y:auto;}
+  .overlay{padding:0;align-items:flex-end;}
 }
 
 /* ══ BANNER (Canberk weekly) ═════════════════════════════════ */
@@ -1296,14 +1314,14 @@ body.light-mode .pb-chip.earned{
   <!-- MOBILE BOTTOM NAV -->
   <nav class="mobile-nav">
     <div class="mobile-nav-inner">
-      <button class="mn-btn active" id="mn-home" onclick="showPage('home');setMobileActive('home')">
+      <button class="mn-btn active" id="mn-home" onclick="showPage('home')">
         <span class="mn-icon">🏠</span>Ana Sayfa
       </button>
-      <button class="mn-btn" id="mn-feed" onclick="showPage('feed');setMobileActive('feed')">
+      <button class="mn-btn" id="mn-feed" onclick="showPage('feed')">
         <span class="mn-icon">📰</span>Feed
       </button>
       <button class="mn-post-btn" onclick="openModal()">+</button>
-      <button class="mn-btn" id="mn-profile" onclick="showPage('profile');setMobileActive('profile')">
+      <button class="mn-btn" id="mn-profile" onclick="showPage('profile')">
         <span class="mn-icon">👤</span>Profil
       </button>
       <button class="mn-btn" id="mn-theme" onclick="toggleTheme()">
@@ -1494,10 +1512,12 @@ function showPage(page) {
   });
   var titles = { home: 'Ana Sayfa', feed: 'Topluluk Feed', profile: 'Profilim' };
   document.getElementById('topbar-title').textContent = titles[page] || page;
-  // Nav active: map by data-page attribute
+  // Sidebar nav active
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
   var active = document.querySelector('.nav-link[data-page="'+page+'"]');
   if (active) active.classList.add('active');
+  // Mobile nav active — her zaman senkron tut
+  setMobileActive(page);
   if (page === 'feed') renderFeed();
   if (page === 'profile') loadProfile();
 }
