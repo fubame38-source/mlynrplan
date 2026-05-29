@@ -2246,6 +2246,8 @@ async function loadAnnouncementsPage() {
         <div style="flex:1;min-width:0;">
           <div class="ann-card-title">${esc(a.title)}</div>
           <div class="ann-card-text">${esc(a.body||'')}</div>
+          ${a.media_url && a.media_type==='image' ? `<img src="${esc(a.media_url)}" style="width:100%;border-radius:12px;margin-top:12px;max-height:320px;object-fit:cover;border:1px solid var(--border);cursor:zoom-in;" onclick="openLightbox('${esc(a.media_url)}')">` : ''}
+          ${a.media_url && a.media_type==='video' ? `<video src="${esc(a.media_url)}" controls style="width:100%;border-radius:12px;margin-top:12px;max-height:320px;border:1px solid var(--border);"></video>` : ''}
           <div class="ann-card-date">${timeAgo(a.created_at)}</div>
         </div>
       </div>
