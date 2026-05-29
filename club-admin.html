@@ -406,6 +406,50 @@ async function saveSignal() {
   setTimeout(() => ok.style.opacity = '0', 2500);
 }
 
+
+// ─── MEMBERS ───────────────────────────────────────────────────
+async function loadMembers() {
+  var { data, error } = await sb.from('club_members').select('*').order('created_at', { ascending: false });
+  if (error) { document.getElementById('members-list').innerHTML = '<div class="empty">Hata: '+error.message+'</div>'; return; }
+  var pending = (data||[]).filter(m => !m.approved);
+  var approved = (data||[]).filter(m => m.approved);
+  document.getElementById('ms-pending').textContent = pending.length;
+  document.getElementById('ms-approved').textContent = approved.length;
+  document.getElementById('ms-total').textContent = (data||[]).length;
+  document.getElementById('members-count').textContent = pending.length;
+  var list = document.getElementById('members-list');
+  if (!data || !data.length) { list.innerHTML = '<div class="empty">Henüz üye yok.</div>'; return; }
+  list.innerHTML = data.map(m => `
+    <div class="user-row" id="mr-${m.id}" style="${!m.approved ? 'border-color:rgba(180,83,9,.3);background:rgba(180,83,9,.04)' : ''}">
+      <div class="u-av" style="background:${avColor(m.name||'U')}">${(m.name||'U').charAt(0).toUpperCase()}</div>
+      <div class="u-info">
+        <div class="u-name">${esc(m.name||'?')}</div>
+        <div class="u-email">${esc(m.email||'')} · ${new Date(m.created_at).toLocaleDateString('tr-TR')}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        ${!m.approved
+          ? `<button class="save-btn" style="padding:7px 16px;font-size:12px" onclick="approveMember('${m.id}','${esc(m.email||'')}')">✓ Onayla</button>
+             <button class="btn-del" onclick="rejectMember('${m.id}','${esc(m.email||'')}')">✗ Reddet</button>`
+          : `<span style="font-family:var(--mono);font-size:11px;color:var(--green)">✓ Onaylı</span>
+             <button class="btn-del" onclick="rejectMember('${m.id}','${esc(m.email||'')}')">Kaldır</button>`
+        }
+      </div>
+    </div>`).join('');
+}
+
+async function approveMember(id, email) {
+  var { error } = await sb.from('club_members').update({ approved: true }).eq('id', id);
+  if (error) { alert('Hata: ' + error.message); return; }
+  loadMembers();
+}
+
+async function rejectMember(id, email) {
+  if (!confirm('"'+email+'" üyesini reddet/kaldır?')) return;
+  var { error } = await sb.from('club_members').update({ approved: false }).eq('id', id);
+  if (error) { alert('Hata: ' + error.message); return; }
+  loadMembers();
+}
+
 // ─── BAN USER ──────────────────────────────────────────────────
 async function banUser(userId, email) {
   if (!confirm(`"${email}" kullanıcısını banlamak istediğine emin misin?\n\nTüm postları silinecek.`)) return;
