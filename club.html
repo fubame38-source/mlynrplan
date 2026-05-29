@@ -1264,6 +1264,31 @@ body.light-mode .ann-card-text{color:#4338ca;}
 .ann-card-date{font-size:10px;color:rgba(255,255,255,.2);font-family:var(--mono);margin-top:8px;}
 body.light-mode .ann-card-date{color:rgba(99,102,241,.5);}
 .ann-empty{padding:16px;text-align:center;font-size:12px;color:var(--text3);font-family:var(--mono);}
+
+/* ══ DUYURULAR SAYFASI ══════════════════════════════════════ */
+.ann-section{margin-bottom:16px;}
+.ann-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.ann-label{font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);display:flex;align-items:center;gap:6px;}
+.ann-card{
+  background:var(--surface);
+  border:1.5px solid rgba(99,102,241,.2);
+  border-radius:18px;padding:20px 22px;
+  margin-bottom:12px;position:relative;overflow:hidden;
+}
+body:not(.light-mode) .ann-card{background:#141420;border-color:rgba(99,102,241,.25);}
+.ann-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(99,102,241,.5),transparent);
+}
+.ann-card-icon{
+  width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.2);
+  display:flex;align-items:center;justify-content:center;
+}
+.ann-card-title{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:5px;line-height:1.3;}
+.ann-card-text{font-size:13px;color:var(--text2);line-height:1.6;white-space:pre-wrap;word-break:break-word;}
+.ann-card-date{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:10px;}
+.ann-page-empty{padding:56px 20px;text-align:center;color:var(--text3);font-size:14px;background:var(--surface);border:1.5px solid var(--border);border-radius:20px;}
 </style>
 </head>
 <body>
@@ -1325,6 +1350,10 @@ body.light-mode .ann-card-date{color:rgba(99,102,241,.5);}
           </button>
           <button class="nav-link" data-page="profile" onclick="showPage('profile')">
             <span class="nav-icon">👤</span><span class="nav-label">Profilim</span>
+          </button>
+          <button class="nav-link" data-page="announcements" onclick="showPage('announcements')">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 000 6h20M13 1v10M13 1L6 11h7l-1 9 7-8h-7l1-9z"/></svg></span>
+            <span class="nav-label">Duyurular</span>
           </button>
         </div>
         <div class="sidebar-divider"></div>
@@ -1533,6 +1562,22 @@ body.light-mode .ann-card-date{color:rgba(99,102,241,.5);}
       </div>
 
     <!-- ── PROFİL SAYFASI ── -->
+      <!-- ── DUYURULAR SAYFASI ── -->
+      <div id="page-announcements" class="page-content" style="display:none">
+        <div style="max-width:680px;margin:0 auto;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+            <div style="width:38px;height:38px;border-radius:12px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(99,102,241,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 000 6h20M13 1v10M13 1L6 11h7l-1 9 7-8h-7l1-9z"/></svg>
+            </div>
+            <div>
+              <div style="font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.03em;">Duyurular</div>
+              <div style="font-size:12px;color:var(--text3);margin-top:2px;">Yöneticilerden önemli paylaşımlar</div>
+            </div>
+          </div>
+          <div id="ann-page-list"><div class="ann-page-empty">Henüz duyuru yok.</div></div>
+        </div>
+      </div>
+
       <div id="page-profile" class="page-content" style="display:none">
         <div class="profile-hero">
           <div class="profile-av-row">
@@ -1620,6 +1665,9 @@ body.light-mode .ann-card-date{color:rgba(99,102,241,.5);}
     </button>
     <button class="mob-dnav-item" onclick="closeDrawer();showPage('profile')">
       <span class="mob-dnav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg></span> Profilim
+    </button>
+    <button class="mob-dnav-item" onclick="closeDrawer();showPage('announcements')">
+      <span class="mob-dnav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 000 6h20M13 1v10M13 1L6 11h7l-1 9 7-8h-7l1-9z"/></svg></span> Duyurular
     </button>
     <button class="mob-dnav-item" onclick="closeDrawer();openModal()">
       <span class="mob-dnav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span> Paylaşım Yap
@@ -1881,11 +1929,11 @@ async function init() {
 function showPage(page) {
   currentPage = page;
   localStorage.setItem('mlynr-page', page);
-  ['home','feed','profile'].forEach(p => {
+  ['home','feed','profile','announcements'].forEach(p => {
     var el = document.getElementById('page-'+p);
     if (el) el.style.display = (p === page) ? '' : 'none';
   });
-  var titles = { home: 'Ana Sayfa', feed: 'Topluluk Feed', profile: 'Profilim' };
+  var titles = { home: 'Ana Sayfa', feed: 'Topluluk Feed', profile: 'Profilim', announcements: 'Duyurular' };
   document.getElementById('topbar-title').textContent = titles[page] || page;
   // Sidebar nav active
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
@@ -1895,6 +1943,7 @@ function showPage(page) {
   setMobileActive(page);
   if (page === 'feed') renderFeed();
   if (page === 'profile') loadProfile();
+  if (page === 'announcements') loadAnnouncementsPage();
 }
 function showPageMine() {
   // "Postlarım" butonu: feed'e git ve mine tabını seç
@@ -2171,6 +2220,32 @@ function renderAnnouncementsHtml(anns) {
         <div class="ann-body">
           <div class="ann-card-title">${esc(a.title)}</div>
           <div class="ann-card-text">${esc(a.body)}</div>
+          <div class="ann-card-date">${timeAgo(a.created_at)}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ─── DUYURULAR ─────────────────────────────────────────────────
+async function loadAnnouncementsPage() {
+  var list = document.getElementById('ann-page-list');
+  if (list) list.innerHTML = '<div class="ann-page-empty">Yükleniyor...</div>';
+  var { data } = await sb.from('club_announcements')
+    .select('*').order('created_at', { ascending: false });
+  if (!list) return;
+  if (!data || !data.length) {
+    list.innerHTML = '<div class="ann-page-empty">Henüz duyuru yok.</div>';
+    return;
+  }
+  list.innerHTML = data.map(a => `
+    <div class="ann-card">
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <div class="ann-card-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(99,102,241,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 000 6h20M13 1v10M13 1L6 11h7l-1 9 7-8h-7l1-9z"/></svg>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div class="ann-card-title">${esc(a.title)}</div>
+          <div class="ann-card-text">${esc(a.body||'')}</div>
           <div class="ann-card-date">${timeAgo(a.created_at)}</div>
         </div>
       </div>
