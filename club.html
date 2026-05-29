@@ -2222,13 +2222,15 @@ async function submitPost() {
   var salePrice = document.getElementById('f-price').value.trim().slice(0,20)||null;
   var saleProfit = document.getElementById('f-profit').value.trim().slice(0,20)||null;
   var saleOrders = document.getElementById('f-orders').value.trim().slice(0,10)||null;
+  var isAdminUser = ADMIN_EMAILS.includes(me.email);
   var post = {
     user_id:me.id, user_name:myName, user_email:me.email,
     post_type:selectedType, content,
     sale_price:salePrice,
     sale_profit:saleProfit,
     sale_orders:saleOrders,
-    image_url:imageUrl
+    image_url:imageUrl,
+    approved: isAdminUser ? true : false
   };
   var {data,error} = await sb.from('club_posts').insert(post).select().single();
   btn.disabled=false; btn.textContent='Paylaş →';
