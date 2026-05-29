@@ -255,6 +255,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 const SB_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNTcxNzksImV4cCI6MjA4ODczMzE3OX0.JbtrF-ymC11M7HM9MhT5_I1hD8e5oOQz0q-d7Ty5E2Q';
 const ADMIN_EMAILS = ['furkan@mlynr.com','canberk@mlynr.com'];
+const R2_WORKER_URL = 'https://mlynr-upload.fubame38.workers.dev/';
+const R2_ADMIN_KEY = 'MLYNR2025UPLOAD_SECRET';
 const sb = supabase.createClient(SB_URL, SB_KEY);
 
 let allPosts = [];
@@ -564,18 +566,27 @@ async function addAnnouncement() {
     var status = document.getElementById('ann-upload-status');
     status.style.display = 'block';
     status.textContent = 'Yükleniyor...';
-    var ext = annSelectedFile.name.split('.').pop().toLowerCase();
-    var path = 'announcements/' + Date.now() + '.' + ext;
-    var { data: upData, error: upErr } = await sb.storage.from('club-images').upload(path, annSelectedFile, { upsert: true });
-    if (upErr) {
-      status.textContent = 'Yükleme hatası: ' + upErr.message;
+    try {
+      var fd = new FormData();
+      fd.append('file', annSelectedFile);
+      var res = await fetch(R2_WORKER_URL, {
+        method: 'POST',
+        headers: { 'X-Admin-Key': R2_ADMIN_KEY },
+        body: fd
+      });
+      if (!res.ok) {
+        var errText = await res.text();
+        throw new Error(errText);
+      }
+      var result = await res.json();
+      mediaUrl = result.url;
+      mediaType = annSelectedType;
+      status.style.display = 'none';
+    } catch(e) {
+      status.textContent = 'Yükleme hatası: ' + e.message;
       btn.textContent = 'Duyuru Ekle →'; btn.disabled = false;
       return;
     }
-    var { data: urlData } = sb.storage.from('club-images').getPublicUrl(path);
-    mediaUrl = urlData.publicUrl;
-    mediaType = annSelectedType;
-    status.style.display = 'none';
   }
 
   var { error } = await sb.from('club_announcements').insert({
