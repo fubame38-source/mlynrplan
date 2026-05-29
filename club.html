@@ -61,7 +61,7 @@ body:not(.light-mode){
   color:#f4f4f8;
 }
 
-body{background:#0a0a0f;color:#f4f4f8;font-family:var(--font);min-height:100vh;-webkit-font-smoothing:antialiased;}
+body{background:#0a0a0f;color:#f4f4f8;font-family:var(--font);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
 body.light-mode{background:#f2f2f7;color:#0a0a0f;}
 
 /* ══ AUTH ══════════════════════════════════════════════════════ */
@@ -100,7 +100,7 @@ body.light-mode .auth-footer{color:#444 !important;}
 #app{display:none;min-height:100vh;}
 
 /* ── Layout: koyu sol sidebar + açık içerik ── */
-.app-grid{display:grid;grid-template-columns:260px 1fr;min-height:100vh;}
+.app-grid{display:grid;grid-template-columns:260px 1fr;min-height:100vh;overflow-x:hidden;}
 @media(max-width:900px){.app-grid{grid-template-columns:72px 1fr;}.nav-label{display:none;}.nav-section-label{display:none;}.brand-full{display:none;}.sidebar-bottom-text{display:none;}}
 @media(max-width:600px){.app-grid{grid-template-columns:1fr;}.sidebar{display:none;}}
 
@@ -219,7 +219,7 @@ body.light-mode .sb-action{border-color:var(--border);color:var(--text3);}
 body.light-mode .sb-action:hover{border-color:var(--border2);color:var(--text2);}
 
 /* ══ MAIN CONTENT  ════════════════════════════════════════════ */
-.main-content{display:flex;flex-direction:column;min-height:100vh;overflow:hidden;}
+.main-content{display:flex;flex-direction:column;min-height:100vh;overflow:hidden;min-width:0;}
 
 /* ── Topbar ── */
 .topbar{
@@ -260,7 +260,7 @@ body.light-mode .sb-action:hover{border-color:var(--border2);color:var(--text2);
 .topbar-post-btn:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.3);}
 
 /* ── Page content ── */
-.page-content{padding:28px 32px;flex:1;}
+.page-content{padding:28px 32px;flex:1;min-width:0;overflow-x:hidden;}
 
 /* Welcome */
 .welcome-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;}
@@ -403,7 +403,7 @@ body.light-mode .post.mine{
 .post.mine::before{ display:none; }
 
 /* Post header */
-.post-hd{display:flex;align-items:center;gap:11px;margin-bottom:6px;}
+.post-hd{display:flex;align-items:center;gap:11px;margin-bottom:6px;min-width:0;}
 .post-av{
   width:42px;height:42px;border-radius:50%;flex-shrink:0;
   font-size:15px;font-weight:800;
@@ -411,8 +411,9 @@ body.light-mode .post.mine{
   overflow:hidden;
 }
 .post-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
-.post-av-info{flex:1;min-width:0;}
-.post-author{font-size:14px;font-weight:700;color:var(--text);line-height:1.2;}
+.post-av-info{flex:1;min-width:0;overflow:hidden;}
+.post-author{font-size:14px;font-weight:700;color:var(--text);line-height:1.2;display:flex;align-items:center;flex-wrap:wrap;gap:4px;min-width:0;}
+.post-author-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;}
 .post-time{font-size:11px;color:var(--text3);margin-top:2px;}
 .post-menu-btn{
   width:32px;height:32px;border-radius:50%;background:transparent;border:none;
@@ -769,19 +770,19 @@ body.light-mode .mn-btn.active{color:var(--text);}
 @media(max-width:600px){
   .mobile-nav{display:block;}
   .sidebar{display:none!important;}
-  .app-grid{grid-template-columns:1fr!important;}
+  .app-grid{grid-template-columns:1fr!important;overflow-x:hidden;}
   .topbar{padding:12px 16px;}
   .topbar-search{display:none;}
   .topbar-post-btn{display:none;}
   .topbar-title{font-size:16px;}
-  .page-content{padding:14px 12px 90px;}
+  .page-content{padding:14px 12px 90px;overflow-x:hidden;}
   .content-grid{grid-template-columns:1fr!important;}
   .right-sidebar{display:none!important;}
   .stats-row{grid-template-columns:repeat(2,1fr)!important;gap:10px;}
   .featured-grid{grid-template-columns:1fr!important;}
   .stat-card{border-radius:18px;padding:16px 18px;}
-  .post{padding:16px 14px 12px;border-radius:18px;}
-  .post-acts{gap:0;}
+  .post{padding:16px 14px 12px;border-radius:18px;max-width:100%;box-sizing:border-box;}
+  .post-acts{gap:0;flex-wrap:wrap;}
   .act{padding:6px 10px;font-size:12px;}
   .act-cmt{padding:6px 10px;font-size:12px;}
   .feed-tabs-wrap{gap:4px;}
@@ -792,6 +793,11 @@ body.light-mode .mn-btn.active{color:var(--text);}
   .welcome-text h2{font-size:20px;}
   .modal{border-radius:20px 20px 0 0;margin-top:auto;max-height:92vh;overflow-y:auto;}
   .overlay{padding:0;align-items:flex-end;}
+  .post-author-name{max-width:160px;}
+  .sale-fields{grid-template-columns:1fr 1fr!important;}
+  .feed{max-width:100%;overflow-x:hidden;}
+  .sale-stats{flex-wrap:wrap;}
+  .ss-item{min-width:calc(33% - 6px);}
 }
 
 /* ══ BANNER (Canberk weekly) ═════════════════════════════════ */
@@ -1834,7 +1840,7 @@ function renderPost(p) {
   <div class="post-hd">
     ${avHtml}
     <div class="post-av-info">
-      <div class="post-author">${esc(displayAuthor)}${adminBadgeHtml}${userBadgesHtml}</div>
+      <div class="post-author"><span class="post-author-name">${esc(displayAuthor)}</span>${adminBadgeHtml}${userBadgesHtml}</div>
       <div class="post-time">${timeAgo(p.created_at)}</div>
     </div>
     ${canDelete ? `<button class="post-del" onclick="deletePost('${p.id}','${p.user_id}')" title="Sil">
