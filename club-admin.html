@@ -185,6 +185,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
     </div>
 
     <!-- SIGNAL SECTION -->
+    <!-- DUYURULAR -->
+    <div class="section" id="sec-ann">
+      <div class="signal-edit-card">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:16px;">Yeni Duyuru Ekle</div>
+        <span class="field-label">Başlık</span>
+        <input class="field-input" id="ann-title-inp" placeholder="Duyuru başlığı...">
+        <span class="field-label">İçerik</span>
+        <textarea class="field-textarea" id="ann-body-inp" placeholder="Duyuru içeriği..."></textarea>
+        <button class="save-btn" onclick="addAnnouncement()">Duyuru Ekle →</button>
+        <span class="save-ok" id="ann-save-ok">✓ Eklendi</span>
+      </div>
+      <div id="ann-admin-list"><div class="loading">Yükleniyor...</div></div>
+    </div>
+
     <div class="section" id="sec-signal">
       <div class="signal-edit-card">
         <div style="font-size:15px;font-weight:700;margin-bottom:20px;letter-spacing:-.03em">📡 Bu Haftanın Sinyalini Güncelle</div>
