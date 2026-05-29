@@ -982,15 +982,24 @@ body.light-mode .auth-footer{color:#888;}
   box-shadow:0 1px 6px rgba(124,58,237,.3);
 }
 
-/* ── USER EARNED BADGES (isim yanında emoji) ── */
+/* ── USER EARNED BADGES (isim yanında rozet pill) ── */
 .user-badge{
-  display:inline-block;
-  font-size:13px;margin-left:5px;
-  vertical-align:middle;line-height:1;
-  cursor:default;
-  transition:transform .15s;
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:999px;
+  margin-left:5px;vertical-align:middle;line-height:1.4;
+  cursor:default;letter-spacing:.02em;
+  background:color-mix(in srgb, var(--badge-color,#555) 18%, transparent);
+  border:1px solid color-mix(in srgb, var(--badge-color,#555) 35%, transparent);
+  color:var(--badge-color,#aaa);
+  transition:transform .15s,box-shadow .15s;
 }
-.user-badge:hover{transform:scale(1.3);}
+.user-badge:hover{transform:scale(1.05);box-shadow:0 2px 8px color-mix(in srgb, var(--badge-color,#555) 30%, transparent);}
+.user-badge .ub-emoji{font-size:11px;line-height:1;}
+body.light-mode .user-badge{
+  background:color-mix(in srgb, var(--badge-color,#555) 10%, white);
+  border-color:color-mix(in srgb, var(--badge-color,#555) 28%, transparent);
+}
 
 /* Profil sayfasındaki earned chip */
 .pb-chip.earned{
@@ -2037,7 +2046,7 @@ function getUserBadgeHtml(userId) {
   return Array.from(earned).map(id => {
     var def = BADGE_DEFS.find(b=>b.id===id);
     if (!def) return '';
-    return `<span class="user-badge" style="--badge-color:${def.color}" title="${def.label}: ${def.req}">${def.emoji}</span>`;
+    return `<span class="user-badge" style="--badge-color:${def.color}" title="${def.label}: ${def.req}"><span class="ub-emoji">${def.emoji}</span>${def.label}</span>`;
   }).join('');
 }
 
