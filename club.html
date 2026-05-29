@@ -1163,6 +1163,36 @@ body.light-mode .mob-drawer-version{color:var(--text3);}
   transition:background .15s;
 }
 .mob-hamburger:hover{background:var(--surface3);}
+
+/* ══ MOBİL TOPBAR ═══════════════════════════════════════════ */
+.mob-topbar{
+  display:none;
+  align-items:center;justify-content:space-between;
+  padding:12px 16px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(12px);
+}
+.mob-topbar-brand{
+  font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.03em;
+}
+.mob-topbar-brand span{color:var(--text3);font-weight:500;}
+.mob-topbar-ham{
+  width:38px;height:38px;
+  background:var(--surface2);
+  border:1.5px solid var(--border);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:20px;
+  transition:background .15s;
+  flex-shrink:0;
+}
+.mob-topbar-ham:hover{background:var(--surface3);}
+@media(max-width:600px){
+  .topbar{display:none !important;}
+  .mob-topbar{display:flex !important;}
+}
 </style>
 </head>
 <body>
@@ -1270,8 +1300,9 @@ body.light-mode .mob-drawer-version{color:var(--text3);}
 
       <!-- Topbar -->
       <div class="topbar">
-        <div class="topbar-brand">MLYNR <span>Club</span></div>
+        <!-- Desktop: title solda -->
         <div class="topbar-title" id="topbar-title">Ana Sayfa</div>
+        <!-- Desktop: arama + bildirim + paylaş -->
         <div class="topbar-search" id="search-box">
           <span class="topbar-search-icon">🔍</span>
           <input placeholder="Ara..." id="search-input" oninput="onSearchInput(this.value)" onfocus="showSearchPanel()" autocomplete="off">
@@ -1284,11 +1315,15 @@ body.light-mode .mob-drawer-version{color:var(--text3);}
             <div id="notif-list"><div style="padding:28px 16px;text-align:center;color:var(--text3);font-size:13px">Henüz bildirim yok</div></div>
           </div>
         </div>
-        <button class="mob-hamburger" onclick="openDrawer()" aria-label="Menü">☰</button>
         <button class="topbar-post-btn" onclick="openModal()">
           <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
           Paylaşım Yap
         </button>
+      </div>
+      <!-- Mobil ayrı topbar -->
+      <div class="mob-topbar">
+        <div class="mob-topbar-brand">MLYNR <span>Club</span></div>
+        <button class="mob-topbar-ham" onclick="openDrawer()">☰</button>
       </div>
 
       <!-- ── ANA SAYFA ── -->
