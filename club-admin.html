@@ -158,6 +158,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <button class="sec-tab" onclick="showSection('pending',this)">⏳ Onay Bekleyenler <span id="pending-count" style="background:#b45309;color:#fff;border-radius:999px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
       <button class="sec-tab" onclick="showSection('signal',this)">📡 Canberk Sinyali</button>
       <button class="sec-tab" onclick="showSection('users',this)">👥 Üyeler</button>
+      <button class="sec-tab" onclick="showSection('members',this)">✅ Üye Onayı <span id="members-count" style="background:#1a7a4a;color:#fff;border-radius:999px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
     </div>
 
     <!-- PENDING SECTION -->
@@ -202,6 +203,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
     </div>
 
     <!-- USERS SECTION -->
+    <!-- MEMBERS SECTION -->
+    <div class="section" id="sec-members">
+      <div class="admin-stats">
+        <div class="astat"><div class="astat-val" id="ms-pending">—</div><div class="astat-lbl">Bekleyen</div></div>
+        <div class="astat"><div class="astat-val" id="ms-approved">—</div><div class="astat-lbl">Onaylı</div></div>
+        <div class="astat"><div class="astat-val" id="ms-total">—</div><div class="astat-lbl">Toplam</div></div>
+      </div>
+      <div id="members-list"><div class="loading">Yükleniyor...</div></div>
+    </div>
+
     <div class="section" id="sec-users">
       <div id="users-list"><div class="loading">Yükleniyor...</div></div>
     </div>
@@ -255,6 +266,7 @@ async function adminLogout() {
 async function loadAll() {
   await Promise.all([loadPosts(), loadSignal()]);
   buildUserList();
+  loadMembers();
 }
 
 async function loadPosts() {
