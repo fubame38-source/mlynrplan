@@ -180,30 +180,6 @@ body.light-mode .nav-badge{background:var(--surface3);color:var(--text3);}
 .sidebar-divider{height:1px;background:rgba(255,255,255,.05);margin:10px 16px;}
 body.light-mode .sidebar-divider{background:var(--border);}
 
-/* Günlük hedef */
-.daily-goal{
-  margin:4px 12px 12px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:16px;padding:14px 16px;
-}
-body.light-mode .daily-goal{background:var(--surface2);border-color:var(--border);}
-.dg-title{font-size:9px;font-weight:700;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;font-family:var(--mono);}
-body.light-mode .dg-title{color:var(--text3);}
-.dg-numbers{display:flex;align-items:baseline;gap:4px;margin-bottom:3px;}
-.dg-current{font-size:26px;font-weight:900;color:#fff;letter-spacing:-.05em;line-height:1;}
-body.light-mode .dg-current{color:var(--text);}
-.dg-total{font-size:14px;color:rgba(255,255,255,.25);font-weight:500;}
-body.light-mode .dg-total{color:var(--text3);}
-.dg-label{font-size:11px;color:rgba(255,255,255,.25);margin-bottom:10px;}
-body.light-mode .dg-label{color:var(--text3);}
-.dg-bar{height:4px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;}
-body.light-mode .dg-bar{background:var(--border);}
-.dg-bar-fill{height:100%;background:#fff;border-radius:99px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
-body.light-mode .dg-bar-fill{background:var(--accent);}
-.dg-sub{font-size:11px;color:rgba(255,255,255,.25);margin-top:8px;line-height:1.4;}
-body.light-mode .dg-sub{color:var(--text3);}
-
 /* Sidebar bottom — user card */
 .sidebar-bottom{padding:12px 16px;border-top:1px solid rgba(255,255,255,.05);margin-top:auto;}
 body.light-mode .sidebar-bottom{border-top-color:var(--border);}
@@ -1087,7 +1063,7 @@ body.light-mode .pb-chip.earned{
       <div class="sidebar-top">
         <div class="brand">
           <div class="brand-icon">M</div>
-          <div class="brand-full">MLYNR <span>Community</span></div>
+          <div class="brand-full">MLYNR <span>Club</span></div>
         </div>
 
         <div class="nav-group">
@@ -1124,19 +1100,6 @@ body.light-mode .pb-chip.earned{
           </button>
         </div>
 
-        <div class="sidebar-divider"></div>
-
-        <!-- Günlük Hedef -->
-        <div class="daily-goal">
-          <div class="dg-title">Bugünkü Hedef</div>
-          <div class="dg-numbers">
-            <div class="dg-current" id="dg-current">0</div>
-            <div class="dg-total">/10</div>
-          </div>
-          <div class="dg-label">paylaşım yapıldı</div>
-          <div class="dg-bar"><div class="dg-bar-fill" id="dg-bar" style="width:0%"></div></div>
-          <div class="dg-sub" id="dg-sub">Bugün ilk paylaşımını yap!</div>
-        </div>
 
       </div>
 
