@@ -408,11 +408,14 @@ body.light-mode .fc-tag{background:var(--surface3);color:var(--text2);border-col
   border-color:var(--border2);
   transform:translateY(-1px);
 }
-.post.mine::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;
-  width:3px;background:var(--text);
-  border-radius:var(--radius-lg) 0 0 var(--radius-lg);
+.post.mine{
+  border-color:var(--text) !important;
+  border-width:2px !important;
 }
+body.light-mode .post.mine{
+  border-color:#0a0a0f !important;
+}
+.post.mine::before{ display:none; }
 
 /* Post header */
 .post-hd{display:flex;align-items:center;gap:11px;margin-bottom:6px;}
@@ -844,7 +847,6 @@ body.light-mode .banner-admin-bar{background:var(--surface2);border-color:var(--
 body.light-mode .banner-admin-bar-text{color:var(--text3);}
 
 /* ══ PROFILE PAGE ════════════════════════════════════════════ */
-#page-profile{display:none;}
 .profile-hero{
   background:linear-gradient(135deg,#111 0%,#1c1c26 100%);
   border:1.5px solid var(--border);
@@ -865,7 +867,17 @@ body.light-mode .profile-hero{background:var(--surface);border-color:var(--borde
   font-size:28px;font-weight:900;
   display:flex;align-items:center;justify-content:center;
   color:#fff;flex-shrink:0;border:3px solid rgba(255,255,255,.15);
+  position:relative;overflow:hidden;cursor:pointer;
 }
+.profile-av-big img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:17px;}
+.profile-av-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.55);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;opacity:0;transition:opacity .2s;border-radius:17px;
+}
+.profile-av-big:hover .profile-av-overlay{opacity:1;}
+.profile-av-input{display:none;}
+.pr-uploading{font-size:11px;color:rgba(255,255,255,.4);margin-top:6px;font-family:var(--mono);}
 .profile-av-info{}
 .profile-name{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.04em;line-height:1.2;}
 body.light-mode .profile-name{color:var(--text);}
@@ -1286,10 +1298,16 @@ body.light-mode .pb-chip.earned{
       <div id="page-profile" class="page-content" style="display:none">
         <div class="profile-hero">
           <div class="profile-av-row">
-            <div class="profile-av-big" id="pr-av">?</div>
+            <div class="profile-av-big" id="pr-av" onclick="document.getElementById('pr-photo-input').click()" title="Fotoğraf değiştir">
+              <span id="pr-av-letter">?</span>
+              <img id="pr-av-img" src="" alt="" style="display:none">
+              <div class="profile-av-overlay">📷</div>
+              <input type="file" id="pr-photo-input" class="profile-av-input" accept="image/jpeg,image/png,image/webp" onchange="uploadProfilePhoto(this)">
+            </div>
             <div class="profile-av-info">
               <div class="profile-name" id="pr-name">...</div>
               <div class="profile-role">Kursiyer · MLYNR</div>
+              <div class="pr-uploading" id="pr-uploading" style="display:none">Yükleniyor...</div>
             </div>
           </div>
           <div class="profile-stats-row">
@@ -2018,7 +2036,7 @@ function loadMembers() {
 
 // ─── BADGES ────────────────────────────────────────────────────
 // Badge tanımları: {id, emoji, label, color}
-// Öncelik sırası: en solda en yüksek (elite > pro > seller > motivator > supporter > starter)
+// Öncelik sırası: en yüksek önce
 var BADGE_DEFS = [
   { id:'elite',     emoji:'🏆', label:'Elite',     color:'#7c3aed', req:'10+ post' },
   { id:'pro',       emoji:'🚀', label:'Pro',       color:'#2563eb', req:'5 satış' },
@@ -2059,7 +2077,7 @@ function buildBadgeCache() {
 function getUserBadgeHtml(userId) {
   var earned = badgeCache[userId];
   if (!earned || earned.size === 0) return '';
-  // BADGE_DEFS sırası öncelik sırası — ilk eşleşeni göster
+  // BADGE_DEFS sırası = öncelik, ilk eşleşeni göster
   var def = BADGE_DEFS.find(b => earned.has(b.id));
   if (!def) return '';
   return `<span class="user-badge" style="--badge-color:${def.color}" title="${def.label}: ${def.req}"><span class="ub-emoji">${def.emoji}</span>${def.label}</span>`;
@@ -2233,9 +2251,26 @@ function scrollToPost(id) {
 async function loadProfile() {
   if (!me) return;
   var displayName = formatName(myName);
-  var av = document.getElementById('pr-av');
+
+  // Avatar — fotoğraf varsa göster, yoksa harf
+  var avLetter = document.getElementById('pr-av-letter');
+  var avImg = document.getElementById('pr-av-img');
+  var avWrap = document.getElementById('pr-av');
+  if (avWrap) avWrap.style.background = avColor(myName);
+  if (avLetter) avLetter.textContent = displayName.charAt(0).toUpperCase();
+
+  // Kaydedilmiş fotoğrafı yükle
+  var savedPhoto = localStorage.getItem('mlynr-avatar-'+me.id);
+  if (savedPhoto && avImg && avLetter) {
+    avImg.src = savedPhoto;
+    avImg.style.display = 'block';
+    avLetter.style.display = 'none';
+  } else if (avImg) {
+    avImg.style.display = 'none';
+    if (avLetter) avLetter.style.display = '';
+  }
+
   var nm = document.getElementById('pr-name');
-  if (av) { av.textContent = displayName.charAt(0).toUpperCase(); av.style.background = avColor(myName); }
   if (nm) nm.textContent = displayName;
 
   // Stats
@@ -2256,7 +2291,7 @@ async function loadProfile() {
   var rank = sorted.indexOf(me.id);
   el('pr-rank', rank >= 0 ? '#'+(rank+1) : '#—');
 
-  // Badges — checkBadges already filled badgeCache[me.id]
+  // Badges
   await checkBadges();
 
   // Posts feed
@@ -2265,6 +2300,47 @@ async function loadProfile() {
     if (!myPosts.length) { fp.innerHTML = '<div class="feed-empty">Henüz paylaşım yapmadın.</div>'; }
     else { fp.innerHTML = myPosts.map(p => renderPost(p)).join(''); }
   }
+}
+
+async function uploadProfilePhoto(input) {
+  var file = input.files[0];
+  if (!file || !me) return;
+  var allowedTypes = ['image/jpeg','image/png','image/webp'];
+  if (!allowedTypes.includes(file.type)) { alert('⚠️ Sadece JPG, PNG veya WEBP yükleyebilirsin.'); return; }
+  if (file.size > 2 * 1024 * 1024) { alert('⚠️ Fotoğraf en fazla 2MB olabilir.'); return; }
+
+  var uploading = document.getElementById('pr-uploading');
+  if (uploading) uploading.style.display = 'block';
+
+  // Supabase storage'a yükle
+  var extMap = {'image/jpeg':'jpg','image/png':'png','image/webp':'webp'};
+  var ext = extMap[file.type] || 'jpg';
+  var path = 'avatars/'+me.id+'.'+ext;
+  var { data, error } = await sb.storage.from('club-images').upload(path, file, { upsert: true });
+
+  if (uploading) uploading.style.display = 'none';
+
+  if (error) {
+    // Storage çalışmazsa local önizleme göster
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var avImg = document.getElementById('pr-av-img');
+      var avLetter = document.getElementById('pr-av-letter');
+      if (avImg) { avImg.src = e.target.result; avImg.style.display = 'block'; }
+      if (avLetter) avLetter.style.display = 'none';
+      localStorage.setItem('mlynr-avatar-'+me.id, e.target.result);
+    };
+    reader.readAsDataURL(file);
+    return;
+  }
+
+  var { data: urlData } = sb.storage.from('club-images').getPublicUrl(path);
+  var photoUrl = urlData.publicUrl;
+  var avImg = document.getElementById('pr-av-img');
+  var avLetter = document.getElementById('pr-av-letter');
+  if (avImg) { avImg.src = photoUrl; avImg.style.display = 'block'; }
+  if (avLetter) avLetter.style.display = 'none';
+  localStorage.setItem('mlynr-avatar-'+me.id, photoUrl);
 }
 
 // ─── BANNER / SIGNAL ───────────────────────────────────────────
