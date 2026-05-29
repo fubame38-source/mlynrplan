@@ -764,11 +764,11 @@ body.light-mode .mobile-nav{
 body.light-mode .mn-btn{color:var(--text3);}
 .mn-btn.active{color:#fff;}
 body.light-mode .mn-btn.active{color:var(--text);}
-.mn-icon{font-size:22px;line-height:1;}
+.mn-icon{width:22px;height:22px;display:block;}
 .mn-post-btn{
   width:48px;height:48px;border-radius:50%;
   background:var(--accent);color:var(--accent-fg);
-  border:none;cursor:pointer;font-size:22px;
+  border:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 4px 16px rgba(0,0,0,.4);
   transition:transform .2s,box-shadow .2s;
@@ -1323,7 +1323,7 @@ body.light-mode .mob-drawer-version{color:var(--text3);}
       <!-- Mobil ayrı topbar -->
       <div class="mob-topbar">
         <div class="mob-topbar-brand">MLYNR <span>Club</span></div>
-        <button class="mob-topbar-ham" onclick="openDrawer()">☰</button>
+        <button class="mob-topbar-ham" onclick="openDrawer()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
       </div>
 
       <!-- ── ANA SAYFA ── -->
@@ -1480,17 +1480,23 @@ body.light-mode .mob-drawer-version{color:var(--text3);}
   <nav class="mobile-nav">
     <div class="mobile-nav-inner">
       <button class="mn-btn active" id="mn-home" onclick="showPage('home')">
-        <span class="mn-icon">🏠</span>Ana Sayfa
+        <svg class="mn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+        Ana Sayfa
       </button>
       <button class="mn-btn" id="mn-feed" onclick="showPage('feed')">
-        <span class="mn-icon">📰</span>Feed
+        <svg class="mn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 10h16M4 14h10M4 18h7"/></svg>
+        Feed
       </button>
-      <button class="mn-post-btn" onclick="openModal()">+</button>
+      <button class="mn-post-btn" onclick="openModal()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
       <button class="mn-btn" id="mn-profile" onclick="showPage('profile')">
-        <span class="mn-icon">👤</span>Profil
+        <svg class="mn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg>
+        Profil
       </button>
       <button class="mn-btn" id="mn-theme" onclick="toggleTheme()">
-        <span class="mn-icon">☀️</span>Tema
+        <svg class="mn-icon" id="theme-icon-mob" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        Tema
       </button>
     </div>
   </nav>
@@ -1502,7 +1508,7 @@ body.light-mode .mob-drawer-version{color:var(--text3);}
 <div class="mob-drawer" id="mob-drawer">
   <div class="mob-drawer-top">
     <div class="mob-drawer-brand">MLYNR <span>Club</span></div>
-    <button class="mob-drawer-close" onclick="closeDrawer()">✕</button>
+    <button class="mob-drawer-close" onclick="closeDrawer()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
   </div>
   <div class="mob-drawer-user" onclick="closeDrawer();showPage('profile')">
     <div class="mob-du-av" id="drawer-av" style="background:#1a7a4a">?</div>
@@ -1510,27 +1516,27 @@ body.light-mode .mob-drawer-version{color:var(--text3);}
       <div class="mob-du-name" id="drawer-name">Yükleniyor...</div>
       <div class="mob-du-role">Üye</div>
     </div>
-    <span style="color:rgba(255,255,255,.3);font-size:14px;">›</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,.3);flex-shrink:0;"><polyline points="9 18 15 12 9 6"/></svg>
   </div>
   <div class="mob-drawer-nav">
     <button class="mob-dnav-item" onclick="closeDrawer();showPage('home')">
-      <span class="mob-dnav-icon">🏠</span> Ana Sayfa
+      <span class="mob-dnav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></span> Ana Sayfa
     </button>
     <button class="mob-dnav-item" onclick="closeDrawer();showPage('feed')">
-      <span class="mob-dnav-icon">📰</span> Feed
+      <span class="mob-dnav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 10h16M4 14h10M4 18h7"/></svg></span> Feed
     </button>
     <button class="mob-dnav-item" onclick="closeDrawer();showPage('profile')">
-      <span class="mob-dnav-icon">👤</span> Profilim
+      <span class="mob-dnav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg></span> Profilim
     </button>
     <button class="mob-dnav-item" onclick="closeDrawer();openModal()">
-      <span class="mob-dnav-icon">✏️</span> Paylaşım Yap
+      <span class="mob-dnav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span> Paylaşım Yap
     </button>
     <button class="mob-dnav-item" onclick="closeDrawer();toggleTheme()">
-      <span class="mob-dnav-icon" id="drawer-theme-icon">☀️</span> Tema Değiştir
+      <span class="mob-dnav-icon" id="drawer-theme-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span> Tema Değiştir
     </button>
     <div style="height:1px;background:rgba(255,255,255,.06);margin:8px 0;"></div>
     <button class="mob-dnav-item danger" onclick="closeDrawer();doLogout()">
-      <span class="mob-dnav-icon">↪️</span> Çıkış Yap
+      <span class="mob-dnav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span> Çıkış Yap
     </button>
   </div>
   <div class="mob-drawer-bottom">
