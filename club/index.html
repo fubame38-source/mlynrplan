@@ -1789,7 +1789,8 @@ async function doLogin() {
   // Admin ise direkt gir
   if (ADMIN_EMAILS.includes(data.user.email)) { onLogin(data.user); return; }
   // Onay kontrolü
-  var { data: profile } = await sb.from('club_members').select('approved, pass_set').eq('user_id', data.user.id).single();
+  var profileRes = await sb.from('club_members').select('approved, pass_set').eq('user_id', data.user.id).single();
+  var profile = profileRes ? profileRes.data : null;
   if (!profile || profile.approved === false) {
     showPendingScreen(data.user);
     return;
@@ -1885,9 +1886,10 @@ async function openDrawer() {
     if (dn) dn.textContent = formatName(myName);
     if (dav) {
       dav.style.background = avColor(myName);
-      var { data: davData } = await sb.from('club_members').select('avatar_url').eq('user_id', me.id).single();
-      if (davData?.avatar_url) {
-        dav.innerHTML = '<img src="'+davData.avatar_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">';
+      var davRes = await sb.from('club_members').select('avatar_url').eq('user_id', me.id).single();
+      var davAvatarUrl = davRes && davRes.data ? davRes.data.avatar_url : null;
+      if (davAvatarUrl) {
+        dav.innerHTML = '<img src="'+davAvatarUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">';
       } else {
         dav.textContent = formatName(myName).charAt(0).toUpperCase();
       }
@@ -1923,10 +1925,11 @@ async function doLogout() {
 async function loadAvatarFromDB(userId, displayName) {
   var navAv = document.getElementById('nav-av');
   if (!navAv) return;
-  var { data } = await sb.from('club_members').select('avatar_url').eq('user_id', userId).single();
-  if (data?.avatar_url) {
+  var avatarRes = await sb.from('club_members').select('avatar_url').eq('user_id', userId).single();
+  var avatarData = avatarRes ? avatarRes.data : null;
+  if (avatarData && avatarData.avatar_url) {
     var safeInit = displayName ? displayName.charAt(0).toUpperCase() : '?';
-    navAv.innerHTML = '<img src="'+data.avatar_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" onerror="this.parentElement.textContent=\''+safeInit+'\';this.parentElement.style.padding=\'\'">';
+    navAv.innerHTML = '<img src="'+avatarData.avatar_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" onerror="this.parentElement.textContent=\''+safeInit+'\';this.parentElement.style.padding=\'\'">';
   }
 }
 
@@ -2810,8 +2813,8 @@ async function loadProfile() {
   if (avLetter) avLetter.textContent = displayName.charAt(0).toUpperCase();
 
   // Kaydedilmiş fotoğrafı DB'den yükle
-  var { data: profData } = await sb.from('club_members').select('avatar_url').eq('user_id', me.id).single();
-  var savedPhoto = profData?.avatar_url || null;
+  var profRes = await sb.from('club_members').select('avatar_url').eq('user_id', me.id).single();
+  var savedPhoto = profRes && profRes.data ? profRes.data.avatar_url : null;
   if (savedPhoto && avImg && avLetter) {
     avImg.src = savedPhoto;
     avImg.style.display = 'block';
