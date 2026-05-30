@@ -1834,7 +1834,15 @@ async function doSignup() {
     options: { data: { full_name: name } }
   });
   btn.textContent = 'Kayıt Ol →'; btn.disabled = false;
-  if (signupRes.error) { showAuthMsg('Hata: ' + signupRes.error.message); return; }
+  if (signupRes.error) {
+    var errMsg = signupRes.error.message || '';
+    if (errMsg.toLowerCase().includes('already registered') || errMsg.toLowerCase().includes('already been registered')) {
+      showAuthMsg('Bu email zaten kayıtlı. Giriş yap sekmesini kullan.');
+    } else {
+      showAuthMsg('Hata: ' + errMsg);
+    }
+    return;
+  }
 
   if (signupRes.data.user) {
     // ADIM 3: Kodu tüket + üye kaydı oluştur (atomik)
