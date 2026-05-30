@@ -1820,35 +1820,39 @@ async function doSignup() {
   var btn = document.getElementById('signup-btn');
   btn.textContent = '...'; btn.disabled = true;
 
-  // Kodu ön kontrol (sadece format) — gerçek kontrol RPC'de atomik yapılır
+  // ADIM 1: Önce kodu doğrula (kullanmadan) — auth user oluşturmadan önce
+  var checkRes = await sb.rpc('check_invite_code', { p_code: code });
+  if (checkRes.error || !checkRes.data?.ok) {
+    btn.textContent = 'Kayıt Ol →'; btn.disabled = false;
+    showAuthMsg(checkRes.data?.error || 'Geçersiz veya kullanılmış davet kodu'); return;
+  }
 
-  // Geçici rastgele şifre ile hesap oluştur
+  // ADIM 2: Kod geçerli — şimdi auth user oluştur
   var tmpPass = 'TMP_' + crypto.randomUUID();
-  var { data, error } = await sb.auth.signUp({
+  var signupRes = await sb.auth.signUp({
     email, password: tmpPass,
     options: { data: { full_name: name } }
   });
   btn.textContent = 'Kayıt Ol →'; btn.disabled = false;
-  if (error) { showAuthMsg('Hata: ' + error.message); return; }
+  if (signupRes.error) { showAuthMsg('Hata: ' + signupRes.error.message); return; }
 
-  if (data.user) {
-    // Atomic RPC — race condition yok, kod + üye kaydı tek transaction
-    var { data: rpcResult, error: rpcErr } = await sb.rpc('use_invite_code', {
+  if (signupRes.data.user) {
+    // ADIM 3: Kodu tüket + üye kaydı oluştur (atomik)
+    var rpcRes = await sb.rpc('use_invite_code', {
       p_code: code,
-      p_user_id: data.user.id,
+      p_user_id: signupRes.data.user.id,
       p_name: name,
-      p_email: data.user.email
+      p_email: signupRes.data.user.email
     });
-    if (rpcErr || !rpcResult?.ok) {
-      // Hesabı sil, kod geçersizdi
+    if (rpcRes.error || !rpcRes.data?.ok) {
       await sb.auth.signOut();
-      showAuthMsg(rpcResult?.error || 'Davet kodu kullanılamadı'); return;
+      showAuthMsg(rpcRes.data?.error || 'Kayıt sırasında hata oluştu'); return;
     }
   }
 
-  if (data.session) {
-    if (ADMIN_EMAILS.includes(data.user.email)) { onLogin(data.user); return; }
-    showPendingScreen(data.user);
+  if (signupRes.data.session) {
+    if (ADMIN_EMAILS.includes(signupRes.data.user.email)) { onLogin(signupRes.data.user); return; }
+    showPendingScreen(signupRes.data.user);
   } else {
     showAuthMsg('Kayıt alındı! Admin onayından sonra giriş yapabilirsin.', true);
   }
