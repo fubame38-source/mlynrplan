@@ -673,7 +673,7 @@ async function addAnnouncement() {
           })
         });
         if (!presignRes.ok) throw new Error('Presign hatası: ' + await presignRes.text());
-        var { uploadUrl, publicUrl } = await presignRes.json();
+        var { uploadUrl, publicUrl, uploadToken } = await presignRes.json();
 
         // İlerleme takibi ile yükle
         status.textContent = '⏳ Yükleniyor (0%)...';
@@ -681,7 +681,7 @@ async function addAnnouncement() {
           var xhr = new XMLHttpRequest();
           xhr.open('PUT', uploadUrl);
           xhr.setRequestHeader('Content-Type', annSelectedFile.type);
-          xhr.setRequestHeader('Authorization', 'Bearer ' + sessionToken);
+          xhr.setRequestHeader('X-Upload-Token', uploadToken || '');
           xhr.upload.onprogress = function(e) {
             if (e.lengthComputable) {
               var pct = Math.round(e.loaded / e.total * 100);
