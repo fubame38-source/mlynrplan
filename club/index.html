@@ -2362,7 +2362,8 @@ function renderPost(p) {
   var delBtn = canDelete ? `<button class="post-del" onclick="deletePost('${p.id}','${p.user_id}')" title="Sil">
       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
     </button>` : '';
-  var pendingHtml = (!p.approved && isMine) ? '<div class="pending-pill">⏳ Onay bekleniyor</div>' : '';
+  var isAdminUser = ADMIN_EMAILS.includes(me?.email);
+  var pendingHtml = (!p.approved && isMine && !isAdminUser) ? '<div class="pending-pill">⏳ Onay bekleniyor</div>' : '';
 
   var specialHtml = '';
   if (p.post_type==='milestone') {
@@ -2566,14 +2567,15 @@ async function submitPost() {
   var salePrice = document.getElementById('f-price').value.trim().slice(0,20)||null;
   var saleProfit = document.getElementById('f-profit').value.trim().slice(0,20)||null;
   var saleOrders = document.getElementById('f-orders').value.trim().slice(0,10)||null;
+  var isAdminPost = ADMIN_EMAILS.includes(me?.email);
   var post = {
     user_id:me.id, user_name:myName, user_email:me.email,
     post_type:selectedType, content,
     sale_price:salePrice,
     sale_profit:saleProfit,
     sale_orders:saleOrders,
-    image_url:imageUrl
-    // approved: DB default (false) — admin RLS policy ile kontrol edilir
+    image_url:imageUrl,
+    approved: isAdminPost ? true : false
   };
   var {data,error} = await sb.from('club_posts').insert(post).select().single();
   btn.disabled=false; btn.textContent='Paylaş →';
