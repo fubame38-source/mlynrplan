@@ -1916,13 +1916,38 @@ function closeDrawer() {
 
 
 // ─── ONAY BEKLEME ──────────────────────────────────────────────
+var pendingCheckInterval = null;
+
 function showPendingScreen(user) {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('pending-screen').style.display = 'flex';
   var el = document.getElementById('pending-email-show');
   if (el) el.textContent = user.email;
+  // 30 saniyede bir onay kontrolü
+  if (pendingCheckInterval) clearInterval(pendingCheckInterval);
+  pendingCheckInterval = setInterval(async function() {
+    var checkRes = await sb.from('club_members').select('approved, pass_set').eq('user_id', user.id).single();
+    var member = checkRes ? checkRes.data : null;
+    if (member && member.approved) {
+      clearInterval(pendingCheckInterval);
+      pendingCheckInterval = null;
+      document.getElementById('pending-screen').style.display = 'none';
+      // Şifre belirlememiş mi?
+      if (!member.pass_set) {
+        document.getElementById('auth-screen').style.display = 'flex';
+        document.getElementById('auth-login-form').style.display = 'none';
+        document.getElementById('auth-signup-form').style.display = 'none';
+        document.getElementById('auth-setpass-form').style.display = 'block';
+        document.querySelectorAll('.auth-tab').forEach(function(t) { t.style.display = 'none'; });
+      } else {
+        onLogin(user);
+      }
+    }
+  }, 30000);
 }
+
 async function doPendingLogout() {
+  if (pendingCheckInterval) { clearInterval(pendingCheckInterval); pendingCheckInterval = null; }
   await sb.auth.signOut();
   document.getElementById('pending-screen').style.display = 'none';
   document.getElementById('auth-screen').style.display = 'flex';
