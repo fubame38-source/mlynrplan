@@ -571,8 +571,12 @@ async function approveMember(id, email) {
 
 async function rejectMember(id, email) {
   if (!confirm('"'+email+'" üyesini reddet/kaldır?')) return;
-  var { error } = await sb.from('club_members').update({ approved: false }).eq('id', id);
+  // club_members'dan sil
+  var { error } = await sb.from('club_members').delete().eq('id', id);
   if (error) { alert('Hata: ' + error.message); return; }
+  // UI'dan kaldır
+  var el = document.getElementById('member-'+id);
+  if (el) el.remove();
   loadMembers();
 }
 
