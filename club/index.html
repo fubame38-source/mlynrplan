@@ -1697,13 +1697,13 @@ body:not(.light-mode) .ann-card{background:#141420;border-color:rgba(99,102,241,
       <button class="modal-x" onclick="closeModal()">×</button>
     </div>
     <div class="type-row">
-      <button class="type-btn active" onclick="selType(this,'milestone')">🎉 İlk Satış</button>
+      <button class="type-btn" onclick="selType(this,'milestone')">🎉 İlk Satış</button>
       <button class="type-btn" onclick="selType(this,'sale')">💰 Satış</button>
       <button class="type-btn" onclick="selType(this,'product')">📦 Ürün</button>
-      <button class="type-btn" onclick="selType(this,'question')">❓ Soru</button>
+      <button class="type-btn active" onclick="selType(this,'question')">❓ Soru</button>
       <button class="type-btn" onclick="selType(this,'motivation')">🔥 Motivasyon</button>
     </div>
-    <div class="sale-fields" id="sale-fields">
+    <div class="sale-fields" id="sale-fields" style="display:none">
       <div><label class="f-label">Satış Fiyatı</label><input class="f-input" type="text" id="f-price" placeholder="$49.99"></div>
       <div><label class="f-label">Net Kar</label><input class="f-input" type="text" id="f-profit" placeholder="$18.00"></div>
       <div><label class="f-label">Sipariş</label><input class="f-input" type="text" id="f-orders" placeholder="3"></div>
@@ -1746,7 +1746,7 @@ const sb = supabase.createClient(SB_URL, SB_KEY, {
 let me = null;
 let myName = '';
 let currentTab = 'all';
-let selectedType = 'milestone';
+let selectedType = 'question';
 let selectedFile = null;
 let allPosts = [];
 let currentPage = 'home';
@@ -2768,7 +2768,17 @@ function subscribeRealtime() {
 }
 
 // ─── MODAL ─────────────────────────────────────────────────────
-function openModal() { document.getElementById('modal').classList.add('show'); }
+function openModal() {
+  document.getElementById('modal').classList.add('show');
+  // Her açılışta Soru'ya resetle
+  selectedType = 'question';
+  document.querySelectorAll('.type-btn').forEach(function(b) {
+    b.classList.remove('active');
+    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'question'")) b.classList.add('active');
+  });
+  var sf = document.getElementById('sale-fields');
+  if (sf) sf.style.display = 'none';
+}
 function closeModal() {
   document.getElementById('modal').classList.remove('show');
   document.getElementById('f-text').value='';
@@ -2781,7 +2791,7 @@ function selType(el, type) {
   document.querySelectorAll('.type-btn').forEach(o=>o.classList.remove('active'));
   el.classList.add('active');
   var sf=document.getElementById('sale-fields');
-  if(sf) sf.style.display=(type==='sale'||type==='milestone')?'grid':'none';
+  if(sf) sf.style.display=(type==='sale')?'grid':'none';
 }
 
 // ─── SWITCH TAB ────────────────────────────────────────────────
