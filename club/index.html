@@ -2551,6 +2551,7 @@ async function submitPost() {
       var token = session?.access_token || '';
       var fd = new FormData();
       fd.append('file', selectedFile);
+      fd.append('folder', 'posts');
       var upRes = await fetch(R2_WORKER_URL, {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + token },
@@ -2923,6 +2924,7 @@ async function uploadProfilePhoto(input) {
     var token = session?.access_token || '';
     var fd = new FormData();
     fd.append('file', file);
+    fd.append('folder', 'avatars');
     var res = await fetch(R2_WORKER_URL, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + token },
