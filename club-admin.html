@@ -654,22 +654,64 @@ async function addAnnouncement() {
     status.style.display = 'block';
     status.textContent = '⏳ Yükleniyor...';
     try {
-      var fd = new FormData();
-      fd.append('file', annSelectedFile);
-      // Supabase session token ile doğrulama — hardcoded key kullanılmaz
       var { data: sessionData } = await sb.auth.getSession();
       var sessionToken = sessionData?.session?.access_token || '';
-      var res = await fetch(R2_WORKER_URL, {
-        method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + sessionToken },
-        body: fd
-      });
-      if (!res.ok) {
-        var errText = await res.text();
-        throw new Error(errText);
+      var authHeaders = { 'Authorization': 'Bearer ' + sessionToken };
+
+      var uploadedUrl = null;
+
+      if (annSelectedFile.size > 50 * 1024 * 1024) {
+        // Büyük dosya (50MB+) → presign al, direkt PUT ile yükle
+        status.textContent = '⏳ Bağlantı kuruluyor...';
+        var presignRes = await fetch(R2_WORKER_URL + 'presign', {
+          method: 'POST',
+          headers: { ...authHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filename: annSelectedFile.name,
+            contentType: annSelectedFile.type,
+            folder: 'announcements'
+          })
+        });
+        if (!presignRes.ok) throw new Error('Presign hatası: ' + await presignRes.text());
+        var { uploadUrl, publicUrl } = await presignRes.json();
+
+        // İlerleme takibi ile yükle
+        status.textContent = '⏳ Yükleniyor (0%)...';
+        await new Promise((resolve, reject) => {
+          var xhr = new XMLHttpRequest();
+          xhr.open('PUT', uploadUrl);
+          xhr.setRequestHeader('Content-Type', annSelectedFile.type);
+          xhr.setRequestHeader('Authorization', 'Bearer ' + sessionToken);
+          xhr.upload.onprogress = function(e) {
+            if (e.lengthComputable) {
+              var pct = Math.round(e.loaded / e.total * 100);
+              status.textContent = '⏳ Yükleniyor (' + pct + '%)...';
+            }
+          };
+          xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) resolve();
+            else reject(new Error('Yükleme hatası: ' + xhr.status));
+          };
+          xhr.onerror = () => reject(new Error('Ağ hatası'));
+          xhr.send(annSelectedFile);
+        });
+        uploadedUrl = publicUrl;
+
+      } else {
+        // Küçük dosya → FormData ile yükle
+        var fd = new FormData();
+        fd.append('file', annSelectedFile);
+        var res = await fetch(R2_WORKER_URL, {
+          method: 'POST',
+          headers: authHeaders,
+          body: fd
+        });
+        if (!res.ok) throw new Error(await res.text());
+        var result = await res.json();
+        uploadedUrl = result.url;
       }
-      var result = await res.json();
-      mediaUrl = result.url;
+
+      mediaUrl = uploadedUrl;
       mediaType = annSelectedType;
       status.style.display = 'none';
       document.getElementById('ann-upload-area').style.borderColor = 'var(--green)';
