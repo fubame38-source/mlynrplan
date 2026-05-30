@@ -217,6 +217,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <button class="sec-tab" onclick="showSection('ann',this)">📌 Duyurular <span id="ann-count" style="background:#6366f1;color:#fff;border-radius:999px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
       <button class="sec-tab" onclick="showSection('users',this)">👥 Üyeler</button>
       <button class="sec-tab" onclick="showSection('members',this)">✅ Üye Onayı <span id="members-count" style="background:#1a7a4a;color:#fff;border-radius:999px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
+      <button class="sec-tab" onclick="showSection('codes',this)">🔑 Davet Kodları</button>
     </div>
 
     <!-- PENDING SECTION -->
@@ -311,6 +312,22 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <div id="users-list"><div class="loading">Yükleniyor...</div></div>
     </div>
 
+    <!-- DAVET KODLARI -->
+    <div class="section" id="sec-codes">
+      <div class="signal-edit-card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:16px;">Yeni Davet Kodu Ekle</div>
+        <span class="field-label">Kod</span>
+        <input class="field-input" id="code-inp" placeholder="MLYNR-XXXX" style="text-transform:uppercase;letter-spacing:.08em" oninput="this.value=this.value.toUpperCase()">
+        <span class="field-label">Açıklama (opsiyonel)</span>
+        <input class="field-input" id="code-label-inp" placeholder="Örn: Ocak 2026 grubu">
+        <span class="field-label">Maksimum Kullanım</span>
+        <input class="field-input" id="code-max-inp" type="number" value="1" min="1" placeholder="1">
+        <button class="save-btn" onclick="addInviteCode()">Kod Ekle →</button>
+        <span class="save-ok" id="code-save-ok">✓ Eklendi</span>
+      </div>
+      <div id="codes-list"><div class="loading">Yükleniyor...</div></div>
+    </div>
+
   </div>
 </div>
 
@@ -363,6 +380,7 @@ async function loadAll() {
   buildUserList();
   loadMembers();
   loadAdminAnnouncements();
+  loadInviteCodes();
 }
 
 async function loadPosts() {
@@ -739,12 +757,70 @@ function updateAdminStats(posts) {
   document.getElementById('as-sales').textContent = posts.filter(p=>p.post_type==='sale'||p.post_type==='milestone').length;
 }
 
+// ─── DAVET KODLARI ─────────────────────────────────────────────
+async function loadInviteCodes() {
+  var { data } = await sb.from('club_invite_codes').select('*').order('created_at', { ascending: false });
+  var list = document.getElementById('codes-list');
+  if (!data || !data.length) { list.innerHTML = '<div class="empty">Henüz kod yok.</div>'; return; }
+  list.innerHTML = data.map(c => {
+    var pct = c.max_uses > 0 ? Math.round((c.use_count||0)/c.max_uses*100) : 0;
+    var statusColor = c.used ? 'var(--red)' : (c.use_count >= c.max_uses && c.max_uses > 0) ? 'var(--red)' : 'var(--green)';
+    var statusText = c.used || (c.max_uses > 0 && c.use_count >= c.max_uses) ? '✗ Dolu' : '✓ Aktif';
+    return `<div class="post-row" id="code-${c.id}">
+      <div class="pr-head">
+        <div class="pr-av" style="background:#6366f1;font-size:12px">🔑</div>
+        <div class="pr-info">
+          <div class="pr-name" style="font-family:var(--mono);letter-spacing:.08em">${esc(c.code)}</div>
+          <div class="pr-meta">${esc(c.label||'—')} · ${c.use_count||0}/${c.max_uses} kullanım · ${timeAgo(c.created_at)}</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:11px;color:${statusColor};font-weight:700">${statusText}</div>
+      </div>
+      <div class="pr-actions">
+        <button class="btn-del" onclick="deleteInviteCode('${c.id}')">🗑 Sil</button>
+        <button style="background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);color:#6366f1;font-family:var(--mono);font-size:11px;padding:6px 14px;border-radius:8px;cursor:pointer" onclick="copyCode('${esc(c.code)}')">📋 Kopyala</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function addInviteCode() {
+  var code = document.getElementById('code-inp').value.trim().toUpperCase();
+  var label = document.getElementById('code-label-inp').value.trim();
+  var maxUses = parseInt(document.getElementById('code-max-inp').value) || 1;
+  if (!code || code.length < 4) { alert('Geçerli bir kod gir (min 4 karakter)'); return; }
+  var btn = document.querySelector('#sec-codes .save-btn');
+  btn.textContent = '...'; btn.disabled = true;
+  var { error } = await sb.from('club_invite_codes').insert({ code, label, max_uses: maxUses, use_count: 0, used: false });
+  btn.textContent = 'Kod Ekle →'; btn.disabled = false;
+  if (error) { alert('Hata: ' + error.message); return; }
+  document.getElementById('code-inp').value = '';
+  document.getElementById('code-label-inp').value = '';
+  document.getElementById('code-max-inp').value = '1';
+  var ok = document.getElementById('code-save-ok');
+  ok.style.opacity = '1'; setTimeout(() => ok.style.opacity = '0', 2500);
+  loadInviteCodes();
+}
+
+async function deleteInviteCode(id) {
+  if (!confirm('Bu kodu silmek istediğine emin misin?')) return;
+  var el = document.getElementById('code-'+id);
+  if (el) { el.style.opacity = '.4'; el.style.pointerEvents = 'none'; }
+  var { error } = await sb.from('club_invite_codes').delete().eq('id', id);
+  if (error) { alert('Hata: ' + error.message); if(el){el.style.opacity='1';el.style.pointerEvents='';} return; }
+  if (el) el.remove();
+}
+
+function copyCode(code) {
+  navigator.clipboard.writeText(code).then(() => alert('Kopyalandı: ' + code));
+}
+
 // ─── SECTIONS ──────────────────────────────────────────────────
 function showSection(id, el) {
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('sec-'+id).classList.add('active');
   el.classList.add('active');
+  if (id === 'codes') loadInviteCodes();
 }
 
 // ─── HELPERS ───────────────────────────────────────────────────
