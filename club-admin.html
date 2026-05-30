@@ -575,7 +575,7 @@ async function rejectMember(id, email) {
   var { error } = await sb.from('club_members').delete().eq('id', id);
   if (error) { alert('Hata: ' + error.message); return; }
   // UI'dan kaldır
-  var el = document.getElementById('member-'+id);
+  var el = document.getElementById('mr-'+id);
   if (el) el.remove();
   loadMembers();
 }
