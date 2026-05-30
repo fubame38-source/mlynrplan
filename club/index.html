@@ -1789,13 +1789,13 @@ async function doLogin() {
   // Admin ise direkt gir
   if (ADMIN_EMAILS.includes(data.user.email)) { onLogin(data.user); return; }
   // Onay kontrolü
-  var { data: profile } = await sb.from('club_members').select('approved').eq('user_id', data.user.id).single();
+  var { data: profile } = await sb.from('club_members').select('approved, pass_set').eq('user_id', data.user.id).single();
   if (!profile || profile.approved === false) {
     showPendingScreen(data.user);
     return;
   }
   // Onaylı ama şifre belirlememiş mi? (geçici şifreyle giriş yaptı)
-  var passSet = localStorage.getItem('mlynr-pass-set-' + data.user.id);
+  var passSet = profile.pass_set === true;
   if (!passSet) {
     // Şifre belirleme ekranını göster
     document.getElementById('auth-login-form').style.display = 'none';
@@ -1822,7 +1822,7 @@ async function doSignup() {
   // Kodu ön kontrol (sadece format) — gerçek kontrol RPC'de atomik yapılır
 
   // Geçici rastgele şifre ile hesap oluştur
-  var tmpPass = 'TMP_' + Math.random().toString(36).slice(2,10) + '_' + Date.now();
+  var tmpPass = 'TMP_' + crypto.randomUUID();
   var { data, error } = await sb.auth.signUp({
     email, password: tmpPass,
     options: { data: { full_name: name } }
@@ -1865,10 +1865,10 @@ async function doSetPass() {
   var { error } = await sb.auth.updateUser({ password: pass });
   btn.textContent = 'Şifremi Kaydet →'; btn.disabled = false;
   if (error) { showAuthMsg('Hata: ' + error.message); return; }
-  // Şifre belirlendi, localStorage'a işaretle
+  // Şifre belirlendi, DB'ye işaretle
   var session = (await sb.auth.getSession()).data.session;
   if (session) {
-    localStorage.setItem('mlynr-pass-set-' + session.user.id, '1');
+    await sb.from('club_members').update({ pass_set: true }).eq('user_id', session.user.id);
     onLogin(session.user);
   }
 }
