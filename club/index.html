@@ -1732,6 +1732,7 @@ body:not(.light-mode) .ann-card{background:#141420;border-color:rgba(99,102,241,
 const SB_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNTcxNzksImV4cCI6MjA4ODczMzE3OX0.JbtrF-ymC11M7HM9MhT5_I1hD8e5oOQz0q-d7Ty5E2Q';
 const ADMIN_EMAILS = ['furkan@mlynr.com','canberk@mlynr.com'];
+const R2_WORKER_URL = 'https://mlynr-upload.fubame38.workers.dev/';
 const sb = supabase.createClient(SB_URL, SB_KEY, {
   auth: {
     storageKey: 'mlynr-club-auth',
@@ -2501,11 +2502,25 @@ async function submitPost() {
       alert('⚠️ Sadece JPG, PNG, WEBP veya GIF yükleyebilirsin.');
       btn.disabled=false; btn.textContent='Paylaş →'; return;
     }
-    var extMap = {'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif'};
-    var ext = extMap[selectedFile.type] || 'jpg';
-    var path = me.id+'/'+Date.now()+'.'+ext;
-    var {data:upData,error:upErr} = await sb.storage.from('club-images').upload(path,selectedFile);
-    if (!upErr) { var {data:urlData}=sb.storage.from('club-images').getPublicUrl(path); imageUrl=urlData.publicUrl; }
+    if (selectedFile.size > 20 * 1024 * 1024) {
+      alert('⚠️ Görsel en fazla 20MB olabilir.');
+      btn.disabled=false; btn.textContent='Paylaş →'; return;
+    }
+    try {
+      var session = (await sb.auth.getSession()).data.session;
+      var token = session?.access_token || '';
+      var fd = new FormData();
+      fd.append('file', selectedFile);
+      var upRes = await fetch(R2_WORKER_URL, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token },
+        body: fd
+      });
+      if (upRes.ok) {
+        var upData = await upRes.json();
+        imageUrl = upData.url;
+      }
+    } catch(e) { /* upload başarısız, görselsiz devam */ }
   }
   var salePrice = document.getElementById('f-price').value.trim().slice(0,20)||null;
   var saleProfit = document.getElementById('f-profit').value.trim().slice(0,20)||null;
@@ -2850,46 +2865,47 @@ async function uploadProfilePhoto(input) {
   if (!file || !me) return;
   var allowedTypes = ['image/jpeg','image/png','image/webp'];
   if (!allowedTypes.includes(file.type)) { alert('⚠️ Sadece JPG, PNG veya WEBP yükleyebilirsin.'); return; }
-  if (file.size > 2 * 1024 * 1024) { alert('⚠️ Fotoğraf en fazla 2MB olabilir.'); return; }
+  if (file.size > 5 * 1024 * 1024) { alert('⚠️ Fotoğraf en fazla 5MB olabilir.'); return; }
 
   var uploading = document.getElementById('pr-uploading');
   if (uploading) uploading.style.display = 'block';
 
-  // Supabase storage'a yükle
-  var extMap = {'image/jpeg':'jpg','image/png':'png','image/webp':'webp'};
-  var ext = extMap[file.type] || 'jpg';
-  var path = 'avatars/'+me.id+'.'+ext;
-  var { data, error } = await sb.storage.from('club-images').upload(path, file, { upsert: true });
-
-  if (uploading) uploading.style.display = 'none';
-
-  if (error) {
-    // Storage çalışmazsa local önizleme göster
+  try {
+    var session = (await sb.auth.getSession()).data.session;
+    var token = session?.access_token || '';
+    var fd = new FormData();
+    fd.append('file', file);
+    var res = await fetch(R2_WORKER_URL, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token },
+      body: fd
+    });
+    if (uploading) uploading.style.display = 'none';
+    if (!res.ok) throw new Error('Upload failed');
+    var result = await res.json();
+    var photoUrl = result.url;
+    var avImg = document.getElementById('pr-av-img');
+    var avLetter = document.getElementById('pr-av-letter');
+    if (avImg) { avImg.src = photoUrl; avImg.style.display = 'block'; }
+    if (avLetter) avLetter.style.display = 'none';
+    localStorage.setItem('mlynr-avatar-'+me.id, photoUrl);
+    var navAv = document.getElementById('nav-av');
+    if (navAv) navAv.innerHTML = '<img src="'+photoUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
+  } catch(e) {
+    if (uploading) uploading.style.display = 'none';
+    // R2 başarısız olursa local preview göster
     var reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function(ev) {
       var avImg = document.getElementById('pr-av-img');
       var avLetter = document.getElementById('pr-av-letter');
-      if (avImg) { avImg.src = e.target.result; avImg.style.display = 'block'; }
+      if (avImg) { avImg.src = ev.target.result; avImg.style.display = 'block'; }
       if (avLetter) avLetter.style.display = 'none';
-      localStorage.setItem('mlynr-avatar-'+me.id, e.target.result);
-      // Sidebar nav avatar güncelle
+      localStorage.setItem('mlynr-avatar-'+me.id, ev.target.result);
       var navAv = document.getElementById('nav-av');
-      if (navAv) navAv.innerHTML = '<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
+      if (navAv) navAv.innerHTML = '<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
     };
     reader.readAsDataURL(file);
-    return;
   }
-
-  var { data: urlData } = sb.storage.from('club-images').getPublicUrl(path);
-  var photoUrl = urlData.publicUrl;
-  var avImg = document.getElementById('pr-av-img');
-  var avLetter = document.getElementById('pr-av-letter');
-  if (avImg) { avImg.src = photoUrl; avImg.style.display = 'block'; }
-  if (avLetter) avLetter.style.display = 'none';
-  localStorage.setItem('mlynr-avatar-'+me.id, photoUrl);
-  // Sidebar nav avatar güncelle
-  var navAv = document.getElementById('nav-av');
-  if (navAv) navAv.innerHTML = '<img src="'+photoUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
 }
 
 // ─── BANNER / SIGNAL ───────────────────────────────────────────
