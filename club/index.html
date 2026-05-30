@@ -1819,20 +1819,7 @@ async function doSignup() {
   var btn = document.getElementById('signup-btn');
   btn.textContent = '...'; btn.disabled = true;
 
-  // Kodu doğrula
-  var { data: codeRow } = await sb.from('club_invite_codes')
-    .select('id, used, max_uses, use_count')
-    .eq('code', code)
-    .single();
-
-  if (!codeRow) {
-    btn.textContent = 'Kayıt Ol →'; btn.disabled = false;
-    showAuthMsg('Geçersiz davet kodu'); return;
-  }
-  if (codeRow.used || (codeRow.max_uses > 0 && codeRow.use_count >= codeRow.max_uses)) {
-    btn.textContent = 'Kayıt Ol →'; btn.disabled = false;
-    showAuthMsg('Bu davet kodu artık kullanılamaz'); return;
-  }
+  // Kodu ön kontrol (sadece format) — gerçek kontrol RPC'de atomik yapılır
 
   // Geçici rastgele şifre ile hesap oluştur
   var tmpPass = 'TMP_' + Math.random().toString(36).slice(2,10) + '_' + Date.now();
@@ -1844,19 +1831,18 @@ async function doSignup() {
   if (error) { showAuthMsg('Hata: ' + error.message); return; }
 
   if (data.user) {
-    // club_members'a kaydet
-    await sb.from('club_members').upsert({
-      user_id: data.user.id,
-      email: data.user.email,
-      name: name,
-      invite_code: code,
-      created_at: new Date().toISOString()
+    // Atomic RPC — race condition yok, kod + üye kaydı tek transaction
+    var { data: rpcResult, error: rpcErr } = await sb.rpc('use_invite_code', {
+      p_code: code,
+      p_user_id: data.user.id,
+      p_name: name,
+      p_email: data.user.email
     });
-    // Kod kullanımını artır
-    await sb.from('club_invite_codes').update({
-      use_count: (codeRow.use_count || 0) + 1,
-      used: (codeRow.max_uses === 1)
-    }).eq('id', codeRow.id);
+    if (rpcErr || !rpcResult?.ok) {
+      // Hesabı sil, kod geçersizdi
+      await sb.auth.signOut();
+      showAuthMsg(rpcResult?.error || 'Davet kodu kullanılamadı'); return;
+    }
   }
 
   if (data.session) {
