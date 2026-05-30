@@ -2437,7 +2437,15 @@ async function sendComment(postId) {
   lastCommentTime = now;
   inp.value = '';
   var { data, error } = await sb.from('club_comments').insert({post_id:postId,user_id:me.id,user_name:myName,content:txt}).select().single();
-  if (!error && data) {
+  if (error) {
+    if (error.message && error.message.includes('rate_limit')) {
+      alert('⏳ ' + error.message.replace('rate_limit: ',''));
+    } else {
+      alert('Hata: ' + error.message);
+    }
+    return;
+  }
+  if (data) {
     var cl = document.getElementById('cl-'+postId);
     var cav = avColor(myName||'U');
     var ci = myName.charAt(0).toUpperCase();
@@ -2531,7 +2539,14 @@ async function submitPost() {
   };
   var {data,error} = await sb.from('club_posts').insert(post).select().single();
   btn.disabled=false; btn.textContent='Paylaş →';
-  if (error) { alert('Hata: '+error.message); return; }
+  if (error) {
+    if (error.message && error.message.includes('rate_limit')) {
+      alert('⏳ ' + error.message.replace('rate_limit: ',''));
+    } else {
+      alert('Hata: ' + error.message);
+    }
+    return;
+  }
   lastPostTime = Date.now();
   data.club_reactions=[]; data.club_comments=[];
   allPosts.unshift(data);
