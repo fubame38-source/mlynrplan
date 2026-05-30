@@ -324,7 +324,6 @@ const SB_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNTcxNzksImV4cCI6MjA4ODczMzE3OX0.JbtrF-ymC11M7HM9MhT5_I1hD8e5oOQz0q-d7Ty5E2Q';
 const ADMIN_EMAILS = ['furkan@mlynr.com','canberk@mlynr.com'];
 const R2_WORKER_URL = 'https://mlynr-upload.fubame38.workers.dev/';
-const R2_ADMIN_KEY = 'MLYNR2025UPLOAD_SECRET';
 const sb = supabase.createClient(SB_URL, SB_KEY);
 
 let allPosts = [];
@@ -639,9 +638,12 @@ async function addAnnouncement() {
     try {
       var fd = new FormData();
       fd.append('file', annSelectedFile);
+      // Supabase session token ile doğrulama — hardcoded key kullanılmaz
+      var { data: sessionData } = await sb.auth.getSession();
+      var sessionToken = sessionData?.session?.access_token || '';
       var res = await fetch(R2_WORKER_URL, {
         method: 'POST',
-        headers: { 'X-Admin-Key': R2_ADMIN_KEY },
+        headers: { 'Authorization': 'Bearer ' + sessionToken },
         body: fd
       });
       if (!res.ok) {
