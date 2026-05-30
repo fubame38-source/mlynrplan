@@ -1805,8 +1805,8 @@ async function doSignup() {
       user_id: data.user.id,
       email: data.user.email,
       name: name,
-      approved: false,
       created_at: new Date().toISOString()
+      // approved: DB default (false) — client bu alanı set edemez
     });
   }
   if (data.session) {
@@ -2442,15 +2442,14 @@ async function submitPost() {
   var salePrice = document.getElementById('f-price').value.trim().slice(0,20)||null;
   var saleProfit = document.getElementById('f-profit').value.trim().slice(0,20)||null;
   var saleOrders = document.getElementById('f-orders').value.trim().slice(0,10)||null;
-  var isAdminUser = ADMIN_EMAILS.includes(me.email);
   var post = {
     user_id:me.id, user_name:myName, user_email:me.email,
     post_type:selectedType, content,
     sale_price:salePrice,
     sale_profit:saleProfit,
     sale_orders:saleOrders,
-    image_url:imageUrl,
-    approved: isAdminUser ? true : false
+    image_url:imageUrl
+    // approved: DB default (false) — admin RLS policy ile kontrol edilir
   };
   var {data,error} = await sb.from('club_posts').insert(post).select().single();
   btn.disabled=false; btn.textContent='Paylaş →';
@@ -2841,6 +2840,7 @@ function openBannerEdit() {
 }
 function closeBannerModal() { document.getElementById('banner-modal').classList.remove('show'); }
 async function saveBanner() {
+  if (!ADMIN_EMAILS.includes(me?.email)) { alert('Yetkisiz işlem.'); return; }
   var title = document.getElementById('bm-title').value.trim();
   var body = document.getElementById('bm-body').value.trim();
   if (!title) { alert('Başlık gerekli'); return; }
