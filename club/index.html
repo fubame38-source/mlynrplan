@@ -2198,7 +2198,8 @@ function renderNotifPanel() {
     else if (n.type === 'comment') txt = '<strong>'+esc(n.actorName)+'</strong> gönderine yorum yaptı';
     else if (n.type === 'newpost') txt = '<strong>'+esc(n.actorName)+'</strong> yeni bir paylaşım yaptı';
     else if (n.type === 'announcement') txt = '<strong>Yeni duyuru:</strong> '+(n.extra||'');
-    return '<div class="notif-item'+(n.read?'':' unread')+'" onclick="notifGoTo(''+( n.postId||'')+'')"><div class="notif-icon">'+icon+'</div><div><div class="notif-txt">'+txt+'</div><div class="notif-time">'+timeAgo(n.time)+'</div></div></div>';
+    var pid = n.postId || '';
+    return '<div class="notif-item'+(n.read?'':' unread')+'" onclick="notifGoTo(\'' + pid + '\')"><div class="notif-icon">'+icon+'</div><div><div class="notif-txt">'+txt+'</div><div class="notif-time">'+timeAgo(n.time)+'</div></div></div>';
   }).join('');
 }
 
