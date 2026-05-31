@@ -2295,16 +2295,22 @@ document.addEventListener('click', function(e) {
 // ─── KURALLAR ──────────────────────────────────────────────────
 async function showRulesIfNeeded() {
   if (!me) return;
-  // Admin'e gösterme
   if (ADMIN_EMAILS.includes(me.email)) return;
+  // Önce localStorage'a bak (hızlı)
+  if (localStorage.getItem('mlynr-rules-' + me.id) === '1') return;
+  // Sonra DB'ye bak
   var res = await sb.from('club_members').select('rules_accepted').eq('user_id', me.id).single();
-  if (res.data && res.data.rules_accepted) return;
+  if (res.data && res.data.rules_accepted) {
+    localStorage.setItem('mlynr-rules-' + me.id, '1');
+    return;
+  }
   document.getElementById('rules-overlay').style.display = 'flex';
 }
 
 async function acceptRules() {
   var btn = document.querySelector('.rules-accept-btn');
   btn.textContent = '...'; btn.disabled = true;
+  localStorage.setItem('mlynr-rules-' + me.id, '1');
   await sb.from('club_members').update({ rules_accepted: true }).eq('user_id', me.id);
   document.getElementById('rules-overlay').style.display = 'none';
 }
