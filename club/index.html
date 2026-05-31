@@ -1997,6 +1997,8 @@ async function init() {
   loadLeaderboard2();
   checkBadges();
   subscribeRealtime();
+  loadNotifications();
+  subscribeNotifications();
   updateDailyGoal();
   // Son açık sayfayı geri yükle
   var savedPage = localStorage.getItem('mlynr-page') || 'home';
@@ -2112,25 +2114,75 @@ document.addEventListener('click', function(e) {
 
 // ─── NOTIFICATIONS ─────────────────────────────────────────────
 var notifOpen = false;
-var notifData = []; // {type, postId, actorName, emoji, time}
+var notifData = [];
 
-function toggleNotifPanel() {
+// ─── BİLDİRİM: DB'den yükle ────────────────────────────────────
+async function loadNotifications() {
+  if (!me) return;
+  var res = await sb.from('club_notifications')
+    .select('*')
+    .eq('user_id', me.id)
+    .order('created_at', { ascending: false })
+    .limit(30);
+  notifData = (res.data || []).map(n => ({
+    id: n.id,
+    type: n.type,
+    postId: n.post_id,
+    actorName: n.from_user_name,
+    extra: n.message,
+    time: n.created_at,
+    read: n.is_read
+  }));
+  updateNotifDot();
+}
+
+function updateNotifDot() {
+  var unread = notifData.filter(n => !n.read).length;
+  var dot = document.getElementById('notif-dot');
+  if (dot) dot.style.display = unread > 0 ? 'block' : 'none';
+}
+
+async function toggleNotifPanel() {
   notifOpen = !notifOpen;
   var panel = document.getElementById('notif-panel');
   panel.style.display = notifOpen ? 'block' : 'none';
-  if (notifOpen) { renderNotifPanel(); markNotifRead(); }
+  if (notifOpen) {
+    await loadNotifications();
+    renderNotifPanel();
+    markNotifRead();
+  }
 }
-function pushNotif(type, actorName, postId, extra) {
+
+async function pushNotif(type, actorName, postId, extra) {
+  // Sadece kendi postuna başkası tepki/yorum yaptıysa bildir
   notifData.unshift({ type, actorName, postId, extra, time: new Date().toISOString(), read: false });
   if (notifData.length > 30) notifData = notifData.slice(0, 30);
-  var dot = document.getElementById('notif-dot');
-  if (dot) dot.style.display = 'block';
+  updateNotifDot();
 }
-function markNotifRead() {
+
+async function createNotification(userId, type, postId, fromUserName, message) {
+  if (!userId || userId === me?.id) return; // Kendine bildirim gönderme
+  await sb.from('club_notifications').insert({
+    user_id: userId,
+    type: type,
+    post_id: postId,
+    from_user_name: fromUserName,
+    message: message,
+    is_read: false
+  });
+}
+
+async function markNotifRead() {
+  var unreadIds = notifData.filter(n => !n.read && n.id).map(n => n.id);
   notifData.forEach(n => n.read = true);
-  var dot = document.getElementById('notif-dot');
-  if (dot) dot.style.display = 'none';
+  updateNotifDot();
+  if (unreadIds.length > 0) {
+    await sb.from('club_notifications')
+      .update({ is_read: true })
+      .in('id', unreadIds);
+  }
 }
+
 function renderNotifPanel() {
   var list = document.getElementById('notif-list');
   if (!list) return;
@@ -2138,28 +2190,44 @@ function renderNotifPanel() {
     list.innerHTML = '<div style="padding:28px 16px;text-align:center;color:var(--text3);font-size:13px">Henüz bildirim yok</div>';
     return;
   }
-  var icons = { reaction:'🔥', comment:'💬', newpost:'📝' };
+  var icons = { reaction:'🔥', comment:'💬', newpost:'📝', announcement:'📢' };
   list.innerHTML = notifData.map(n => {
     var icon = icons[n.type] || '🔔';
     var txt = '';
-    if (n.type === 'reaction') txt = `<strong>${esc(n.actorName)}</strong> gönderine ${n.extra||'🔥'} tepki verdi`;
-    else if (n.type === 'comment') txt = `<strong>${esc(n.actorName)}</strong> gönderine yorum yaptı`;
-    else if (n.type === 'newpost') txt = `<strong>${esc(n.actorName)}</strong> yeni bir paylaşım yaptı`;
-    return `<div class="notif-item${n.read?'':' unread'}" onclick="notifGoTo('${n.postId||''}')">
-      <div class="notif-icon">${icon}</div>
-      <div>
-        <div class="notif-txt">${txt}</div>
-        <div class="notif-time">${timeAgo(n.time)}</div>
-      </div>
-    </div>`;
+    if (n.type === 'reaction') txt = '<strong>'+esc(n.actorName)+'</strong> gönderine '+(n.extra||'🔥')+' tepki verdi';
+    else if (n.type === 'comment') txt = '<strong>'+esc(n.actorName)+'</strong> gönderine yorum yaptı';
+    else if (n.type === 'newpost') txt = '<strong>'+esc(n.actorName)+'</strong> yeni bir paylaşım yaptı';
+    else if (n.type === 'announcement') txt = '<strong>Yeni duyuru:</strong> '+(n.extra||'');
+    return '<div class="notif-item'+(n.read?'':' unread')+'" onclick="notifGoTo(''+( n.postId||'')+'')"><div class="notif-icon">'+icon+'</div><div><div class="notif-txt">'+txt+'</div><div class="notif-time">'+timeAgo(n.time)+'</div></div></div>';
   }).join('');
 }
+
 function notifGoTo(postId) {
   notifOpen = false;
   document.getElementById('notif-panel').style.display = 'none';
-  if (postId) scrollToPost(postId);
+  if (postId) { showPage('feed'); setTimeout(()=>scrollToPost(postId), 100); }
 }
-// Close notif panel when clicking outside
+
+// Realtime: yeni bildirim gelince dot göster
+function subscribeNotifications() {
+  if (!me) return;
+  sb.channel('notif-'+me.id)
+    .on('postgres_changes', {
+      event: 'INSERT', schema: 'public', table: 'club_notifications',
+      filter: 'user_id=eq.'+me.id
+    }, function(payload) {
+      var n = payload.new;
+      notifData.unshift({
+        id: n.id, type: n.type, postId: n.post_id,
+        actorName: n.from_user_name, extra: n.message,
+        time: n.created_at, read: false
+      });
+      updateNotifDot();
+      if (notifOpen) renderNotifPanel();
+    })
+    .subscribe();
+}
+
 document.addEventListener('click', function(e) {
   var btn = document.getElementById('notif-btn');
   var panel = document.getElementById('notif-panel');
@@ -2473,6 +2541,11 @@ async function sendComment(postId) {
   if (containsPhone(txt)) { alert('⚠️ Telefon numarası paylaşılamaz.'); return; }
   lastCommentTime = now;
   inp.value = '';
+  // Post sahibine bildirim gönder
+  var targetPost = allPosts.find(p=>p.id===postId);
+  if (targetPost && targetPost.user_id !== me.id) {
+    createNotification(targetPost.user_id, 'comment', postId, myName, txt.slice(0,60));
+  }
   var { data, error } = await sb.from('club_comments').insert({post_id:postId,user_id:me.id,user_name:myName,content:txt}).select().single();
   if (error) {
     if (error.message && error.message.includes('rate_limit')) {
