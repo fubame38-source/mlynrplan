@@ -238,6 +238,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
           <option value="motivation">🔥 Motivasyon</option>
         </select>
         <span class="posts-count" id="posts-count"></span>
+        <button onclick="deleteAllPosts()" style="background:#7f1d1d;border:1px solid #991b1b;color:#fca5a5;font-family:var(--mono);font-size:11px;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-left:auto;">🗑 Tümünü Sil</button>
       </div>
       <div id="posts-list"><div class="loading">Yükleniyor...</div></div>
     </div>
@@ -419,6 +420,24 @@ function renderPending() {
       </div>
     </div>`;
   }).join('');
+}
+
+async function deleteAllPosts() {
+  var count = allPosts.length;
+  if (count === 0) { alert('Silinecek post yok.'); return; }
+  if (!confirm('Tüm ' + count + ' post silinecek! Bu işlem geri alınamaz. Emin misin?')) return;
+  var second = confirm('Son onay: ' + count + ' post kalıcı olarak silinecek.');
+  if (!second) return;
+  var btn = event.target;
+  btn.textContent = '...'; btn.disabled = true;
+  var ids = allPosts.map(p => p.id);
+  var { error } = await sb.from('club_posts').delete().in('id', ids);
+  btn.textContent = '🗑 Tümünü Sil'; btn.disabled = false;
+  if (error) { alert('Hata: ' + error.message); return; }
+  allPosts = [];
+  renderPosts([]);
+  document.getElementById('posts-count').textContent = '0 post';
+  alert('✓ Tüm postlar silindi.');
 }
 
 async function approvePost(postId) {
