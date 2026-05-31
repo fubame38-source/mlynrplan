@@ -2119,21 +2119,20 @@ var notifData = [];
 // ─── BİLDİRİM: DB'den yükle ────────────────────────────────────
 async function loadNotifications() {
   if (!me) return;
-  var res = await sb.from('club_notifications')
-    .select('*')
-    .eq('user_id', me.id)
-    .order('created_at', { ascending: false })
-    .limit(30);
-  notifData = (res.data || []).map(n => ({
-    id: n.id,
-    type: n.type,
-    postId: n.post_id,
-    actorName: n.from_user_name,
-    extra: n.message,
-    time: n.created_at,
-    read: n.is_read
-  }));
-  updateNotifDot();
+  try {
+    var res = await sb.from('club_notifications')
+      .select('*')
+      .eq('user_id', me.id)
+      .order('created_at', { ascending: false })
+      .limit(30);
+    if (res.error) { console.warn('Notif load error:', res.error.message); return; }
+    notifData = (res.data || []).map(function(n) { return {
+      id: n.id, type: n.type, postId: n.post_id,
+      actorName: n.from_user_name, extra: n.message,
+      time: n.created_at, read: n.is_read
+    }; });
+    updateNotifDot();
+  } catch(e) { console.warn('Notif error:', e); }
 }
 
 function updateNotifDot() {
