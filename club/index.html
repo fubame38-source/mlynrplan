@@ -219,7 +219,7 @@ body.light-mode .sb-action{border-color:var(--border);color:var(--text3);}
 body.light-mode .sb-action:hover{border-color:var(--border2);color:var(--text2);}
 
 /* ══ MAIN CONTENT  ════════════════════════════════════════════ */
-.main-content{display:flex;flex-direction:column;min-height:100vh;overflow:hidden;min-width:0;}
+.main-content{display:flex;flex-direction:column;min-height:100vh;min-width:0;}
 
 /* ── Topbar ── */
 .topbar{
@@ -2593,6 +2593,11 @@ async function toggleReact(btn, postId, emoji) {
   } else {
     btn.classList.add(cls); span.textContent = n+1;
     await sb.from('club_reactions').upsert({post_id:postId,user_id:me.id,emoji},{onConflict:'post_id,user_id,emoji'});
+    // Post sahibine bildirim gönder
+    var rPost = allPosts.find(function(p){return p.id===postId;});
+    if (rPost && rPost.user_id !== me.id) {
+      createNotification(rPost.user_id, 'reaction', postId, myName, emoji);
+    }
   }
 }
 
