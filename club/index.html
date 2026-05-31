@@ -2603,8 +2603,11 @@ async function toggleReact(btn, postId, emoji) {
 
 // ─── COMMENTS ──────────────────────────────────────────────────
 function toggleComments(btn, postId) {
+  console.log('toggleComments called:', postId);
   var cs = document.getElementById('cs-'+postId);
+  console.log('cs element:', cs, 'classList:', cs?.className);
   cs?.classList.toggle('open');
+  console.log('after toggle:', cs?.className);
   if (cs?.classList.contains('open')) setTimeout(()=>document.getElementById('ci-'+postId)?.focus(),100);
 }
 function commentKey(e, postId) {
