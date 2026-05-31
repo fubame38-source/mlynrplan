@@ -3103,7 +3103,10 @@ async function uploadProfilePhoto(input) {
       body: fd
     });
     if (uploading) uploading.style.display = 'none';
-    if (!res.ok) throw new Error('Upload failed');
+    if (!res.ok) {
+      var errText = await res.text();
+      throw new Error('Upload failed: ' + res.status + ' ' + errText);
+    }
     var result = await res.json();
     var photoUrl = result.url;
     var avImg = document.getElementById('pr-av-img');
@@ -3115,6 +3118,8 @@ async function uploadProfilePhoto(input) {
     if (navAv) navAv.innerHTML = '<img src="'+photoUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
   } catch(e) {
     if (uploading) uploading.style.display = 'none';
+    console.error('Avatar upload error:', e.message);
+    alert('⚠️ Fotoğraf yüklenemedi: ' + e.message);
     // R2 başarısız olursa local preview göster
     var reader = new FileReader();
     reader.onload = function(ev) {
