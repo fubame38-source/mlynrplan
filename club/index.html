@@ -510,6 +510,7 @@ body.light-mode .post.mine{
 .post-acts{
   display:flex;align-items:center;gap:2px;
   padding-top:12px;border-top:1px solid var(--border);
+  position:relative;z-index:2;
 }
 .act{
   display:inline-flex;align-items:center;gap:6px;
@@ -2563,7 +2564,7 @@ function renderPost(p) {
     <button class="act${myFire?' fire-on':''}" onclick="toggleReact(this,'${p.id}','🔥')">🔥${fireCnt ? ` <span>${fireCnt}</span>` : ''}</button>
     <button class="act${myPower?' power-on':''}" onclick="toggleReact(this,'${p.id}','💪')">💪${powerCnt ? ` <span>${powerCnt}</span>` : ''}</button>
     <button class="act${myLove?' love-on':''}" onclick="toggleReact(this,'${p.id}','❤️')">❤️${loveCnt ? ` <span>${loveCnt}</span>` : ''}</button>
-    <button class="act-cmt" onclick="toggleComments(this,'${p.id}')">
+    <button class="act-cmt" type="button" data-toggle-cmt="${p.id}">
       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
       ${comments.length ? comments.length + ' yorum' : 'Yorum yaz'}
     </button>
@@ -2602,14 +2603,21 @@ async function toggleReact(btn, postId, emoji) {
 }
 
 // ─── COMMENTS ──────────────────────────────────────────────────
-function toggleComments(btn, postId) {
-  console.log('toggleComments called:', postId);
+function toggleComments(postId) {
   var cs = document.getElementById('cs-'+postId);
-  console.log('cs element:', cs, 'classList:', cs?.className);
-  cs?.classList.toggle('open');
-  console.log('after toggle:', cs?.className);
-  if (cs?.classList.contains('open')) setTimeout(()=>document.getElementById('ci-'+postId)?.focus(),100);
+  if (!cs) return;
+  cs.classList.toggle('open');
+  if (cs.classList.contains('open')) setTimeout(()=>document.getElementById('ci-'+postId)?.focus(),100);
 }
+// Event delegation for comment toggle — more reliable than inline onclick
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('[data-toggle-cmt]');
+  if (btn) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleComments(btn.getAttribute('data-toggle-cmt'));
+  }
+});
 function commentKey(e, postId) {
   if (e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendComment(postId);}
 }
