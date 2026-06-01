@@ -760,16 +760,15 @@ body.light-mode .notif-item.unread{background:rgba(0,0,0,.03);}
 .post-menu-btn:active{transform:scale(0.9);transition:transform 100ms var(--ease-out);}
 
 /* ── Modal: scale from 0.96 + opacity, never pop from nothing ── */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:48px 20px;overflow-y:auto;opacity:0;transition:opacity .2s var(--ease-out);}
-.overlay.show{display:flex;animation:overlayIn .25s var(--ease-out) forwards;}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:48px 20px;overflow-y:auto;}
+.overlay.show{display:flex;animation:overlayIn .25s var(--ease-out) both;}
 @keyframes overlayIn{from{opacity:0;}to{opacity:1;}}
 .modal{
   background:var(--surface);border:1.5px solid var(--border);
   border-radius:var(--radius-lg);padding:28px;width:100%;max-width:560px;
   box-shadow:0 16px 64px rgba(0,0,0,.2);
-  transform:scale(0.96);opacity:0;
-  animation:modalIn .3s var(--ease-out) .05s forwards;
 }
+.overlay.show .modal{animation:modalIn .3s var(--ease-out) both;}
 @keyframes modalIn{
   from{transform:scale(0.96);opacity:0;}
   to{transform:scale(1);opacity:1;}
@@ -779,26 +778,20 @@ body.light-mode .notif-item.unread{background:rgba(0,0,0,.03);}
 .lightbox.show img{animation:lbIn .25s var(--ease-out) both;}
 @keyframes lbIn{from{transform:scale(0.92);opacity:0;}to{transform:scale(1);opacity:1;}}
 
-/* ── Post entry: improved animation + stagger ── */
+/* ── Post entry: improved animation ── */
 @keyframes postIn{
   from{opacity:0;transform:translateY(8px) scale(0.99);}
   to{opacity:1;transform:translateY(0) scale(1);}
 }
-.post:nth-child(1){animation-delay:0ms;}
-.post:nth-child(2){animation-delay:40ms;}
-.post:nth-child(3){animation-delay:80ms;}
-.post:nth-child(4){animation-delay:120ms;}
-.post:nth-child(5){animation-delay:160ms;}
-.post:nth-child(n+6){animation-delay:200ms;}
 
 /* ── Search/notif panels: scale from trigger ── */
 .search-panel{
   transform-origin:top center;
-  animation:panelIn .2s var(--ease-out) both;
+  animation:panelIn .2s var(--ease-out) forwards;
 }
 .notif-panel{
   transform-origin:top right;
-  animation:panelIn .2s var(--ease-out) both;
+  animation:panelIn .2s var(--ease-out) forwards;
 }
 @keyframes panelIn{
   from{opacity:0;transform:scale(0.96) translateY(-4px);}
@@ -828,32 +821,11 @@ body.light-mode .notif-item.unread{background:rgba(0,0,0,.03);}
   100%{transform:scale(1);}
 }
 
-/* ── Featured card stagger ── */
-.featured-card{animation:cardIn .35s var(--ease-out) both;}
-.featured-card:nth-child(1){animation-delay:0ms;}
-.featured-card:nth-child(2){animation-delay:60ms;}
-.featured-card:nth-child(3){animation-delay:120ms;}
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(10px);}
-  to{opacity:1;transform:translateY(0);}
-}
-
-/* ── Stats row stagger ── */
-.stat-card{animation:statIn .3s var(--ease-out) both;}
-.stat-card:nth-child(1){animation-delay:0ms;}
-.stat-card:nth-child(2){animation-delay:50ms;}
-.stat-card:nth-child(3){animation-delay:100ms;}
-.stat-card:nth-child(4){animation-delay:150ms;}
-@keyframes statIn{
-  from{opacity:0;transform:translateY(6px);}
-  to{opacity:1;transform:translateY(0);}
-}
-
 /* ── Reduced motion: respect user preference ── */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;transition-duration:.01ms!important;}
-  .post,.featured-card,.stat-card{animation:none;opacity:1;transform:none;}
-  .modal{animation:none;opacity:1;transform:none;}
+  .post{animation:none;opacity:1;transform:none;}
+  .overlay.show,.overlay.show .modal{animation:none;opacity:1;transform:none;}
   .act.fire-on,.act.power-on,.act.love-on{animation:none;}
 }
 
