@@ -2532,11 +2532,16 @@ function renderPost(p) {
   var myAv = avColor(myName||'U');
   var myInit = (myName||'?').charAt(0).toUpperCase();
 
+  var adminIds = new Set();
+  allPosts.forEach(function(pp){ if(ADMIN_EMAILS.includes(pp.user_email||'')) adminIds.add(pp.user_id); });
+  if(me && ADMIN_EMAILS.includes(me.email)) adminIds.add(me.id);
+
   var cmtsHtml = comments.map(c => {
     var cav = avColor(c.user_name||'U');
     var ci = formatName(c.user_name||'?').charAt(0).toUpperCase();
     var cd = (isAdmin||c.user_id===me?.id) ? '<button class="cmt-del" data-cid="'+c.id+'" data-pid="'+p.id+'" onclick="deleteComment(this)">×</button>' : '';
-    return '<div class="cmt"><div class="cmt-av" style="background:'+cav+'">'+esc(ci)+'</div><div class="cmt-body"><div class="cmt-name">'+esc(formatName(c.user_name||'?'))+cd+'</div><div class="cmt-text">'+esc(c.content)+'</div></div></div>';
+    var cmtAdminBadge = adminIds.has(c.user_id) ? '<span class="admin-badge">⚡ Admin</span>' : '';
+    return '<div class="cmt"><div class="cmt-av" style="background:'+cav+'">'+esc(ci)+'</div><div class="cmt-body"><div class="cmt-name">'+esc(formatName(c.user_name||'?'))+cmtAdminBadge+cd+'</div><div class="cmt-text">'+esc(c.content)+'</div></div></div>';
   }).join('');
 
   var isLong = p.content && p.content.length > 280;
@@ -2649,7 +2654,8 @@ async function sendComment(triggerEl, postId) {
     var cl = post.querySelector('[id^="cl-"]');
     var cav = avColor(myName||'U');
     var ci = myName.charAt(0).toUpperCase();
-    cl?.insertAdjacentHTML('beforeend','<div class="cmt"><div class="cmt-av" style="background:'+cav+'">'+ci+'</div><div class="cmt-body"><div class="cmt-name">'+esc(myName)+'</div><div class="cmt-text">'+esc(txt)+'</div></div></div>');
+    var myAdminBadge = ADMIN_EMAILS.includes(me?.email) ? '<span class="admin-badge">⚡ Admin</span>' : '';
+    cl?.insertAdjacentHTML('beforeend','<div class="cmt"><div class="cmt-av" style="background:'+cav+'">'+ci+'</div><div class="cmt-body"><div class="cmt-name">'+esc(myName)+myAdminBadge+'</div><div class="cmt-text">'+esc(txt)+'</div></div></div>');
     var idx = allPosts.findIndex(p=>p.id===postId);
     if (idx>-1) allPosts[idx].club_comments = [...(allPosts[idx].club_comments||[]),data];
   }
