@@ -1838,6 +1838,8 @@ function toggleVideoDone(){
 
 // ── STATE ─────────────────────────────────────────────────────
 var TOTAL=28,email='',done=[],mc={},CW={};
+// Yol haritası state — global (IIFE ile loadStateFromDB arası sync için)
+var tasks={},days=[];
 function stK(){return 'mlynr6_'+email.replace(/[^a-z0-9]/gi,'_');}
 function saveState(){
   if(!email)return;
@@ -3077,7 +3079,7 @@ var TASKS={
      dikkat:'⚠️ Başarı hikayeni Canberk ile paylaş — hem motivasyon hem topluluk için çok değerli.',
      g:['Toplam satış ve kar rakamlarını hesapla','En iyi ve en kötü performanslı ürünleri belirle','Sonraki 30 günün hedeflerini yaz ve Canberk ile paylaş']}
 };
-var camp=0,tasks={},days=[],sel=null,TODAY=1;
+var camp=0,sel=null,TODAY=1;
 function yhStateKey(){return typeof email!=='undefined'&&email?'yh6_'+email.replace(/[^a-z0-9]/gi,'_'):null;}
 function load(){
   // Önce email bazlı key'i dene
