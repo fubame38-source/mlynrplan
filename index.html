@@ -1856,7 +1856,7 @@ function saveState(){
 }
 function loadState(){if(!email)return;try{var r=LS.getItem(stK());if(r){var d=JSON.parse(r);done=d.done||[];mc=d.mc||{};}else{done=[];mc={};}}catch(e){done=[];mc={};}}
 function loadStateFromDB(){
-  if(!_user){loadState();showApp();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);return;}
+  if(!_user){loadState();showApp();setTimeout(function(){if(typeof renderNodes==='function')renderNodes();if(typeof updateToday==='function')updateToday();if(typeof updateOverall==='function')updateOverall();if(typeof showTask==='function')showTask(TODAY);},100);setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);return;}
   _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days').eq('user_id',_user.id).limit(1)
     .then(function(r){
       if(r.error){console.warn('DB load error:',r.error);loadState();showApp();loadClubApps();return;}
@@ -1886,8 +1886,13 @@ function loadStateFromDB(){
       else if(typeof rawUC==='string'){try{_unlockedClubs=JSON.parse(rawUC);}catch(e){_unlockedClubs=[];}}
       else _unlockedClubs=[];
       showApp();
-      // Yol haritasını DB'den gelen veriyle yeniden render et
-      if(typeof renderNodes==='function')setTimeout(function(){renderNodes();if(typeof showTask==='function'&&typeof TODAY!=='undefined')showTask(TODAY);},100);
+      // Yol haritasını DB'den gelen veriyle tam yeniden render et
+      setTimeout(function(){
+        if(typeof renderNodes==='function')renderNodes();
+        if(typeof updateToday==='function')updateToday();
+        if(typeof updateOverall==='function')updateOverall();
+        if(typeof showTask==='function'&&typeof TODAY!=='undefined')showTask(TODAY);
+      },100);
       loadClubApps();
       setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);
     }).catch(function(err){console.warn('DB load failed:',err);loadState();showApp();loadClubApps();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);});
@@ -3261,7 +3266,7 @@ window.yhSwitchCamp=function(id){
   if(panel)panel.innerHTML='<div class="yh-task-empty"><div style="font-size:20px;opacity:.3">&#8593;</div><div>Bir gune tikla</div></div>';
   sel=null;renderNodes();
 };
-load();
+// tab/camp setup — data DB'den gelince loadStateFromDB render eder
 var ci=Math.max(0,Math.floor((TODAY-1)/7));
 camp=ci;
 document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
@@ -3269,8 +3274,7 @@ var at=document.querySelector('.yh-ctab[data-camp="'+ci+'"]');if(at)at.classList
 var c=CAMPS[ci];
 var te=g('km-camp-title');if(te)te.textContent=c.t;
 var de=g('km-camp-desc');if(de)de.textContent=c.d;
-renderNodes();
-showTask(TODAY);
+// renderNodes/showTask buradan kaldırıldı — loadStateFromDB callback'inde çalışıyor
 })();
 
 
