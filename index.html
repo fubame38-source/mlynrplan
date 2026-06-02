@@ -122,6 +122,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .uname{font-size:11px;color:var(--text2);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px}
 .support-pill{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:20px;padding:5px 12px;text-decoration:none;transition:all .2s;white-space:nowrap;flex-shrink:0}
 .support-pill:hover{background:rgba(34,197,94,.1)}
+.club-pill{color:#a78bfa !important;background:rgba(167,139,250,.08) !important;border-color:rgba(167,139,250,.25) !important}
+.club-pill:hover{background:rgba(167,139,250,.15) !important}
+.topbar-logout-btn{background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text3);font-size:12px;padding:5px 10px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.topbar-logout-btn:hover{border-color:rgba(248,113,113,.4);color:#f87171;background:rgba(248,113,113,.06)}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.5s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .shopify-pill{background:transparent !important;border-color:var(--border2) !important;color:var(--text) !important}
@@ -563,6 +567,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   .level-badge{display:none !important}
   .support-pill{display:none !important}
   .theme-toggle{display:none !important}
+  .topbar-logout-btn{display:flex !important}
 }
 
 /* ── SUPPORT OVERLAY ── */
@@ -962,6 +967,8 @@ body.light .km-task{background:#fff}
         </div>
         <a href="#" onclick="openShopifyPortal(event)" class="support-pill shopify-pill"><span>Shopify Portalı</span></a>
         <a href="https://t.me/mlynr_bot" target="_blank" class="support-pill"><div class="dot"></div><span>Canlı Destek</span></a>
+        <a href="https://mlynrplan.com/club/" target="_blank" class="support-pill club-pill">✦ <span>MLYNR Club</span></a>
+        <button class="topbar-logout-btn" onclick="doLogout()" title="Çıkış Yap">⬅</button>
         <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Tema">🌙</button>
         <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMenu()" aria-label="Menü">
           <span></span><span></span><span></span>
