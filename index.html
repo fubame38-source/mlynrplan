@@ -1955,6 +1955,7 @@ function showApp(){
   initBriefing();
   setTimeout(initScrollAnim,50);
   setTimeout(checkAdminMessages,1500);
+  subscribeAdminMessages();
   // İsim yoksa her zaman popup aç (backup)
   if(!getUserName()){
     setTimeout(function(){
@@ -1964,6 +1965,19 @@ function showApp(){
 }
 // ── ADMİN MESAJ ──────────────────────────────────────────────
 var _adminMsgId=null;
+function subscribeAdminMessages(){
+  if(!_user)return;
+  _sb.channel('admin-msg-'+_user.id)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'admin_messages',filter:'user_id=eq.'+_user.id},function(payload){
+      var msg=payload.new;
+      if(msg.read)return;
+      _adminMsgId=msg.id;
+      _sb.from('admin_messages').update({read:true}).eq('id',msg.id).then(function(){});
+      document.getElementById('amsg-body').textContent=msg.message;
+      document.getElementById('admin-msg-overlay').classList.add('show');
+    })
+    .subscribe();
+}
 function checkAdminMessages(){
   if(!_user)return;
   _sb.from('admin_messages')
