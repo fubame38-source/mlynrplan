@@ -782,45 +782,9 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .amsg-close:hover{opacity:.88}
 
 /* ── BAŞLANGIÇ REHBERİ ── */
-.onboarding-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:28px;position:relative;z-index:1}
+.onboarding-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:20px;position:relative;z-index:1}
 .onboarding-toggle{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;transition:all .2s;-webkit-tap-highlight-color:transparent}
 .onboarding-toggle:hover{border-color:var(--border2);background:var(--surface2)}
-.onboarding-toggle.open{border-radius:12px 12px 0 0;border-bottom-color:transparent}
-.ot-icon{font-size:16px;flex-shrink:0}
-.ot-title{font-size:13px;font-weight:700;color:var(--text);flex:1}
-.ot-badge{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:20px;padding:3px 10px;white-space:nowrap}
-.ot-badge.unseen{color:var(--yellow, #facc15);background:rgba(250,204,21,.08);border-color:rgba(250,204,21,.2)}
-.ot-chevron{font-size:11px;color:var(--text3);transition:transform .25s;flex-shrink:0}
-.onboarding-toggle.open .ot-chevron{transform:rotate(180deg)}
-.onboarding-body{display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:18px;animation:fadeup .3s ease}
-@keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.rule-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:flex;align-items:flex-start;gap:12px;transition:border-color .2s}
-.rule-card:hover{border-color:var(--border2)}
-.rule-card.warn{border-color:rgba(248,113,113,.18);background:rgba(248,113,113,.03)}
-.rule-card.ok{border-color:rgba(34,197,94,.15);background:rgba(34,197,94,.03)}
-.rule-card.tip{border-color:rgba(250,204,21,.15);background:rgba(250,204,21,.03)}
-.rule-icon{font-size:18px;flex-shrink:0;margin-top:1px}
-.rule-text{font-size:12px;color:var(--text2);line-height:1.65}
-.rule-text strong{color:var(--text);font-weight:600}
-.account-card{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:22px 26px;position:relative;overflow:hidden}
-.account-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(250,204,21,.5),transparent)}
-.account-card-title{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.account-card-title span{font-size:14px;font-weight:700;color:var(--text)}
-.account-card-badge{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(250,204,21,.7);background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.2);border-radius:20px;padding:3px 10px}
-.account-warnings{display:flex;flex-direction:column;gap:8px}
-.aw-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:10px;font-size:12px;color:var(--text2);line-height:1.7}
-.aw-item.red{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.15)}
-.aw-item.gold{background:rgba(250,204,21,.06);border:1px solid rgba(250,204,21,.15)}
-.aw-item.green{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.12)}
-.aw-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-.aw-item strong{color:var(--text);font-weight:600}
-@media(max-width:640px){.rules-grid{grid-template-columns:1fr}}
-
-/* ── BAŞLANGIÇ REHBERİ ── */
-.onboarding-section{max-width:840px;margin:0 auto;padding:0 clamp(16px,5vw,48px);margin-bottom:20px;position:relative;z-index:1}
-.onboarding-toggle{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;transition:all .2s}
-.onboarding-toggle:hover{border-color:var(--border2)}
 .onboarding-toggle.open{border-radius:12px 12px 0 0;border-bottom-color:transparent}
 .ot-icon{font-size:16px;flex-shrink:0}
 .ot-title{font-size:13px;font-weight:700;color:var(--text);flex:1}
@@ -829,15 +793,17 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .ot-badge.read{color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln)}
 .ot-chevron{font-size:11px;color:var(--text3);transition:transform .25s;flex-shrink:0}
 .onboarding-toggle.open .ot-chevron{transform:rotate(180deg)}
-.onboarding-body{display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:18px}
+.onboarding-body{display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:18px;animation:fadeup .3s ease}
+@keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.rule-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px}
+.rule-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px;transition:border-color .2s}
+.rule-card:hover{border-color:var(--border2)}
 .rule-card.warn{border-color:rgba(248,113,113,.2);background:rgba(248,113,113,.03)}
 .rule-card.ok{border-color:rgba(34,197,94,.15);background:rgba(34,197,94,.03)}
 .rule-card.tip{border-color:rgba(250,204,21,.15);background:rgba(250,204,21,.03)}
 .rule-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-.rule-text{font-size:12px;color:var(--text2);line-height:1.6}
-.rule-text strong{color:var(--text)}
+.rule-text{font-size:12px;color:var(--text2);line-height:1.65}
+.rule-text strong{color:var(--text);font-weight:600}
 .account-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden}
 .account-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(250,204,21,.5),transparent)}
 .account-card-title{display:flex;align-items:center;gap:10px;margin-bottom:14px}
@@ -847,6 +813,7 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .aw-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:8px;font-size:12px;color:var(--text2);line-height:1.65}
 .aw-item.red{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.15)}
 .aw-item.gold{background:rgba(250,204,21,.06);border:1px solid rgba(250,204,21,.15)}
+.aw-item.green{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.12)}
 .aw-icon{font-size:15px;flex-shrink:0;margin-top:1px}
 .aw-item strong{color:var(--text);font-weight:600}
 @media(max-width:640px){.rules-grid{grid-template-columns:1fr}}
@@ -893,12 +860,12 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .km-day{border-radius:10px;padding:10px 4px;text-align:center;cursor:pointer;border:1px solid var(--border);background:var(--surface);transition:all .15s}
 .km-day:hover{border-color:var(--border2);transform:translateY(-1px)}
 .km-day.done{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25)}
-.km-day.today{border:1.5px solid var(--green);background:rgba(34,197,94,.06)}
+.km-day.current,.km-day.today{border:1.5px solid var(--green);background:rgba(34,197,94,.06)}
 .km-day-n{font-size:15px;font-weight:700;color:var(--text2);line-height:1}
 .km-day.done .km-day-n{color:var(--green)}
-.km-day.today .km-day-n{color:var(--green)}
+.km-day.current .km-day-n,.km-day.today .km-day-n{color:var(--green)}
 .km-day-lbl{font-size:8px;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);margin-top:3px}
-.km-day.done .km-day-lbl,.km-day.today .km-day-lbl{color:rgba(34,197,94,.7)}
+.km-day.done .km-day-lbl,.km-day.today .km-day-lbl,.km-day.current .km-day-lbl{color:rgba(34,197,94,.7)}
 .km-panel-divider{height:1px;background:var(--border);margin-bottom:16px}
 .km-panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
 .km-panel-title{font-size:16px;font-weight:700;color:var(--white)}
@@ -1072,7 +1039,6 @@ body.light .km-task{background:#fff}
     </div>
   </section>
 
-  <!-- BAŞLANGIÇ REHBERİ -->
   <!-- BAŞLANGIÇ REHBERİ -->
   <div class="onboarding-section">
     <!-- TOGGLE BAŞLIK -->
@@ -1769,10 +1735,12 @@ function openSupportBot(){
   setTimeout(function(){var inp=document.getElementById('sp-input');if(inp)inp.focus();},300);
 }
 function closeSupportBot(){document.getElementById('support-overlay').classList.remove('show');}
+function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function addBotMsg(txt){
   var msgs=document.getElementById('sp-messages');if(!msgs)return;
   var div=document.createElement('div');div.className='sp-msg bot';
-  div.textContent=txt.replace(/\*\*/g,'').replace(/t\.me\/mlynr_bot/g,'👉 Canlı Destek Ekibi');
+  var clean=txt.replace(/\*\*/g,'').replace(/t\.me\/mlynr_bot/g,'👉 Canlı Destek Ekibi');
+  div.innerHTML=escHtml(clean).replace(/\n/g,'<br>');
   msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
 }
 function addUserMsg(txt){var msgs=document.getElementById('sp-messages');if(!msgs)return;var div=document.createElement('div');div.className='sp-msg user';div.textContent=txt;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
@@ -2022,8 +1990,6 @@ var WEEKS=[
       {t:'Çok Ürün Stratejisi',d:'Kazanan ürünleri çoğalt, kaybedenleri kaldır.',tag:'Büyüme'},
       {t:'eBay Müşteri Yönetimi',d:'Mesajlara hızlı dön, geri bildirimleri yönet, puanını koru.',tag:'Müşteri'},
       {t:'Tedarikçi Optimizasyonu',d:'Daha hızlı tedarikçi bul, maliyeti düşür, kar marjını artır.',tag:'Tedarik'},
-      {t:'Satış Analizi & Raporlama',d:'eBay Seller Hub verilerini oku, en iyi ürünleri belirle.',tag:'Analiz'},
-      {t:'Otomasyon & Sistem',d:'Sipariş takibini otomatikleştir, süreci hızlandır.',tag:'Sistem'},
       {t:'Hafta 4 Değerlendirmesi',d:'28 günü tamamladın! Satışlarını ve kazancını değerlendir.',tag:'Hedef'}
     ],
     chk:{q:'Hafta 4 hedeflerini tamamladın mı?',hint:'eBay mağazanı büyütmeye devam et — her hafta yeni ürün ekle.',isS:true,items:['Promoted Listings kampanyası kurdum','En az 3 yeni ürün listeledim','Karlı olmayan ürünleri kaldırdım','Tedarikçi maliyetlerimi optimize ettim','Haftalık satış raporumu inceledim']}}
@@ -2869,18 +2835,17 @@ function toggleOnboarding(){
   var isOpen = toggle.classList.contains('open');
   toggle.classList.toggle('open', !isOpen);
   body.style.display = isOpen ? 'none' : 'block';
-  // Açıldıysa "okundu" olarak işaretle
   if(!isOpen){
-    try{ localStorage.setItem('mlynr6_onboarding_read','1'); }catch(e){}
-    if(badge){ badge.textContent='Okundu ✓'; badge.classList.remove('unseen'); }
+    try{ localStorage.setItem('mlynr6_onboarding_read','1'); localStorage.setItem('mlynr_onboarding_read','1'); }catch(e){}
+    if(badge){ badge.textContent='Okundu ✓'; badge.classList.remove('unseen'); badge.className='ot-badge read'; }
   }
 }
 // Daha önce okuduysa badge güncelle
 (function(){
   try{
-    if(localStorage.getItem('mlynr6_onboarding_read')==='1'){
+    if(localStorage.getItem('mlynr6_onboarding_read')==='1'||localStorage.getItem('mlynr_onboarding_read')==='1'){
       var badge = document.getElementById('onboarding-badge');
-      if(badge){ badge.textContent='Okundu ✓'; badge.classList.remove('unseen'); }
+      if(badge){ badge.textContent='Okundu ✓'; badge.classList.remove('unseen'); badge.className='ot-badge read'; }
     }
   }catch(e){}
 })();
@@ -2936,12 +2901,7 @@ function toggleOnboarding(){
     badge.textContent='Okundu ✓';badge.className='ot-badge read';
   }
 }
-(function(){
-  try{if(localStorage.getItem('mlynr_onboarding_read')==='1'){
-    var b=document.getElementById('onboarding-badge');
-    if(b){b.textContent='Okundu ✓';b.className='ot-badge read';}
-  }}catch(e){}
-})();
+// onboarding badge init yukarıda yapıldı
 
 
 
@@ -2952,7 +2912,7 @@ var CAMPS=[
   {t:'Hafta 1 \u2014 Hesap & \u00dcr\u00fcn Ara\u015ft\u0131rma',d:'eBay hesab\u0131 kur, Amazon tedarik sistemini \u00f6\u011fren',days:[1,2,3,4,5,6,7]},
   {t:'Hafta 2 \u2014 Otomasyon & Sipari\u015f',d:'AutoDS kur, ilk sipari\u015fleri al ve y\u00f6net',days:[8,9,10,11,12,13,14]},
   {t:'Hafta 3 \u2014 Hesap Sa\u011fl\u0131\u011f\u0131 & \u00d6l\u00e7ekleme',d:'Hesab\u0131 koru, sat\u0131\u015f limitini art\u0131r, b\u00fcy\u00fct',days:[15,16,17,18,19,20,21]},
-  {t:'Hafta 4 \u2014 eBay B\u00fcy\u00fcme & \u00d6l\u00e7ekleme',d:'eBay k\u00e2r g\u00f6rd\u00fckten sonra kendi ma\u011fazar\u0131n\u0131 kur',days:[22,23,24,25,26,27,28]}
+  {t:'Hafta 4 \u2014 eBay B\u00fcy\u00fcme & \u00d6l\u00e7ekleme',d:'eBay k\u00e2r g\u00f6rd\u00fckten sonra ma\u011fazar\u0131n\u0131 b\u00fcy\u00fct',days:[22,23,24,25,26,27,28]}
 ];
 var TASKS={
   1:{t:'Çerez Toplama & Hesap Hazırlığı',
@@ -3084,7 +3044,7 @@ function updateToday(){
 }
 function goToday(){
   var ci=Math.max(0,Math.floor((TODAY-1)/7));
-  if(ci!==camp)switchCamp(ci);
+  if(ci!==camp)window.yhSwitchCamp(ci);
   setTimeout(function(){showTask(TODAY);},60);
   var sec=g('yh-section');if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});
 }
