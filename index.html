@@ -1771,16 +1771,43 @@ function sendSupportMsg(){
   inp.value='';btn.disabled=true;addUserMsg(soru);addLoadingMsg();
   var gunSayisi=done.length,hafta=Math.min(4,Math.ceil((gunSayisi+1)/7))||1;
   fetch(AI_EP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'coach',soru:soru,gunSayisi:gunSayisi,hafta:hafta,tamamlananGunler:gunSayisi})})
-    .then(function(r){return r.json();}).then(function(data){removeLoadingMsg();addBotMsg(data.sonuc||'Bir hata olustu, tekrar dene.');btn.disabled=false;})
+    .then(function(r){return r.json();}).then(function(data){removeLoadingMsg();addBotMsg(filterAiResponse(data.sonuc||'Bir hata olustu, tekrar dene.'));btn.disabled=false;})
     .catch(function(){
       fetch(AI_EP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'support',soru:soru})})
-        .then(function(r){return r.json();}).then(function(data){removeLoadingMsg();addBotMsg(data.sonuc||'Baglanti hatasi.');btn.disabled=false;})
+        .then(function(r){return r.json();}).then(function(data){removeLoadingMsg();addBotMsg(filterAiResponse(data.sonuc||'Baglanti hatasi.'));btn.disabled=false;})
         .catch(function(){removeLoadingMsg();addBotMsg('Baglanti hatasi. Lutfen tekrar dene.');btn.disabled=false;});
     });
 }
 document.addEventListener('DOMContentLoaded',function(){var inp=document.getElementById('sp-input');if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendSupportMsg();}});});
 
-// ── VİDEO POPUP ───────────────────────────────────────────────
+// ── AI CEVAP FİLTRESİ ────────────────────────────────────────
+function filterAiResponse(txt) {
+  // VDS/VPS içeren satırları kaldır
+  var lines = txt.split('\n');
+  var result = [];
+  var skipNext = false;
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    var isVdsLine = /\b(VDS|VPS|sanal sunucu|dedicated server)\b/i.test(line);
+    if (isVdsLine) {
+      // Bu satır VDS başlığı/maddesi — atla
+      // Eğer başlık satırıysa (- ile başlamıyorsa), sonraki tire satırlarını da atla
+      if (!/^\s*[-•]/.test(line)) {
+        skipNext = true;
+      }
+      continue;
+    }
+    if (skipNext) {
+      // Boş satır veya yeni başlık gelene kadar VDS alt maddelerini atla
+      if (/^\s*[-•]/.test(line)) continue;
+      skipNext = false;
+    }
+    result.push(line);
+  }
+  // Ardışık 3+ boş satırı 1'e indir
+  var cleaned = result.join('\n').replace(/(\n\s*){3,}/g, '\n\n');
+  return cleaned.trim();
+}
 var _vpCurrentId='',_vpIsS=false,_vpWi=0;
 function openVideoPopup(title,desc,videoUrl,id,isS,wi){
   _vpCurrentId=id;_vpIsS=isS;_vpWi=wi;
@@ -3149,7 +3176,7 @@ window.yhAiRehber=function(d){
   })
   .then(function(r){return r.json();})
   .then(function(res){
-    var raw=res.sonuc||'Cevap alinamadi.';
+    var raw=filterAiResponse(res.sonuc||'Cevap alinamadi.');
     var txt=raw.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/^#{1,3}\s*(.+)$/gm,'<div class="yh-ai-h">$1</div>').replace(/\n/g,'<br>');
     area.innerHTML='<div class="yh-ai-response"><div class="yh-ai-badge">🤖 AI Rehber — Gün '+d+'</div><div class="yh-ai-text">'+txt+'</div><button class="yh-ai-kapat" onclick="yhKapatAI('+d+')">✕ Kapat</button></div>';
   })
