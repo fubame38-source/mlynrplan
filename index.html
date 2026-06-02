@@ -1845,8 +1845,10 @@ function saveState(){
   if(_user){
     var fsVal=false;try{fsVal=LS.getItem('mlynr6_fs_'+email)==='1';}catch(e){}
     var spVal={};try{var sr=LS.getItem('mlynr6_sp_'+email);if(sr)spVal=JSON.parse(sr);}catch(e){}
-    _sb.from('progress').update({done:done,mc:mc,first_sale:fsVal,spin:spVal,updated_at:new Date().toISOString()}).eq('user_id',_user.id)
-      .then(function(r){if(r.error)_sb.from('progress').upsert({user_id:_user.id,done:done,mc:mc,first_sale:fsVal,spin:spVal,updated_at:new Date().toISOString()}).then(function(){});});
+    _sb.from('progress').upsert(
+      {user_id:_user.id,done:done,mc:mc,first_sale:fsVal,spin:spVal,updated_at:new Date().toISOString()},
+      {onConflict:'user_id',ignoreDuplicates:false}
+    ).then(function(r){if(r.error)console.warn('[saveState error]',r.error);});
   }
   showSaved();
 }
@@ -1869,8 +1871,12 @@ function loadStateFromDB(){
       if(r.data.first_sale)try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){}
       if(r.data.spin&&typeof r.data.spin==='object')try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(r.data.spin));}catch(e){}
       // Yol haritası senkronizasyonu
-      if(r.data.yh_tasks){var rawT=r.data.yh_tasks;if(typeof rawT==='string'){try{tasks=JSON.parse(rawT);}catch(e){}}else if(typeof rawT==='object')tasks=rawT;try{localStorage.setItem('yh_t',JSON.stringify(tasks));}catch(e){}}
-      if(r.data.yh_days){var rawD=r.data.yh_days;if(Array.isArray(rawD))days=rawD;else if(typeof rawD==='string'){try{days=JSON.parse(rawD);}catch(e){}}try{localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}}
+      if(r.data.yh_tasks){var rawT=r.data.yh_tasks;if(typeof rawT==='string'){try{tasks=JSON.parse(rawT);}catch(e){tasks={};}}else if(typeof rawT==='object'&&rawT!==null)tasks=rawT;else tasks={};}else{tasks={};}
+      if(r.data.yh_days){var rawD=r.data.yh_days;if(Array.isArray(rawD))days=rawD;else if(typeof rawD==='string'){try{days=JSON.parse(rawD);}catch(e){days=[];}}else days=[];}else{days=[];}
+      // Email bazlı key'e kaydet
+      var yhk=typeof yhStateKey==='function'?yhStateKey():null;
+      if(yhk){try{localStorage.setItem(yhk,JSON.stringify({tasks:tasks,days:days}));}catch(e){}}
+      try{localStorage.setItem('yh_t',JSON.stringify(tasks));localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}
       try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
       if(r.data.full_name)try{LS.setItem('mlynr6_name_'+email,r.data.full_name);}catch(e){}
       var rawUC=r.data.unlocked_clubs;
@@ -1919,6 +1925,9 @@ function doLogout(){
   if(!confirm('Çıkış yapmak istediğine emin misin?'))return;
   _sb.auth.signOut();try{LS.removeItem('mlynr6_sess');}catch(x){}
   _user=null;email='';done=[];mc={};CW={};
+  // Yol haritası verisini de temizle (başka hesap girince karışmasın)
+  if(typeof tasks!=='undefined')tasks={};
+  if(typeof days!=='undefined')days=[];
   document.getElementById('app').style.display='none';
   document.getElementById('login-screen').classList.remove('hidden');
   document.getElementById('inp-email').value='';
@@ -3069,13 +3078,33 @@ var TASKS={
      g:['Toplam satış ve kar rakamlarını hesapla','En iyi ve en kötü performanslı ürünleri belirle','Sonraki 30 günün hedeflerini yaz ve Canberk ile paylaş']}
 };
 var camp=0,tasks={},days=[],sel=null,TODAY=1;
-function load(){try{var t=localStorage.getItem('yh_t');if(t)tasks=JSON.parse(t);var d=localStorage.getItem('yh_d');if(d)days=JSON.parse(d);}catch(e){}}
+function yhStateKey(){return typeof email!=='undefined'&&email?'yh6_'+email.replace(/[^a-z0-9]/gi,'_'):null;}
+function load(){
+  // Önce email bazlı key'i dene
+  var k=yhStateKey();
+  if(k){
+    try{var r=localStorage.getItem(k);if(r){var p=JSON.parse(r);tasks=p.tasks||{};days=p.days||[];return;}}catch(e){}
+    // Email bazlı key boşsa sıfırla (yeni kullanıcı)
+    tasks={};days=[];
+    return;
+  }
+  // Email henüz yok (sayfa yüklenirken) — eski generic key'i dene
+  try{var t=localStorage.getItem('yh_t');if(t)tasks=JSON.parse(t);var d=localStorage.getItem('yh_d');if(d)days=JSON.parse(d);}catch(e){}
+}
 function save(){
+  // Email bazlı key'e kaydet
+  var k=yhStateKey();
+  if(k){try{localStorage.setItem(k,JSON.stringify({tasks:tasks,days:days}));}catch(e){}}
+  // Eski key'leri de güncelle (geriye dönük uyumluluk)
   try{localStorage.setItem('yh_t',JSON.stringify(tasks));localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}
-  // Supabase'e de kaydet
+  // Supabase'e upsert ile kaydet (update yerine upsert daha güvenilir)
   if(typeof _user!=='undefined'&&_user){
-    _sb.from('progress').update({yh_tasks:tasks,yh_days:days,updated_at:new Date().toISOString()}).eq('user_id',_user.id)
-      .then(function(r){if(r.error)_sb.from('progress').upsert({user_id:_user.id,yh_tasks:tasks,yh_days:days,updated_at:new Date().toISOString()},{onConflict:'user_id'}).then(function(){});});
+    _sb.from('progress').upsert(
+      {user_id:_user.id,yh_tasks:tasks,yh_days:days,updated_at:new Date().toISOString()},
+      {onConflict:'user_id',ignoreDuplicates:false}
+    ).then(function(r){
+      if(r.error)console.warn('[YH save error]',r.error);
+    });
   }
 }
 function st(d){if(days.indexOf(d)>-1)return'done';if(d===TODAY)return'current';if(d<TODAY)return'open';return'locked';}
