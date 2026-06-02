@@ -1973,6 +1973,8 @@ function checkAdminMessages(){
       if(r.error||!r.data||r.data.length===0)return;
       var msg=r.data[0];
       _adminMsgId=msg.id;
+      // Göstermeden önce read:true yaz — yenilemelerde tekrar çıkmasın
+      _sb.from('admin_messages').update({read:true}).eq('id',msg.id).then(function(){});
       document.getElementById('amsg-body').textContent=msg.message;
       document.getElementById('admin-msg-overlay').classList.add('show');
     });
