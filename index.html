@@ -1853,7 +1853,7 @@ function saveState(){
 function loadState(){if(!email)return;try{var r=LS.getItem(stK());if(r){var d=JSON.parse(r);done=d.done||[];mc=d.mc||{};}else{done=[];mc={};}}catch(e){done=[];mc={};}}
 function loadStateFromDB(){
   if(!_user){loadState();showApp();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);return;}
-  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs').eq('user_id',_user.id).limit(1)
+  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days').eq('user_id',_user.id).limit(1)
     .then(function(r){
       if(r.error){console.warn('DB load error:',r.error);loadState();showApp();loadClubApps();return;}
       if(r.data&&r.data.length>0)r.data=r.data[0];else r.data=null;
@@ -1868,6 +1868,9 @@ function loadStateFromDB(){
       if(rawMc&&typeof rawMc==='object'&&!Array.isArray(rawMc))mc=rawMc;else if(typeof rawMc==='string'){try{mc=JSON.parse(rawMc);}catch(e){mc={};}}else mc={};
       if(r.data.first_sale)try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){}
       if(r.data.spin&&typeof r.data.spin==='object')try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(r.data.spin));}catch(e){}
+      // Yol haritası senkronizasyonu
+      if(r.data.yh_tasks){var rawT=r.data.yh_tasks;if(typeof rawT==='string'){try{tasks=JSON.parse(rawT);}catch(e){}}else if(typeof rawT==='object')tasks=rawT;try{localStorage.setItem('yh_t',JSON.stringify(tasks));}catch(e){}}
+      if(r.data.yh_days){var rawD=r.data.yh_days;if(Array.isArray(rawD))days=rawD;else if(typeof rawD==='string'){try{days=JSON.parse(rawD);}catch(e){}}try{localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}}
       try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
       if(r.data.full_name)try{LS.setItem('mlynr6_name_'+email,r.data.full_name);}catch(e){}
       var rawUC=r.data.unlocked_clubs;
@@ -1875,6 +1878,8 @@ function loadStateFromDB(){
       else if(typeof rawUC==='string'){try{_unlockedClubs=JSON.parse(rawUC);}catch(e){_unlockedClubs=[];}}
       else _unlockedClubs=[];
       showApp();
+      // Yol haritasını DB'den gelen veriyle yeniden render et
+      if(typeof renderNodes==='function')setTimeout(function(){renderNodes();if(typeof showTask==='function'&&typeof TODAY!=='undefined')showTask(TODAY);},100);
       loadClubApps();
       setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);
     }).catch(function(err){console.warn('DB load failed:',err);loadState();showApp();loadClubApps();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);});
@@ -3065,7 +3070,14 @@ var TASKS={
 };
 var camp=0,tasks={},days=[],sel=null,TODAY=1;
 function load(){try{var t=localStorage.getItem('yh_t');if(t)tasks=JSON.parse(t);var d=localStorage.getItem('yh_d');if(d)days=JSON.parse(d);}catch(e){}}
-function save(){try{localStorage.setItem('yh_t',JSON.stringify(tasks));localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}}
+function save(){
+  try{localStorage.setItem('yh_t',JSON.stringify(tasks));localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}
+  // Supabase'e de kaydet
+  if(typeof _user!=='undefined'&&_user){
+    _sb.from('progress').update({yh_tasks:tasks,yh_days:days,updated_at:new Date().toISOString()}).eq('user_id',_user.id)
+      .then(function(r){if(r.error)_sb.from('progress').upsert({user_id:_user.id,yh_tasks:tasks,yh_days:days,updated_at:new Date().toISOString()},{onConflict:'user_id'}).then(function(){});});
+  }
+}
 function st(d){if(days.indexOf(d)>-1)return'done';if(d===TODAY)return'current';if(d<TODAY)return'open';return'locked';}
 function g(id){return document.getElementById(id);}
 function updateToday(){
