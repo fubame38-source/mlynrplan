@@ -1911,6 +1911,7 @@ function doAuth(){
 }
 function doLogin(){doAuth();}
 function doLogout(){
+  if(!confirm('Çıkış yapmak istediğine emin misin?'))return;
   _sb.auth.signOut();try{LS.removeItem('mlynr6_sess');}catch(x){}
   _user=null;email='';done=[];mc={};CW={};
   document.getElementById('app').style.display='none';
