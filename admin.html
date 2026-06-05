@@ -194,6 +194,7 @@ body.light .toast{background:#fff;color:#1a1916}
 .theme-toggle:hover{transform:scale(1.1)}
 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -407,6 +408,10 @@ body.light .toast{background:#fff;color:#1a1916}
 
 <script>
 const EP = 'https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint';
+const SUPABASE_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzMDYzMjUsImV4cCI6MjA1Nzg4MjMyNX0.B1FiBbEjxlkLCLGLLb_M4PfY-CXRUgU6I5POgYeHMpA';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
 const PASS = null; // Şifre backend'de — frontend'de saklanmıyor
 const TOTAL = 28;
 var users = [], flt = 'all';
