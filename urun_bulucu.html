@@ -268,7 +268,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div class="toast" id="toast"></div>
 
 <script>
-var ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
+var API_URL = 'https://xrelhozqawdseobxqbju.supabase.co/functions/v1/shopify-endpoint';
+var API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
 
 var NISLER = [
   {e:'🐾',n:'Evcil Hayvan'},{e:'🏠',n:'Ev & Yaşam'},{e:'💪',n:'Spor & Fitness'},
@@ -293,38 +294,19 @@ function tryParseJSON(raw) {
 }
 
 function callAPI(payload, onSuccess, onError) {
-  var systemPrompt = payload.system || 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.';
-  var userMsg = payload.prompt || '';
-  var useSearch = payload.use_search !== false;
-
-  var tools = useSearch ? [{
-    "type": "web_search_20250305",
-    "name": "web_search"
-  }] : undefined;
-
-  var body = {
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 2000,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userMsg }]
-  };
-  if (tools) body.tools = tools;
-
-  fetch(ANTHROPIC_API_URL, {
+  fetch(API_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' }
-  , body: JSON.stringify(body) })
+    headers: {'Content-Type':'application/json','Authorization':'Bearer '+API_KEY,'apikey':API_KEY},
+    body: JSON.stringify(payload)
+  })
   .then(function(r){ return r.json(); })
   .then(function(data){
-    if (data.error) { onError(data.error.message || 'API hatasi'); return; }
-    // Tüm text bloklarını birleştir (tool_use + text karışık gelebilir)
+    // Edge Function { sonuc: "..." } döndürüyor
     var raw = '';
-    if (data.content && Array.isArray(data.content)) {
-      data.content.forEach(function(block){
-        if (block.type === 'text') raw += block.text;
-      });
-    }
-    if (!raw && data.content) raw = JSON.stringify(data.content);
+    if (data && typeof data.sonuc === 'string') raw = data.sonuc;
+    else if (data && typeof data.reply === 'string') raw = data.reply;
+    else if (data && typeof data.text === 'string') raw = data.text;
+    else raw = JSON.stringify(data);
     raw = raw.trim();
     var parsed = tryParseJSON(raw);
     if (parsed) onSuccess(parsed); else onError(raw);
