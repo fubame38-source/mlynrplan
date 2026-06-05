@@ -120,6 +120,24 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .toast.ok{border-color:rgba(34,197,94,.3);color:var(--green)}
 .toast.err{border-color:rgba(248,113,113,.3);color:var(--red)}
 
+/* ── DAVET KODLARI ── */
+.codes-add-card{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:24px;margin-bottom:20px}
+.codes-add-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:16px;font-family:var(--mono)}
+.code-row{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:background .15s}
+.code-row:hover{background:rgba(255,255,255,.02)}
+.code-icon{width:34px;height:34px;border-radius:8px;background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.code-info{flex:1;min-width:0}
+.code-val{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--text)}
+.code-meta{font-size:10px;color:var(--text3);margin-top:3px}
+.code-status{font-family:var(--mono);font-size:11px;font-weight:700;flex-shrink:0}
+.code-actions{display:flex;gap:6px;flex-shrink:0}
+.cbtn{border:none;border-radius:6px;padding:5px 10px;font-size:10px;font-family:var(--font);cursor:pointer;font-weight:600;transition:all .15s}
+.cbtn-copy{background:rgba(99,102,241,.1);color:#818cf8;border:1px solid rgba(99,102,241,.2)}
+.cbtn-copy:hover{background:rgba(99,102,241,.2)}
+.cbtn-del{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.2)}
+.cbtn-del:hover{background:rgba(248,113,113,.25)}
+.code-empty{padding:40px;text-align:center;color:var(--text3);font-size:13px}
+
 /* ── MLYNR CLUB ── */
 .club-nav{display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:16px}
 .cnav-btn{background:transparent;border:none;color:var(--text3);font-family:var(--font);font-size:12px;font-weight:600;padding:7px 16px;border-radius:8px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
@@ -189,6 +207,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   <div class="club-nav">
     <button class="cnav-btn active" id="nav-students" onclick="switchPanel('students')">👥 Kursiyerler</button>
     <button class="cnav-btn" id="nav-club" onclick="switchPanel('club')">🏆 MLYNR Club</button>
+    <button class="cnav-btn" id="nav-codes" onclick="switchPanel('codes')">🔑 Davet Kodları</button>
   </div>
 
   <!-- KURSIYERLER PANELİ -->
@@ -299,6 +318,29 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <div class="club-tbody" id="club-tbody"><div class="club-empty">Yükleniyor...</div></div>
     </div>
   </div><!-- /panel-club -->
+
+  <!-- DAVET KODLARI PANELİ -->
+  <div class="club-section-panel" id="panel-codes">
+    <div class="codes-top">
+      <button class="codes-new-btn" onclick="openCreateCode()">+ Yeni Kod Oluştur</button>
+      <button class="rbtn" onclick="loadCodes()">&#8635; Yenile</button>
+      <div class="codes-stats">
+        <div class="codes-stat"><div class="codes-stat-num" id="cstat-total" style="color:var(--blue)">&#x2014;</div><div class="codes-stat-lbl">Toplam</div></div>
+        <div class="codes-stat"><div class="codes-stat-num" id="cstat-active" style="color:var(--green)">&#x2014;</div><div class="codes-stat-lbl">Aktif</div></div>
+        <div class="codes-stat"><div class="codes-stat-num" id="cstat-used" style="color:var(--red)">&#x2014;</div><div class="codes-stat-lbl">Tükendi</div></div>
+      </div>
+    </div>
+    <div class="codes-table">
+      <div class="codes-thead">
+        <div class="codes-th">Kod</div>
+        <div class="codes-th">Not</div>
+        <div class="codes-th">Kullanım</div>
+        <div class="codes-th">Durum</div>
+        <div class="codes-th">İşlem</div>
+      </div>
+      <div class="codes-tbody" id="codes-tbody"><div class="code-empty">Yükleniyor...</div></div>
+    </div>
+  </div><!-- /panel-codes -->
 
 </div>
 
@@ -657,11 +699,12 @@ var CLUB_META = {
 };
 
 function switchPanel(p){
-  ['students','club'].forEach(function(id){
+  ['students','club','codes'].forEach(function(id){
     document.getElementById('panel-'+id).classList.toggle('active', id===p);
     document.getElementById('nav-'+id).classList.toggle('active', id===p);
   });
   if(p==='club' && clubClaims.length===0) loadClubClaims();
+  if(p==='codes') loadInviteCodes();
 }
 
 async function loadClubClaims(){
@@ -718,6 +761,141 @@ function renderClubTable(){
   tbody.innerHTML=html;
 }
 
+// ─── DAVET KODLARI ──────────────────────────────────────────────
+var _sb2 = supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNTcxNzksImV4cCI6MjA4ODczMzE3OX0.JbtrF-ymC11M7HM9MhT5_I1hD8e5oOQz0q-d7Ty5E2Q');
+
+);
+}
+
+</script>
+
+<script>
+/* ── DAVET KODLARI PANELİ ── */
+(function(){
+  var _origSwitch = switchPanel;
+  switchPanel = function(p){
+    ['students','club','codes'].forEach(function(id){
+      var panel = document.getElementById('panel-'+id);
+      var nav   = document.getElementById('nav-'+id);
+      if(panel) panel.classList.toggle('active', id===p);
+      if(nav)   nav.classList.toggle('active', id===p);
+    });
+    if(p==='club' && clubClaims.length===0) loadClubClaims();
+    if(p==='codes') loadCodes();
+  };
+})();
+
+var _codes = [];
+var _activeCodeId = null;
+
+async function loadCodes(){
+  var tbody = document.getElementById('codes-tbody');
+  if(tbody) tbody.innerHTML = '<div class="code-empty"><span class="spin"></span> Yükleniyor...</div>';
+  try {
+    var d = await api('codes-list');
+    if(d.error) throw new Error(d.error);
+    _codes = d.codes || [];
+    renderCodesStats();
+    renderCodesTable();
+  } catch(e) {
+    if(tbody) tbody.innerHTML = '<div class="code-empty" style="color:var(--red)">Hata: '+e.message+'</div>';
+  }
+}
+
+function renderCodesStats(){
+  var total  = _codes.length;
+  var active = _codes.filter(function(c){ return !isCodeFull(c); }).length;
+  var full   = _codes.filter(function(c){ return isCodeFull(c); }).length;
+  var el;
+  el = document.getElementById('cstat-total');  if(el) el.textContent = total;
+  el = document.getElementById('cstat-active'); if(el) el.textContent = active;
+  el = document.getElementById('cstat-used');   if(el) el.textContent = full;
+}
+
+function isCodeFull(c){
+  if(c.max_uses === 0) return false;
+  return (c.use_count || 0) >= c.max_uses;
+}
+
+function renderCodesTable(){
+  var tbody = document.getElementById('codes-tbody');
+  if(!tbody) return;
+  if(!_codes.length){ tbody.innerHTML='<div class="code-empty">Henüz kod yok. Yeni kod oluştur.</div>'; return; }
+  var sorted = _codes.slice().sort(function(a,b){ return new Date(b.created_at)-new Date(a.created_at); });
+  var html = '';
+  sorted.forEach(function(c){
+    var used      = c.use_count || 0;
+    var max       = c.max_uses;
+    var unlimited = (max === 0);
+    var full      = !unlimited && used >= max;
+    var usageStr  = unlimited ? (used + ' / ∞') : (used + ' / ' + max);
+    var usageCls  = unlimited ? 'free' : (full ? 'full' : (used > 0 ? 'partial' : 'free'));
+    var badge, badgeCls;
+    if(unlimited){ badge='Sınırsız'; badgeCls='csbadge-unlimited'; }
+    else if(full){ badge='Tükendi';  badgeCls='csbadge-full'; }
+    else          { badge='Aktif';   badgeCls='csbadge-active'; }
+    html += '<div class="codes-row">'
+      + '<div><div class="code-val" title="Kopyala için tıkla" onclick="copyCode(''+esc(c.code)+'')">'+esc(c.code)+'</div></div>'
+      + '<div class="code-label">'+(c.label ? esc(c.label) : '<span style="color:var(--text3)">—</span>')+'</div>'
+      + '<div class="code-uses '+usageCls+'">'+usageStr+'</div>'
+      + '<div><span class="code-status-badge '+badgeCls+'">'+badge+'</span></div>'
+      + '<div><button class="abtn abtn-del" onclick="openDelCode(''+c.id+'',''+esc(c.code)+'')">Sil</button></div>'
+      + '</div>';
+  });
+  tbody.innerHTML = html;
+}
+
+function copyCode(code){
+  navigator.clipboard.writeText(code).then(function(){
+    showToast(code+' kopyalandı ✓','ok');
+  }).catch(function(){ showToast(code,'ok'); });
+}
+
+function openCreateCode(){
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var rand = 'MLYNR-';
+  for(var i=0;i<4;i++) rand += chars[Math.floor(Math.random()*chars.length)];
+  document.getElementById('cc-code').value = rand;
+  document.getElementById('cc-maxuses').value = '1';
+  document.getElementById('cc-label').value = '';
+  document.getElementById('createCodeModal').classList.remove('hidden');
+}
+
+async function confirmCreateCode(){
+  var code    = document.getElementById('cc-code').value.trim().toUpperCase();
+  var maxuses = parseInt(document.getElementById('cc-maxuses').value);
+  if(isNaN(maxuses)||maxuses<0) maxuses=1;
+  var label   = document.getElementById('cc-label').value.trim();
+  if(!code){ showToast('Kod boş olamaz','err'); return; }
+  try {
+    var d = await api('codes-create', { code: code, maxUses: maxuses, label: label });
+    if(d.error) throw new Error(d.error);
+    closeModal('createCodeModal');
+    showToast('✓ "'+code+'" oluşturuldu — kopyalamak için tabloda üstüne tıkla','ok');
+    loadCodes();
+  } catch(e){ showToast('Hata: '+e.message,'err'); }
+}
+
+function openDelCode(id, code){
+  _activeCodeId = id;
+  document.getElementById('delCodeTarget').textContent = '"'+code+'" kodu silinecek. Emin misin?';
+  document.getElementById('delCodeModal').classList.remove('hidden');
+}
+
+async function confirmDelCode(){
+  try {
+    var d = await api('codes-delete', { codeId: _activeCodeId });
+    if(d.error) throw new Error(d.error);
+    closeModal('delCodeModal');
+    showToast('Kod silindi','ok');
+    loadCodes();
+  } catch(e){ showToast('Hata: '+e.message,'err'); }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  var ci = document.getElementById('cc-code');
+  if(ci) ci.addEventListener('input', function(){ this.value = this.value.toUpperCase(); });
+});
 </script>
 </body>
 </html>
