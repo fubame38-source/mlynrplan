@@ -174,6 +174,25 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .club-filter-bar .fbtn{font-size:11px}
 .club-refresh{margin-left:auto}
 
+/* ── LIGHT TEMA ── */
+body.light{--bg:#f5f4f0;--surface:#fff;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.14);--text:#1a1916;--text2:#5a5854;--text3:#9a9894;--green:#1a7a4a;--red:#dc2626;--yellow:#b45309;--blue:#1d4ed8}
+body.light .nav-btn,.light .obtn{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.14);color:var(--text2)}
+body.light .login-box{background:#fff;border-color:rgba(0,0,0,.14);box-shadow:0 4px 24px rgba(0,0,0,.08)}
+body.light .linput{background:#f9f9f9;border-color:rgba(0,0,0,.14);color:#1a1916}
+body.light .lbtn{background:#1a1916;color:#fff}
+body.light .tw,.light .club-table{border-color:rgba(0,0,0,.1)}
+body.light .row:hover,.light .club-row:hover{background:rgba(0,0,0,.02)}
+body.light .club-row{border-bottom-color:rgba(0,0,0,.05)}
+body.light .modal{background:#fff;border-color:rgba(0,0,0,.14)}
+body.light .modal textarea{background:#f9f9f9;border-color:rgba(0,0,0,.14);color:#1a1916}
+body.light .qmsg-item{background:#fff;border-color:rgba(0,0,0,.1)}
+body.light .qmsg-item.selected{border-color:var(--green);background:rgba(26,122,74,.05)}
+body.light .bulk-custom{background:#f9f9f9;border-color:rgba(0,0,0,.14);color:#1a1916}
+body.light .sc{background:#fff}
+body.light .toast{background:#fff;color:#1a1916}
+.theme-toggle{position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--border2);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;z-index:999;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .2s}
+.theme-toggle:hover{transform:scale(1.1)}
+
 </style>
 </head>
 <body>
@@ -320,25 +339,36 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   </div><!-- /panel-club -->
 
   <!-- DAVET KODLARI PANELİ -->
+  <!-- DAVET KODLARI PANELİ -->
   <div class="club-section-panel" id="panel-codes">
-    <div class="codes-top">
-      <button class="codes-new-btn" onclick="openCreateCode()">+ Yeni Kod Oluştur</button>
-      <button class="rbtn" onclick="loadCodes()">&#8635; Yenile</button>
-      <div class="codes-stats">
-        <div class="codes-stat"><div class="codes-stat-num" id="cstat-total" style="color:var(--blue)">&#x2014;</div><div class="codes-stat-lbl">Toplam</div></div>
-        <div class="codes-stat"><div class="codes-stat-num" id="cstat-active" style="color:var(--green)">&#x2014;</div><div class="codes-stat-lbl">Aktif</div></div>
-        <div class="codes-stat"><div class="codes-stat-num" id="cstat-used" style="color:var(--red)">&#x2014;</div><div class="codes-stat-lbl">Tükendi</div></div>
+    <div style="background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:24px;margin-bottom:20px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:16px;font-family:var(--mono)">Yeni Davet Kodu Ekle</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+        <div style="flex:1;min-width:120px">
+          <label class="lbl" style="margin-bottom:5px;display:block">Kod</label>
+          <input class="sinput" id="code-inp" placeholder="MLYNR-XXXX" style="width:100%;text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);font-weight:700" oninput="this.value=this.value.toUpperCase()">
+        </div>
+        <div style="flex:2;min-width:160px">
+          <label class="lbl" style="margin-bottom:5px;display:block">Açıklama (opsiyonel)</label>
+          <input class="sinput" id="code-label-inp" placeholder="Örn: Ocak 2026 grubu" style="width:100%">
+        </div>
+        <div style="flex:0 0 80px">
+          <label class="lbl" style="margin-bottom:5px;display:block">Max Kullanım</label>
+          <input class="sinput" id="code-max-inp" type="number" value="1" min="1" style="width:100%">
+        </div>
+        <button class="lbtn" style="flex:0 0 auto;padding:10px 20px;font-size:11px;border-radius:8px;white-space:nowrap" onclick="addInviteCode()">Ekle →</button>
       </div>
+      <div id="code-add-msg" style="font-family:var(--mono);font-size:11px;margin-top:10px;min-height:16px"></div>
     </div>
-    <div class="codes-table">
-      <div class="codes-thead">
-        <div class="codes-th">Kod</div>
-        <div class="codes-th">Not</div>
-        <div class="codes-th">Kullanım</div>
-        <div class="codes-th">Durum</div>
-        <div class="codes-th">İşlem</div>
+    <div class="tw">
+      <div class="thead" style="grid-template-columns:1.5fr 1.5fr 0.7fr 0.5fr 1fr">
+        <div class="th">Kod</div>
+        <div class="th">Açıklama</div>
+        <div class="th">Kullanım</div>
+        <div class="th">Durum</div>
+        <div class="th">İşlemler</div>
       </div>
-      <div class="codes-tbody" id="codes-tbody"><div class="code-empty">Yükleniyor...</div></div>
+      <div class="tbody" id="codes-list"><div class="erow"><span class="spin"></span>Yükleniyor...</div></div>
     </div>
   </div><!-- /panel-codes -->
 
@@ -371,6 +401,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- Light Tema Toggle -->
+<button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Tema değiştir">🌙</button>
 
 <script>
 const EP = 'https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint';
@@ -700,8 +733,10 @@ var CLUB_META = {
 
 function switchPanel(p){
   ['students','club','codes'].forEach(function(id){
-    document.getElementById('panel-'+id).classList.toggle('active', id===p);
-    document.getElementById('nav-'+id).classList.toggle('active', id===p);
+    var panel = document.getElementById('panel-'+id);
+    var nav   = document.getElementById('nav-'+id);
+    if(panel) panel.classList.toggle('active', id===p);
+    if(nav)   nav.classList.toggle('active', id===p);
   });
   if(p==='club' && clubClaims.length===0) loadClubClaims();
   if(p==='codes') loadInviteCodes();
@@ -761,141 +796,80 @@ function renderClubTable(){
   tbody.innerHTML=html;
 }
 
-// ─── DAVET KODLARI ──────────────────────────────────────────────
-var _sb2 = supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNTcxNzksImV4cCI6MjA4ODczMzE3OX0.JbtrF-ymC11M7HM9MhT5_I1hD8e5oOQz0q-d7Ty5E2Q');
 
-);
+// ─── DAVET KODLARI ─────────────────────────────────────────────
+async function loadInviteCodes(){
+  var list = document.getElementById('codes-list');
+  if(!list) return;
+  list.innerHTML = '<div class="erow"><span class="spin"></span>Yükleniyor...</div>';
+  var { data, error } = await sb.from('portal_invite_codes').select('*').order('created_at',{ascending:false});
+  if(error){ list.innerHTML='<div class="erow" style="color:var(--red)">Hata: '+esc(error.message)+'</div>'; return; }
+  if(!data||!data.length){ list.innerHTML='<div class="erow">Henüz kod yok.</div>'; return; }
+  var html='';
+  data.forEach(function(c){
+    var full = c.max_uses > 0 && (c.use_count||0) >= c.max_uses;
+    var statusColor = full ? 'var(--red)' : 'var(--green)';
+    var statusText  = full ? '✗ Dolu' : '✓ Aktif';
+    var usageText   = c.max_uses===999999 ? ((c.use_count||0)+' / ∞') : ((c.use_count||0)+'/'+c.max_uses);
+    html += '<div class="row" id="pcode-'+c.id+'" style="grid-template-columns:1.5fr 1.5fr 0.7fr 0.5fr 1fr">'
+      +'<div class="nm" style="font-family:var(--mono);letter-spacing:.1em">'+esc(c.code)+'</div>'
+      +'<div class="cd">'+esc(c.label||'—')+'</div>'
+      +'<div class="cd">'+usageText+'</div>'
+      +'<div style="font-family:var(--mono);font-size:11px;font-weight:700;color:'+statusColor+'">'+statusText+'</div>'
+      +'<div class="actions">'
+        +'<button class="abtn abtn-msg" onclick="copyInviteCode(''+escAttr(c.code)+'')">Kopyala</button>'
+        +'<button class="abtn abtn-del" onclick="deleteInviteCode(''+escAttr(c.id)+'')">Sil</button>'
+      +'</div>'
+    +'</div>';
+  });
+  list.innerHTML = html;
 }
 
-</script>
+async function addInviteCode(){
+  var code    = (document.getElementById('code-inp').value||'').trim().toUpperCase();
+  var label   = (document.getElementById('code-label-inp').value||'').trim();
+  var maxUses = parseInt(document.getElementById('code-max-inp').value)||1;
+  var msg     = document.getElementById('code-add-msg');
+  if(!code||code.length<3){ showToast('Min 3 karakter gir','err'); return; }
+  msg.style.color='var(--text2)'; msg.textContent='Ekleniyor...';
+  var { error } = await sb.from('portal_invite_codes').insert({code:code, label:label, max_uses:maxUses, use_count:0});
+  if(error){ msg.style.color='var(--red)'; msg.textContent='Hata: '+error.message; return; }
+  document.getElementById('code-inp').value='';
+  document.getElementById('code-label-inp').value='';
+  document.getElementById('code-max-inp').value='1';
+  msg.style.color='var(--green)'; msg.textContent='✓ Kod eklendi!';
+  setTimeout(function(){ msg.textContent=''; },2500);
+  loadInviteCodes();
+}
 
-<script>
-/* ── DAVET KODLARI PANELİ ── */
+async function deleteInviteCode(id){
+  if(!confirm('Bu kodu silmek istediğine emin misin?')) return;
+  var el = document.getElementById('pcode-'+id);
+  if(el){ el.style.opacity='.3'; el.style.pointerEvents='none'; }
+  var { error } = await sb.from('portal_invite_codes').delete().eq('id',id);
+  if(error){ showToast('Hata: '+error.message,'err'); if(el){el.style.opacity='1';el.style.pointerEvents='';} return; }
+  if(el) el.remove();
+  showToast('Kod silindi','ok');
+}
+
+function copyInviteCode(code){
+  navigator.clipboard.writeText(code).then(function(){ showToast('Kopyalandı: '+code,'ok'); });
+}
+
+// ── TEMA ──────────────────────────────────────────────────────
+function toggleTheme(){
+  var isLight = document.body.classList.toggle('light');
+  document.getElementById('theme-btn').textContent = isLight ? '🌙' : '☀️';
+  localStorage.setItem('mlynr_admin_theme', isLight ? 'light' : 'dark');
+}
 (function(){
-  var _origSwitch = switchPanel;
-  switchPanel = function(p){
-    ['students','club','codes'].forEach(function(id){
-      var panel = document.getElementById('panel-'+id);
-      var nav   = document.getElementById('nav-'+id);
-      if(panel) panel.classList.toggle('active', id===p);
-      if(nav)   nav.classList.toggle('active', id===p);
-    });
-    if(p==='club' && clubClaims.length===0) loadClubClaims();
-    if(p==='codes') loadCodes();
-  };
+  if(localStorage.getItem('mlynr_admin_theme')==='light'){
+    document.body.classList.add('light');
+    var btn = document.getElementById('theme-btn');
+    if(btn) btn.textContent = '🌙';
+  }
 })();
 
-var _codes = [];
-var _activeCodeId = null;
-
-async function loadCodes(){
-  var tbody = document.getElementById('codes-tbody');
-  if(tbody) tbody.innerHTML = '<div class="code-empty"><span class="spin"></span> Yükleniyor...</div>';
-  try {
-    var d = await api('codes-list');
-    if(d.error) throw new Error(d.error);
-    _codes = d.codes || [];
-    renderCodesStats();
-    renderCodesTable();
-  } catch(e) {
-    if(tbody) tbody.innerHTML = '<div class="code-empty" style="color:var(--red)">Hata: '+e.message+'</div>';
-  }
-}
-
-function renderCodesStats(){
-  var total  = _codes.length;
-  var active = _codes.filter(function(c){ return !isCodeFull(c); }).length;
-  var full   = _codes.filter(function(c){ return isCodeFull(c); }).length;
-  var el;
-  el = document.getElementById('cstat-total');  if(el) el.textContent = total;
-  el = document.getElementById('cstat-active'); if(el) el.textContent = active;
-  el = document.getElementById('cstat-used');   if(el) el.textContent = full;
-}
-
-function isCodeFull(c){
-  if(c.max_uses === 0) return false;
-  return (c.use_count || 0) >= c.max_uses;
-}
-
-function renderCodesTable(){
-  var tbody = document.getElementById('codes-tbody');
-  if(!tbody) return;
-  if(!_codes.length){ tbody.innerHTML='<div class="code-empty">Henüz kod yok. Yeni kod oluştur.</div>'; return; }
-  var sorted = _codes.slice().sort(function(a,b){ return new Date(b.created_at)-new Date(a.created_at); });
-  var html = '';
-  sorted.forEach(function(c){
-    var used      = c.use_count || 0;
-    var max       = c.max_uses;
-    var unlimited = (max === 0);
-    var full      = !unlimited && used >= max;
-    var usageStr  = unlimited ? (used + ' / ∞') : (used + ' / ' + max);
-    var usageCls  = unlimited ? 'free' : (full ? 'full' : (used > 0 ? 'partial' : 'free'));
-    var badge, badgeCls;
-    if(unlimited){ badge='Sınırsız'; badgeCls='csbadge-unlimited'; }
-    else if(full){ badge='Tükendi';  badgeCls='csbadge-full'; }
-    else          { badge='Aktif';   badgeCls='csbadge-active'; }
-    html += '<div class="codes-row">'
-      + '<div><div class="code-val" title="Kopyala için tıkla" onclick="copyCode(''+esc(c.code)+'')">'+esc(c.code)+'</div></div>'
-      + '<div class="code-label">'+(c.label ? esc(c.label) : '<span style="color:var(--text3)">—</span>')+'</div>'
-      + '<div class="code-uses '+usageCls+'">'+usageStr+'</div>'
-      + '<div><span class="code-status-badge '+badgeCls+'">'+badge+'</span></div>'
-      + '<div><button class="abtn abtn-del" onclick="openDelCode(''+c.id+'',''+esc(c.code)+'')">Sil</button></div>'
-      + '</div>';
-  });
-  tbody.innerHTML = html;
-}
-
-function copyCode(code){
-  navigator.clipboard.writeText(code).then(function(){
-    showToast(code+' kopyalandı ✓','ok');
-  }).catch(function(){ showToast(code,'ok'); });
-}
-
-function openCreateCode(){
-  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  var rand = 'MLYNR-';
-  for(var i=0;i<4;i++) rand += chars[Math.floor(Math.random()*chars.length)];
-  document.getElementById('cc-code').value = rand;
-  document.getElementById('cc-maxuses').value = '1';
-  document.getElementById('cc-label').value = '';
-  document.getElementById('createCodeModal').classList.remove('hidden');
-}
-
-async function confirmCreateCode(){
-  var code    = document.getElementById('cc-code').value.trim().toUpperCase();
-  var maxuses = parseInt(document.getElementById('cc-maxuses').value);
-  if(isNaN(maxuses)||maxuses<0) maxuses=1;
-  var label   = document.getElementById('cc-label').value.trim();
-  if(!code){ showToast('Kod boş olamaz','err'); return; }
-  try {
-    var d = await api('codes-create', { code: code, maxUses: maxuses, label: label });
-    if(d.error) throw new Error(d.error);
-    closeModal('createCodeModal');
-    showToast('✓ "'+code+'" oluşturuldu — kopyalamak için tabloda üstüne tıkla','ok');
-    loadCodes();
-  } catch(e){ showToast('Hata: '+e.message,'err'); }
-}
-
-function openDelCode(id, code){
-  _activeCodeId = id;
-  document.getElementById('delCodeTarget').textContent = '"'+code+'" kodu silinecek. Emin misin?';
-  document.getElementById('delCodeModal').classList.remove('hidden');
-}
-
-async function confirmDelCode(){
-  try {
-    var d = await api('codes-delete', { codeId: _activeCodeId });
-    if(d.error) throw new Error(d.error);
-    closeModal('delCodeModal');
-    showToast('Kod silindi','ok');
-    loadCodes();
-  } catch(e){ showToast('Hata: '+e.message,'err'); }
-}
-
-document.addEventListener('DOMContentLoaded', function(){
-  var ci = document.getElementById('cc-code');
-  if(ci) ci.addEventListener('input', function(){ this.value = this.value.toUpperCase(); });
-});
 </script>
 </body>
 </html>
