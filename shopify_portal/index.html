@@ -607,11 +607,12 @@ footer p{font-size:12px;color:var(--text3)}
 
       <!-- QUICK ACTIONS -->
       <div class="quick-grid" style="grid-template-columns:1fr 1fr">
-        <div class="quick-card featured" style="opacity:.5;cursor:default;pointer-events:none">
+        <div class="quick-card featured" onclick="window.location.href='https://mlynrplan.com/urun_bulucu.html?u='+encodeURIComponent(window.email||'')">
           <div class="qc-icon">🔍</div>
           <div class="qc-title">AI Ürün Bulucu</div>
           <div class="qc-sub">Ürün adı veya link gir, SAT / SATMA kararı + tam rapor al.</div>
-          <div class="qc-badge" style="background:rgba(255,255,255,.06);color:var(--text3)"><span>●</span> Yakında</div>
+          <div class="qc-badge green"><span>●</span> Aktif</div>
+          <div class="qc-ping"></div>
         </div>
         <div class="quick-card purple-accent" onclick="window.location.href='https://mlynrplan.com/icerik_studyosu.html?u='+encodeURIComponent(window.email||'')">
           <div class="qc-icon">🎬</div>
