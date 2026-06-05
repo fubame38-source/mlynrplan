@@ -268,8 +268,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div class="toast" id="toast"></div>
 
 <script>
-var API_URL = 'https://xrelhozqawdseobxqbju.supabase.co/functions/v1/shopify-endpoint';
-var API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
+var ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 
 var NISLER = [
   {e:'🐾',n:'Evcil Hayvan'},{e:'🏠',n:'Ev & Yaşam'},{e:'💪',n:'Spor & Fitness'},
@@ -294,14 +293,39 @@ function tryParseJSON(raw) {
 }
 
 function callAPI(payload, onSuccess, onError) {
-  fetch(API_URL, {
+  var systemPrompt = payload.system || 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.';
+  var userMsg = payload.prompt || '';
+  var useSearch = payload.use_search !== false;
+
+  var tools = useSearch ? [{
+    "type": "web_search_20250305",
+    "name": "web_search"
+  }] : undefined;
+
+  var body = {
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 2000,
+    system: systemPrompt,
+    messages: [{ role: 'user', content: userMsg }]
+  };
+  if (tools) body.tools = tools;
+
+  fetch(ANTHROPIC_API_URL, {
     method: 'POST',
-    headers: {'Content-Type':'application/json','Authorization':'Bearer '+API_KEY,'apikey':API_KEY},
-    body: JSON.stringify(payload)
-  })
+    headers: { 'Content-Type': 'application/json' }
+  , body: JSON.stringify(body) })
   .then(function(r){ return r.json(); })
   .then(function(data){
-    var raw = (data && typeof data.sonuc === 'string') ? data.sonuc : (data && typeof data.reply === 'string') ? data.reply : JSON.stringify(data);
+    if (data.error) { onError(data.error.message || 'API hatasi'); return; }
+    // Tüm text bloklarını birleştir (tool_use + text karışık gelebilir)
+    var raw = '';
+    if (data.content && Array.isArray(data.content)) {
+      data.content.forEach(function(block){
+        if (block.type === 'text') raw += block.text;
+      });
+    }
+    if (!raw && data.content) raw = JSON.stringify(data.content);
+    raw = raw.trim();
     var parsed = tryParseJSON(raw);
     if (parsed) onSuccess(parsed); else onError(raw);
   })
@@ -335,24 +359,25 @@ function doAnaliz() {
   var isLink = input.startsWith('http') || input.indexOf('.com/') !== -1;
   var itemId = isAli ? (input.match(/\/item\/(\d+)/) || [])[1] : null;
 
-  var schema = '{"karar":"SAT","urun_adi":"Turkce urun adi","karar_nedeni":"2-3 cumle","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"string","hedef_kitle_detay":"string","hook1":"Turkce hook","hook2":"Turkce hook","hook3":"Turkce hook","firsat":"string","uyari":"string","rakip_notu":"string","aliexpress_arama":"English term","amazon_arama":"English term","aliexpress_gercek_fiyat":"$X-$X","aliexpress_satici_sayisi":"150+","aliexpress_rating":"4.5/5"}';
+  var schema = '{"karar":"SAT","urun_adi":"Turkce urun adi","karar_nedeni":"2-3 cumle neden SAT veya SATMA","problem_cozucu":8,"wow_factor":7,"kreatif_uygunluk":9,"rekabet_skoru":4,"talep_skoru":8,"fiyat_min":15,"fiyat_max":35,"ideal_satis_fiyati":24.99,"hedef_kitle":"kisa segment adi","hedef_kitle_detay":"kimler, neden alir, hangi problem","hook1":"Guclu Turkce TikTok/Reels hook cumle 1","hook2":"Guclu Turkce TikTok/Reels hook cumle 2","hook3":"Guclu Turkce TikTok/Reels hook cumle 3","firsat":"Bu urundeki en buyuk firsat","uyari":"Bu urundeki en buyuk risk","rakip_notu":"Rakip durumu ve farklilasmak icin tavsiye","aliexpress_arama":"En iyi AliExpress arama terimi (Ingilizce)","amazon_arama":"En iyi Amazon arama terimi (Ingilizce)","aliexpress_gercek_fiyat":"$X-$X","aliexpress_satici_sayisi":"150+ gibi","aliexpress_rating":"4.5/5 gibi"}';
+
+  var systemPrompt = 'Sen dunyaca tanınan bir Shopify dropshipping uzmanisın. Milyonlarca dolarlık kazanan urunu gordun, rakip analizi yaptin. Cevaplarinda GERCEK web verilerine dayan. SADECE gecerli JSON formatinda yanit ver — JSON disinda tek bir karakter bile yazma. Markdown, backtick, aciklama yok.';
 
   var prompt;
   var apiPayload;
 
   if (isAli && itemId) {
-    // Apify ile gerçek ürün verisi çek
-    prompt = 'Urun adi: __TITLE__\nAliExpress fiyat: __PRICE__\nRating: __RATING__\nSiparis sayisi: __ORDERS__\n\nBu AliExpress urununu Shopify dropshipping acisindan analiz et. GERCEK verileri kullan.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver. JSON disinda tek kelime bile yazma:\n' + schema;
-    apiPayload = {prompt: prompt, use_search: false, aliexpress_item_id: itemId, system: 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.'};
+    prompt = 'Su AliExpress urun sayfasini web aramasi ile bul ve analiz et: ' + input + '\n\nGercek fiyati, siparis sayisini, rating degeri ve benzer urunlerin Shopify\'daki satis fiyatlarini web\'den ara. Dropshipping potansiyelini degerlendir.\n\nSADECE su JSON formatinda yanit ver:\n' + schema;
+    apiPayload = {prompt: prompt, use_search: true, system: systemPrompt};
   } else if (isAli) {
-    prompt = 'AliExpress urun: ' + input + '\n\nBu urunu AliExpress dropshipping acisindan analiz et, web\'de benzer urunlerin verilerini ara.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver:\n' + schema;
-    apiPayload = {prompt: prompt, use_search: true, system: 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.'};
+    prompt = 'Su AliExpress URL\'sindeki urunu web aramasi yaparak analiz et: ' + input + '\n\nURL\'den urunu tanımla, AliExpress\'te benzer urunlerin fiyat ve satis verilerini ara, Shopify dropshipping icin degerlendir.\n\nSADECE su JSON formatinda yanit ver:\n' + schema;
+    apiPayload = {prompt: prompt, use_search: true, system: systemPrompt};
   } else if (isLink) {
-    prompt = 'Urun linki: ' + input + '\n\nBu linkteki urunu web\'de ara ve analiz et.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver. JSON disinda tek kelime bile yazma:\n' + schema;
-    apiPayload = {prompt: prompt, use_search: true, system: 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.'};
+    prompt = 'Su urun linkini ziyaret edip urun hakkinda web araması yap: ' + input + '\n\nUrunu tanımla, AliExpress ve Amazon\'da benzer urunlerin fiyatlarini bul, Shopify dropshipping potansiyelini degerlendir. Gercek veri kullan.\n\nSADECE su JSON formatinda yanit ver:\n' + schema;
+    apiPayload = {prompt: prompt, use_search: true, system: systemPrompt};
   } else {
-    prompt = '"' + input + '" urununu AliExpress ve Shopify dropshipping acisindan web\'de ara, gercek fiyat ve pazar verisini bul.\n\nKESINLIKLE SADECE asagidaki JSON formatinda yanit ver. JSON disinda tek kelime bile yazma:\n' + schema;
-    apiPayload = {prompt: prompt, use_search: true, system: 'Sen bir Shopify dropshipping uzmanisın. Web aramasi yap, GERCEK verileri bul. SADECE gecerli JSON formatinda yanit ver. Hicbir aciklama, markdown veya ek metin yazma.'};
+    prompt = '"' + input + '" urununu web\'de ara. AliExpress fiyati, siparis hacmi, Shopify magazalarindaki satis fiyati ve rakip durumunu bul. Gercek verilere dayali dropshipping analizi yap.\n\nSADECE su JSON formatinda yanit ver:\n' + schema;
+    apiPayload = {prompt: prompt, use_search: true, system: systemPrompt};
   }
 
   callAPI(
@@ -493,10 +518,10 @@ function doNis() {
   if (loading) loading.style.display = 'block';
   if (report) { report.style.display = 'none'; report.innerHTML = ''; }
 
-  var prompt = nis.n + ' nisinde Shopify dropshipping icin en iyi 4 kazanan urunu web\'de ara. Problem cozucu, wow factor yuksek, AliExpressden temin edilebilir olsun. SADECE JSON yaz:\n{"oneriler":[{"urun_adi":"Turkce ad","neden_kazanir":"aciklama","problem_cozuyor":"hangi problem","kreatif_fikri":"video fikri","fiyat_aralik":"$xx-xx","rekabet":"DUSUK","wow_factor":8,"kreatif_uygunluk":9}]}';
+  var nisPrompt = nis.n + ' nisinde Shopify dropshipping icin web aramasi yap. Simdi 2025 yilinda trend olan, AliExpress\'te temin edilebilir, problem cozucu ve wow factor yuksek 4 kazanan urunu bul. Gercek verilere dayan.\n\nSADECE asagidaki JSON formatinda yanit ver — JSON disinda tek karakter bile yazma:\n{"oneriler":[{"urun_adi":"Turkce urun adi","neden_kazanir":"neden satiyor detayli","problem_cozuyor":"hangi somut problemi cozer","kreatif_fikri":"TikTok/Reels video fikri","fiyat_aralik":"$XX-$XX","rekabet":"DUSUK","wow_factor":8,"kreatif_uygunluk":9}]}';
 
   callAPI(
-    {prompt: prompt, use_search: true, system: 'Sen bir Shopify dropshipping uzmanisın. SADECE gecerli JSON formatinda yanit ver. Baska hicbir sey yazma.'},
+    {prompt: nisPrompt, use_search: true, system: 'Sen dunyaca tanınan bir Shopify dropshipping uzmanisın. Web aramasi yap, 2025 trend urunleri bul. SADECE gecerli JSON formatinda yanit ver. JSON disinda hicbir sey yazma.'},
     function(parsed){
       if (loading) loading.style.display = 'none';
       if (btn) btn.disabled = false;
