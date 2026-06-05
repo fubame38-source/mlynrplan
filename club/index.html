@@ -440,7 +440,7 @@ body.light-mode .post.mine{
   font-size:14px;color:var(--text2);line-height:1.72;
   margin-bottom:14px;white-space:pre-wrap;word-break:break-word;
   overflow-wrap:break-word;word-wrap:break-word;
-  max-width:100%;overflow:hidden;
+  max-width:100%;
   position:relative;
 }
 .post-body.collapsed{
@@ -2493,17 +2493,29 @@ async function loadAnnouncements() {
   var { data } = await sb.from('club_announcements')
     .select('*')
     .order('created_at', { ascending: false });
-  var html = renderAnnouncementsHtml(data || []);
-  var el1 = null;
-  var el2 = null; // ana sayfada duyuru gösterilmiyor
-  if (el1) el1.innerHTML = html;
-  if (el2) el2.innerHTML = html;
-  // Duyuru yoksa section'ı gizle
-  var show = data && data.length > 0;
-  var s1 = null;
-  var s2 = null;
-  if (s1) s1.style.display = show ? '' : 'none';
-  if (s2) s2.style.display = show ? '' : 'none';
+  // Duyuru sayfasını güncelle (page-announcements içindeki liste)
+  var annPageList = document.getElementById('ann-page-list');
+  if (annPageList && data) {
+    if (!data.length) {
+      annPageList.innerHTML = '<div class="ann-page-empty">Henüz duyuru yok.</div>';
+    } else {
+      annPageList.innerHTML = data.map(a => `
+        <div class="ann-card">
+          <div style="display:flex;align-items:flex-start;gap:14px;">
+            <div class="ann-card-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(99,102,241,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 000 6h20M13 1v10M13 1L6 11h7l-1 9 7-8h-7l1-9z"/></svg>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div class="ann-card-title">${esc(a.title)}</div>
+              <div class="ann-card-text">${esc(a.body||'')}</div>
+              ${a.media_url && a.media_type==='image' ? `<img src="${esc(a.media_url)}" style="width:100%;border-radius:12px;margin-top:12px;max-height:320px;object-fit:cover;border:1px solid var(--border);cursor:zoom-in;" onclick="openLightbox('${esc(a.media_url)}')">` : ''}
+              ${a.media_url && a.media_type==='video' ? `<video src="${esc(a.media_url)}" controls style="width:100%;border-radius:12px;margin-top:12px;max-height:320px;border:1px solid var(--border);"></video>` : ''}
+              <div class="ann-card-date">${timeAgo(a.created_at)}</div>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+  }
 }
 
 function renderAnnouncementsHtml(anns) {
@@ -2523,32 +2535,11 @@ function renderAnnouncementsHtml(anns) {
     </div>`).join('');
 }
 
-// ─── DUYURULAR ─────────────────────────────────────────────────
+// ─── DUYURULAR SAYFASI ─────────────────────────────────────────
 async function loadAnnouncementsPage() {
   var list = document.getElementById('ann-page-list');
   if (list) list.innerHTML = '<div class="ann-page-empty">Yükleniyor...</div>';
-  var { data } = await sb.from('club_announcements')
-    .select('*').order('created_at', { ascending: false });
-  if (!list) return;
-  if (!data || !data.length) {
-    list.innerHTML = '<div class="ann-page-empty">Henüz duyuru yok.</div>';
-    return;
-  }
-  list.innerHTML = data.map(a => `
-    <div class="ann-card">
-      <div style="display:flex;align-items:flex-start;gap:14px;">
-        <div class="ann-card-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(99,102,241,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 000 6h20M13 1v10M13 1L6 11h7l-1 9 7-8h-7l1-9z"/></svg>
-        </div>
-        <div style="flex:1;min-width:0;">
-          <div class="ann-card-title">${esc(a.title)}</div>
-          <div class="ann-card-text">${esc(a.body||'')}</div>
-          ${a.media_url && a.media_type==='image' ? `<img src="${esc(a.media_url)}" style="width:100%;border-radius:12px;margin-top:12px;max-height:320px;object-fit:cover;border:1px solid var(--border);cursor:zoom-in;" onclick="openLightbox('${esc(a.media_url)}')">` : ''}
-          ${a.media_url && a.media_type==='video' ? `<video src="${esc(a.media_url)}" controls style="width:100%;border-radius:12px;margin-top:12px;max-height:320px;border:1px solid var(--border);"></video>` : ''}
-          <div class="ann-card-date">${timeAgo(a.created_at)}</div>
-        </div>
-      </div>
-    </div>`).join('');
+  await loadAnnouncements();
 }
 // ─── RENDER POST ───────────────────────────────────────────────
 function renderPost(p) {
@@ -2577,9 +2568,6 @@ function renderPost(p) {
   var safeType = validTypes.includes(p.post_type) ? p.post_type : 'question';
   var typeLabel = typeMap[safeType] || safeType;
   var canDelete = isMine || isAdmin;
-  var delBtn = canDelete ? `<button class="post-del" onclick="deletePost('${p.id}','${p.user_id}')" title="Sil">
-      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-    </button>` : '';
   var isAdminUser = ADMIN_EMAILS.includes(me?.email);
   var pendingHtml = (!p.approved && isMine && !isAdminUser) ? '<div class="pending-pill">⏳ Onay bekleniyor</div>' : '';
 
@@ -3015,6 +3003,19 @@ function subscribeRealtime() {
     })
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'club_reactions'},(payload)=>{
       if (!payload.new.post_id || !payload.new.user_id) return;
+      // allPosts içindeki ilgili postu güncelle
+      var idx = allPosts.findIndex(p=>p.id===payload.new.post_id);
+      if (idx > -1) {
+        var existing = (allPosts[idx].club_reactions||[]);
+        var alreadyExists = existing.some(r=>r.user_id===payload.new.user_id && r.emoji===payload.new.emoji);
+        if (!alreadyExists) {
+          allPosts[idx].club_reactions = [...existing, payload.new];
+        }
+        // Kendi reaction'ı değilse feed'i yenile
+        if (payload.new.user_id !== me?.id) {
+          renderFeed(); renderHomeFeeds();
+        }
+      }
       var myPost = allPosts.find(p=>p.id===payload.new.post_id && p.user_id===me?.id);
       if (myPost && payload.new.user_id !== me?.id) {
         pushNotif('reaction', payload.new.user_name||'Biri', payload.new.post_id, payload.new.emoji);
@@ -3022,6 +3023,19 @@ function subscribeRealtime() {
     })
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'club_comments'},(payload)=>{
       if (!payload.new.post_id || !payload.new.user_id) return;
+      // allPosts içindeki ilgili postu güncelle
+      var idx = allPosts.findIndex(p=>p.id===payload.new.post_id);
+      if (idx > -1) {
+        var existingCmts = (allPosts[idx].club_comments||[]);
+        var alreadyExists = existingCmts.some(c=>c.id===payload.new.id);
+        if (!alreadyExists) {
+          allPosts[idx].club_comments = [...existingCmts, payload.new];
+        }
+        // Başkasının yorumunu feed'e yansıt
+        if (payload.new.user_id !== me?.id) {
+          renderFeed(); renderHomeFeeds();
+        }
+      }
       var myPost = allPosts.find(p=>p.id===payload.new.post_id && p.user_id===me?.id);
       if (myPost && payload.new.user_id !== me?.id) {
         pushNotif('comment', payload.new.user_name||'Biri', payload.new.post_id);
@@ -3054,7 +3068,7 @@ function selType(el, type) {
   document.querySelectorAll('.type-btn').forEach(o=>o.classList.remove('active'));
   el.classList.add('active');
   var sf=document.getElementById('sale-fields');
-  if(sf) sf.style.display=(type==='sale')?'grid':'none';
+  if(sf) sf.style.display=(type==='sale'||type==='milestone')?'grid':'none';
 }
 
 // ─── SWITCH TAB ────────────────────────────────────────────────
