@@ -1909,26 +1909,41 @@ async function doAuth(){
   if(_failLock>Date.now()){er.textContent=Math.ceil((_failLock-Date.now())/1000)+' saniye bekle.';return;}
   var btn=document.getElementById('login-btn');btn.disabled=true;er.textContent='Dogrulanıyor...';
 
-  // 1. Kodu portal_invite_codes tablosunda kontrol et
-  var codeRes = await _sb.from('portal_invite_codes').select('id,max_uses,use_count').eq('code',code).single();
+  // 1. Kodu kontrol et
+  var codeRes = await _sb.from('portal_invite_codes').select('id,max_uses,use_count,email').eq('code',code).single();
   var codeRow = codeRes.data;
   if(!codeRow){
     _failCount++;
     if(_failCount>=5){_failLock=Date.now()+30000;_failCount=0;er.textContent='Cok fazla hatali deneme. 30 saniye bekle.';btn.disabled=false;return;}
     er.textContent='Gecersiz kursiyer kodu. ('+_failCount+'/5)';btn.disabled=false;return;
   }
-  if(codeRow.max_uses>0 && codeRow.use_count>=codeRow.max_uses){
+
+  // 2. Email bağlıysa eşleşme kontrolü
+  if(codeRow.email && codeRow.email.toLowerCase() !== em){
+    _failCount++;
+    if(_failCount>=5){_failLock=Date.now()+30000;_failCount=0;er.textContent='Cok fazla hatali deneme. 30 saniye bekle.';btn.disabled=false;return;}
+    er.textContent='Bu kod bu e-posta adresiyle kullanılamaz. ('+_failCount+'/5)';btn.disabled=false;return;
+  }
+
+  // 3. Max kullanım kontrolü — email bağlıysa (kodu kullanan kişi) bu kontrolü atla
+  if(codeRow.max_uses>0 && codeRow.use_count>=codeRow.max_uses && !codeRow.email){
     er.textContent='Bu kod maksimum kullanim sayisina ulasti.';btn.disabled=false;return;
   }
 
-  // 2. Giriş yap veya kayıt ol
+  // 4. Giriş yap veya kayıt ol
   er.textContent='Giris yapiliyor...';
   var pw='MLYNR006$portal';
   var signIn = await _sb.auth.signInWithPassword({email:em,password:pw});
   if(!signIn.error && signIn.data?.user){
+    // Mevcut kullanıcı — kod emaile bağlıysa eşleşme zaten üstte kontrol edildi
+    // Bağlı değilse bu mevcut kullanıcının kodunu da bağla
+    if(!codeRow.email){
+      await _sb.from('portal_invite_codes').update({email:em}).eq('id',codeRow.id);
+    }
     _user=signIn.data.user;email=_user.email;btn.disabled=false;loadStateFromDB();return;
   }
-  // Yeni kullanıcı — kayıt ol
+
+  // 5. Yeni kullanıcı — kayıt ol
   var signUp = await _sb.auth.signUp({email:em,password:pw});
   if(signUp.error && signUp.error.status!==400 && signUp.error.message.toLowerCase().indexOf('already')<0){
     er.textContent='Hata: '+signUp.error.message;btn.disabled=false;return;
@@ -1936,8 +1951,13 @@ async function doAuth(){
   var r3 = await _sb.auth.signInWithPassword({email:em,password:pw});
   if(r3.error||!r3.data?.user){er.textContent='Giris hatasi.';btn.disabled=false;return;}
   _user=r3.data.user;email=_user.email;
-  // Kullanım sayısını artır (sadece yeni kayıtta)
-  await _sb.from('portal_invite_codes').update({use_count:(codeRow.use_count||0)+1}).eq('id',codeRow.id);
+
+  // 6. Kodu bu emaile bağla + use_count artır
+  await _sb.from('portal_invite_codes').update({
+    use_count:(codeRow.use_count||0)+1,
+    email: em
+  }).eq('id',codeRow.id);
+
   er.style.color='#4ade80';er.textContent='Hos geldin!';btn.disabled=false;
   var chk = await _sb.from('progress').select('user_id').eq('user_id',_user.id).limit(1);
   if(!chk.data||chk.data.length===0){
