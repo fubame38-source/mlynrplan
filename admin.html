@@ -807,27 +807,32 @@ async function loadInviteCodes(){
   var list = document.getElementById('codes-list');
   if(!list) return;
   list.innerHTML = '<div class="erow"><span class="spin"></span>Yükleniyor...</div>';
-  var { data, error } = await sb.from('portal_invite_codes').select('*').order('created_at',{ascending:false});
-  if(error){ list.innerHTML='<div class="erow" style="color:var(--red)">Hata: '+esc(error.message)+'</div>'; return; }
-  if(!data||!data.length){ list.innerHTML='<div class="erow">Henüz kod yok.</div>'; return; }
-  var html='';
-  data.forEach(function(c){
-    var full = c.max_uses > 0 && (c.use_count||0) >= c.max_uses;
-    var statusColor = full ? 'var(--red)' : 'var(--green)';
-    var statusText  = full ? '✗ Dolu' : '✓ Aktif';
-    var usageText   = c.max_uses===999999 ? ((c.use_count||0)+' / ∞') : ((c.use_count||0)+'/'+c.max_uses);
-    html += '<div class="row" id="pcode-'+c.id+'" style="grid-template-columns:1.5fr 1.5fr 0.7fr 0.5fr 1fr">'
-      +'<div class="nm" style="font-family:var(--mono);letter-spacing:.1em">'+esc(c.code)+'</div>'
-      +'<div class="cd">'+esc(c.label||'—')+'</div>'
-      +'<div class="cd">'+usageText+'</div>'
-      +'<div style="font-family:var(--mono);font-size:11px;font-weight:700;color:'+statusColor+'">'+statusText+'</div>'
-      +'<div class="actions">'
-        +'<button class="abtn abtn-msg" onclick="copyInviteCode(\''+escAttr(c.code)+'\')">Kopyala</button>'
-        +'<button class="abtn abtn-del" onclick="deleteInviteCode(\''+escAttr(c.id)+'\')">Sil</button>'
-      +'</div>'
-    +'</div>';
-  });
-  list.innerHTML = html;
+  try {
+    var d = await api('list-invite-codes');
+    if(d.error){ list.innerHTML='<div class="erow" style="color:var(--red)">Hata: '+esc(d.error)+'</div>'; return; }
+    var data = d.data || [];
+    if(!data.length){ list.innerHTML='<div class="erow">Henüz kod yok.</div>'; return; }
+    var html='';
+    data.forEach(function(c){
+      var full = c.max_uses > 0 && (c.use_count||0) >= c.max_uses;
+      var statusColor = full ? 'var(--red)' : 'var(--green)';
+      var statusText  = full ? '✗ Dolu' : '✓ Aktif';
+      var usageText   = c.max_uses===999999 ? ((c.use_count||0)+' / ∞') : ((c.use_count||0)+'/'+c.max_uses);
+      html += '<div class="row" id="pcode-'+c.id+'" style="grid-template-columns:1.5fr 1.5fr 0.7fr 0.5fr 1fr">'
+        +'<div class="nm" style="font-family:var(--mono);letter-spacing:.1em">'+esc(c.code)+'</div>'
+        +'<div class="cd">'+esc(c.label||'—')+'</div>'
+        +'<div class="cd">'+usageText+'</div>'
+        +'<div style="font-family:var(--mono);font-size:11px;font-weight:700;color:'+statusColor+'">'+statusText+'</div>'
+        +'<div class="actions">'
+          +'<button class="abtn abtn-msg" onclick="copyInviteCode(\''+escAttr(c.code)+'\')">Kopyala</button>'
+          +'<button class="abtn abtn-del" onclick="deleteInviteCode(\''+escAttr(c.id)+'\')">Sil</button>'
+        +'</div>'
+      +'</div>';
+    });
+    list.innerHTML = html;
+  } catch(e){
+    list.innerHTML='<div class="erow" style="color:var(--red)">Hata: '+esc(e.message)+'</div>';
+  }
 }
 
 async function addInviteCode(){
@@ -837,24 +842,33 @@ async function addInviteCode(){
   var msg     = document.getElementById('code-add-msg');
   if(!code||code.length<3){ showToast('Min 3 karakter gir','err'); return; }
   msg.style.color='var(--text2)'; msg.textContent='Ekleniyor...';
-  var { error } = await sb.from('portal_invite_codes').insert({code:code, label:label, max_uses:maxUses, use_count:0});
-  if(error){ msg.style.color='var(--red)'; msg.textContent='Hata: '+error.message; return; }
-  document.getElementById('code-inp').value='';
-  document.getElementById('code-label-inp').value='';
-  document.getElementById('code-max-inp').value='1';
-  msg.style.color='var(--green)'; msg.textContent='✓ Kod eklendi!';
-  setTimeout(function(){ msg.textContent=''; },2500);
-  loadInviteCodes();
+  try {
+    var d = await api('add-invite-code', {code:code, label:label, maxUses:maxUses});
+    if(d.error){ msg.style.color='var(--red)'; msg.textContent='Hata: '+d.error; return; }
+    document.getElementById('code-inp').value='';
+    document.getElementById('code-label-inp').value='';
+    document.getElementById('code-max-inp').value='1';
+    msg.style.color='var(--green)'; msg.textContent='✓ Kod eklendi!';
+    setTimeout(function(){ msg.textContent=''; },2500);
+    loadInviteCodes();
+  } catch(e){
+    msg.style.color='var(--red)'; msg.textContent='Hata: '+e.message;
+  }
 }
 
 async function deleteInviteCode(id){
   if(!confirm('Bu kodu silmek istediğine emin misin?')) return;
   var el = document.getElementById('pcode-'+id);
   if(el){ el.style.opacity='.3'; el.style.pointerEvents='none'; }
-  var { error } = await sb.from('portal_invite_codes').delete().eq('id',id);
-  if(error){ showToast('Hata: '+error.message,'err'); if(el){el.style.opacity='1';el.style.pointerEvents='';} return; }
-  if(el) el.remove();
-  showToast('Kod silindi','ok');
+  try {
+    var d = await api('delete-invite-code', {id:id});
+    if(d.error){ showToast('Hata: '+d.error,'err'); if(el){el.style.opacity='1';el.style.pointerEvents='';} return; }
+    if(el) el.remove();
+    showToast('Kod silindi','ok');
+  } catch(e){
+    showToast('Hata: '+e.message,'err');
+    if(el){el.style.opacity='1';el.style.pointerEvents='';}
+  }
 }
 
 function copyInviteCode(code){
