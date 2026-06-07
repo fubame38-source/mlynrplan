@@ -1926,7 +1926,7 @@ async function doAuth(){
   }
 
   // 3. Max kullanım kontrolü — email bağlıysa (kodu kullanan kişi) bu kontrolü atla
-  if(codeRow.max_uses>0 && codeRow.use_count>=codeRow.max_uses && !codeRow.email){
+  if(codeRow.max_uses>0 && (codeRow.use_count||0)>=codeRow.max_uses){
     er.textContent='Bu kod maksimum kullanim sayisina ulasti.';btn.disabled=false;return;
   }
 
@@ -1937,7 +1937,7 @@ async function doAuth(){
   if(!signIn.error && signIn.data?.user){
     // Mevcut kullanıcı — kod emaile bağlıysa eşleşme zaten üstte kontrol edildi
     // Bağlı değilse bu mevcut kullanıcının kodunu da bağla
-    if(!codeRow.email){
+    if(!codeRow.email && codeRow.max_uses===1){
       await _sb.from('portal_invite_codes').update({email:em}).eq('id',codeRow.id);
     }
     _user=signIn.data.user;email=_user.email;btn.disabled=false;loadStateFromDB();return;
@@ -1954,11 +1954,9 @@ async function doAuth(){
   if(r3.error||!r3.data?.user){er.textContent='Giris hatasi.';btn.disabled=false;return;}
   _user=r3.data.user;email=_user.email;
 
-  // 6. Kodu bu emaile bağla + use_count artır
-  await _sb.from('portal_invite_codes').update({
-    use_count:(codeRow.use_count||0)+1,
-    email: em
-  }).eq('id',codeRow.id);
+  // 6. use_count artir — sadece max_uses=1 ise emaile bagla
+  var _updPayload = codeRow.max_uses===1 ? {use_count:(codeRow.use_count||0)+1,email:em} : {use_count:(codeRow.use_count||0)+1};
+  await _sb.from('portal_invite_codes').update(_updPayload).eq('id',codeRow.id);
 
   er.style.color='#4ade80';er.textContent='Hos geldin!';btn.disabled=false;
   var chk = await _sb.from('progress').select('user_id').eq('user_id',_user.id).limit(1);
