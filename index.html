@@ -1943,11 +1943,13 @@ async function doAuth(){
     _user=signIn.data.user;email=_user.email;btn.disabled=false;loadStateFromDB();return;
   }
 
-  // 5. Yeni kullanıcı — kayıt ol
-  var signUp = await _sb.auth.signUp({email:em,password:pw});
-  if(signUp.error && signUp.error.status!==400 && signUp.error.message.toLowerCase().indexOf('already')<0){
-    er.textContent='Hata: '+signUp.error.message;btn.disabled=false;return;
-  }
+  // 5. Yeni kullanıcı — admin signup
+  var signUpRes = await fetch('https://xrelhozqawdseobxqbju.supabase.co/functions/v1/rapid-endpoint',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({tool:'admin-signup',email:em,password:pw})
+  });
+  var signUpData = await signUpRes.json();
+  if(signUpData.error){er.textContent='Hata: '+signUpData.error;btn.disabled=false;return;}
   var r3 = await _sb.auth.signInWithPassword({email:em,password:pw});
   if(r3.error||!r3.data?.user){er.textContent='Giris hatasi.';btn.disabled=false;return;}
   _user=r3.data.user;email=_user.email;
