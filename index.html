@@ -1938,7 +1938,7 @@ async function doAuth(){
   if(!signIn.error && signIn.data?.user){
     // Mevcut kullanıcı — kod emaile bağlıysa eşleşme zaten üstte kontrol edildi
     // Bağlı değilse bu mevcut kullanıcının kodunu da bağla
-    if(!codeRow.email && codeRow.max_uses===1){
+    if(!codeRow.email){
       await _sb.from('portal_invite_codes').update({email:em}).eq('id',codeRow.id);
     }
     _user=signIn.data.user;email=_user.email;btn.disabled=false;loadStateFromDB();return;
