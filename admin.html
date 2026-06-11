@@ -349,9 +349,9 @@ body.light .toast{background:#fff;color:#1a1916}
           <label class="lbl" style="margin-bottom:5px;display:block">Kod</label>
           <input class="sinput" id="code-inp" placeholder="MLYNR-XXXX" style="width:100%;text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);font-weight:700" oninput="this.value=this.value.toUpperCase()">
         </div>
-        <div style="flex:0 0 80px">
-          <label class="lbl" style="margin-bottom:5px;display:block">Max Kullanım</label>
-          <input class="sinput" id="code-max-inp" type="number" value="1" min="1" style="width:100%">
+        <div style="flex:2;min-width:200px">
+          <label class="lbl" style="margin-bottom:5px;display:block">Kursiyer E-postası (opsiyonel)</label>
+          <input class="sinput" id="code-email-inp" type="email" placeholder="kursiyer@email.com" style="width:100%">
         </div>
         <button class="lbtn" style="flex:0 0 auto;padding:10px 20px;font-size:11px;border-radius:8px;white-space:nowrap" onclick="addInviteCode()">Ekle →</button>
       </div>
@@ -832,16 +832,16 @@ async function loadInviteCodes(){
 }
 
 async function addInviteCode(){
-  var code    = (document.getElementById('code-inp').value||'').trim().toUpperCase();
-  var maxUses = parseInt(document.getElementById('code-max-inp').value)||1;
-  var msg     = document.getElementById('code-add-msg');
+  var code  = (document.getElementById('code-inp').value||'').trim().toUpperCase();
+  var email = (document.getElementById('code-email-inp').value||'').trim().toLowerCase();
+  var msg   = document.getElementById('code-add-msg');
   if(!code||code.length<3){ showToast('Min 3 karakter gir','err'); return; }
   msg.style.color='var(--text2)'; msg.textContent='Ekleniyor...';
   try {
-    var d = await api('add-invite-code', {code:code, label:label, maxUses:maxUses});
+    var d = await api('add-invite-code', {code:code, label:'', maxUses:999999, email:email||null});
     if(d.error){ msg.style.color='var(--red)'; msg.textContent='Hata: '+d.error; return; }
     document.getElementById('code-inp').value='';
-    document.getElementById('code-max-inp').value='1';
+    document.getElementById('code-email-inp').value='';
     msg.style.color='var(--green)'; msg.textContent='✓ Kod eklendi!';
     setTimeout(function(){ msg.textContent=''; },2500);
     loadInviteCodes();
