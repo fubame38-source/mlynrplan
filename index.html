@@ -1960,10 +1960,6 @@ async function doAuth(){
   await _sb.from('portal_invite_codes').update(_updPayload).eq('id',codeRow.id);
 
   er.style.color='#4ade80';er.textContent='Hos geldin!';btn.disabled=false;
-  var chk = await _sb.from('progress').select('user_id').eq('user_id',_user.id).limit(1);
-  if(!chk.data||chk.data.length===0){
-    await _sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,updated_at:new Date().toISOString()});
-  }
   loadStateFromDB();
 }
 function doLogin(){doAuth();}
