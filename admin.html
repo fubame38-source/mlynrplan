@@ -349,22 +349,17 @@ body.light .toast{background:#fff;color:#1a1916}
           <label class="lbl" style="margin-bottom:5px;display:block">Kod</label>
           <input class="sinput" id="code-inp" placeholder="MLYNR-XXXX" style="width:100%;text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);font-weight:700" oninput="this.value=this.value.toUpperCase()">
         </div>
-        <div style="flex:2;min-width:160px">
-          <label class="lbl" style="margin-bottom:5px;display:block">Açıklama (opsiyonel)</label>
-          <input class="sinput" id="code-label-inp" placeholder="Örn: Ocak 2026 grubu" style="width:100%">
-        </div>
-        <div style="flex:2;min-width:180px">
-          <label class="lbl" style="margin-bottom:5px;display:block">Kursiyer E-postası (opsiyonel)</label>
-          <input class="sinput" id="code-email-inp" type="email" placeholder="kursiyer@email.com" style="width:100%">
+        <div style="flex:0 0 80px">
+          <label class="lbl" style="margin-bottom:5px;display:block">Max Kullanım</label>
+          <input class="sinput" id="code-max-inp" type="number" value="1" min="1" style="width:100%">
         </div>
         <button class="lbtn" style="flex:0 0 auto;padding:10px 20px;font-size:11px;border-radius:8px;white-space:nowrap" onclick="addInviteCode()">Ekle →</button>
       </div>
       <div id="code-add-msg" style="font-family:var(--mono);font-size:11px;margin-top:10px;min-height:16px"></div>
     </div>
     <div class="tw">
-      <div class="thead" style="grid-template-columns:1.1fr 1fr 1.3fr 0.6fr 0.5fr 0.8fr">
+      <div class="thead" style="grid-template-columns:1.4fr 1.8fr 0.7fr 0.6fr 1fr">
         <div class="th">Kod</div>
-        <div class="th">Açıklama</div>
         <div class="th">E-posta</div>
         <div class="th">Kullanım</div>
         <div class="th">Durum</div>
@@ -815,13 +810,12 @@ async function loadInviteCodes(){
     if(!data.length){ list.innerHTML='<div class="erow">Henüz kod yok.</div>'; return; }
     var html='';
     data.forEach(function(c){
-      var full = c.max_uses > 0 && c.max_uses < 999999 && (c.use_count||0) >= c.max_uses;
+      var full = c.max_uses > 0 && (c.use_count||0) >= c.max_uses;
       var statusColor = full ? 'var(--red)' : 'var(--green)';
       var statusText  = full ? '✗ Dolu' : '✓ Aktif';
-      var usageText   = (c.max_uses >= 999999) ? ((c.use_count||0)+' / ∞') : ((c.use_count||0)+'/'+c.max_uses);
-      html += '<div class="row" id="pcode-'+c.id+'" style="grid-template-columns:1.1fr 1fr 1.3fr 0.6fr 0.5fr 0.8fr">'
+      var usageText   = c.max_uses===999999 ? ((c.use_count||0)+' / ∞') : ((c.use_count||0)+'/'+c.max_uses);
+      html += '<div class="row" id="pcode-'+c.id+'" style="grid-template-columns:1.4fr 1.8fr 0.7fr 0.6fr 1fr">'
         +'<div class="nm" style="font-family:var(--mono);letter-spacing:.1em;font-size:12px">'+esc(c.code)+'</div>'
-        +'<div class="cd">'+esc(c.label||'—')+'</div>'
         +'<div class="cd" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+escAttr(c.email||'')+'">'+esc(c.email||'—')+'</div>'
         +'<div class="cd">'+usageText+'</div>'
         +'<div style="font-family:var(--mono);font-size:11px;font-weight:700;color:'+statusColor+'">'+statusText+'</div>'
@@ -839,17 +833,15 @@ async function loadInviteCodes(){
 
 async function addInviteCode(){
   var code    = (document.getElementById('code-inp').value||'').trim().toUpperCase();
-  var label   = (document.getElementById('code-label-inp').value||'').trim();
-  var email   = (document.getElementById('code-email-inp').value||'').trim().toLowerCase();
+  var maxUses = parseInt(document.getElementById('code-max-inp').value)||1;
   var msg     = document.getElementById('code-add-msg');
   if(!code||code.length<3){ showToast('Min 3 karakter gir','err'); return; }
   msg.style.color='var(--text2)'; msg.textContent='Ekleniyor...';
   try {
-    var d = await api('add-invite-code', {code:code, label:label, maxUses:999999, email:email||null});
+    var d = await api('add-invite-code', {code:code, label:label, maxUses:maxUses});
     if(d.error){ msg.style.color='var(--red)'; msg.textContent='Hata: '+d.error; return; }
     document.getElementById('code-inp').value='';
-    document.getElementById('code-label-inp').value='';
-    document.getElementById('code-email-inp').value='';
+    document.getElementById('code-max-inp').value='1';
     msg.style.color='var(--green)'; msg.textContent='✓ Kod eklendi!';
     setTimeout(function(){ msg.textContent=''; },2500);
     loadInviteCodes();
