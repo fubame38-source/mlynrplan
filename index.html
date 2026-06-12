@@ -1565,7 +1565,7 @@ function openCanberk(){
   document.getElementById('canberk-popup').classList.add('show');
   var uname=getUserName(),hiEl=document.getElementById('cb-hi-text');
   if(hiEl&&uname)hiEl.textContent='Merhaba, '+uname.split(' ')[0]+'! 👋';
-  fetch('https://xrelhozqawdseobxqbju.supabase.co/rest/v1/settings?key=eq.canberk_message&select=value',{headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU'}}).then(function(r){return r.json();}).then(function(d){var msg=d&&d[0]&&d[0].value?d[0].value:null;if(msg){var bodyEl=document.getElementById('cb-dynamic-msg');if(bodyEl){bodyEl.style.display='block';bodyEl.innerHTML=msg.replace(/\n/g,'<br>');}}}).catch(function(){});
+  _sb.from('settings').select('value').eq('key','canberk_message').then(function(res){var msg=res.data&&res.data[0]&&res.data[0].value?res.data[0].value:null;if(msg){var bodyEl=document.getElementById('cb-dynamic-msg');if(bodyEl){bodyEl.style.display='block';bodyEl.innerHTML=msg.replace(/\n/g,'<br>');}}}).catch(function(){});
 }
 function closeCanberk(){
   document.getElementById('canberk-overlay').classList.remove('show');
