@@ -296,6 +296,7 @@ body.light .toast{background:#fff;color:#1a1916}
     <button class="fbtn" id="f-sale" onclick="sf('sale')">İlk Satış ✅</button>
     <button class="fbtn" id="f-banned" onclick="sf('banned')" style="border-color:rgba(248,113,113,.2);color:var(--red)">Engelliler 🚫</button>
     <span class="cbadge" id="cbadge"></span>
+    <div style="margin-left:8px;display:flex;gap:8px;align-items:center"><button class="fbtn" id="sel-all-btn" onclick="toggleSelectAll()" style="border-color:rgba(148,163,184,.3);color:var(--text2)">☐ Tümünü Seç</button><button class="abtn abtn-del" id="bulk-del-btn" onclick="openBulkDel()" style="display:none;padding:6px 14px;font-size:12px">🗑️ Seçilenleri Sil (<span id="sel-count">0</span>)</button></div>
   </div>
 
   <div class="tw">
@@ -392,6 +393,19 @@ body.light .toast{background:#fff;color:#1a1916}
     <div class="modal-actions">
       <button class="mbtn mbtn-cancel" onclick="closeModal('delModal')">İptal</button>
       <button class="mbtn mbtn-del" onclick="confirmDelete()">Evet, Sil</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toplu Silme Modal -->
+<div class="modal-overlay hidden" id="bulkDelModal">
+  <div class="modal">
+    <div class="modal-title">🗑️ Toplu Sil</div>
+    <div class="modal-sub" id="bulkDelTarget">Seçili kullanıcılar silinecek. Emin misin?</div>
+    <div id="bulk-del-progress" style="display:none;margin:12px 0;font-family:var(--mono);font-size:11px;color:var(--text2);text-align:center"></div>
+    <div class="modal-actions">
+      <button class="mbtn mbtn-cancel" id="bulk-del-cancel" onclick="closeModal('bulkDelModal')">İptal</button>
+      <button class="mbtn mbtn-del" id="bulk-del-confirm" onclick="confirmBulkDelete()">Evet, Hepsini Sil</button>
     </div>
   </div>
 </div>
@@ -558,8 +572,8 @@ function renderTable(){
       ? '<button class="abtn abtn-unban" onclick="unbanUser(\''+u.user_id+'\',\''+esc(u.name)+'\')">Aç</button>'
       : '<button class="abtn abtn-ban" onclick="banUser(\''+u.user_id+'\',\''+esc(u.name)+'\')">Engelle</button>';
 
-    html+='<div class="row'+(u.isWarn&&!u.isActive?' wr':'')+(u.banned?' banned-row':'')+'">'+
-      '<div class="nm">'+esc(u.name)+'</div>'+
+    html+='<div class="row'+(u.isWarn&&!u.isActive?' wr':'')+(u.banned?' banned-row':'')+' selrow" data-uid="'+u.user_id+'">'+
+      '<div class="nm"><input type="checkbox" class="row-cb" data-uid="'+u.user_id+'" onchange="updateBulkSel()" style="margin-right:8px;cursor:pointer;accent-color:var(--grn)">'+esc(u.name)+'</div>'+
       '<div class="cp"><div class="pb"><div class="pf" style="width:'+u.pct+'%"></div></div><div class="pp">%'+u.pct+' · '+u.done+'/'+TOTAL+'</div></div>'+
       '<div class="cw">H.'+u.week+'</div>'+
       '<div class="cd">'+u.done+'</div>'+
@@ -573,6 +587,12 @@ function renderTable(){
     '</div>';
   });
   document.getElementById('tbody').innerHTML=html;
+  // Toplu seçim sıfırla
+  selectedUids.clear();
+  allSelected = false;
+  document.getElementById('bulk-del-btn').style.display='none';
+  document.getElementById('sel-count').textContent='0';
+  document.getElementById('sel-all-btn').textContent='☐ Tümünü Seç';
 }
 
 
@@ -675,6 +695,89 @@ async function unbanUser(uid, name){
     renderTable(); renderStats();
     showToast(name+' engeli kaldırıldı','ok');
   } catch(e){ showToast('Hata: '+e.message,'err'); }
+}
+
+
+/* ── TOPLU SEÇİM & SİL ── */
+var selectedUids = new Set();
+var allSelected = false;
+
+function updateBulkSel(){
+  selectedUids.clear();
+  document.querySelectorAll('.row-cb:checked').forEach(function(cb){
+    selectedUids.add(cb.dataset.uid);
+  });
+  var count = selectedUids.size;
+  var btn = document.getElementById('bulk-del-btn');
+  var selBtn = document.getElementById('sel-all-btn');
+  document.getElementById('sel-count').textContent = count;
+  if(count > 0){
+    btn.style.display = 'inline-block';
+  } else {
+    btn.style.display = 'none';
+  }
+  var total = document.querySelectorAll('.row-cb').length;
+  if(count === total && total > 0){
+    selBtn.textContent = '☑ Seçimi Kaldır';
+    allSelected = true;
+  } else {
+    selBtn.textContent = '☐ Tümünü Seç';
+    allSelected = false;
+  }
+}
+
+function toggleSelectAll(){
+  var cbs = document.querySelectorAll('.row-cb');
+  if(allSelected){
+    cbs.forEach(function(cb){ cb.checked = false; });
+  } else {
+    cbs.forEach(function(cb){ cb.checked = true; });
+  }
+  updateBulkSel();
+}
+
+function openBulkDel(){
+  if(selectedUids.size === 0) return;
+  document.getElementById('bulkDelTarget').textContent = selectedUids.size + ' kullanıcı kalıcı olarak silinecek. Bu işlem geri alınamaz!';
+  document.getElementById('bulk-del-progress').style.display = 'none';
+  document.getElementById('bulk-del-progress').textContent = '';
+  document.getElementById('bulk-del-confirm').disabled = false;
+  document.getElementById('bulk-del-cancel').disabled = false;
+  document.getElementById('bulkDelModal').classList.remove('hidden');
+}
+
+async function confirmBulkDelete(){
+  var uids = Array.from(selectedUids);
+  var total = uids.length;
+  var prog = document.getElementById('bulk-del-progress');
+  var confirmBtn = document.getElementById('bulk-del-confirm');
+  var cancelBtn = document.getElementById('bulk-del-cancel');
+  confirmBtn.disabled = true;
+  cancelBtn.disabled = true;
+  prog.style.display = 'block';
+  var success = 0, fail = 0;
+  for(var i = 0; i < uids.length; i++){
+    prog.textContent = 'Siliniyor: ' + (i+1) + '/' + total + ' — Başarılı: ' + success + ', Hata: ' + fail;
+    try {
+      var d = await api('admin-delete', {userId: uids[i]});
+      if(d.error) throw new Error(d.error);
+      users = users.filter(function(u){ return u.user_id !== uids[i]; });
+      success++;
+    } catch(e){
+      fail++;
+    }
+  }
+  selectedUids.clear();
+  allSelected = false;
+  prog.textContent = 'Tamamlandı: ' + success + ' silindi' + (fail > 0 ? ', ' + fail + ' hata' : '') + '.';
+  confirmBtn.disabled = false;
+  cancelBtn.disabled = false;
+  renderTable(); renderStats();
+  document.getElementById('bulk-del-btn').style.display = 'none';
+  document.getElementById('sel-count').textContent = '0';
+  document.getElementById('sel-all-btn').textContent = '☐ Tümünü Seç';
+  setTimeout(function(){ closeModal('bulkDelModal'); }, 1500);
+  showToast(success + ' kullanıcı silindi' + (fail > 0 ? ', ' + fail + ' hata' : ''), fail > 0 ? 'err' : 'ok');
 }
 
 /* ── SİL ── */
