@@ -851,31 +851,52 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .km-today-pips{display:flex;gap:5px;flex-shrink:0}
 .km-pip{width:7px;height:7px;border-radius:50%;background:var(--green)}
 .km-pip.empty{background:var(--border2)}
-.km-weeks-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.km-wtab{background:var(--surface);border:1px solid var(--border);border-bottom:none;border-radius:10px 10px 0 0;padding:11px 13px 9px;cursor:pointer;transition:all .15s;text-align:left}
-.km-wtab:hover{border-color:var(--border2)}
-.km-wtab.active{background:var(--surface2);border-color:var(--border2)}
-.km-wtab-name{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:2px;transition:color .15s}
+.km-weeks-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.km-wtab{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 12px 11px;cursor:pointer;transition:all .18s ease;text-align:left;position:relative}
+.km-wtab:hover{border-color:var(--border2);transform:translateY(-1px)}
+.km-wtab.active{background:var(--surface2);box-shadow:0 0 0 1px var(--green-ln) inset;border-color:rgba(34,197,94,.25)}
+.km-wtab-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.km-wtab-badge{width:20px;height:20px;border-radius:6px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--text3);font-family:var(--mono);transition:all .18s}
+.km-wtab.active .km-wtab-badge,.km-wtab.km-tab-done .km-wtab-badge{background:var(--green);color:#fff}
+.km-wtab-pct{font-size:10px;font-weight:700;color:var(--text3);font-family:var(--mono);transition:color .18s}
+.km-wtab.active .km-wtab-pct{color:var(--green)}
+.km-wtab-name{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:1px;transition:color .15s}
 .km-wtab.active .km-wtab-name{color:var(--white)}
-.km-wtab-sub{font-size:10px;color:var(--text3);margin-bottom:8px;font-family:var(--mono);letter-spacing:.3px}
-.km-wtab-bar{height:2px;border-radius:2px;background:var(--border)}
-.km-wtab-fill{height:100%;border-radius:2px;background:var(--green);transition:width .4s}
-.km-body{background:var(--surface2);border:1px solid var(--border2);border-top:none;border-radius:0 0 16px 16px;padding:18px 20px}
-.km-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px}
-.km-day{border-radius:10px;padding:10px 4px;text-align:center;cursor:pointer;border:1px solid var(--border);background:var(--surface);transition:all .15s}
-.km-day:hover{border-color:var(--border2);transform:translateY(-1px)}
-.km-day.done{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25)}
-.km-day.current,.km-day.today{border:1.5px solid var(--green);background:rgba(34,197,94,.06)}
-.km-day-n{font-size:15px;font-weight:700;color:var(--text2);line-height:1}
+.km-wtab-sub{font-size:10px;color:var(--text3);margin-bottom:9px;letter-spacing:.2px}
+.km-wtab-bar{height:4px;border-radius:3px;background:var(--border);overflow:hidden}
+.km-wtab-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#16a34a,var(--green));transition:width .4s}
+.km-body{background:var(--surface2);border:1px solid var(--border2);border-radius:16px;padding:18px 20px}
+.km-days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:18px}
+.km-day{position:relative;border-radius:12px;padding:12px 4px 9px;text-align:center;cursor:pointer;border:1px solid var(--border);background:var(--surface);transition:all .18s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:62px}
+.km-day:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.18)}
+.km-day-n{font-size:16px;font-weight:800;color:var(--text2);line-height:1;font-family:var(--mono)}
+.km-day-lbl{font-size:8px;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);font-weight:700;margin-top:1px}
+.km-day-badge{display:none;position:absolute;top:6px;right:6px;width:15px;height:15px;border-radius:50%;align-items:center;justify-content:center;font-size:8px;font-weight:900;line-height:1}
+/* DONE */
+.km-day.done{background:linear-gradient(160deg,rgba(34,197,94,.16),rgba(34,197,94,.03));border-color:rgba(34,197,94,.3)}
 .km-day.done .km-day-n{color:var(--green)}
-.km-day.current .km-day-n,.km-day.today .km-day-n{color:var(--green)}
-.km-day-lbl{font-size:8px;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);margin-top:3px}
-.km-day.done .km-day-lbl,.km-day.today .km-day-lbl,.km-day.current .km-day-lbl{color:rgba(34,197,94,.7)}
+.km-day.done .km-day-lbl{color:rgba(34,197,94,.75)}
+.km-day.done .km-day-badge{display:flex;background:var(--green);color:#fff}
+/* TODAY (current) — subtle pulsing dot, doesn't dominate */
+.km-day.current{border-color:var(--green-ln)}
+.km-day.current .km-day-n{color:var(--green)}
+.km-day.current .km-day-lbl{color:rgba(34,197,94,.75)}
+.km-day.current::after{content:'';position:absolute;top:8px;right:8px;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:kmpulse 1.8s ease-in-out infinite}
+/* LOCKED future days */
+.km-day.locked{opacity:.5}
+.km-day.locked .km-day-n{color:var(--text3)}
+.km-day.locked .km-day-badge{display:flex;background:var(--surface2);color:var(--text3);font-size:7px}
+.km-day.locked.selected{opacity:1}
+/* SELECTED — the actively-open day. Strong, distinct accent so it never gets confused with "today" */
+.km-day.selected{border-color:#818cf8;background:rgba(99,102,241,.12);box-shadow:0 0 0 1px rgba(129,140,248,.35),0 8px 20px rgba(99,102,241,.18);transform:translateY(-2px)}
+.km-day.selected .km-day-n,.km-day.selected .km-day-lbl{color:#a5b4fc}
+.km-day.selected.done,.km-day.selected.current{border-color:var(--green);background:rgba(34,197,94,.16);box-shadow:0 0 0 1px rgba(34,197,94,.4),0 8px 20px rgba(34,197,94,.18)}
+.km-day.selected.done .km-day-n,.km-day.selected.done .km-day-lbl,.km-day.selected.current .km-day-n,.km-day.selected.current .km-day-lbl{color:var(--green)}
 .km-panel-divider{height:1px;background:var(--border);margin-bottom:16px}
-.km-panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.km-panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:10px}
 .km-panel-title{font-size:16px;font-weight:700;color:var(--white)}
 .km-panel-day{font-size:11px;color:var(--text3);margin-top:3px;font-family:var(--mono)}
-.km-panel-count{font-size:12px;color:var(--text3);flex-shrink:0;padding-top:2px}
+.km-panel-count{font-size:11px;font-weight:700;color:var(--text2);flex-shrink:0;padding:5px 11px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-family:var(--mono)}
 .km-info{border-radius:10px;padding:11px 13px;margin-bottom:7px}
 .km-info.blue{background:rgba(99,102,241,.08);border-left:2px solid rgba(99,102,241,.4)}
 .km-info.amber{background:rgba(251,191,36,.08);border-left:2px solid rgba(251,191,36,.4)}
@@ -883,16 +904,16 @@ body.light .orb-node-tooltip{background:rgba(0,0,0,0.88);color:#fff}
 .km-info.amber .km-info-lbl{color:rgba(251,191,36,.9)}
 .km-info-txt{font-size:12px;color:var(--text2);line-height:1.5}
 .km-tasks{display:flex;flex-direction:column;gap:5px;margin:12px 0}
-.km-task{display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--surface);border-radius:10px;cursor:pointer;border:1px solid transparent;transition:border-color .15s}
+.km-task{display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--surface);border-radius:10px;cursor:pointer;border:1px solid transparent;transition:all .15s}
 .km-task:hover{border-color:var(--border)}
 .km-task.done{background:rgba(34,197,94,.06)}
-.km-task-box{width:18px;height:18px;border-radius:5px;border:1px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;transition:all .15s}
+.km-task-box{width:19px;height:19px;border-radius:6px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;transition:all .15s}
 .km-task.done .km-task-box{background:var(--green);border-color:var(--green);color:#fff}
 .km-task-txt{font-size:13px;color:var(--text)}
 .km-task.done .km-task-txt{color:rgba(34,197,94,.7);text-decoration:line-through}
-.km-done-banner{text-align:center;padding:10px;font-size:12px;color:var(--green);background:rgba(34,197,94,.06);border-radius:10px;margin-top:8px}
-.km-ai-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;cursor:pointer;margin-top:12px;transition:border-color .15s;background:transparent;width:100%;text-align:left;color:inherit}
-.km-ai-btn:hover{border-color:var(--border2)}
+.km-done-banner{text-align:center;padding:12px;font-size:12px;font-weight:600;color:var(--green);background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(34,197,94,.04));border:1px solid rgba(34,197,94,.18);border-radius:12px;margin-top:10px}
+.km-ai-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;cursor:pointer;margin-top:12px;transition:all .15s;background:transparent;width:100%;text-align:left;color:inherit}
+.km-ai-btn:hover{border-color:rgba(99,102,241,.35);background:rgba(99,102,241,.05)}
 .km-ai-icon{width:30px;height:30px;border-radius:8px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
 .km-ai-info{flex:1}
 .km-ai-name{font-size:13px;font-weight:600;color:var(--white)}
@@ -1339,22 +1360,26 @@ body.light .km-task{background:#fff}
     </div>
 
     <div class="km-weeks-tabs" id="km-weeks-tabs">
-      <button class="km-wtab active" onclick="yhSwitchCamp(0)">
+      <button class="km-wtab active" data-camp="0" onclick="yhSwitchCamp(0)">
+        <div class="km-wtab-top"><div class="km-wtab-badge">H1</div><div class="km-wtab-pct" id="km-wpct-0">0%</div></div>
         <div class="km-wtab-name">Hafta 1</div>
         <div class="km-wtab-sub">eBay Başlangıç</div>
         <div class="km-wtab-bar"><div class="km-wtab-fill" id="km-wfill-0" style="width:0%"></div></div>
       </button>
-      <button class="km-wtab" onclick="yhSwitchCamp(1)">
+      <button class="km-wtab" data-camp="1" onclick="yhSwitchCamp(1)">
+        <div class="km-wtab-top"><div class="km-wtab-badge">H2</div><div class="km-wtab-pct" id="km-wpct-1">0%</div></div>
         <div class="km-wtab-name">Hafta 2</div>
         <div class="km-wtab-sub">Otomasyon</div>
         <div class="km-wtab-bar"><div class="km-wtab-fill" id="km-wfill-1" style="width:0%"></div></div>
       </button>
-      <button class="km-wtab" onclick="yhSwitchCamp(2)">
+      <button class="km-wtab" data-camp="2" onclick="yhSwitchCamp(2)">
+        <div class="km-wtab-top"><div class="km-wtab-badge">H3</div><div class="km-wtab-pct" id="km-wpct-2">0%</div></div>
         <div class="km-wtab-name">Hafta 3</div>
         <div class="km-wtab-sub">Hesap Sağlığı</div>
         <div class="km-wtab-bar"><div class="km-wtab-fill" id="km-wfill-2" style="width:0%"></div></div>
       </button>
-      <button class="km-wtab" onclick="yhSwitchCamp(3)">
+      <button class="km-wtab" data-camp="3" onclick="yhSwitchCamp(3)">
+        <div class="km-wtab-top"><div class="km-wtab-badge">H4</div><div class="km-wtab-pct" id="km-wpct-3">0%</div></div>
         <div class="km-wtab-name">Hafta 4</div>
         <div class="km-wtab-sub">eBay Pro</div>
         <div class="km-wtab-bar"><div class="km-wtab-fill" id="km-wfill-3" style="width:0%"></div></div>
@@ -3190,8 +3215,10 @@ function updateOverall(){
   var de=g('yh-total-done');if(de)de.textContent=done;
   CAMPS.forEach(function(c,i){
     var cd=c.days.filter(function(d){return days.indexOf(d)>-1;}).length;
-    var pr=g('yh-ctab-prog-'+i);if(pr)pr.style.width=Math.round(cd/7*100)+'%';
-    var tab=document.querySelector('.yh-ctab[data-camp="'+i+'"]');
+    var wp=Math.round(cd/7*100);
+    var fl=g('km-wfill-'+i);if(fl)fl.style.width=wp+'%';
+    var pc=g('km-wpct-'+i);if(pc)pc.textContent=wp+'%';
+    var tab=document.querySelector('.km-wtab[data-camp="'+i+'"]');
     if(tab)tab.classList.toggle('km-tab-done',cd===7);
   });
 }
@@ -3204,10 +3231,12 @@ function renderNodes(){
     var node=document.createElement('div');
     node.className='km-day '+s+(sel===d?' selected':'');
     node.onclick=(function(dd){return function(){showTask(dd);};})(d);
+    var badge=document.createElement('div');badge.className='km-day-badge';
+    badge.textContent=s==='done'?'✓':s==='locked'?'🔒':'';
     var num=document.createElement('div');num.className='km-day-n';num.textContent=d;
     var lbl=document.createElement('div');lbl.className='km-day-lbl';
-    lbl.textContent=s==='done'?'tamam':s==='current'?'bugün':'gün';
-    node.appendChild(num);node.appendChild(lbl);
+    lbl.textContent=s==='done'?'tamam':s==='current'?'bugün':s==='locked'?'yakında':'gün';
+    node.appendChild(badge);node.appendChild(num);node.appendChild(lbl);
     grid.appendChild(node);
   });
   // Hafta fill barlarini guncelle
@@ -3308,23 +3337,17 @@ window.yhToggleTask=function(d,i){
 };
 window.yhSwitchCamp=function(id){
   camp=id;
-  document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
-  var at=document.querySelector('.yh-ctab[data-camp="'+id+'"]');if(at)at.classList.add('active');
-  var c=CAMPS[id];
-  var te=g('km-camp-title');if(te)te.textContent=c.t;
-  var de=g('km-camp-desc');if(de)de.textContent=c.d;
+  document.querySelectorAll('.km-wtab').forEach(function(t){t.classList.remove('active');});
+  var at=document.querySelector('.km-wtab[data-camp="'+id+'"]');if(at)at.classList.add('active');
   var panel=g('km-task-panel');
-  if(panel)panel.innerHTML='<div class="yh-task-empty"><div style="font-size:20px;opacity:.3">&#8593;</div><div>Bir gune tikla</div></div>';
+  if(panel)panel.innerHTML='<div class="km-empty">Bir güne tıkla, görevleri gör →</div>';
   sel=null;renderNodes();
 };
 // tab/camp setup — data DB'den gelince loadStateFromDB render eder
 var ci=Math.max(0,Math.floor((TODAY-1)/7));
 camp=ci;
-document.querySelectorAll('.yh-ctab').forEach(function(t){t.classList.remove('active');});
-var at=document.querySelector('.yh-ctab[data-camp="'+ci+'"]');if(at)at.classList.add('active');
-var c=CAMPS[ci];
-var te=g('km-camp-title');if(te)te.textContent=c.t;
-var de=g('km-camp-desc');if(de)de.textContent=c.d;
+document.querySelectorAll('.km-wtab').forEach(function(t){t.classList.remove('active');});
+var at0=document.querySelector('.km-wtab[data-camp="'+ci+'"]');if(at0)at0.classList.add('active');
 // renderNodes/showTask buradan kaldırıldı — loadStateFromDB callback'inde çalışıyor
 })();
 
