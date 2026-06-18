@@ -1894,22 +1894,16 @@ function loadStateFromDB(){
   }
   // TEK bir SELECT ile hem tasks/days hem camp_start_date çekiyoruz.
   // camp_start_date kolonu yoksa (SQL çalıştırılmamışsa) catch'e düşer, localStorage'dan alır.
-  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days,camp_start_date').eq('user_id',_user.id).limit(1)
+  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days').eq('user_id',_user.id).limit(1)
     .then(function(r){
       if(r.error){
-        // camp_start_date kolonu yoksa sadece o kolonu çıkarıp tekrar dene
-        if(r.error.message&&r.error.message.indexOf('camp_start_date')>-1){
-          return _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days').eq('user_id',_user.id).limit(1).then(function(r2){
-            if(r2.data&&r2.data.length>0){r2.data=r2.data[0];}else{r2.data=null;}
-            return _yhApplyLoadResult(r2.data,null);
-          });
-        }
         console.warn('DB load error:',r.error);loadState();showApp();loadClubApps();
         if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();return;
       }
       var row=r.data&&r.data.length>0?r.data[0]:null;
-      var campStart=row?row.camp_start_date||null:null;
-      return _yhApplyLoadResult(row,campStart);
+      // camp_start_date'yi DB'den değil localStorage'dan oku (kolon yoksa SELECT patlıyor)
+      var localCs=null;try{localCs=localStorage.getItem('yh_camp_start_'+(email||''));}catch(e){}
+      return _yhApplyLoadResult(row,localCs);
     }).catch(function(err){
       console.warn('DB load failed:',err);loadState();showApp();loadClubApps();
       if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
@@ -1979,13 +1973,11 @@ function _yhApplyLoadResult(row,campStart){
   if(Array.isArray(rawUC))_unlockedClubs=rawUC;
   else if(typeof rawUC==='string'){try{_unlockedClubs=JSON.parse(rawUC);}catch(e){_unlockedClubs=[];}}
   else _unlockedClubs=[];
-  // camp_start_date — DB verisi yoksa localStorage'dan kurtar
-  var localCs=null;try{localCs=localStorage.getItem('yh_camp_start_'+(email||''));}catch(e){}
-  var resolvedCs=campStart||localCs||null;
+  // camp_start_date — parametre olarak gelir (localStorage'dan), DB'den çekilmez
+  var resolvedCs=campStart||null;
   if(typeof window.yhSetCampStart==='function')window.yhSetCampStart(resolvedCs);
   try{if(resolvedCs)localStorage.setItem('yh_camp_start_'+(email||''),resolvedCs);}catch(e){}
   if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
-  if(resolvedCs&&resolvedCs!==campStart&&typeof window.yhSaveCampStart==='function')window.yhSaveCampStart();
   showApp();
   // ARTIK tek bir render — tüm data hazır, race condition yok
   setTimeout(function(){
