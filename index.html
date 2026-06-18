@@ -1928,9 +1928,10 @@ function loadStateFromDB(){
       if(r.data.yh_tasks){var rawT=r.data.yh_tasks;if(typeof rawT==='string'){try{dbTasks=JSON.parse(rawT)||{};}catch(e){dbTasks={};}}else if(typeof rawT==='object'&&rawT!==null)dbTasks=rawT;}
       var dbDays=[];
       if(r.data.yh_days){var rawD=r.data.yh_days;if(Array.isArray(rawD))dbDays=rawD;else if(typeof rawD==='string'){try{dbDays=JSON.parse(rawD)||[];}catch(e){dbDays=[];}}}
-      // GEÇİCİ TEŞHİS — DB'den ne geldiğini göster (mavi = yükleme, yeşil = kayıt)
+      // GEÇİCİ TEŞHİS
       setTimeout(function(){
-        var dbInfo='DB yh_tasks: '+JSON.stringify(dbTasks).slice(0,50);
+        var uid=(_user&&_user.id)?_user.id.slice(0,8):'?';
+        var dbInfo='uid:'+uid+' tasks:'+JSON.stringify(dbTasks).slice(0,40);
         yhShowSaveToast(true,dbInfo,'rgba(99,102,241,.95)');
       },800);
       var localTasks={},localDays=[];
