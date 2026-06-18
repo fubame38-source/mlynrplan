@@ -1347,7 +1347,7 @@ body.light .km-task{background:#fff}
     <div class="km-today-row" id="km-today-row" onclick="yhGoToday()">
       <div class="km-today-dot"></div>
       <div class="km-today-info">
-        <div class="km-today-label">⚡ Bugün · Gün <span id="km-today-num">1</span></div>
+        <div class="km-today-label" id="km-today-label">⚡ Bugün · Gün <span id="km-today-num">1</span></div>
         <div class="km-today-name" id="km-today-name">—</div>
         <div class="km-today-prog" id="km-today-prog">0 / 3 görev tamamlandı</div>
       </div>
@@ -1557,7 +1557,7 @@ body.light .km-task{background:#fff}
 
 <script>
 var LS;try{LS=localStorage;}catch(e){LS={getItem:function(){return null;},setItem:function(){},removeItem:function(){}};}
-var _sb=supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co','sb_publishable_fBqoPGz-1qHl1HU1PpbBTA_gBVZoodL');
+var _sb=supabase.createClient('https://xrelhozqawdseobxqbju.supabase.co','sb_publishable_fBqoPGz-1qHl1HU1PpbBTA_gBVZoodL',{global:{fetch:function(url,opts){opts=opts||{};opts.keepalive=true;return fetch(url,opts);}}});
 _sb.auth.onAuthStateChange(function(event,session){if(event==='PASSWORD_RECOVERY'){_user=null;showPasswordResetUI(session);}});
 var _user=null,_userName='';
 
@@ -1876,14 +1876,15 @@ function saveState(){
 }
 function loadState(){if(!email)return;try{var r=LS.getItem(stK());if(r){var d=JSON.parse(r);done=d.done||[];mc=d.mc||{};}else{done=[];mc={};}}catch(e){done=[];mc={};}}
 function loadStateFromDB(){
-  if(!_user){loadState();showApp();setTimeout(function(){if(typeof renderNodes==='function')renderNodes();if(typeof updateToday==='function')updateToday();if(typeof updateOverall==='function')updateOverall();if(typeof showTask==='function')showTask(TODAY);},100);setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);return;}
-  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days').eq('user_id',_user.id).limit(1)
+  if(!_user){loadState();if(typeof window.yhLoadLocal==='function')window.yhLoadLocal();try{var gcs=localStorage.getItem('yh_camp_start_');if(typeof window.yhSetCampStart==='function')window.yhSetCampStart(gcs||null);}catch(e){}if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();showApp();setTimeout(function(){if(typeof window.yhRenderNodes==='function')window.yhRenderNodes();if(typeof window.yhUpdateToday==='function')window.yhUpdateToday();if(typeof window.yhUpdateOverall==='function')window.yhUpdateOverall();if(typeof window.yhShowTask==='function')window.yhShowTask(window.yhToday);},100);setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);return;}
+  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days,camp_start_date').eq('user_id',_user.id).limit(1)
     .then(function(r){
-      if(r.error){console.warn('DB load error:',r.error);loadState();showApp();loadClubApps();return;}
+      if(r.error){console.warn('DB load error:',r.error);loadState();showApp();loadClubApps();if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();return;}
       if(r.data&&r.data.length>0)r.data=r.data[0];else r.data=null;
       if(!r.data){
         done=[];mc={};
-        _sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,updated_at:new Date().toISOString()}).then(function(){loadClubApps();showApp();setTimeout(function(){openNamePopup();},400);});
+        if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
+        _sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,updated_at:new Date().toISOString()}).then(function(){loadClubApps();showApp();setTimeout(function(){if(typeof window.yhRenderNodes==='function')window.yhRenderNodes();if(typeof window.yhUpdateToday==='function')window.yhUpdateToday();if(typeof window.yhUpdateOverall==='function')window.yhUpdateOverall();openNamePopup();},400);});
         return;
       }
       var raw=r.data.done;
@@ -1892,11 +1893,44 @@ function loadStateFromDB(){
       if(rawMc&&typeof rawMc==='object'&&!Array.isArray(rawMc))mc=rawMc;else if(typeof rawMc==='string'){try{mc=JSON.parse(rawMc);}catch(e){mc={};}}else mc={};
       if(r.data.first_sale)try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){}
       if(r.data.spin&&typeof r.data.spin==='object')try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(r.data.spin));}catch(e){}
-      // Yol haritası senkronizasyonu
-      if(r.data.yh_tasks){var rawT=r.data.yh_tasks;if(typeof rawT==='string'){try{tasks=JSON.parse(rawT);}catch(e){tasks={};}}else if(typeof rawT==='object'&&rawT!==null)tasks=rawT;else tasks={};}else{tasks={};}
-      if(r.data.yh_days){var rawD=r.data.yh_days;if(Array.isArray(rawD))days=rawD;else if(typeof rawD==='string'){try{days=JSON.parse(rawD);}catch(e){days=[];}}else days=[];}else{days=[];}
+      // Yol haritası senkronizasyonu — DB + localStorage + bellek birleştirilir (overwrite yerine merge)
+      // Önceki haliyle DB'den ne gelirse local'in üzerine yazılıyordu; DB'ye yazma işlemi
+      // sayfa yenilenmeden tamamlanamazsa (ör. kullanıcı tikledikten hemen sonra refresh yaparsa)
+      // tarayıcı isteği iptal ediyordu ve checkbox'lar sıfırlanmış görünüyordu. Artık hangi
+      // kaynakta (DB/local) daha fazla ilerleme varsa o korunuyor, kayıp olmuyor.
+      var dbTasks={};
+      if(r.data.yh_tasks){var rawT=r.data.yh_tasks;if(typeof rawT==='string'){try{dbTasks=JSON.parse(rawT)||{};}catch(e){dbTasks={};}}else if(typeof rawT==='object'&&rawT!==null)dbTasks=rawT;}
+      var dbDays=[];
+      if(r.data.yh_days){var rawD=r.data.yh_days;if(Array.isArray(rawD))dbDays=rawD;else if(typeof rawD==='string'){try{dbDays=JSON.parse(rawD)||[];}catch(e){dbDays=[];}}}
+      var localTasks={},localDays=[];
+      try{
+        var ykey=email?('yh6_'+email.replace(/[^a-z0-9]/gi,'_')):null;
+        var lr=ykey?localStorage.getItem(ykey):null;
+        if(lr){var lp=JSON.parse(lr);localTasks=lp.tasks||{};localDays=lp.days||[];}
+      }catch(e){}
+      try{
+        Object.keys(tasks||{}).forEach(function(mk){localTasks[mk]=(localTasks[mk]||[]).concat(tasks[mk]||[]);});
+        localDays=localDays.concat(days||[]);
+      }catch(e){}
+      var mergedTasks={};
+      Object.keys(dbTasks).concat(Object.keys(localTasks)).forEach(function(k){
+        mergedTasks[k]=(dbTasks[k]||[]).concat(localTasks[k]||[]).filter(function(v,i,arr){return arr.indexOf(v)===i;});
+      });
+      var mergedDays=dbDays.concat(localDays).filter(function(v,i,arr){return arr.indexOf(v)===i;});
+      tasks=mergedTasks;days=mergedDays;
+      var sortNum=function(a,b){return a-b;};
+      var changedFromDb=JSON.stringify(mergedTasks)!==JSON.stringify(dbTasks)||JSON.stringify(mergedDays.slice().sort(sortNum))!==JSON.stringify(dbDays.slice().sort(sortNum));
+      // Kamp başlangıç tarihi — DB'de varsa o öncelikli; yoksa local'den kurtar ve DB'ye senkronize et
+      var dbStart=r.data.camp_start_date||null;
+      var localStart=null;
+      try{localStart=localStorage.getItem('yh_camp_start_'+(email||''));}catch(e){}
+      var resolvedStart=dbStart||localStart||null;
+      if(resolvedStart!==dbStart)changedFromDb=true;
+      if(typeof window.yhSetCampStart==='function')window.yhSetCampStart(resolvedStart);
+      if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
+      try{if(resolvedStart)localStorage.setItem('yh_camp_start_'+(email||''),resolvedStart);}catch(e){}
       // Email bazlı key'e kaydet
-      var yhk=typeof yhStateKey==='function'?yhStateKey():null;
+      var yhk=email?('yh6_'+email.replace(/[^a-z0-9]/gi,'_')):null;
       if(yhk){try{localStorage.setItem(yhk,JSON.stringify({tasks:tasks,days:days}));}catch(e){}}
       try{localStorage.setItem('yh_t',JSON.stringify(tasks));localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}
       try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
@@ -1906,16 +1940,17 @@ function loadStateFromDB(){
       else if(typeof rawUC==='string'){try{_unlockedClubs=JSON.parse(rawUC);}catch(e){_unlockedClubs=[];}}
       else _unlockedClubs=[];
       showApp();
-      // Yol haritasını DB'den gelen veriyle tam yeniden render et
+      // Yol haritasını birleştirilmiş veriyle tam yeniden render et
       setTimeout(function(){
-        if(typeof renderNodes==='function')renderNodes();
-        if(typeof updateToday==='function')updateToday();
-        if(typeof updateOverall==='function')updateOverall();
-        if(typeof showTask==='function'&&typeof TODAY!=='undefined')showTask(TODAY);
+        if(typeof window.yhRenderNodes==='function')window.yhRenderNodes();
+        if(typeof window.yhUpdateToday==='function')window.yhUpdateToday();
+        if(typeof window.yhUpdateOverall==='function')window.yhUpdateOverall();
+        if(typeof window.yhShowTask==='function')window.yhShowTask(window.yhToday);
+        if(changedFromDb&&typeof window.yhSave==='function')window.yhSave();
       },100);
       loadClubApps();
       setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);
-    }).catch(function(err){console.warn('DB load failed:',err);loadState();showApp();loadClubApps();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);});
+    }).catch(function(err){console.warn('DB load failed:',err);loadState();showApp();loadClubApps();if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);});
 }
 
 // ── AUTH ──────────────────────────────────────────────────────
@@ -3156,6 +3191,20 @@ var TASKS={
      g:['Toplam satış ve kar rakamlarını hesapla','En iyi ve en kötü performanslı ürünleri belirle','Sonraki 30 günün hedeflerini yaz ve Canberk ile paylaş']}
 };
 var camp=0,sel=null,TODAY=1;
+var campStartDate=null; // 'YYYY-MM-DD' — kamp henüz başlamadıysa null
+var _yhLoaded=false; // DB/local'den veri gelmeden 'Bugün' tıklamasının yanlış karar vermesini önler
+function pad2(n){return n<10?'0'+n:''+n;}
+function localDateStr(d){d=d||new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());}
+function computeTodayFromStart(startStr){
+  if(!startStr)return 1;
+  var p=startStr.split('-');
+  var start=new Date(parseInt(p[0],10),parseInt(p[1],10)-1,parseInt(p[2],10));
+  var now=new Date();var nowMid=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  var diff=Math.round((nowMid-start)/86400000);
+  var d=diff+1;
+  if(d<1)d=1;if(d>28)d=28;
+  return d;
+}
 function yhStateKey(){return typeof email!=='undefined'&&email?'yh6_'+email.replace(/[^a-z0-9]/gi,'_'):null;}
 function load(){
   // Önce email bazlı key'i dene
@@ -3178,7 +3227,7 @@ function save(){
   // Supabase'e upsert ile kaydet (update yerine upsert daha güvenilir)
   if(typeof _user!=='undefined'&&_user){
     _sb.from('progress').upsert(
-      {user_id:_user.id,yh_tasks:tasks,yh_days:days,updated_at:new Date().toISOString()},
+      {user_id:_user.id,yh_tasks:tasks,yh_days:days,camp_start_date:campStartDate,updated_at:new Date().toISOString()},
       {onConflict:'user_id',ignoreDuplicates:false}
     ).then(function(r){
       if(r.error)console.warn('[YH save error]',r.error);
@@ -3188,15 +3237,44 @@ function save(){
 function st(d){if(days.indexOf(d)>-1)return'done';if(d===TODAY)return'current';if(d<TODAY)return'open';return'locked';}
 function g(id){return document.getElementById(id);}
 function updateToday(){
+  var lbl=g('km-today-label');
+  if(!campStartDate){
+    if(lbl)lbl.textContent='🚀 Kampa Başla';
+    var tn=g('km-today-name');if(tn)tn.textContent='Sayaç bugünden başlasın';
+    var sn=g('km-today-prog');if(sn)sn.textContent='Tıkla, 28 günlük program başlasın';
+    var mn=g('km-today-pips');if(mn)mn.innerHTML='';
+    return;
+  }
+  if(lbl)lbl.innerHTML='⚡ Bugün · Gün <span id="km-today-num">'+TODAY+'</span>';
   var data=TASKS[TODAY];if(!data)return;
   var key='d'+TODAY;var done=(tasks[key]||[]).length;
-  var e=g('km-today-num');if(e)e.textContent=TODAY;
   var t=g('km-today-name');if(t)t.textContent=data.t;
   var s=g('km-today-prog');if(s)s.textContent=done+' / '+data.g.length+' gorev tamamlandi';
   var m=g('km-today-pips');
   if(m)m.innerHTML=data.g.map(function(_,i){var ck=(tasks[key]||[]).indexOf(i)>-1;return'<div class="km-pip'+(ck?'':' empty')+'"></div>';}).join('');
 }
-function goToday(){
+function startCamp(retries){
+  retries=retries||0;
+  if(!_yhLoaded&&retries<20){setTimeout(function(){startCamp(retries+1);},250);return;}
+  if(campStartDate)return; // zaten başlamış, tekrar başlatma
+  campStartDate=localDateStr();
+  TODAY=computeTodayFromStart(campStartDate);
+  window.yhToday=TODAY;
+  try{localStorage.setItem('yh_camp_start_'+(typeof email!=='undefined'&&email?email:''),campStartDate);}catch(e){}
+  save();
+  var ci=Math.max(0,Math.floor((TODAY-1)/7));
+  camp=ci;
+  document.querySelectorAll('.km-wtab').forEach(function(tb){tb.classList.remove('active');});
+  var at=document.querySelector('.km-wtab[data-camp="'+ci+'"]');if(at)at.classList.add('active');
+  renderNodes();updateToday();updateOverall();
+  setTimeout(function(){showTask(TODAY);},60);
+  var sec=g('yh-section');if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});
+}
+window.yhStartCamp=startCamp;
+function goToday(retries){
+  retries=retries||0;
+  if(!_yhLoaded&&retries<20){setTimeout(function(){goToday(retries+1);},250);return;}
+  if(!campStartDate){startCamp();return;}
   var ci=Math.max(0,Math.floor((TODAY-1)/7));
   if(ci!==camp)window.yhSwitchCamp(ci);
   setTimeout(function(){showTask(TODAY);},60);
@@ -3346,6 +3424,22 @@ camp=ci;
 document.querySelectorAll('.km-wtab').forEach(function(t){t.classList.remove('active');});
 var at0=document.querySelector('.km-wtab[data-camp="'+ci+'"]');if(at0)at0.classList.add('active');
 // renderNodes/showTask buradan kaldırıldı — loadStateFromDB callback'inde çalışıyor
+// BUNLAR DIŞARIDAN (loadStateFromDB) ÇAĞRILABİLSİN DİYE WINDOW'A BAĞLANIYOR — bu IIFE'nin
+// içinde tanımlı fonksiyonlar dışarıdan görünmüyordu, bu yüzden DB'den veri gelince ekran
+// hiç yeniden çizilmiyordu (checkbox'lar bellekte güncelleniyor ama görünüm/senk hiç tetiklenmiyordu).
+window.yhRenderNodes=renderNodes;
+window.yhUpdateToday=updateToday;
+window.yhUpdateOverall=updateOverall;
+window.yhShowTask=showTask;
+window.yhSave=save;
+window.yhLoadLocal=load;
+window.yhToday=TODAY;
+window.yhGetState=function(){return{tasks:tasks,days:days};};
+window.yhSetState=function(t,d){tasks=t||{};days=d||[];};
+window.yhSetCampStart=function(s){campStartDate=s||null;TODAY=computeTodayFromStart(campStartDate);window.yhToday=TODAY;};
+window.yhGetCampStart=function(){return campStartDate;};
+window.yhMarkLoaded=function(){_yhLoaded=true;};
+window.yhIsLoaded=function(){return _yhLoaded;};
 })();
 
 
