@@ -3476,6 +3476,8 @@ camp=ci;
 document.querySelectorAll('.km-wtab').forEach(function(t){t.classList.remove('active');});
 var at0=document.querySelector('.km-wtab[data-camp="'+ci+'"]');if(at0)at0.classList.add('active');
 // renderNodes/showTask buradan kaldırıldı — loadStateFromDB callback'inde çalışıyor
+// Ama ızgaranın hemen görünmesi için ilk render'ı burada da yap (DB cevabı gelince güncellenir)
+renderNodes();updateToday();updateOverall();
 // BUNLAR DIŞARIDAN (loadStateFromDB) ÇAĞRILABİLSİN DİYE WINDOW'A BAĞLANIYOR — bu IIFE'nin
 // içinde tanımlı fonksiyonlar dışarıdan görünmüyordu, bu yüzden DB'den veri gelince ekran
 // hiç yeniden çizilmiyordu (checkbox'lar bellekte güncelleniyor ama görünüm/senk hiç tetiklenmiyordu).
