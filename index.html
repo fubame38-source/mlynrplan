@@ -1968,6 +1968,10 @@ function loadStateFromDB(){
         if(typeof window.yhRenderNodes==='function')window.yhRenderNodes();
         if(typeof window.yhUpdateToday==='function')window.yhUpdateToday();
         if(typeof window.yhUpdateOverall==='function')window.yhUpdateOverall();
+        // Hem bugünü hem de kullanıcının seçtiği günü yeniden çiz
+        // (kullanıcı veri gelmeden önce bir güne tıklamışsa, o panel boş gösterilmiş olabilir)
+        var selDay=typeof window.yhGetSel==='function'?window.yhGetSel():null;
+        if(selDay&&selDay!==window.yhToday&&typeof window.yhShowTask==='function')window.yhShowTask(selDay);
         if(typeof window.yhShowTask==='function')window.yhShowTask(window.yhToday);
         if(changedFromDb&&typeof window.yhSave==='function')window.yhSave();
       },100);
@@ -3364,7 +3368,10 @@ function renderNodes(){
   updateOverall();updateToday();
 }
 
-function showTask(d){
+function showTask(d,retries){
+  // Veri yüklenmeden önce tıklanırsa bekle (boş panel gösterme)
+  retries=retries||0;
+  if(!_yhLoaded&&retries<15){setTimeout(function(){showTask(d,retries+1);},200);return;}
   sel=d;
   // Secili gunu guncelle
   var allDays=document.querySelectorAll('.km-day');
@@ -3481,6 +3488,7 @@ window.yhSetCampStart=function(s){campStartDate=s||null;TODAY=computeTodayFromSt
 window.yhGetCampStart=function(){return campStartDate;};
 window.yhMarkLoaded=function(){_yhLoaded=true;};
 window.yhIsLoaded=function(){return _yhLoaded;};
+window.yhGetSel=function(){return sel;};
 })();
 
 
