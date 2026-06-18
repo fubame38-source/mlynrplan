@@ -1875,109 +1875,114 @@ function saveState(){
   showSaved();
 }
 function loadState(){if(!email)return;try{var r=LS.getItem(stK());if(r){var d=JSON.parse(r);done=d.done||[];mc=d.mc||{};}else{done=[];mc={};}}catch(e){done=[];mc={};}}
-function loadCampStartFromDB(){
-  // camp_start_date'i AYRI bir istekle çekiyoruz — eğer bu kolon SQL ile eklenmemişse
-  // bu istek başarısız olur ama ana tasks/days senkronunu ASLA etkilemez (önceki sürümde
-  // tek bir select içindeydi ve kolon yoksa TÜM sorgu hata veriyordu, bu da checkbox
-  // senkronunu da bozuyordu — bu yüzden ayırdık).
-  if(!_user)return;
-  _sb.from('progress').select('camp_start_date').eq('user_id',_user.id).limit(1).then(function(cr){
-    var dbStart=null;
-    if(cr&&!cr.error&&cr.data&&cr.data.length>0)dbStart=cr.data[0].camp_start_date||null;
-    var localStart=null;try{localStart=localStorage.getItem('yh_camp_start_'+(email||''));}catch(e){}
-    var resolvedStart=dbStart||localStart||null;
-    if(typeof window.yhSetCampStart==='function')window.yhSetCampStart(resolvedStart);
-    try{if(resolvedStart)localStorage.setItem('yh_camp_start_'+(email||''),resolvedStart);}catch(e){}
-    if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
-    if(resolvedStart&&resolvedStart!==dbStart&&typeof window.yhSaveCampStart==='function')window.yhSaveCampStart();
-    if(typeof window.yhUpdateToday==='function')window.yhUpdateToday();
-    if(typeof window.yhRenderNodes==='function')window.yhRenderNodes();
-    if(typeof window.yhShowTask==='function')window.yhShowTask(window.yhToday);
-  }).catch(function(){
-    var localStart=null;try{localStart=localStorage.getItem('yh_camp_start_'+(email||''));}catch(e){}
-    if(typeof window.yhSetCampStart==='function')window.yhSetCampStart(localStart||null);
-    if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
-    if(typeof window.yhUpdateToday==='function')window.yhUpdateToday();
-  });
-}
 function loadStateFromDB(){
-  loadCampStartFromDB();
-  if(!_user){loadState();if(typeof window.yhLoadLocal==='function')window.yhLoadLocal();try{var gcs=localStorage.getItem('yh_camp_start_');if(typeof window.yhSetCampStart==='function')window.yhSetCampStart(gcs||null);}catch(e){}if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();showApp();setTimeout(function(){if(typeof window.yhRenderNodes==='function')window.yhRenderNodes();if(typeof window.yhUpdateToday==='function')window.yhUpdateToday();if(typeof window.yhUpdateOverall==='function')window.yhUpdateOverall();if(typeof window.yhShowTask==='function')window.yhShowTask(window.yhToday);},100);setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);return;}
-  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days').eq('user_id',_user.id).limit(1)
+  if(!_user){
+    loadState();
+    if(typeof window.yhLoadLocal==='function')window.yhLoadLocal();
+    var gcs=null;try{gcs=localStorage.getItem('yh_camp_start_'+(email||''));}catch(e){}
+    if(typeof window.yhSetCampStart==='function')window.yhSetCampStart(gcs||null);
+    if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
+    showApp();
+    setTimeout(function(){
+      if(typeof window.yhRenderNodes==='function')window.yhRenderNodes();
+      if(typeof window.yhUpdateToday==='function')window.yhUpdateToday();
+      if(typeof window.yhUpdateOverall==='function')window.yhUpdateOverall();
+      if(typeof window.yhShowTask==='function')window.yhShowTask(window.yhToday);
+    },100);
+    setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);
+    return;
+  }
+  // TEK bir SELECT ile hem tasks/days hem camp_start_date çekiyoruz.
+  // camp_start_date kolonu yoksa (SQL çalıştırılmamışsa) catch'e düşer, localStorage'dan alır.
+  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days,camp_start_date').eq('user_id',_user.id).limit(1)
     .then(function(r){
-      if(r.error){console.warn('DB load error:',r.error);loadState();showApp();loadClubApps();if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();return;}
-      if(r.data&&r.data.length>0)r.data=r.data[0];else r.data=null;
-      if(!r.data){
-        done=[];mc={};
-        if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
-        _sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,updated_at:new Date().toISOString()}).then(function(){loadClubApps();showApp();setTimeout(function(){if(typeof window.yhRenderNodes==='function')window.yhRenderNodes();if(typeof window.yhUpdateToday==='function')window.yhUpdateToday();if(typeof window.yhUpdateOverall==='function')window.yhUpdateOverall();openNamePopup();},400);});
-        return;
+      if(r.error){
+        // camp_start_date kolonu yoksa sadece o kolonu çıkarıp tekrar dene
+        if(r.error.message&&r.error.message.indexOf('camp_start_date')>-1){
+          return _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days').eq('user_id',_user.id).limit(1).then(function(r2){
+            if(r2.data&&r2.data.length>0){r2.data=r2.data[0];}else{r2.data=null;}
+            return _yhApplyLoadResult(r2.data,null);
+          });
+        }
+        console.warn('DB load error:',r.error);loadState();showApp();loadClubApps();
+        if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();return;
       }
-      var raw=r.data.done;
-      if(Array.isArray(raw))done=raw;else if(typeof raw==='string'){try{done=JSON.parse(raw);}catch(e){done=[];}}else done=[];
-      var rawMc=r.data.mc;
-      if(rawMc&&typeof rawMc==='object'&&!Array.isArray(rawMc))mc=rawMc;else if(typeof rawMc==='string'){try{mc=JSON.parse(rawMc);}catch(e){mc={};}}else mc={};
-      if(r.data.first_sale)try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){}
-      if(r.data.spin&&typeof r.data.spin==='object')try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(r.data.spin));}catch(e){}
-      // Yol haritası senkronizasyonu — DB + localStorage + bellek birleştirilir (overwrite yerine merge)
-      // Önceki haliyle DB'den ne gelirse local'in üzerine yazılıyordu; DB'ye yazma işlemi
-      // sayfa yenilenmeden tamamlanamazsa (ör. kullanıcı tikledikten hemen sonra refresh yaparsa)
-      // tarayıcı isteği iptal ediyordu ve checkbox'lar sıfırlanmış görünüyordu. Artık hangi
-      // kaynakta (DB/local) daha fazla ilerleme varsa o korunuyor, kayıp olmuyor.
-      var dbTasks={};
-      if(r.data.yh_tasks){var rawT=r.data.yh_tasks;if(typeof rawT==='string'){try{dbTasks=JSON.parse(rawT)||{};}catch(e){dbTasks={};}}else if(typeof rawT==='object'&&rawT!==null)dbTasks=rawT;}
-      var dbDays=[];
-      if(r.data.yh_days){var rawD=r.data.yh_days;if(Array.isArray(rawD))dbDays=rawD;else if(typeof rawD==='string'){try{dbDays=JSON.parse(rawD)||[];}catch(e){dbDays=[];}}}
-      // GEÇİCİ TEŞHİS
-      setTimeout(function(){
-        var uid=(_user&&_user.id)?_user.id.slice(0,8):'?';
-        var dbInfo='uid:'+uid+' tasks:'+JSON.stringify(dbTasks).slice(0,40);
-        yhShowSaveToast(true,dbInfo,'rgba(99,102,241,.95)');
-      },800);
-      var localTasks={},localDays=[];
-      try{
-        var ykey=email?('yh6_'+email.replace(/[^a-z0-9]/gi,'_')):null;
-        var lr=ykey?localStorage.getItem(ykey):null;
-        if(lr){var lp=JSON.parse(lr);localTasks=lp.tasks||{};localDays=lp.days||[];}
-      }catch(e){}
-      try{
-        Object.keys(tasks||{}).forEach(function(mk){localTasks[mk]=(localTasks[mk]||[]).concat(tasks[mk]||[]);});
-        localDays=localDays.concat(days||[]);
-      }catch(e){}
-      var mergedTasks={};
-      Object.keys(dbTasks).concat(Object.keys(localTasks)).forEach(function(k){
-        mergedTasks[k]=(dbTasks[k]||[]).concat(localTasks[k]||[]).filter(function(v,i,arr){return arr.indexOf(v)===i;});
-      });
-      var mergedDays=dbDays.concat(localDays).filter(function(v,i,arr){return arr.indexOf(v)===i;});
-      tasks=mergedTasks;days=mergedDays;
-      var sortNum=function(a,b){return a-b;};
-      var changedFromDb=JSON.stringify(mergedTasks)!==JSON.stringify(dbTasks)||JSON.stringify(mergedDays.slice().sort(sortNum))!==JSON.stringify(dbDays.slice().sort(sortNum));
-      // Email bazlı key'e kaydet
-      var yhk=email?('yh6_'+email.replace(/[^a-z0-9]/gi,'_')):null;
-      if(yhk){try{localStorage.setItem(yhk,JSON.stringify({tasks:tasks,days:days}));}catch(e){}}
-      try{localStorage.setItem('yh_t',JSON.stringify(tasks));localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}
-      try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
-      if(r.data.full_name)try{LS.setItem('mlynr6_name_'+email,r.data.full_name);}catch(e){}
-      var rawUC=r.data.unlocked_clubs;
-      if(Array.isArray(rawUC))_unlockedClubs=rawUC;
-      else if(typeof rawUC==='string'){try{_unlockedClubs=JSON.parse(rawUC);}catch(e){_unlockedClubs=[];}}
-      else _unlockedClubs=[];
-      showApp();
-      // Yol haritasını birleştirilmiş veriyle tam yeniden render et
+      var row=r.data&&r.data.length>0?r.data[0]:null;
+      var campStart=row?row.camp_start_date||null:null;
+      return _yhApplyLoadResult(row,campStart);
+    }).catch(function(err){
+      console.warn('DB load failed:',err);loadState();showApp();loadClubApps();
+      if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
+      setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);
+    });
+}
+function _yhApplyLoadResult(row,campStart){
+  if(!row){
+    done=[];mc={};
+    // camp_start_date'yi localStorage'dan al
+    var lcs=null;try{lcs=localStorage.getItem('yh_camp_start_'+(email||''));}catch(e){}
+    if(typeof window.yhSetCampStart==='function')window.yhSetCampStart(lcs||null);
+    if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
+    _sb.from('progress').insert({user_id:_user.id,done:[],mc:{},spin:{},first_sale:false,updated_at:new Date().toISOString()}).then(function(){
+      loadClubApps();showApp();
       setTimeout(function(){
         if(typeof window.yhRenderNodes==='function')window.yhRenderNodes();
         if(typeof window.yhUpdateToday==='function')window.yhUpdateToday();
         if(typeof window.yhUpdateOverall==='function')window.yhUpdateOverall();
-        // Hem bugünü hem de kullanıcının seçtiği günü yeniden çiz
-        // (kullanıcı veri gelmeden önce bir güne tıklamışsa, o panel boş gösterilmiş olabilir)
-        var selDay=typeof window.yhGetSel==='function'?window.yhGetSel():null;
-        if(selDay&&selDay!==window.yhToday&&typeof window.yhShowTask==='function')window.yhShowTask(selDay);
-        if(typeof window.yhShowTask==='function')window.yhShowTask(window.yhToday);
-        if(changedFromDb&&typeof window.yhSave==='function')window.yhSave();
-      },100);
-      loadClubApps();
-      setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);
-    }).catch(function(err){console.warn('DB load failed:',err);loadState();showApp();loadClubApps();if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);});
+        openNamePopup();
+      },400);
+    });
+    return;
+  }
+  var raw=row.done;
+  if(Array.isArray(raw))done=raw;else if(typeof raw==='string'){try{done=JSON.parse(raw);}catch(e){done=[];}}else done=[];
+  var rawMc=row.mc;
+  if(rawMc&&typeof rawMc==='object'&&!Array.isArray(rawMc))mc=rawMc;else if(typeof rawMc==='string'){try{mc=JSON.parse(rawMc);}catch(e){mc={};}}else mc={};
+  if(row.first_sale)try{LS.setItem('mlynr6_fs_'+email,'1');}catch(e){}
+  if(row.spin&&typeof row.spin==='object')try{LS.setItem('mlynr6_sp_'+email,JSON.stringify(row.spin));}catch(e){}
+  // yh_tasks / yh_days — DB + localStorage birleştirme
+  var dbTasks={};
+  if(row.yh_tasks){var rawT=row.yh_tasks;if(typeof rawT==='string'){try{dbTasks=JSON.parse(rawT)||{};}catch(e){dbTasks={};}}else if(typeof rawT==='object'&&rawT!==null)dbTasks=rawT;}
+  var dbDays=[];
+  if(row.yh_days){var rawD=row.yh_days;if(Array.isArray(rawD))dbDays=rawD;else if(typeof rawD==='string'){try{dbDays=JSON.parse(rawD)||[];}catch(e){dbDays=[];}}}
+  var localTasks={},localDays=[];
+  try{var ykey=email?('yh6_'+email.replace(/[^a-z0-9]/gi,'_')):null;var lr=ykey?localStorage.getItem(ykey):null;if(lr){var lp=JSON.parse(lr);localTasks=lp.tasks||{};localDays=lp.days||[];}}catch(e){}
+  var mergedTasks={};
+  Object.keys(dbTasks).concat(Object.keys(localTasks)).forEach(function(k){
+    mergedTasks[k]=(dbTasks[k]||[]).concat(localTasks[k]||[]).filter(function(v,i,arr){return arr.indexOf(v)===i;});
+  });
+  var mergedDays=dbDays.concat(localDays).filter(function(v,i,arr){return arr.indexOf(v)===i;});
+  tasks=mergedTasks;days=mergedDays;
+  var sortNum=function(a,b){return a-b;};
+  var changedFromDb=JSON.stringify(mergedTasks)!==JSON.stringify(dbTasks)||JSON.stringify(mergedDays.slice().sort(sortNum))!==JSON.stringify(dbDays.slice().sort(sortNum));
+  // localStorage'a kaydet
+  var yhk=email?('yh6_'+email.replace(/[^a-z0-9]/gi,'_')):null;
+  if(yhk){try{localStorage.setItem(yhk,JSON.stringify({tasks:tasks,days:days}));}catch(e){}}
+  try{localStorage.setItem('yh_t',JSON.stringify(tasks));localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}
+  try{LS.setItem(stK(),JSON.stringify({done:done,mc:mc}));}catch(e){}
+  if(row.full_name)try{LS.setItem('mlynr6_name_'+email,row.full_name);}catch(e){}
+  var rawUC=row.unlocked_clubs;
+  if(Array.isArray(rawUC))_unlockedClubs=rawUC;
+  else if(typeof rawUC==='string'){try{_unlockedClubs=JSON.parse(rawUC);}catch(e){_unlockedClubs=[];}}
+  else _unlockedClubs=[];
+  // camp_start_date — DB verisi yoksa localStorage'dan kurtar
+  var localCs=null;try{localCs=localStorage.getItem('yh_camp_start_'+(email||''));}catch(e){}
+  var resolvedCs=campStart||localCs||null;
+  if(typeof window.yhSetCampStart==='function')window.yhSetCampStart(resolvedCs);
+  try{if(resolvedCs)localStorage.setItem('yh_camp_start_'+(email||''),resolvedCs);}catch(e){}
+  if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
+  if(resolvedCs&&resolvedCs!==campStart&&typeof window.yhSaveCampStart==='function')window.yhSaveCampStart();
+  showApp();
+  // ARTIK tek bir render — tüm data hazır, race condition yok
+  setTimeout(function(){
+    if(typeof window.yhRenderNodes==='function')window.yhRenderNodes();
+    if(typeof window.yhUpdateToday==='function')window.yhUpdateToday();
+    if(typeof window.yhUpdateOverall==='function')window.yhUpdateOverall();
+    if(typeof window.yhShowTask==='function')window.yhShowTask(window.yhToday);
+    if(changedFromDb&&typeof window.yhSave==='function')window.yhSave();
+  },100);
+  loadClubApps();
+  setTimeout(function(){var nm=getUserName();if(!nm)openNamePopup();else showWelcomeToast(nm.split(' ')[0]);},400);
 }
 
 // ── AUTH ──────────────────────────────────────────────────────
