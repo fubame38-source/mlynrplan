@@ -1946,7 +1946,21 @@ function _yhApplyLoadResult(row,campStart){
   var dbDays=[];
   if(row.yh_days){var rawD=row.yh_days;if(Array.isArray(rawD))dbDays=rawD;else if(typeof rawD==='string'){try{dbDays=JSON.parse(rawD)||[];}catch(e){dbDays=[];}}}
   var localTasks={},localDays=[];
-  try{var ykey=email?('yh6_'+email.replace(/[^a-z0-9]/gi,'_')):null;var lr=ykey?localStorage.getItem(ykey):null;if(lr){var lp=JSON.parse(lr);localTasks=lp.tasks||{};localDays=lp.days||[];}}catch(e){}
+  try{
+    // Önce email bazlı key'i dene
+    var ykey=email?('yh6_'+email.replace(/[^a-z0-9]/gi,'_')):null;
+    var lr=ykey?localStorage.getItem(ykey):null;
+    if(lr){var lp=JSON.parse(lr);localTasks=lp.tasks||{};localDays=lp.days||[];}
+    // Email bazlı key boşsa generic key'e bak (save() her zaman buraya da yazar)
+    if(!lr){
+      var gt=localStorage.getItem('yh_t');var gd=localStorage.getItem('yh_d');
+      if(gt){try{localTasks=JSON.parse(gt)||{};}catch(e){}}
+      if(gd){try{localDays=JSON.parse(gd)||[];}catch(e){}}
+    }
+    // Bellekteki anlık veriyi de dahil et (henüz localStorage'a yazılmamış olabilir)
+    Object.keys(tasks||{}).forEach(function(mk){localTasks[mk]=(localTasks[mk]||[]).concat(tasks[mk]||[]);});
+    localDays=localDays.concat(days||[]);
+  }catch(e){}
   var mergedTasks={};
   Object.keys(dbTasks).concat(Object.keys(localTasks)).forEach(function(k){
     mergedTasks[k]=(dbTasks[k]||[]).concat(localTasks[k]||[]).filter(function(v,i,arr){return arr.indexOf(v)===i;});
