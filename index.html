@@ -3235,23 +3235,30 @@ function load(){
   // Email henüz yok (sayfa yüklenirken) — eski generic key'i dene
   try{var t=localStorage.getItem('yh_t');if(t)tasks=JSON.parse(t);var d=localStorage.getItem('yh_d');if(d)days=JSON.parse(d);}catch(e){}
 }
+function yhShowSaveToast(ok,msg){
+  var t=document.getElementById('yh-save-toast');
+  if(!t){t=document.createElement('div');t.id='yh-save-toast';
+    t.style.cssText='position:fixed;bottom:80px;right:16px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;z-index:99999;transition:opacity .4s;pointer-events:none;';
+    document.body.appendChild(t);}
+  t.textContent=ok?'✓ Kaydedildi':'✗ Kayıt hatası: '+msg;
+  t.style.background=ok?'rgba(34,197,94,.9)':'rgba(239,68,68,.9)';
+  t.style.color='#fff';t.style.opacity='1';
+  clearTimeout(t._to);t._to=setTimeout(function(){t.style.opacity='0';},ok?2000:5000);
+}
 function save(){
   // Email bazlı key'e kaydet
   var k=yhStateKey();
   if(k){try{localStorage.setItem(k,JSON.stringify({tasks:tasks,days:days}));}catch(e){}}
   // Eski key'leri de güncelle (geriye dönük uyumluluk)
   try{localStorage.setItem('yh_t',JSON.stringify(tasks));localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}
-  // Supabase'e upsert ile kaydet (update yerine upsert daha güvenilir)
-  // NOT: camp_start_date BİLEREK buraya eklenmiyor — bu fonksiyon her checkbox tıklamasında
-  // çalışıyor; o kolon DB'de henüz yoksa tüm upsert hata verip checkbox kaydını da bozuyordu.
-  // camp_start_date artık tamamen ayrı bir fonksiyonla (saveCampStart) kaydediliyor.
   if(typeof _user!=='undefined'&&_user){
     _sb.from('progress').upsert(
       {user_id:_user.id,yh_tasks:tasks,yh_days:days,updated_at:new Date().toISOString()},
       {onConflict:'user_id',ignoreDuplicates:false}
     ).then(function(r){
-      if(r.error)console.warn('[YH save error]',r.error);
-    });
+      if(r.error){console.warn('[YH save error]',r.error);yhShowSaveToast(false,(r.error.message||r.error.code||JSON.stringify(r.error)).slice(0,80));}
+      else yhShowSaveToast(true);
+    }).catch(function(e){yhShowSaveToast(false,String(e).slice(0,80));});
   }
 }
 function saveCampStart(){
