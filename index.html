@@ -1894,7 +1894,7 @@ function loadStateFromDB(){
   }
   // TEK bir SELECT ile hem tasks/days hem camp_start_date çekiyoruz.
   // camp_start_date kolonu yoksa (SQL çalıştırılmamışsa) catch'e düşer, localStorage'dan alır.
-  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days').eq('user_id',_user.id).limit(1)
+  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days').eq('user_id',_user.id).order('updated_at',{ascending:false}).limit(1)
     .then(function(r){
       if(r.error){
         console.warn('DB load error:',r.error);loadState();showApp();loadClubApps();
