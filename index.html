@@ -3273,10 +3273,10 @@ function save(){
   // Eski key'leri de güncelle (geriye dönük uyumluluk)
   try{localStorage.setItem('yh_t',JSON.stringify(tasks));localStorage.setItem('yh_d',JSON.stringify(days));}catch(e){}
   if(typeof _user!=='undefined'&&_user){
-    _sb.from('progress').upsert(
-      {user_id:_user.id,yh_tasks:tasks,yh_days:days,updated_at:new Date().toISOString()},
-      {onConflict:'user_id',ignoreDuplicates:false}
-    ).then(function(r){
+    _sb.from('progress').update(
+      {yh_tasks:tasks,yh_days:days,updated_at:new Date().toISOString()}
+    ).eq('user_id',_user.id)
+    .then(function(r){
       if(r.error){console.warn('[YH save error]',r.error);yhShowSaveToast(false,'✗ Kayıt hatası: '+(r.error.message||r.error.code||JSON.stringify(r.error)).slice(0,80));}
       else yhShowSaveToast(true,'✓ Kaydedildi');
     }).catch(function(e){yhShowSaveToast(false,String(e).slice(0,80));});
