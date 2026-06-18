@@ -1928,8 +1928,11 @@ function loadStateFromDB(){
       if(r.data.yh_tasks){var rawT=r.data.yh_tasks;if(typeof rawT==='string'){try{dbTasks=JSON.parse(rawT)||{};}catch(e){dbTasks={};}}else if(typeof rawT==='object'&&rawT!==null)dbTasks=rawT;}
       var dbDays=[];
       if(r.data.yh_days){var rawD=r.data.yh_days;if(Array.isArray(rawD))dbDays=rawD;else if(typeof rawD==='string'){try{dbDays=JSON.parse(rawD)||[];}catch(e){dbDays=[];}}}
-      // GEÇİCİ TEŞHİS — DB'den ne geldiğini göster
-      setTimeout(function(){yhShowSaveToast(Object.keys(dbTasks).length>0,'DB: '+JSON.stringify(dbTasks).slice(0,60));},800);
+      // GEÇİCİ TEŞHİS — DB'den ne geldiğini göster (mavi = yükleme, yeşil = kayıt)
+      setTimeout(function(){
+        var dbInfo='DB yh_tasks: '+JSON.stringify(dbTasks).slice(0,50);
+        yhShowSaveToast(true,dbInfo,'rgba(99,102,241,.95)');
+      },800);
       var localTasks={},localDays=[];
       try{
         var ykey=email?('yh6_'+email.replace(/[^a-z0-9]/gi,'_')):null;
@@ -3237,15 +3240,15 @@ function load(){
   // Email henüz yok (sayfa yüklenirken) — eski generic key'i dene
   try{var t=localStorage.getItem('yh_t');if(t)tasks=JSON.parse(t);var d=localStorage.getItem('yh_d');if(d)days=JSON.parse(d);}catch(e){}
 }
-function yhShowSaveToast(ok,msg){
+function yhShowSaveToast(ok,msg,color){
   var t=document.getElementById('yh-save-toast');
   if(!t){t=document.createElement('div');t.id='yh-save-toast';
-    t.style.cssText='position:fixed;bottom:80px;right:16px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;z-index:99999;transition:opacity .4s;pointer-events:none;';
+    t.style.cssText='position:fixed;bottom:80px;right:16px;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;z-index:99999;transition:opacity .4s;pointer-events:none;max-width:280px;word-break:break-all;';
     document.body.appendChild(t);}
-  t.textContent=ok?'✓ Kaydedildi':'✗ Kayıt hatası: '+msg;
-  t.style.background=ok?'rgba(34,197,94,.9)':'rgba(239,68,68,.9)';
+  t.textContent=msg||(ok?'✓ Kaydedildi':'✗ Hata');
+  t.style.background=color||(ok?'rgba(34,197,94,.9)':'rgba(239,68,68,.9)');
   t.style.color='#fff';t.style.opacity='1';
-  clearTimeout(t._to);t._to=setTimeout(function(){t.style.opacity='0';},ok?2000:5000);
+  clearTimeout(t._to);t._to=setTimeout(function(){t.style.opacity='0';},ok?2500:6000);
 }
 function save(){
   // Email bazlı key'e kaydet
@@ -3258,8 +3261,8 @@ function save(){
       {user_id:_user.id,yh_tasks:tasks,yh_days:days,updated_at:new Date().toISOString()},
       {onConflict:'user_id',ignoreDuplicates:false}
     ).then(function(r){
-      if(r.error){console.warn('[YH save error]',r.error);yhShowSaveToast(false,(r.error.message||r.error.code||JSON.stringify(r.error)).slice(0,80));}
-      else yhShowSaveToast(true);
+      if(r.error){console.warn('[YH save error]',r.error);yhShowSaveToast(false,'✗ Kayıt hatası: '+(r.error.message||r.error.code||JSON.stringify(r.error)).slice(0,80));}
+      else yhShowSaveToast(true,'✓ Kaydedildi');
     }).catch(function(e){yhShowSaveToast(false,String(e).slice(0,80));});
   }
 }
