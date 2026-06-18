@@ -1928,6 +1928,8 @@ function loadStateFromDB(){
       if(r.data.yh_tasks){var rawT=r.data.yh_tasks;if(typeof rawT==='string'){try{dbTasks=JSON.parse(rawT)||{};}catch(e){dbTasks={};}}else if(typeof rawT==='object'&&rawT!==null)dbTasks=rawT;}
       var dbDays=[];
       if(r.data.yh_days){var rawD=r.data.yh_days;if(Array.isArray(rawD))dbDays=rawD;else if(typeof rawD==='string'){try{dbDays=JSON.parse(rawD)||[];}catch(e){dbDays=[];}}}
+      // GEÇİCİ TEŞHİS — DB'den ne geldiğini göster
+      setTimeout(function(){yhShowSaveToast(Object.keys(dbTasks).length>0,'DB: '+JSON.stringify(dbTasks).slice(0,60));},800);
       var localTasks={},localDays=[];
       try{
         var ykey=email?('yh6_'+email.replace(/[^a-z0-9]/gi,'_')):null;
