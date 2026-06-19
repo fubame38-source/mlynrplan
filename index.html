@@ -1894,16 +1894,17 @@ function loadStateFromDB(){
   }
   // TEK bir SELECT ile hem tasks/days hem camp_start_date çekiyoruz.
   // camp_start_date kolonu yoksa (SQL çalıştırılmamışsa) catch'e düşer, localStorage'dan alır.
-  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days').eq('user_id',_user.id).order('updated_at',{ascending:false}).limit(1)
+  _sb.from('progress').select('done,mc,spin,first_sale,full_name,unlocked_clubs,yh_tasks,yh_days,camp_start_date').eq('user_id',_user.id).order('updated_at',{ascending:false}).limit(1)
     .then(function(r){
       if(r.error){
         console.warn('DB load error:',r.error);loadState();showApp();loadClubApps();
         if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();return;
       }
       var row=r.data&&r.data.length>0?r.data[0]:null;
-      // camp_start_date'yi DB'den değil localStorage'dan oku (kolon yoksa SELECT patlıyor)
+      // camp_start_date: önce DB'ye bak, yoksa localStorage'a düş (kolon yoksa SELECT patlamasın diye try/catch zaten select'i koruyor)
       var localCs=null;try{localCs=localStorage.getItem('yh_camp_start_'+(email||''));}catch(e){}
-      return _yhApplyLoadResult(row,localCs);
+      var dbCs=(row&&row.camp_start_date)?row.camp_start_date:null;
+      return _yhApplyLoadResult(row,dbCs||localCs);
     }).catch(function(err){
       console.warn('DB load failed:',err);loadState();showApp();loadClubApps();
       if(typeof window.yhMarkLoaded==='function')window.yhMarkLoaded();
