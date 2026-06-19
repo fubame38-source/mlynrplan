@@ -2003,6 +2003,10 @@ async function doAuth(){
   if(_failLock>Date.now()){er.textContent=Math.ceil((_failLock-Date.now())/1000)+' saniye bekle.';return;}
   var btn=document.getElementById('login-btn');btn.disabled=true;er.textContent='Dogrulanıyor...';
 
+  // 0. Yasakli email kontrolu
+  var blockRes = await _sb.from('blocked_emails').select('email').eq('email',em).maybeSingle();
+  if(blockRes.data){er.textContent='Bu hesaba erisim kapatilmistir.';btn.disabled=false;return;}
+
   // 1. Kodu kontrol et
   var codeRes = await _sb.from('portal_invite_codes').select('id,max_uses,use_count,email').eq('code',code).single();
   var codeRow = codeRes.data;
