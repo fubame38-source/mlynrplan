@@ -721,11 +721,19 @@ footer p{font-size:12px;color:var(--text3)}
           <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.5;margin-bottom:12px">Meta reklamlarını analiz et, bugün hangi kampanyayı kapatman gerektiğini öğren.</div>
           <div style="display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#1d4ed8,#4f46e5);color:#fff;padding:6px 12px;border-radius:7px;font-size:11px;font-weight:800;letter-spacing:-.01em">🚀 Adsopify'ı Aç</div>
         </div>
-        <div class="quick-card" onclick="openSupportBot()">
-          <div class="qc-icon">🤖</div>
-          <div class="qc-title">AI Koç</div>
-          <div class="qc-sub">Shopify soruların için 7/24 cevap</div>
-          <div class="qc-ping"></div>
+        <div class="quick-card" style="border-color:rgba(34,197,94,.3);background:linear-gradient(135deg,#0a1f14,#0f2e1c,#0a2818);padding:20px;cursor:pointer;position:relative;overflow:hidden" onclick="document.getElementById('magaza-karnesi-section').scrollIntoView({behavior:'smooth',block:'start'})">
+          <div style="position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(34,197,94,.25),transparent 70%);border-radius:50%"></div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;position:relative">
+            <div style="width:28px;height:28px;background:linear-gradient(135deg,#16a34a,#22c55e);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px">🏥</div>
+            <div>
+              <div style="font-size:13px;font-weight:800;color:#fff;letter-spacing:-.03em">Mağaza Karnesi</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:600">AI Sağlık Taraması</div>
+            </div>
+            <div style="margin-left:auto;background:rgba(34,201,138,.15);border:1px solid rgba(34,201,138,.3);border-radius:999px;padding:2px 8px;font-size:9px;font-weight:800;color:#22c98a;letter-spacing:.05em;text-transform:uppercase">AI</div>
+          </div>
+          <div style="font-size:14px;font-weight:800;color:#fff;letter-spacing:-.04em;line-height:1.2;margin-bottom:6px;position:relative">Site + Reklam Sağlık Skoru</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.5;margin-bottom:12px;position:relative">Mağaza linkini veya reklam CSV'ni yükle, AI sana 0-100 skor ve net aksiyonlar versin.</div>
+          <div style="display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;padding:6px 12px;border-radius:7px;font-size:11px;font-weight:800;letter-spacing:-.01em;position:relative">📊 Karneyi Aç</div>
         </div>
       </div>
 
@@ -892,7 +900,7 @@ footer p{font-size:12px;color:var(--text3)}
   </div>
 
   <!-- MAĞAZA KARNESİ -->
-  <div class="section">
+  <div class="section" id="magaza-karnesi-section">
     <div class="karne-section-head">
       <span class="karne-section-eyebrow">AI DESTEKLİ</span>
     </div>
