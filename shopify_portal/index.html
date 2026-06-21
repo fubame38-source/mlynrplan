@@ -97,6 +97,8 @@ body.light-mode .karne-dropzone{border-color:rgba(0,0,0,.15)}
 body.light-mode .karne-dropzone:hover{background:rgba(22,163,74,.04)}
 body.light-mode .karne-dropzone.has-file{background:rgba(22,163,74,.06)}
 body.light-mode .karne-result-heading{color:#111}
+body.light-mode .karne-rawdata{border-color:rgba(0,0,0,.08)}
+body.light-mode .karne-raw-row{border-color:rgba(0,0,0,.06)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -384,6 +386,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .karne-dropzone-sub{font-size:10px;color:var(--text3);margin-top:3px}
 .karne-dropzone-filename{font-family:var(--mono);font-size:11px;color:var(--green);margin-top:8px}
 .karne-dropzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.karne-rawdata{display:none;margin-top:10px;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.karne-rawdata.show{display:flex}
+.karne-raw-row{display:flex;justify-content:space-between;padding:8px 12px;font-size:11px;border-bottom:1px solid var(--border)}
+.karne-raw-row:last-child{border-bottom:none}
+.karne-raw-row span:first-child{color:var(--text3);font-family:var(--mono);font-size:10px}
+.karne-raw-row span:last-child{color:var(--text);font-weight:600;text-align:right}
 .mc-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,255,255,.15)}
 .mc-hashtags{display:flex;flex-wrap:wrap;gap:6px}
 .mc-hashtag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);color:var(--text2);text-decoration:none;transition:all .2s;background:rgba(255,255,255,.03)}
@@ -2376,6 +2384,31 @@ function runCsvAnaliz(){
   });
 }
 
+function rawDataHTML(data){
+  if(!data)return'';
+  var ps=data.pagespeed||{};
+  var hs=data.htmlSignals||{};
+  var rows=[];
+  rows.push(['Taranan URL',data.url||document.getElementById('k-site-url').value||'—']);
+  rows.push(['Mobil hız skoru (PageSpeed)',typeof ps.performanceScore==='number'?ps.performanceScore+'/100':(ps.error?'Hata: '+ps.error:'—')]);
+  if(ps.lcp)rows.push(['Sayfa yükleme süresi (LCP)',ps.lcp]);
+  rows.push(['Sayfa başlığı (title) var mı',hs.hasTitle?'✓ Evet':'✗ Hayır']);
+  rows.push(['Meta description var mı',hs.hasMetaDescription?'✓ Evet':'✗ Hayır']);
+  if(typeof hs.imgCount==='number')rows.push(['Görsel sayısı / alt text eksik',hs.imgCount+' / '+(hs.imgWithoutAlt||0)]);
+  rows.push(['Trust badge',hs.hasTrustBadge?'✓ Var':'✗ Yok']);
+  rows.push(['Sticky sepete ekle',hs.hasStickyAtc?'✓ Var':'✗ Yok']);
+  rows.push(['Geri sayım sayacı',hs.hasCountdown?'✓ Var':'✗ Yok']);
+  rows.push(['Yorum/review',hs.hasReviews?'✓ Var':'✗ Yok']);
+  if(typeof data.baselineScore==='number')rows.push(['Hesaplanan taban skor',data.baselineScore+'/100']);
+  var id='raw-'+Date.now();
+  return '<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px">'+
+    '<div onclick="document.getElementById(\''+id+'\').classList.toggle(\'show\')" style="cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:6px">🔍 Ham veriyi gör (gerçek mi kontrol et)</div>'+
+    '<div id="'+id+'" class="karne-rawdata">'+
+      rows.map(function(r){return '<div class="karne-raw-row"><span>'+r[0]+'</span><span>'+r[1]+'</span></div>';}).join('')+
+    '</div>'+
+  '</div>';
+}
+
 function runSiteAnaliz(){
   var btn=document.getElementById('karne-site-btn');
   var resBox=document.getElementById('karne-site-result');
@@ -2404,7 +2437,7 @@ function runSiteAnaliz(){
     summary=formatKarneText(summary);
     var scoreHtml=score!==null?scoreRingHTML(score,'Site sağlığı'):'';
     resBox.className='karne-result show'+(score!==null?' tier-'+karneScoreClass(score):'');
-    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+summary;
+    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+summary+rawDataHTML(data);
     animateKarneRings();
     btn.disabled=false;btn.textContent='Siteyi Tara →';
   })
