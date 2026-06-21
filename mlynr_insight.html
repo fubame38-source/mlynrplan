@@ -97,6 +97,18 @@ body.light-mode .bg-glow{background:none}
 .karne-result-heading{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--white);margin:16px 0 8px;font-weight:700;display:flex;align-items:center;gap:8px}
 .karne-result-heading:first-child{margin-top:0}
 .karne-result-heading::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--text3)}
+.karne-section-block{border-radius:14px;padding:16px 18px;margin-bottom:14px}
+.karne-section-block:last-child{margin-bottom:0}
+.karne-section-block.good{background:linear-gradient(135deg,var(--green-dim),transparent);border:1px solid var(--green-ln)}
+.karne-section-block.warn{background:linear-gradient(135deg,var(--gold-dim),transparent);border:1px solid var(--gold-ln)}
+.karne-section-block.neutral{background:var(--surface3);border:1px solid var(--border2)}
+.karne-section-block-title{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:800;margin-bottom:12px}
+.karne-section-block-title.good{color:var(--green)}
+.karne-section-block-title.warn{color:var(--gold)}
+.karne-section-block-title.neutral{color:var(--text2)}
+.karne-section-block .karne-bullet-row{margin-bottom:10px}
+.karne-section-block .karne-bullet-row:last-child{margin-bottom:0}
+.karne-section-block .karne-bullet-icon{width:20px;height:20px;font-size:11px;font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.15)}
 .karne-bullet-row{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
 .karne-bullet-icon{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px}
 .karne-bullet-icon.ok{background:var(--green-dim);color:var(--green)}
@@ -296,31 +308,50 @@ function parseKarneAI(text){
   return{score:score,text:clean};
 }
 
+function karneSectionType(label){
+  var l=label.toLocaleUpperCase('tr');
+  if(l.indexOf('İYİ')>-1||l.indexOf('IYI')>-1)return'good';
+  if(l.indexOf('DÜZELT')>-1||l.indexOf('SORUN')>-1||l.indexOf('GEREKEN')>-1||l.indexOf('DIKKAT')>-1||l.indexOf('DİKKAT')>-1)return'warn';
+  return'neutral';
+}
+function karneBulletRowHTML(text){
+  text=text.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--white)">$1</strong>');
+  var emojiMatch=text.match(/^(✅|⚠️|❌)\s*(.*)$/);
+  if(emojiMatch){
+    var iconCls=emojiMatch[1]==='✅'?'ok':(emojiMatch[1]==='⚠️'?'warn':'bad');
+    var iconChar=emojiMatch[1]==='✅'?'✓':(emojiMatch[1]==='⚠️'?'!':'✕');
+    return '<div class="karne-bullet-row"><span class="karne-bullet-icon '+iconCls+'">'+iconChar+'</span><span class="karne-result-text" style="margin-bottom:0">'+emojiMatch[2]+'</span></div>';
+  }
+  return '<div class="karne-bullet-row"><span class="karne-bullet-icon" style="background:rgba(255,255,255,.1);color:var(--text2)">•</span><span class="karne-result-text" style="margin-bottom:0">'+text+'</span></div>';
+}
 function formatKarneText(raw){
   var lines=raw.split('\n').map(function(l){return l.trim();}).filter(function(l){return l&&l!=='---';});
   var html='';
+  var section=null; // {title, type, body}
+  function flush(){
+    if(!section)return;
+    html+='<div class="karne-section-block '+section.type+'"><div class="karne-section-block-title '+section.type+'">'+section.title+'</div>'+section.body+'</div>';
+    section=null;
+  }
   lines.forEach(function(line){
     var boldHeading=line.match(/^\*\*(.+?)\*\*\s*:?$/);
     var plainHeading=!boldHeading&&line.length<40&&/:$/.test(line)&&line===line.toLocaleUpperCase('tr')&&/[A-ZÇĞİÖŞÜ]/.test(line);
     if(boldHeading||plainHeading){
+      flush();
       var label=boldHeading?boldHeading[1]:line.replace(/:$/,'');
-      html+='<div class="karne-result-heading">'+label+'</div>';
+      section={title:label,type:karneSectionType(label),body:''};
       return;
     }
     var bulletMatch=line.match(/^[-—]\s+(.*)$/);
     var text=bulletMatch?bulletMatch[1]:line;
-    text=text.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--white)">$1</strong>');
-    var emojiMatch=text.match(/^(✅|⚠️|❌)\s*(.*)$/);
-    if(emojiMatch){
-      var iconCls=emojiMatch[1]==='✅'?'ok':(emojiMatch[1]==='⚠️'?'warn':'bad');
-      var iconChar=emojiMatch[1]==='✅'?'✓':(emojiMatch[1]==='⚠️'?'!':'✕');
-      html+='<div class="karne-bullet-row"><span class="karne-bullet-icon '+iconCls+'">'+iconChar+'</span><span class="karne-result-text" style="margin-bottom:0">'+emojiMatch[2]+'</span></div>';
-    } else if(bulletMatch){
-      html+='<div class="karne-bullet-row"><span class="karne-bullet-icon" style="background:rgba(255,255,255,.06);color:var(--text3)">•</span><span class="karne-result-text" style="margin-bottom:0">'+text+'</span></div>';
+    var rowHtml=karneBulletRowHTML(text);
+    if(section){
+      section.body+=rowHtml;
     } else {
-      html+='<div class="karne-result-text">'+text+'</div>';
+      html+=rowHtml; // başlıktan önceki serbest metin (nadir)
     }
   });
+  flush();
   return html||raw;
 }
 
