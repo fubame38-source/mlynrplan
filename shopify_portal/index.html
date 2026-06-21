@@ -82,8 +82,9 @@ body.light-mode .metrics-row-card{background:#fff;border-color:rgba(0,0,0,.08)}
 body.light-mode .streak-box{background:#f7f7f5;border-color:rgba(0,0,0,.07)}
 body.light-mode .streak-box.done{background:rgba(22,163,74,.07);border-color:rgba(22,163,74,.2)}
 body.light-mode .streak-box.today{border-color:rgba(250,204,21,.4);background:rgba(250,204,21,.05)}
-body.light-mode .karne-tab{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light-mode .karne-tab.active{background:linear-gradient(135deg,rgba(22,163,74,.1),rgba(22,163,74,.02));border-color:rgba(22,163,74,.3)}
+body.light-mode .karne-tabs{background:#f7f7f5;border-color:rgba(0,0,0,.08)}
+body.light-mode .karne-tab-indicator{background:#111;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+body.light-mode .karne-tab.active{color:#fff}
 body.light-mode .karne-card{background:#fff;border-color:rgba(0,0,0,.08)}
 body.light-mode .karne-field input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
 body.light-mode .karne-field input::placeholder{color:#bbb}
@@ -95,6 +96,7 @@ body.light-mode .karne-hist-row{background:#fff;border-color:rgba(0,0,0,.08)}
 body.light-mode .karne-dropzone{border-color:rgba(0,0,0,.15)}
 body.light-mode .karne-dropzone:hover{background:rgba(22,163,74,.04)}
 body.light-mode .karne-dropzone.has-file{background:rgba(22,163,74,.06)}
+body.light-mode .karne-result-heading{color:#111}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -321,9 +323,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .mc-cta{display:inline-flex;align-items:center;gap:6px;background:var(--white);color:var(--bg);border-radius:8px;padding:10px 16px;font-family:var(--font);font-size:12px;font-weight:700;text-decoration:none;transition:all .2s}
 
 /* MAĞAZA KARNESİ */
-.karne-tabs{display:flex;gap:8px;margin-bottom:14px}
-.karne-tab{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 10px;cursor:pointer;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);transition:all .25s cubic-bezier(.34,1.2,.64,1)}
-.karne-tab.active{border-color:rgba(34,197,94,.4);background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(34,197,94,.02));color:var(--green);transform:translateY(-1px)}
+.karne-section-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.karne-section-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text3)}
+.karne-tabs{display:flex;gap:4px;margin-bottom:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;position:relative}
+.karne-tab{flex:1;background:transparent;border:none;border-radius:9px;padding:11px 10px;cursor:pointer;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);transition:color .25s;position:relative;z-index:1}
+.karne-tab.active{color:var(--bg)}
+.karne-tab-indicator{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);background:var(--white);border-radius:9px;transition:transform .3s cubic-bezier(.34,1.2,.64,1);z-index:0;box-shadow:0 4px 16px rgba(0,0,0,.25)}
 .karne-panel{display:none}
 .karne-panel.active{display:block;animation:karneFadeIn .35s cubic-bezier(.16,1,.3,1)}
 @keyframes karneFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -338,31 +343,43 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .karne-btn{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:13px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
 .karne-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.1)}
 .karne-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
-.karne-result{display:none;margin-top:16px;padding:18px 20px;background:var(--surface2);border:1px solid var(--border2);border-radius:12px}
+.karne-result{display:none;margin-top:16px;padding:20px 22px;background:var(--surface2);border:1px solid var(--border2);border-radius:14px;position:relative;overflow:hidden}
 .karne-result.show{display:block;animation:karneFadeIn .4s cubic-bezier(.16,1,.3,1)}
-.karne-score-row{display:flex;align-items:center;gap:16px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
-.karne-ring-wrap{position:relative;width:92px;height:92px;flex-shrink:0}
+.karne-result::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--tier-color,var(--border2))}
+.karne-result.tier-good{--tier-color:var(--green)}
+.karne-result.tier-mid{--tier-color:var(--gold)}
+.karne-result.tier-bad{--tier-color:var(--red)}
+.karne-score-row{display:flex;align-items:center;gap:18px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.karne-ring-wrap{position:relative;width:96px;height:96px;flex-shrink:0;filter:drop-shadow(0 0 16px var(--ring-glow,transparent))}
 .karne-ring{width:100%;height:100%;transform:rotate(-90deg);display:block}
-.karne-ring-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:9}
-.karne-ring-fg{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1.1s cubic-bezier(.16,1,.3,1)}
+.karne-ring-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:8}
+.karne-ring-fg{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.3s cubic-bezier(.16,1,.3,1)}
 .karne-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.karne-ring-score{font-family:var(--mono);font-size:24px;font-weight:800;color:var(--white);line-height:1}
+.karne-ring-score{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--white);line-height:1;letter-spacing:-1px}
 .karne-ring-label{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:1px;margin-top:2px}
-.karne-score-meta{display:flex;flex-direction:column;gap:3px}
-.karne-score-tier{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+.karne-score-meta{display:flex;flex-direction:column;gap:4px}
+.karne-score-tier{font-size:16px;font-weight:800;letter-spacing:-.3px}
 .karne-score-tier.good{color:var(--green)}
 .karne-score-tier.mid{color:var(--gold)}
 .karne-score-tier.bad{color:var(--red)}
-.karne-score-sub{font-size:11px;color:var(--text3)}
-.karne-result-text{font-size:13px;color:var(--text2);line-height:1.65}
+.karne-score-sub{font-size:11px;color:var(--text3);font-family:var(--mono);letter-spacing:.5px;text-transform:uppercase}
+.karne-result-heading{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--white);margin:16px 0 8px;font-weight:700;display:flex;align-items:center;gap:8px}
+.karne-result-heading:first-child{margin-top:0}
+.karne-result-heading::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--text3)}
+.karne-bullet-row{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
+.karne-bullet-icon{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px}
+.karne-bullet-icon.ok{background:var(--green-dim);color:var(--green)}
+.karne-bullet-icon.warn{background:var(--gold-dim);color:var(--gold)}
+.karne-bullet-icon.bad{background:var(--red-dim);color:var(--red)}
+.karne-result-text{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:5px}
 .karne-loading{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--text3);padding:10px 0}
 .karne-history{margin-top:14px;display:flex;flex-direction:column;gap:6px}
 .karne-hist-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--text2)}
 .karne-hist-row span:first-child{font-family:var(--mono);color:var(--text3)}
-.karne-dropzone{border:1.5px dashed var(--border2);border-radius:12px;padding:30px 20px;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:14px;position:relative}
-.karne-dropzone:hover{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.03)}
+.karne-dropzone{border:1.5px dashed var(--border2);border-radius:14px;padding:32px 20px;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:14px;position:relative}
+.karne-dropzone:hover{border-color:rgba(34,197,94,.45);background:rgba(34,197,94,.03);transform:translateY(-1px)}
 .karne-dropzone.has-file{border-color:rgba(34,197,94,.45);background:var(--green-dim)}
-.karne-dropzone-icon{font-size:26px;margin-bottom:8px}
+.karne-dropzone-icon{font-size:28px;margin-bottom:8px}
 .karne-dropzone-text{font-size:12px;color:var(--text2);font-weight:600}
 .karne-dropzone-sub{font-size:10px;color:var(--text3);margin-top:3px}
 .karne-dropzone-filename{font-family:var(--mono);font-size:11px;color:var(--green);margin-top:8px}
@@ -868,10 +885,14 @@ footer p{font-size:12px;color:var(--text3)}
 
   <!-- MAĞAZA KARNESİ -->
   <div class="section">
+    <div class="karne-section-head">
+      <span class="karne-section-eyebrow">AI DESTEKLİ</span>
+    </div>
     <div class="section-header">
       <span class="section-title">🏥 Mağaza Karnesi</span>
     </div>
     <div class="karne-tabs">
+      <div class="karne-tab-indicator" id="karne-tab-indicator"></div>
       <div class="karne-tab active" id="karne-tab-site" onclick="switchKarneTab('site')">🌐 Site Analizi</div>
       <div class="karne-tab" id="karne-tab-csv" onclick="switchKarneTab('csv')">📊 Reklam Analiz</div>
     </div>
@@ -1360,10 +1381,15 @@ function loadAdminTask(){
 
 function renderTask(){
   var t=adminTask;
-  document.getElementById('wtc-title').textContent=t.title||'Henüz görev atanmadı';
-  document.getElementById('wtc-body').textContent=t.body||'Mentörün bu haftanın görevini yakında ekleyecek.';
-  if(t.due)document.getElementById('wtc-due').textContent='Son Tarih: '+t.due;
-  var cl=document.getElementById('wtc-checklist');cl.innerHTML='';
+  var elTitle=document.getElementById('wtc-title');
+  var elBody=document.getElementById('wtc-body');
+  var elDue=document.getElementById('wtc-due');
+  var cl=document.getElementById('wtc-checklist');
+  if(!elTitle||!elBody||!cl)return; // Haftalık görev kartı bu sayfada yok, sessizce çık
+  elTitle.textContent=t.title||'Henüz görev atanmadı';
+  elBody.textContent=t.body||'Mentörün bu haftanın görevini yakında ekleyecek.';
+  if(t.due&&elDue)elDue.textContent='Son Tarih: '+t.due;
+  cl.innerHTML='';
   if(t.checks&&t.checks.length>0){
     t.checks.forEach(function(item,i){
       var checked=taskChecks['task_'+i];
@@ -2205,28 +2231,34 @@ function extractText(data){
 function formatKarneText(raw){
   var lines=raw.split('\n').map(function(l){return l.trim();}).filter(function(l){return l&&l!=='---';});
   var html='';
-  var headingRe=/^(\*\*(.+?)\*\*|[A-ZÇĞİÖŞÜ0-9\s]+):?\s*$/;
   lines.forEach(function(line){
     var boldHeading=line.match(/^\*\*(.+?)\*\*\s*:?$/);
     var plainHeading=!boldHeading&&line.length<40&&/:$/.test(line)&&line===line.toLocaleUpperCase('tr')&&/[A-ZÇĞİÖŞÜ]/.test(line);
     if(boldHeading||plainHeading){
       var label=boldHeading?boldHeading[1]:line.replace(/:$/,'');
-      html+='<div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--white);margin:14px 0 6px;font-weight:700">'+label+'</div>';
+      html+='<div class="karne-result-heading">'+label+'</div>';
       return;
     }
     var bulletMatch=line.match(/^[-—]\s+(.*)$/);
     var text=bulletMatch?bulletMatch[1]:line;
     text=text.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--white)">$1</strong>');
-    if(bulletMatch||/^[✅⚠️❌]/.test(text)){
-      html+='<div style="display:flex;gap:8px;margin-bottom:6px;font-size:13px;color:var(--text2);line-height:1.55"><span>'+text+'</span></div>';
+    var emojiMatch=text.match(/^(✅|⚠️|❌)\s*(.*)$/);
+    if(emojiMatch){
+      var iconCls=emojiMatch[1]==='✅'?'ok':(emojiMatch[1]==='⚠️'?'warn':'bad');
+      var iconChar=emojiMatch[1]==='✅'?'✓':(emojiMatch[1]==='⚠️'?'!':'✕');
+      html+='<div class="karne-bullet-row"><span class="karne-bullet-icon '+iconCls+'">'+iconChar+'</span><span class="karne-result-text" style="margin-bottom:0">'+emojiMatch[2]+'</span></div>';
+    } else if(bulletMatch){
+      html+='<div class="karne-bullet-row"><span class="karne-bullet-icon" style="background:rgba(255,255,255,.06);color:var(--text3)">•</span><span class="karne-result-text" style="margin-bottom:0">'+text+'</span></div>';
     } else {
-      html+='<div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:5px">'+text+'</div>';
+      html+='<div class="karne-result-text">'+text+'</div>';
     }
   });
   return html||raw;
 }
 
 function switchKarneTab(tab){
+  var idx=tab==='site'?0:1;
+  document.getElementById('karne-tab-indicator').style.transform='translateX('+(idx*100)+'%)';
   ['site','csv'].forEach(function(t){
     document.getElementById('karne-tab-'+t).classList.toggle('active',t===tab);
     document.getElementById('karne-panel-'+t).classList.toggle('active',t===tab);
@@ -2251,9 +2283,10 @@ function scoreRingHTML(score,subLabel){
   var id='kr'+_karneRingSeq;
   var tier=karneScoreClass(score);
   var colors={good:['#22c55e','#86efac'],mid:['#facc15','#fde68a'],bad:['#ef4444','#fca5a5']}[tier];
+  var glow={good:'rgba(34,197,94,.35)',mid:'rgba(250,204,21,.3)',bad:'rgba(239,68,68,.3)'}[tier];
   var circ=2*Math.PI*42;
   var offset=circ-(Math.max(0,Math.min(100,score))/100)*circ;
-  return '<div class="karne-ring-wrap">'+
+  return '<div class="karne-ring-wrap" style="--ring-glow:'+glow+'">'+
     '<svg viewBox="0 0 96 96" class="karne-ring">'+
       '<defs><linearGradient id="grad-'+id+'" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="'+colors[0]+'"/><stop offset="100%" stop-color="'+colors[1]+'"/></linearGradient></defs>'+
       '<circle cx="48" cy="48" r="42" class="karne-ring-bg"/>'+
@@ -2332,7 +2365,8 @@ function runCsvAnaliz(){
     reply=reply.replace(/```json[\s\S]*?```/g,'').replace(/```[\s\S]*?```/g,'').trim();
     var parsed=parseKarneAI(reply);
     var scoreHtml=parsed.score!==null?scoreRingHTML(parsed.score,'Reklam hesabı'):'';
-    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+'<div class="karne-result-text">'+formatKarneText(parsed.text)+'</div>';
+    resBox.className='karne-result show'+(parsed.score!==null?' tier-'+karneScoreClass(parsed.score):'');
+    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+formatKarneText(parsed.text);
     animateKarneRings();
     btn.disabled=false;btn.textContent='Tekrar Analiz Et →';
   })
@@ -2369,7 +2403,8 @@ function runSiteAnaliz(){
     var summary=data&&data.summary?data.summary:'Analiz tamamlanamadı.';
     summary=formatKarneText(summary);
     var scoreHtml=score!==null?scoreRingHTML(score,'Site sağlığı'):'';
-    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+'<div class="karne-result-text">'+summary+'</div>';
+    resBox.className='karne-result show'+(score!==null?' tier-'+karneScoreClass(score):'');
+    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+summary;
     animateKarneRings();
     btn.disabled=false;btn.textContent='Siteyi Tara →';
   })
