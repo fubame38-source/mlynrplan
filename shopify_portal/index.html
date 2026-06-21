@@ -2185,19 +2185,25 @@ function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m
       }catch(e){}
     }
   }
-  // Her zaman Supabase session'ı kontrol et — localStorage'a güvenme
+  // ÖNCE localStorage'a senkron bak — geçerli oturum varsa BEKLEMEDEN direkt içeri al.
+  // Supabase kontrolü ağ gecikmesine bağlı (özellikle dış sayfadan dönüşte soğuk bağlantı
+  // yüzünden yavaş olabilir) — bunu arka planda paralel çalıştırıp gerekirse senkronize ederiz,
+  // ama kullanıcıyı bu yüzden login ekranına asla geri atmayız.
+  var cachedEmail=null;
+  try{cachedEmail=localStorage.getItem('mlynr_shop_session');}catch(e){}
+  if(cachedEmail){
+    tryEnter(cachedEmail,null);
+  }
   var loginTimer=setTimeout(function(){if(!entered)showLogin();},2500);
   _sb.auth.getSession().then(function(r){
     clearTimeout(loginTimer);
     if(r.data&&r.data.session&&r.data.session.user){
-      // Supabase session var — localStorage'ı bu emaille güncelle
+      // Supabase session var — localStorage'ı bu emaille güncelle, henüz girilmediyse gir
       var sbEmail=r.data.session.user.email;
       try{localStorage.setItem('mlynr_shop_session',sbEmail);}catch(e){}
       tryEnter(sbEmail,r.data.session.user);
-    } else {
-      // Supabase session yok — localStorage'a bak
-      var cachedEmail=null;
-      try{cachedEmail=localStorage.getItem('mlynr_shop_session');}catch(e){}
+    } else if(!entered){
+      // Supabase session yok ve henüz cachedEmail ile de girilmedi
       if(cachedEmail){
         tryEnter(cachedEmail,null);
       } else {
@@ -2206,9 +2212,9 @@ function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m
     }
   }).catch(function(){
     clearTimeout(loginTimer);
-    var cachedEmail=null;
-    try{cachedEmail=localStorage.getItem('mlynr_shop_session');}catch(e){}
-    if(cachedEmail){tryEnter(cachedEmail,null);}else{showLogin();}
+    if(!entered){
+      if(cachedEmail){tryEnter(cachedEmail,null);}else{showLogin();}
+    }
   });
 })();
 
