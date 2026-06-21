@@ -83,14 +83,18 @@ body.light-mode .streak-box{background:#f7f7f5;border-color:rgba(0,0,0,.07)}
 body.light-mode .streak-box.done{background:rgba(22,163,74,.07);border-color:rgba(22,163,74,.2)}
 body.light-mode .streak-box.today{border-color:rgba(250,204,21,.4);background:rgba(250,204,21,.05)}
 body.light-mode .karne-tab{background:#fff;border-color:rgba(0,0,0,.08)}
-body.light-mode .karne-tab.active{background:rgba(22,163,74,.07)}
+body.light-mode .karne-tab.active{background:linear-gradient(135deg,rgba(22,163,74,.1),rgba(22,163,74,.02));border-color:rgba(22,163,74,.3)}
 body.light-mode .karne-card{background:#fff;border-color:rgba(0,0,0,.08)}
 body.light-mode .karne-field input{background:#f7f7f5;border-color:rgba(0,0,0,.1);color:#111}
 body.light-mode .karne-field input::placeholder{color:#bbb}
 body.light-mode .karne-btn{background:#111;color:#fff}
 body.light-mode .karne-result{background:#f7f7f5;border-color:rgba(0,0,0,.1)}
-body.light-mode .karne-score-badge{background:#eee;border-color:rgba(0,0,0,.1);color:#111}
+body.light-mode .karne-score-row{border-color:rgba(0,0,0,.08)}
+body.light-mode .karne-ring-bg{stroke:rgba(0,0,0,.07)}
 body.light-mode .karne-hist-row{background:#fff;border-color:rgba(0,0,0,.08)}
+body.light-mode .karne-dropzone{border-color:rgba(0,0,0,.15)}
+body.light-mode .karne-dropzone:hover{background:rgba(22,163,74,.04)}
+body.light-mode .karne-dropzone.has-file{background:rgba(22,163,74,.06)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -318,32 +322,51 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 /* MAĞAZA KARNESİ */
 .karne-tabs{display:flex;gap:8px;margin-bottom:14px}
-.karne-tab{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);transition:all .2s}
-.karne-tab.active{border-color:var(--green-ln);background:var(--green-dim);color:var(--green)}
+.karne-tab{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 10px;cursor:pointer;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);transition:all .25s cubic-bezier(.34,1.2,.64,1)}
+.karne-tab.active{border-color:rgba(34,197,94,.4);background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(34,197,94,.02));color:var(--green);transform:translateY(-1px)}
 .karne-panel{display:none}
-.karne-panel.active{display:block}
-.karne-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.karne-panel.active{display:block;animation:karneFadeIn .35s cubic-bezier(.16,1,.3,1)}
+@keyframes karneFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.karne-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;position:relative;overflow:hidden}
+.karne-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.4),transparent)}
 .karne-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .karne-field{display:flex;flex-direction:column;gap:5px}
 .karne-field label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3)}
 .karne-field input{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 12px;outline:none;transition:border-color .2s}
-.karne-field input:focus{border-color:rgba(255,255,255,.3)}
+.karne-field input:focus{border-color:rgba(34,197,94,.4)}
 .karne-field input::placeholder{color:var(--text3)}
-.karne-btn{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:13px;cursor:pointer;transition:all .2s}
-.karne-btn:hover{transform:translateY(-1px)}
-.karne-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.karne-result{display:none;margin-top:16px;padding:16px 18px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px}
-.karne-result.show{display:block}
-.karne-score-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.karne-score-badge{font-family:var(--mono);font-size:22px;font-weight:800;color:var(--white);background:var(--surface3);border:1px solid var(--border2);border-radius:10px;padding:8px 14px;min-width:54px;text-align:center}
-.karne-score-badge.good{color:var(--green);border-color:var(--green-ln);background:var(--green-dim)}
-.karne-score-badge.mid{color:var(--gold);border-color:var(--gold-ln);background:var(--gold-dim)}
-.karne-score-badge.bad{color:var(--red);border-color:var(--red-ln);background:var(--red-dim)}
-.karne-result-text{font-size:13px;color:var(--text2);line-height:1.65;white-space:pre-wrap}
+.karne-btn{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:13px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
+.karne-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.1)}
+.karne-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.karne-result{display:none;margin-top:16px;padding:18px 20px;background:var(--surface2);border:1px solid var(--border2);border-radius:12px}
+.karne-result.show{display:block;animation:karneFadeIn .4s cubic-bezier(.16,1,.3,1)}
+.karne-score-row{display:flex;align-items:center;gap:16px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.karne-ring-wrap{position:relative;width:92px;height:92px;flex-shrink:0}
+.karne-ring{width:100%;height:100%;transform:rotate(-90deg);display:block}
+.karne-ring-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:9}
+.karne-ring-fg{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1.1s cubic-bezier(.16,1,.3,1)}
+.karne-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.karne-ring-score{font-family:var(--mono);font-size:24px;font-weight:800;color:var(--white);line-height:1}
+.karne-ring-label{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:1px;margin-top:2px}
+.karne-score-meta{display:flex;flex-direction:column;gap:3px}
+.karne-score-tier{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+.karne-score-tier.good{color:var(--green)}
+.karne-score-tier.mid{color:var(--gold)}
+.karne-score-tier.bad{color:var(--red)}
+.karne-score-sub{font-size:11px;color:var(--text3)}
+.karne-result-text{font-size:13px;color:var(--text2);line-height:1.65}
 .karne-loading{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--text3);padding:10px 0}
 .karne-history{margin-top:14px;display:flex;flex-direction:column;gap:6px}
 .karne-hist-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--text2)}
 .karne-hist-row span:first-child{font-family:var(--mono);color:var(--text3)}
+.karne-dropzone{border:1.5px dashed var(--border2);border-radius:12px;padding:30px 20px;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:14px;position:relative}
+.karne-dropzone:hover{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.03)}
+.karne-dropzone.has-file{border-color:rgba(34,197,94,.45);background:var(--green-dim)}
+.karne-dropzone-icon{font-size:26px;margin-bottom:8px}
+.karne-dropzone-text{font-size:12px;color:var(--text2);font-weight:600}
+.karne-dropzone-sub{font-size:10px;color:var(--text3);margin-top:3px}
+.karne-dropzone-filename{font-family:var(--mono);font-size:11px;color:var(--green);margin-top:8px}
+.karne-dropzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
 .mc-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,255,255,.15)}
 .mc-hashtags{display:flex;flex-wrap:wrap;gap:6px}
 .mc-hashtag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);color:var(--text2);text-decoration:none;transition:all .2s;background:rgba(255,255,255,.03)}
@@ -849,8 +872,9 @@ footer p{font-size:12px;color:var(--text3)}
       <span class="section-title">🏥 Mağaza Karnesi</span>
     </div>
     <div class="karne-tabs">
-      <div class="karne-tab active" id="karne-tab-manuel" onclick="switchKarneTab('manuel')">📋 Performans Karnesi</div>
+      <div class="karne-tab active" id="karne-tab-manuel" onclick="switchKarneTab('manuel')">📋 Performans</div>
       <div class="karne-tab" id="karne-tab-site" onclick="switchKarneTab('site')">🌐 Site Analizi</div>
+      <div class="karne-tab" id="karne-tab-csv" onclick="switchKarneTab('csv')">📊 Reklam CSV</div>
     </div>
 
     <!-- MANUEL KARNE -->
@@ -884,6 +908,22 @@ footer p{font-size:12px;color:var(--text3)}
         <button class="karne-btn" id="karne-site-btn" onclick="runSiteAnaliz()">Siteyi Tara →</button>
         <div class="karne-result" id="karne-site-result"></div>
         <div class="karne-history" id="karne-site-history"></div>
+      </div>
+    </div>
+
+    <!-- REKLAM CSV ANALİZİ -->
+    <div class="karne-panel" id="karne-panel-csv">
+      <div class="karne-card">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:16px;line-height:1.5">Meta Ads Manager'dan indirdiğin reklam raporunu (.csv) yükle, AI senin için kampanyaları okuyup hangisi iyi gidiyor hangisi durdurulmalı söylesin.</div>
+        <div class="karne-dropzone" id="karne-dropzone">
+          <div class="karne-dropzone-icon">📄</div>
+          <div class="karne-dropzone-text" id="karne-dropzone-text">CSV dosyasını buraya sürükle veya tıkla</div>
+          <div class="karne-dropzone-sub">Meta Ads Manager → Raporlar → Dışa Aktar (.csv)</div>
+          <div class="karne-dropzone-filename" id="karne-dropzone-filename"></div>
+          <input type="file" accept=".csv" id="karne-csv-input" onchange="handleKarneFile(this)">
+        </div>
+        <button class="karne-btn" id="karne-csv-btn" onclick="runCsvAnaliz()" disabled>Önce CSV Yükle</button>
+        <div class="karne-result" id="karne-csv-result"></div>
       </div>
     </div>
   </div>
@@ -2187,17 +2227,20 @@ function extractText(data){
 function formatKarneText(raw){
   var lines=raw.split('\n').map(function(l){return l.trim();}).filter(function(l){return l&&l!=='---';});
   var html='';
+  var headingRe=/^(\*\*(.+?)\*\*|[A-ZÇĞİÖŞÜ0-9\s]+):?\s*$/;
   lines.forEach(function(line){
-    var headingMatch=line.match(/^\*\*(.+?)\*\*\s*:?$/);
-    if(headingMatch){
-      html+='<div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--white);margin:14px 0 6px;font-weight:700">'+headingMatch[1]+'</div>';
+    var boldHeading=line.match(/^\*\*(.+?)\*\*\s*:?$/);
+    var plainHeading=!boldHeading&&line.length<40&&/:$/.test(line)&&line===line.toLocaleUpperCase('tr')&&/[A-ZÇĞİÖŞÜ]/.test(line);
+    if(boldHeading||plainHeading){
+      var label=boldHeading?boldHeading[1]:line.replace(/:$/,'');
+      html+='<div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--white);margin:14px 0 6px;font-weight:700">'+label+'</div>';
       return;
     }
-    var bulletMatch=line.match(/^-\s+(.*)$/);
+    var bulletMatch=line.match(/^[-—]\s+(.*)$/);
     var text=bulletMatch?bulletMatch[1]:line;
     text=text.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--white)">$1</strong>');
-    if(bulletMatch){
-      html+='<div style="display:flex;gap:8px;margin-bottom:5px;font-size:13px;color:var(--text2);line-height:1.55"><span style="color:var(--text3);flex-shrink:0">—</span><span>'+text+'</span></div>';
+    if(bulletMatch||/^[✅⚠️❌]/.test(text)){
+      html+='<div style="display:flex;gap:8px;margin-bottom:6px;font-size:13px;color:var(--text2);line-height:1.55"><span>'+text+'</span></div>';
     } else {
       html+='<div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:5px">'+text+'</div>';
     }
@@ -2206,16 +2249,51 @@ function formatKarneText(raw){
 }
 
 function switchKarneTab(tab){
-  document.getElementById('karne-tab-manuel').classList.toggle('active',tab==='manuel');
-  document.getElementById('karne-tab-site').classList.toggle('active',tab==='site');
-  document.getElementById('karne-panel-manuel').classList.toggle('active',tab==='manuel');
-  document.getElementById('karne-panel-site').classList.toggle('active',tab==='site');
+  ['manuel','site','csv'].forEach(function(t){
+    document.getElementById('karne-tab-'+t).classList.toggle('active',t===tab);
+    document.getElementById('karne-panel-'+t).classList.toggle('active',t===tab);
+  });
 }
 
 function karneScoreClass(score){
   if(score>=70)return'good';
   if(score>=40)return'mid';
   return'bad';
+}
+
+function karneTierLabel(score){
+  if(score>=70)return'Sağlıklı';
+  if(score>=40)return'Geliştirilebilir';
+  return'Acil Müdahale';
+}
+
+var _karneRingSeq=0;
+function scoreRingHTML(score,subLabel){
+  _karneRingSeq++;
+  var id='kr'+_karneRingSeq;
+  var tier=karneScoreClass(score);
+  var colors={good:['#22c55e','#86efac'],mid:['#facc15','#fde68a'],bad:['#ef4444','#fca5a5']}[tier];
+  var circ=2*Math.PI*42;
+  var offset=circ-(Math.max(0,Math.min(100,score))/100)*circ;
+  return '<div class="karne-ring-wrap">'+
+    '<svg viewBox="0 0 96 96" class="karne-ring">'+
+      '<defs><linearGradient id="grad-'+id+'" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="'+colors[0]+'"/><stop offset="100%" stop-color="'+colors[1]+'"/></linearGradient></defs>'+
+      '<circle cx="48" cy="48" r="42" class="karne-ring-bg"/>'+
+      '<circle cx="48" cy="48" r="42" class="karne-ring-fg" id="ring-'+id+'" stroke="url(#grad-'+id+')" stroke-dasharray="'+circ.toFixed(1)+'" stroke-dashoffset="'+circ.toFixed(1)+'" data-offset="'+offset.toFixed(1)+'"/>'+
+    '</svg>'+
+    '<div class="karne-ring-center"><div class="karne-ring-score">'+score+'</div><div class="karne-ring-label">/ 100</div></div>'+
+  '</div>'+
+  '<div class="karne-score-meta"><div class="karne-score-tier '+tier+'">'+karneTierLabel(score)+'</div>'+(subLabel?'<div class="karne-score-sub">'+subLabel+'</div>':'')+'</div>';
+}
+
+function animateKarneRings(){
+  requestAnimationFrame(function(){
+    setTimeout(function(){
+      document.querySelectorAll('.karne-ring-fg').forEach(function(el){
+        el.style.strokeDashoffset=el.getAttribute('data-offset');
+      });
+    },50);
+  });
 }
 
 function parseKarneAI(text){
@@ -2246,11 +2324,12 @@ function runKarneAnaliz(){
   resBox.className='karne-result show';
   resBox.innerHTML='<div class="karne-loading">⏳ AI rakamları inceliyor...</div>';
 
-  var prompt='Sen MLYNR Shopify Mentörlük Programının e-ticaret büyüme uzmanısın. Aşağıdaki mağaza rakamlarını incele ve şu formatta cevap ver:\n'+
-    '1) İlk satırda mutlaka "SKOR: XX/100" yaz (XX = 0-100 arası genel mağaza sağlık skoru)\n'+
-    '2) Sonra 3 başlık altında kısa analiz yap: REKLAM, SİTE/DÖNÜŞÜM, OPERASYON/KÂR\n'+
-    '3) En sonda "ÖNCELİKLİ AKSİYON:" başlığıyla tek, en kritik aksiyonu yaz\n'+
-    'Türkçe, kısa, net, madde madde yaz. JSON veya kod bloğu kullanma, düz metin yaz.\n\n'+
+  var prompt='Sen MLYNR Shopify Mentörlük Programının e-ticaret büyüme uzmanısın. Karşındaki kişi e-ticarete yeni başlamış olabilir — ROAS/CPA gibi terimleri o zaten girdi ama yorumunda ağır teknik/finans jargonu kullanma, gündelik ve sıcak bir dille konuş.\n\n'+
+    'Aşağıdaki mağaza rakamlarını incele ve KESİNLİKLE şu formatta cevap ver:\n'+
+    '1) İlk satırda "SKOR: XX/100" yaz (XX = 0-100 arası genel mağaza sağlık skoru)\n'+
+    '2) "İYİ GİDEN:" başlığı altında ✅ ile 2-3 olumlu şeyi sade dille listele\n'+
+    '3) "DÜZELTMEN GEREKEN:" başlığı altında ⚠️ ile en fazla 2-3 gerçek sorunu listele, her biri için NE yapması gerektiğini tek cümlede söyle\n'+
+    'Türkçe, kısa, net, sıcak bir dille yaz. JSON veya kod bloğu kullanma, düz metin yaz, madde başına emoji koy.\n\n'+
     'RAKAMLAR:\n'+
     (vals.spend?'- Haftalık reklam harcaması: $'+vals.spend+'\n':'')+
     (vals.roas?'- ROAS: '+vals.roas+'\n':'')+
@@ -2272,8 +2351,9 @@ function runKarneAnaliz(){
     if(!reply){reply='Analiz alınamadı, tekrar dene.';}
     reply=reply.replace(/```json[\s\S]*?```/g,'').replace(/```[\s\S]*?```/g,'').replace(/\*\*(.*?)\*\*/g,'$1').trim();
     var parsed=parseKarneAI(reply);
-    var scoreHtml=parsed.score!==null?'<div class="karne-score-badge '+karneScoreClass(parsed.score)+'">'+parsed.score+'</div><div style="font-size:11px;color:var(--text3);font-family:var(--mono)">/ 100<br>GENEL SKOR</div>':'';
+    var scoreHtml=parsed.score!==null?scoreRingHTML(parsed.score,'Genel mağaza sağlığı'):'';
     resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+'<div class="karne-result-text">'+formatKarneText(parsed.text)+'</div>';
+    animateKarneRings();
     btn.disabled=false;btn.textContent='AI Karnemi Çıkar →';
     saveKarneEntry(vals,parsed,reply);
   })
@@ -2314,6 +2394,66 @@ function loadKarneHistory(){
   }).catch(function(){});
 }
 
+var karneCsvText=null;
+var karneCsvFilename=null;
+function handleKarneFile(input){
+  var file=input.files[0];
+  if(!file)return;
+  if(!/\.csv$/i.test(file.name)){showToast('Sadece .csv dosyası yükle','error');return;}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    karneCsvText=e.target.result;
+    karneCsvFilename=file.name;
+    document.getElementById('karne-dropzone').classList.add('has-file');
+    document.getElementById('karne-dropzone-text').textContent='Dosya seçildi ✓';
+    document.getElementById('karne-dropzone-filename').textContent=file.name;
+    var btn=document.getElementById('karne-csv-btn');
+    btn.disabled=false;btn.textContent='CSV\'yi Analiz Et →';
+  };
+  reader.onerror=function(){showToast('Dosya okunamadı','error');};
+  reader.readAsText(file,'UTF-8');
+}
+
+function runCsvAnaliz(){
+  if(!karneCsvText){showToast('Önce bir CSV dosyası seç','error');return;}
+  var btn=document.getElementById('karne-csv-btn');
+  var resBox=document.getElementById('karne-csv-result');
+  btn.disabled=true;btn.textContent='Analiz ediliyor...';
+  resBox.className='karne-result show';
+  resBox.innerHTML='<div class="karne-loading">⏳ Reklam verileri okunuyor, bu biraz sürebilir...</div>';
+
+  var truncated=karneCsvText.length>9000?karneCsvText.slice(0,9000)+'\n...(dosyanın geri kalanı uzunluk için kesildi)':karneCsvText;
+
+  var prompt='Sen Meta (Facebook/Instagram) reklamları konusunda uzman bir e-ticaret büyüme danışmanısın. Aşağıda Meta Ads Manager\'dan dışa aktarılmış ham CSV verisi var. Sütun başlıkları İngilizce veya Türkçe olabilir (Amount spent / Harcanan tutar, Results / Sonuçlar, ROAS, CPA, Reach / Erişim gibi). Karşındaki kişi e-ticarete yeni başlamış olabilir, ağır teknik/finans terimleri kullanma, gündelik dille konuş.\n\n'+
+    'CSV VERİSİ:\n'+truncated+'\n\n'+
+    'Cevap formatı (KESİNLİKLE bu formatta):\n'+
+    '1) İlk satırda "SKOR: XX/100" yaz (genel reklam hesabı performansı)\n'+
+    '2) "İYİ GİDEN:" başlığı altında ✅ ile 2-3 olumlu şeyi sade dille listele — mümkünse hangi kampanya/reklam iyi gidiyor söyle\n'+
+    '3) "DÜZELTMEN GEREKEN:" başlığı altında ⚠️ ile en fazla 3 sorunu listele, her biri için ne yapması gerektiğini söyle (örn. hangi kampanyayı durdurmalı, hangi reklamı tazelemeli)\n'+
+    'Türkçe, kısa, net, sıcak dille yaz. JSON kullanma, düz metin yaz, madde başına emoji koy. Ağır teknik terim kullanma.';
+
+  fetch(SUPPORT_FN,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY},
+    body:JSON.stringify({prompt:prompt})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var reply=typeof data==='string'?data:extractText(data);
+    if(!reply){reply='Analiz alınamadı, tekrar dene.';}
+    reply=reply.replace(/```json[\s\S]*?```/g,'').replace(/```[\s\S]*?```/g,'').trim();
+    var parsed=parseKarneAI(reply);
+    var scoreHtml=parsed.score!==null?scoreRingHTML(parsed.score,'Reklam hesabı'):'';
+    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+'<div class="karne-result-text">'+formatKarneText(parsed.text)+'</div>';
+    animateKarneRings();
+    btn.disabled=false;btn.textContent='Tekrar Analiz Et →';
+  })
+  .catch(function(){
+    resBox.innerHTML='<div class="karne-result-text" style="color:var(--red)">Bağlantı hatası, tekrar dene.</div>';
+    btn.disabled=false;btn.textContent='CSV\'yi Analiz Et →';
+  });
+}
+
 function runSiteAnaliz(){
   var btn=document.getElementById('karne-site-btn');
   var resBox=document.getElementById('karne-site-result');
@@ -2340,8 +2480,9 @@ function runSiteAnaliz(){
     var score=data&&typeof data.score==='number'?data.score:null;
     var summary=data&&data.summary?data.summary:'Analiz tamamlanamadı.';
     summary=formatKarneText(summary);
-    var scoreHtml=score!==null?'<div class="karne-score-badge '+karneScoreClass(score)+'">'+score+'</div><div style="font-size:11px;color:var(--text3);font-family:var(--mono)">/ 100<br>SİTE SKORU</div>':'';
+    var scoreHtml=score!==null?scoreRingHTML(score,'Site sağlığı'):'';
     resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+'<div class="karne-result-text">'+summary+'</div>';
+    animateKarneRings();
     btn.disabled=false;btn.textContent='Siteyi Tara →';
   })
   .catch(function(){
