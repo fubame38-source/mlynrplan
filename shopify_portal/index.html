@@ -2184,6 +2184,27 @@ function extractText(data){
 }
 
 /* ============ MAĞAZA KARNESİ ============ */
+function formatKarneText(raw){
+  var lines=raw.split('\n').map(function(l){return l.trim();}).filter(function(l){return l&&l!=='---';});
+  var html='';
+  lines.forEach(function(line){
+    var headingMatch=line.match(/^\*\*(.+?)\*\*\s*:?$/);
+    if(headingMatch){
+      html+='<div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--white);margin:14px 0 6px;font-weight:700">'+headingMatch[1]+'</div>';
+      return;
+    }
+    var bulletMatch=line.match(/^-\s+(.*)$/);
+    var text=bulletMatch?bulletMatch[1]:line;
+    text=text.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--white)">$1</strong>');
+    if(bulletMatch){
+      html+='<div style="display:flex;gap:8px;margin-bottom:5px;font-size:13px;color:var(--text2);line-height:1.55"><span style="color:var(--text3);flex-shrink:0">—</span><span>'+text+'</span></div>';
+    } else {
+      html+='<div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:5px">'+text+'</div>';
+    }
+  });
+  return html||raw;
+}
+
 function switchKarneTab(tab){
   document.getElementById('karne-tab-manuel').classList.toggle('active',tab==='manuel');
   document.getElementById('karne-tab-site').classList.toggle('active',tab==='site');
@@ -2252,7 +2273,7 @@ function runKarneAnaliz(){
     reply=reply.replace(/```json[\s\S]*?```/g,'').replace(/```[\s\S]*?```/g,'').replace(/\*\*(.*?)\*\*/g,'$1').trim();
     var parsed=parseKarneAI(reply);
     var scoreHtml=parsed.score!==null?'<div class="karne-score-badge '+karneScoreClass(parsed.score)+'">'+parsed.score+'</div><div style="font-size:11px;color:var(--text3);font-family:var(--mono)">/ 100<br>GENEL SKOR</div>':'';
-    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+'<div class="karne-result-text">'+parsed.text+'</div>';
+    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+'<div class="karne-result-text">'+formatKarneText(parsed.text)+'</div>';
     btn.disabled=false;btn.textContent='AI Karnemi Çıkar →';
     saveKarneEntry(vals,parsed,reply);
   })
@@ -2318,6 +2339,7 @@ function runSiteAnaliz(){
     }
     var score=data&&typeof data.score==='number'?data.score:null;
     var summary=data&&data.summary?data.summary:'Analiz tamamlanamadı.';
+    summary=formatKarneText(summary);
     var scoreHtml=score!==null?'<div class="karne-score-badge '+karneScoreClass(score)+'">'+score+'</div><div style="font-size:11px;color:var(--text3);font-family:var(--mono)">/ 100<br>SİTE SKORU</div>':'';
     resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+'<div class="karne-result-text">'+summary+'</div>';
     btn.disabled=false;btn.textContent='Siteyi Tara →';
