@@ -204,34 +204,82 @@ body.light-mode .bg-glow{background:none}
 .toast.error{border-color:var(--red-ln);color:var(--red)}
 body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
 
-/* ADS DEDEKTÖR */
-.ads-stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 12px;text-align:center}
-.ads-stat-val{font-family:var(--mono);font-size:22px;font-weight:800;color:var(--white);line-height:1;margin-bottom:4px}
-.ads-stat-label{font-size:10px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;font-family:var(--mono)}
-.ads-competition{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;font-family:var(--mono);letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-top:4px}
+/* ADS DEDEKTÖR — Premium Design */
+.ads-stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px 12px;text-align:center;position:relative;overflow:hidden;transition:transform .2s}
+.ads-stat-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.03),transparent);pointer-events:none}
+.ads-stat-val{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--white);line-height:1;margin-bottom:4px;letter-spacing:-1px}
+.ads-stat-label{font-size:9px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;font-family:var(--mono)}
+.ads-competition{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;font-family:var(--mono);letter-spacing:.3px;padding:4px 10px;border-radius:999px}
 .ads-competition.good{background:var(--green-dim);color:var(--green);border:1px solid var(--green-ln)}
 .ads-competition.mid{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-ln)}
 .ads-competition.bad{background:var(--red-dim);color:var(--red);border:1px solid var(--red-ln)}
-.ads-card{background:var(--surface2);border:1px solid var(--border2);border-radius:14px;padding:16px 18px;margin-bottom:10px;position:relative;overflow:hidden;transition:transform .2s cubic-bezier(.34,1.2,.64,1),box-shadow .2s;cursor:default}
-.ads-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.2)}
-.ads-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--card-accent,var(--border2));border-radius:3px 0 0 3px}
-.ads-card.power-high{--card-accent:var(--green)}
-.ads-card.power-mid{--card-accent:var(--gold)}
-.ads-card.power-low{--card-accent:var(--red)}
-.ads-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.ads-page-name{font-size:13px;font-weight:700;color:var(--white);letter-spacing:-.2px}
-.ads-power-badge{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;font-weight:700}
-.ads-power-badge.high{color:var(--green)}
-.ads-power-badge.mid{color:var(--gold)}
-.ads-power-badge.low{color:var(--red)}
-.ads-meta-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
-.ads-chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;letter-spacing:.3px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text2)}
-.ads-body{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ads-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--green);text-decoration:none;font-family:var(--mono);letter-spacing:.3px;transition:opacity .2s}
-.ads-link:hover{opacity:.7}
-.ads-empty{text-align:center;padding:40px 20px;font-size:13px;color:var(--text3);font-family:var(--mono)}
-.ads-section-title{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin:16px 0 8px;display:flex;align-items:center;gap:8px}
-.ads-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Section title */
+.ads-section-title{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin:20px 0 10px;gap:8px}
+.ads-section-title::before,.ads-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.ads-section-title::before{display:none}
+.ads-section-title span:first-child{white-space:nowrap;color:var(--text2)}
+.ads-section-tip{font-size:9px;color:var(--text3);letter-spacing:.5px;white-space:nowrap;cursor:help}
+
+/* Card */
+.ads-card{margin-bottom:10px;animation:karneFadeIn .35s cubic-bezier(.16,1,.3,1) both;border-radius:16px;overflow:hidden;border:1px solid var(--border2);transition:transform .2s cubic-bezier(.34,1.2,.64,1),box-shadow .2s,border-color .2s}
+.ads-card:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.2)}
+.ads-card.power-high{border-color:rgba(34,197,94,.25)}
+.ads-card.power-high:hover{box-shadow:0 12px 32px rgba(34,197,94,.1)}
+.ads-card.power-mid{border-color:rgba(250,204,21,.2)}
+.ads-card.power-low{border-color:var(--border)}
+.ads-card-inner{display:flex;background:var(--surface2)}
+.ads-card-accent{width:3px;flex-shrink:0}
+.ads-card.power-high .ads-card-accent{background:linear-gradient(180deg,var(--green),rgba(34,197,94,.3))}
+.ads-card.power-mid .ads-card-accent{background:linear-gradient(180deg,var(--gold),rgba(250,204,21,.3))}
+.ads-card.power-low .ads-card-accent{background:var(--border2)}
+.ads-card-content{flex:1;padding:16px 18px}
+
+/* Card header */
+.ads-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
+.ads-page-info{display:flex;align-items:center;gap:9px;min-width:0}
+.ads-page-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--surface3),var(--border2));border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);flex-shrink:0}
+.ads-page-name{font-size:13px;font-weight:700;color:var(--white);letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Power pill */
+.ads-power-pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:5px 10px;font-family:var(--mono);border:1px solid;flex-shrink:0}
+.ads-power-pill.high{background:var(--green-dim);border-color:var(--green-ln)}
+.ads-power-pill.mid{background:var(--gold-dim);border-color:var(--gold-ln)}
+.ads-power-pill.low{background:var(--red-dim);border-color:var(--red-ln)}
+.ads-power-icon{font-size:11px}
+.ads-power-num{font-size:13px;font-weight:800;color:var(--white)}
+.ads-power-sep{font-size:10px;color:var(--text3)}
+.ads-power-lbl{font-size:9px;letter-spacing:.5px;text-transform:uppercase}
+.ads-power-pill.high .ads-power-lbl{color:var(--green)}
+.ads-power-pill.mid .ads-power-lbl{color:var(--gold)}
+.ads-power-pill.low .ads-power-lbl{color:var(--red)}
+
+/* Chips */
+.ads-chips-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.ads-chip2{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:10px;letter-spacing:.2px;padding:4px 9px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text2);white-space:nowrap}
+.ads-chip2.highlight{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2);color:var(--green);font-weight:600}
+
+/* Body */
+.ads-ad-title{font-size:12px;font-weight:700;color:var(--white);margin-bottom:5px;letter-spacing:-.1px}
+.ads-ad-body{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+/* Footer */
+.ads-card-footer{display:flex;align-items:center;gap:8px;margin-top:4px}
+.ads-view-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--green);text-decoration:none;font-family:var(--mono);letter-spacing:.3px;padding:6px 12px;border-radius:8px;background:var(--green-dim);border:1px solid var(--green-ln);transition:all .2s}
+.ads-view-btn:hover{background:rgba(34,197,94,.12);transform:translateX(2px)}
+.ads-copy-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--text2);background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;cursor:pointer;font-family:var(--mono);letter-spacing:.3px;transition:all .2s}
+.ads-copy-btn:hover{color:var(--white);background:rgba(255,255,255,.08)}
+
+/* Empty */
+.ads-empty{text-align:center;padding:48px 20px;font-size:13px;color:var(--text3);font-family:var(--mono);line-height:1.6}
+
+/* Skeleton */
+.ads-skel-card{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:10px}
+.ads-skel-bar{background:linear-gradient(90deg,var(--surface2) 25%,var(--surface3) 50%,var(--surface2) 75%);background-size:200% 100%;animation:adsSkelShimmer 1.4s infinite;border-radius:4px;height:10px;display:block}
+@keyframes adsSkelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.ads-pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;animation:adsPulse 1.2s ease-in-out infinite}
+@keyframes adsPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
 select option{background:var(--surface);color:var(--text)}
 </style>
 </head>
@@ -664,7 +712,7 @@ function runAdsDetector(){
 
   btn.disabled=true;btn.textContent='Taranıyor...';
   summaryEl.style.display='none';
-  resBox.innerHTML=karneSkeletonHTML('⏳ Facebook Ads Library taranıyor...');
+  resBox.innerHTML=adsSkeletonHTML();
 
   fetch(ADS_WORKER,{
     method:'POST',
@@ -674,7 +722,7 @@ function runAdsDetector(){
   .then(function(r){return r.json();})
   .then(function(data){
     if(data.error){
-      resBox.innerHTML='<div class="ads-empty" style="color:var(--red)">⚠️ '+data.error+'</div>';
+      resBox.innerHTML='<div class="ads-empty" style="color:var(--red)">⚠️ '+escHtml(data.error)+'</div>';
       btn.disabled=false;btn.textContent='Reklamları Tara →';
       return;
     }
@@ -682,72 +730,142 @@ function runAdsDetector(){
     var sum=data.summary||{};
 
     // Özet bar
+    var compIcon=sum.competitionClass==='good'?'🟢':sum.competitionClass==='mid'?'🟡':'🔴';
     summaryGrid.innerHTML=
       '<div class="ads-stat-card"><div class="ads-stat-val">'+sum.totalAds+'</div><div class="ads-stat-label">Aktif Reklam</div></div>'+
       '<div class="ads-stat-card"><div class="ads-stat-val">'+sum.avgDays+'</div><div class="ads-stat-label">Ort. Gün</div></div>'+
-      '<div class="ads-stat-card"><div class="ads-stat-val">'+sum.maxDays+'</div><div class="ads-stat-label">En Uzun (gün)</div></div>'+
-      '<div class="ads-stat-card"><div class="ads-stat-val" style="font-size:14px;padding-top:4px"><span class="ads-competition '+sum.competitionClass+'">'+sum.competitionLevel+'</span></div><div class="ads-stat-label">Rekabet</div></div>';
+      '<div class="ads-stat-card"><div class="ads-stat-val">'+sum.maxDays+'</div><div class="ads-stat-label">En Uzun</div></div>'+
+      '<div class="ads-stat-card"><div class="ads-stat-val" style="font-size:13px;padding-top:6px"><span class="ads-competition '+sum.competitionClass+'">'+compIcon+' '+sum.competitionLevel+'</span></div><div class="ads-stat-label">Rekabet</div></div>';
     summaryEl.style.display='block';
 
     if(ads.length===0){
-      resBox.innerHTML='<div class="ads-empty">🔍 "'+keyword+'" için aktif reklam bulunamadı.<br><span style="font-size:11px;color:var(--green)">Bu niş bakir olabilir — fırsat!</span></div>';
+      resBox.innerHTML='<div class="ads-empty">🔍 "<b>'+escHtml(keyword)+'</b>" için aktif reklam bulunamadı.<br><span style="font-size:11px;color:var(--green);margin-top:6px;display:block">Bu niş bakir olabilir — fırsat sinyali!</span></div>';
       btn.disabled=false;btn.textContent='Tekrar Tara →';
       return;
     }
 
-    // Reklamları güç skoruna göre grupla
     var winning=ads.filter(function(a){return a.power_score>=70;});
     var testing=ads.filter(function(a){return a.power_score>=30&&a.power_score<70;});
     var newOnes=ads.filter(function(a){return a.power_score<30;});
 
     var html='';
     if(winning.length){
-      html+='<div class="ads-section-title">🏆 Kazanan Reklamlar (70+ güç skoru)</div>';
+      html+='<div class="ads-section-title"><span>🏆 Kazanan Reklamlar</span><span class="ads-section-tip" title="70+ güç skoru — uzun süredir yayında, para kazandırıyor">70+ güç skoru</span></div>';
       html+=winning.map(function(ad){return adsCardHTML(ad);}).join('');
     }
     if(testing.length){
-      html+='<div class="ads-section-title">⚙️ Test Aşamasında</div>';
+      html+='<div class="ads-section-title"><span>⚙️ Test Aşamasında</span><span class="ads-section-tip">30-69 güç skoru</span></div>';
       html+=testing.map(function(ad){return adsCardHTML(ad);}).join('');
     }
     if(newOnes.length){
-      html+='<div class="ads-section-title">🆕 Yeni Başlayanlar</div>';
+      html+='<div class="ads-section-title"><span>🆕 Yeni Girenler</span><span class="ads-section-tip">0-29 güç skoru</span></div>';
       html+=newOnes.map(function(ad){return adsCardHTML(ad);}).join('');
     }
 
     resBox.innerHTML=html;
     btn.disabled=false;btn.textContent='Tekrar Tara →';
   })
-  .catch(function(err){
-    resBox.innerHTML='<div class="ads-empty" style="color:var(--red)">Bağlantı hatası. Worker deploy edildi mi?</div>';
+  .catch(function(){
+    resBox.innerHTML='<div class="ads-empty" style="color:var(--red)">⚠️ Bağlantı hatası. Tekrar dene.</div>';
     btn.disabled=false;btn.textContent='Reklamları Tara →';
   });
+}
+
+function adsSkeletonHTML(){
+  var cards=['','',''].map(function(){
+    return '<div class="ads-skel-card">'+
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'+
+        '<div class="ads-skel-bar" style="width:38%;height:14px;border-radius:6px"></div>'+
+        '<div class="ads-skel-bar" style="width:22%;height:12px;border-radius:6px"></div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;margin-bottom:12px">'+
+        '<div class="ads-skel-bar" style="width:80px;height:22px;border-radius:6px"></div>'+
+        '<div class="ads-skel-bar" style="width:100px;height:22px;border-radius:6px"></div>'+
+        '<div class="ads-skel-bar" style="width:60px;height:22px;border-radius:6px"></div>'+
+      '</div>'+
+      '<div class="ads-skel-bar" style="width:100%;height:11px;border-radius:4px;margin-bottom:6px"></div>'+
+      '<div class="ads-skel-bar" style="width:75%;height:11px;border-radius:4px"></div>'+
+    '</div>';
+  }).join('');
+  return '<div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px"><span class="ads-pulse-dot"></span>Facebook Ads Library taranıyor...</div>'+cards;
 }
 
 function adsCardHTML(ad){
   var powerClass=ad.power_score>=70?'high':ad.power_score>=30?'mid':'low';
   var powerLabel=ad.power_score>=70?'Kazanan':ad.power_score>=30?'Test':'Yeni';
   var powerIcon=ad.power_score>=70?'🔥':ad.power_score>=30?'⚙️':'🆕';
-  var platforms=(ad.platforms||[]).map(function(p){
-    return p==='facebook'?'FB':p==='instagram'?'IG':p==='audience_network'?'AN':p.toUpperCase();
-  }).join(', ')||'—';
-  var mediaIcon=ad.media_type==='VIDEO'?'🎬':ad.media_type==='IMAGE'?'🖼️':'📋';
-  var dateStr=ad.start_date?new Date(ad.start_date).toLocaleDateString('tr-TR'):'—';
-  var fbLibUrl=ad.snapshot_url||('https://www.facebook.com/ads/library/?id='+ad.id);
+  var powerColor=ad.power_score>=70?'var(--green)':ad.power_score>=30?'var(--gold)':'var(--red)';
 
-  return '<div class="ads-card power-'+powerClass+'" style="animation:karneFadeIn .35s cubic-bezier(.16,1,.3,1) both">'+
-    '<div class="ads-card-header">'+
-      '<div class="ads-page-name">'+escHtml(ad.page_name)+'</div>'+
-      '<div class="ads-power-badge '+powerClass+'">'+powerIcon+' '+ad.power_score+'/100 '+powerLabel+'</div>'+
+  var platforms=(ad.platforms||[]).map(function(p){
+    var icons={'facebook':'FB','instagram':'IG','audience_network':'AN','messenger':'MSG','threads':'TH'};
+    return icons[p.toLowerCase()]||p.toUpperCase();
+  }).filter(Boolean).join(' · ')||'—';
+
+  var mediaIcon=ad.media_type==='VIDEO'?'🎬 Video':ad.media_type==='IMAGE'?'🖼 Görsel':'📋 Bilinmiyor';
+
+  // Tarih düzeltme — 1970 ise gösterme
+  var dateStr='';
+  var daysStr=ad.days_running+' gün';
+  if(ad.start_date){
+    var d=new Date(typeof ad.start_date==='number'?ad.start_date*1000:ad.start_date);
+    if(d.getFullYear()>2010){
+      dateStr=d.toLocaleDateString('tr-TR',{day:'numeric',month:'short',year:'numeric'});
+    }
+  }
+
+  var fbLibUrl=ad.snapshot_url||('https://www.facebook.com/ads/library/?id='+ad.id);
+  var bodyText=escHtml(ad.body||'');
+  var titleText=escHtml(ad.title||'');
+
+  return '<div class="ads-card power-'+powerClass+'">'+
+    '<div class="ads-card-inner">'+
+      // Sol accent bar
+      '<div class="ads-card-accent" style="background:'+powerColor+'"></div>'+
+      '<div class="ads-card-content">'+
+        // Header
+        '<div class="ads-card-header">'+
+          '<div class="ads-page-info">'+
+            '<div class="ads-page-avatar">'+escHtml((ad.page_name||'?')[0].toUpperCase())+'</div>'+
+            '<div class="ads-page-name">'+escHtml(ad.page_name||'Bilinmiyor')+'</div>'+
+          '</div>'+
+          '<div class="ads-power-pill '+powerClass+'">'+
+            '<span class="ads-power-icon">'+powerIcon+'</span>'+
+            '<span class="ads-power-num">'+ad.power_score+'</span>'+
+            '<span class="ads-power-sep">/100</span>'+
+            '<span class="ads-power-lbl">'+powerLabel+'</span>'+
+          '</div>'+
+        '</div>'+
+        // Chips
+        '<div class="ads-chips-row">'+
+          (dateStr?'<span class="ads-chip2">📅 '+dateStr+'</span>':'')+
+          '<span class="ads-chip2 highlight">⏱ '+daysStr+'</span>'+
+          '<span class="ads-chip2">'+mediaIcon+'</span>'+
+          '<span class="ads-chip2">📡 '+platforms+'</span>'+
+        '</div>'+
+        // Body
+        (titleText?'<div class="ads-ad-title">'+titleText+'</div>':'')+
+        (bodyText?'<div class="ads-ad-body">'+bodyText+'</div>':'')+
+        // Footer
+        '<div class="ads-card-footer">'+
+          '<a class="ads-view-btn" href="'+fbLibUrl+'" target="_blank" rel="noopener">FB\'de Gör →</a>'+
+          (bodyText?'<button class="ads-copy-btn" onclick="copyAdText(\''+escAttr(ad.body||'')+'\',this)">📋 Kopyala</button>':'')+
+        '</div>'+
+      '</div>'+
     '</div>'+
-    '<div class="ads-meta-row">'+
-      '<span class="ads-chip">📅 '+dateStr+'</span>'+
-      '<span class="ads-chip">⏱ '+ad.days_running+' gündür yayında</span>'+
-      '<span class="ads-chip">'+mediaIcon+' '+(ad.media_type||'Bilinmiyor')+'</span>'+
-      '<span class="ads-chip">📡 '+platforms+'</span>'+
-    '</div>'+
-    (ad.body?'<div class="ads-body">'+escHtml(ad.body)+'</div>':'')+
-    '<a class="ads-link" href="'+fbLibUrl+'" target="_blank" rel="noopener">Reklamı FB\'de Gör →</a>'+
   '</div>';
+}
+
+function copyAdText(text,btn){
+  navigator.clipboard.writeText(text).then(function(){
+    var orig=btn.textContent;
+    btn.textContent='✓ Kopyalandı';
+    btn.style.color='var(--green)';
+    setTimeout(function(){btn.textContent=orig;btn.style.color='';},1800);
+  }).catch(function(){showToast('Kopyalanamadı','error');});
+}
+
+function escAttr(s){
+  return (s||'').replace(/'/g,'&#39;').replace(/"/g,'&quot;').replace(/\n/g,' ');
 }
 
 function escHtml(s){
