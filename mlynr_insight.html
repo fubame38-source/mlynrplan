@@ -60,7 +60,7 @@ body.light-mode .bg-glow{background:none}
 .karne-tabs{display:flex;gap:4px;margin-bottom:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;position:relative}
 .karne-tab{flex:1;background:transparent;border:none;border-radius:9px;padding:12px 10px;cursor:pointer;text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);transition:color .25s;position:relative;z-index:1}
 .karne-tab.active{color:var(--bg)}
-.karne-tab-indicator{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);background:var(--white);border-radius:9px;transition:transform .3s cubic-bezier(.34,1.2,.64,1);z-index:0;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+.karne-tab-indicator{position:absolute;top:4px;bottom:4px;left:4px;width:calc(33.333% - 4px);background:var(--white);border-radius:9px;transition:transform .3s cubic-bezier(.34,1.2,.64,1);z-index:0;box-shadow:0 4px 16px rgba(0,0,0,.25)}
 .karne-panel{display:none}
 .karne-panel.active{display:block;animation:karneFadeIn .35s cubic-bezier(.16,1,.3,1)}
 @keyframes karneFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -204,7 +204,35 @@ body.light-mode .bg-glow{background:none}
 .toast.error{border-color:var(--red-ln);color:var(--red)}
 body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
 
-.footer-note{margin-top:40px;text-align:center;font-size:11px;color:var(--text3);line-height:1.6}
+/* ADS DEDEKTÖR */
+.ads-stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 12px;text-align:center}
+.ads-stat-val{font-family:var(--mono);font-size:22px;font-weight:800;color:var(--white);line-height:1;margin-bottom:4px}
+.ads-stat-label{font-size:10px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;font-family:var(--mono)}
+.ads-competition{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;font-family:var(--mono);letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-top:4px}
+.ads-competition.good{background:var(--green-dim);color:var(--green);border:1px solid var(--green-ln)}
+.ads-competition.mid{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-ln)}
+.ads-competition.bad{background:var(--red-dim);color:var(--red);border:1px solid var(--red-ln)}
+.ads-card{background:var(--surface2);border:1px solid var(--border2);border-radius:14px;padding:16px 18px;margin-bottom:10px;position:relative;overflow:hidden;transition:transform .2s cubic-bezier(.34,1.2,.64,1),box-shadow .2s;cursor:default}
+.ads-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.2)}
+.ads-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--card-accent,var(--border2));border-radius:3px 0 0 3px}
+.ads-card.power-high{--card-accent:var(--green)}
+.ads-card.power-mid{--card-accent:var(--gold)}
+.ads-card.power-low{--card-accent:var(--red)}
+.ads-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.ads-page-name{font-size:13px;font-weight:700;color:var(--white);letter-spacing:-.2px}
+.ads-power-badge{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;font-weight:700}
+.ads-power-badge.high{color:var(--green)}
+.ads-power-badge.mid{color:var(--gold)}
+.ads-power-badge.low{color:var(--red)}
+.ads-meta-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.ads-chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;letter-spacing:.3px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text2)}
+.ads-body{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ads-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--green);text-decoration:none;font-family:var(--mono);letter-spacing:.3px;transition:opacity .2s}
+.ads-link:hover{opacity:.7}
+.ads-empty{text-align:center;padding:40px 20px;font-size:13px;color:var(--text3);font-family:var(--mono)}
+.ads-section-title{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.ads-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+select option{background:var(--surface);color:var(--text)}
 </style>
 </head>
 <body>
@@ -246,6 +274,7 @@ body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
       <div class="karne-tab-indicator" id="karne-tab-indicator"></div>
       <div class="karne-tab active" id="karne-tab-site" onclick="switchKarneTab('site')">🌐 Site Analizi</div>
       <div class="karne-tab" id="karne-tab-csv" onclick="switchKarneTab('csv')">📊 Reklam Analiz</div>
+      <div class="karne-tab" id="karne-tab-ads" onclick="switchKarneTab('ads')">🔍 Reklam Dedektörü</div>
     </div>
 
     <!-- SİTE ANALİZİ -->
@@ -274,6 +303,47 @@ body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
         </div>
         <button class="karne-btn" id="karne-csv-btn" onclick="runCsvAnaliz()" disabled>Önce CSV Yükle</button>
         <div class="karne-result" id="karne-csv-result"></div>
+      </div>
+    </div>
+    <!-- REKLAM DEDEKTÖRÜ -->
+    <div class="karne-panel" id="karne-panel-ads">
+      <div class="karne-card">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:16px;line-height:1.6">Ürün adını yaz, hangi mağazaların reklam verdiğini, kaç gündür çalıştığını ve rekabet seviyesini gör. Uzun süre çalışan reklam = kazanan ürün.</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+          <div class="karne-field" style="grid-column:1/-1">
+            <label>Ürün / Anahtar Kelime</label>
+            <input type="text" id="ads-keyword" placeholder="örn: ahşap oyuncak, posture corrector, led ışık" onkeydown="if(event.key==='Enter')runAdsDetector()">
+          </div>
+          <div class="karne-field">
+            <label>Ülke</label>
+            <select id="ads-country" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 12px;outline:none;width:100%;cursor:pointer">
+              <option value="TR">🇹🇷 Türkiye</option>
+              <option value="US">🇺🇸 ABD</option>
+              <option value="GB">🇬🇧 İngiltere</option>
+              <option value="DE">🇩🇪 Almanya</option>
+              <option value="ALL">🌍 Tüm Ülkeler</option>
+            </select>
+          </div>
+          <div class="karne-field">
+            <label>Reklam Tipi</label>
+            <select id="ads-type" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 12px;outline:none;width:100%;cursor:pointer">
+              <option value="ALL">Hepsi</option>
+              <option value="IMAGE_AND_MEME">Görsel</option>
+              <option value="VIDEO_AND_REEL">Video</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="karne-btn" id="ads-btn" onclick="runAdsDetector()">Reklamları Tara →</button>
+
+        <!-- ÖZET BAR -->
+        <div id="ads-summary" style="display:none;margin-top:16px;display:none">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px" id="ads-summary-grid"></div>
+        </div>
+
+        <!-- SONUÇLAR -->
+        <div id="ads-result" style="margin-top:16px"></div>
       </div>
     </div>
   </div>
@@ -331,10 +401,14 @@ function toggleTheme(){
 function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(cls?' '+cls:'')+' show';clearTimeout(window._tt);window._tt=setTimeout(function(){t.classList.remove('show');},2600);}
 
 /* ============ MLYNR INSIGHT MODULE ============ */
+var ADS_WORKER='https://mlynr-ads.fubame38.workers.dev';
+
 function switchKarneTab(tab){
-  var idx=tab==='site'?0:1;
+  var tabs=['site','csv','ads'];
+  var idx=tabs.indexOf(tab);
+  var pct=(100/3);
   document.getElementById('karne-tab-indicator').style.transform='translateX('+(idx*100)+'%)';
-  ['site','csv'].forEach(function(t){
+  tabs.forEach(function(t){
     document.getElementById('karne-tab-'+t).classList.toggle('active',t===tab);
     document.getElementById('karne-panel-'+t).classList.toggle('active',t===tab);
   });
@@ -576,6 +650,108 @@ function runCsvAnaliz(){
     resBox.innerHTML='<div class="karne-result-text" style="color:var(--red)">Bağlantı hatası, tekrar dene.</div>';
     btn.disabled=false;btn.textContent='CSV\'yi Analiz Et →';
   });
+}
+
+function runAdsDetector(){
+  var keyword=document.getElementById('ads-keyword').value.trim();
+  if(!keyword){showToast('Önce bir ürün/kelime yaz','error');return;}
+  var country=document.getElementById('ads-country').value;
+  var adType=document.getElementById('ads-type').value;
+  var btn=document.getElementById('ads-btn');
+  var resBox=document.getElementById('ads-result');
+  var summaryEl=document.getElementById('ads-summary');
+  var summaryGrid=document.getElementById('ads-summary-grid');
+
+  btn.disabled=true;btn.textContent='Taranıyor...';
+  summaryEl.style.display='none';
+  resBox.innerHTML=karneSkeletonHTML('⏳ Facebook Ads Library taranıyor...');
+
+  fetch(ADS_WORKER,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({search_terms:keyword,countries:country,ad_type:adType,limit:30})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(data.error){
+      resBox.innerHTML='<div class="ads-empty" style="color:var(--red)">⚠️ '+data.error+'</div>';
+      btn.disabled=false;btn.textContent='Reklamları Tara →';
+      return;
+    }
+    var ads=data.ads||[];
+    var sum=data.summary||{};
+
+    // Özet bar
+    summaryGrid.innerHTML=
+      '<div class="ads-stat-card"><div class="ads-stat-val">'+sum.totalAds+'</div><div class="ads-stat-label">Aktif Reklam</div></div>'+
+      '<div class="ads-stat-card"><div class="ads-stat-val">'+sum.avgDays+'</div><div class="ads-stat-label">Ort. Gün</div></div>'+
+      '<div class="ads-stat-card"><div class="ads-stat-val">'+sum.maxDays+'</div><div class="ads-stat-label">En Uzun (gün)</div></div>'+
+      '<div class="ads-stat-card"><div class="ads-stat-val" style="font-size:14px;padding-top:4px"><span class="ads-competition '+sum.competitionClass+'">'+sum.competitionLevel+'</span></div><div class="ads-stat-label">Rekabet</div></div>';
+    summaryEl.style.display='block';
+
+    if(ads.length===0){
+      resBox.innerHTML='<div class="ads-empty">🔍 "'+keyword+'" için aktif reklam bulunamadı.<br><span style="font-size:11px;color:var(--green)">Bu niş bakir olabilir — fırsat!</span></div>';
+      btn.disabled=false;btn.textContent='Tekrar Tara →';
+      return;
+    }
+
+    // Reklamları güç skoruna göre grupla
+    var winning=ads.filter(function(a){return a.power_score>=70;});
+    var testing=ads.filter(function(a){return a.power_score>=30&&a.power_score<70;});
+    var newOnes=ads.filter(function(a){return a.power_score<30;});
+
+    var html='';
+    if(winning.length){
+      html+='<div class="ads-section-title">🏆 Kazanan Reklamlar (70+ güç skoru)</div>';
+      html+=winning.map(function(ad){return adsCardHTML(ad);}).join('');
+    }
+    if(testing.length){
+      html+='<div class="ads-section-title">⚙️ Test Aşamasında</div>';
+      html+=testing.map(function(ad){return adsCardHTML(ad);}).join('');
+    }
+    if(newOnes.length){
+      html+='<div class="ads-section-title">🆕 Yeni Başlayanlar</div>';
+      html+=newOnes.map(function(ad){return adsCardHTML(ad);}).join('');
+    }
+
+    resBox.innerHTML=html;
+    btn.disabled=false;btn.textContent='Tekrar Tara →';
+  })
+  .catch(function(err){
+    resBox.innerHTML='<div class="ads-empty" style="color:var(--red)">Bağlantı hatası. Worker deploy edildi mi?</div>';
+    btn.disabled=false;btn.textContent='Reklamları Tara →';
+  });
+}
+
+function adsCardHTML(ad){
+  var powerClass=ad.power_score>=70?'high':ad.power_score>=30?'mid':'low';
+  var powerLabel=ad.power_score>=70?'Kazanan':ad.power_score>=30?'Test':'Yeni';
+  var powerIcon=ad.power_score>=70?'🔥':ad.power_score>=30?'⚙️':'🆕';
+  var platforms=(ad.platforms||[]).map(function(p){
+    return p==='facebook'?'FB':p==='instagram'?'IG':p==='audience_network'?'AN':p.toUpperCase();
+  }).join(', ')||'—';
+  var mediaIcon=ad.media_type==='VIDEO'?'🎬':ad.media_type==='IMAGE'?'🖼️':'📋';
+  var dateStr=ad.start_date?new Date(ad.start_date).toLocaleDateString('tr-TR'):'—';
+  var fbLibUrl=ad.snapshot_url||('https://www.facebook.com/ads/library/?id='+ad.id);
+
+  return '<div class="ads-card power-'+powerClass+'" style="animation:karneFadeIn .35s cubic-bezier(.16,1,.3,1) both">'+
+    '<div class="ads-card-header">'+
+      '<div class="ads-page-name">'+escHtml(ad.page_name)+'</div>'+
+      '<div class="ads-power-badge '+powerClass+'">'+powerIcon+' '+ad.power_score+'/100 '+powerLabel+'</div>'+
+    '</div>'+
+    '<div class="ads-meta-row">'+
+      '<span class="ads-chip">📅 '+dateStr+'</span>'+
+      '<span class="ads-chip">⏱ '+ad.days_running+' gündür yayında</span>'+
+      '<span class="ads-chip">'+mediaIcon+' '+(ad.media_type||'Bilinmiyor')+'</span>'+
+      '<span class="ads-chip">📡 '+platforms+'</span>'+
+    '</div>'+
+    (ad.body?'<div class="ads-body">'+escHtml(ad.body)+'</div>':'')+
+    '<a class="ads-link" href="'+fbLibUrl+'" target="_blank" rel="noopener">Reklamı FB\'de Gör →</a>'+
+  '</div>';
+}
+
+function escHtml(s){
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function runSiteAnaliz(){
