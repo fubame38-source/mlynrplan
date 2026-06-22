@@ -204,81 +204,121 @@ body.light-mode .bg-glow{background:none}
 .toast.error{border-color:var(--red-ln);color:var(--red)}
 body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
 
-/* ADS DEDEKTÖR — Premium Design */
-.ads-stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px 12px;text-align:center;position:relative;overflow:hidden;transition:transform .2s}
-.ads-stat-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.03),transparent);pointer-events:none}
-.ads-stat-val{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--white);line-height:1;margin-bottom:4px;letter-spacing:-1px}
+/* ═══════════════════════════════════════
+   REKLAM DEDEKTÖRÜ — Premium Design v2
+═══════════════════════════════════════ */
+
+/* Search Box */
+.ads-search-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}
+.ads-search-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.5),transparent)}
+.ads-search-header{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.ads-search-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(34,197,94,.05));border:1px solid var(--green-ln);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ads-search-title{font-size:15px;font-weight:800;color:var(--white);letter-spacing:-.3px;margin-bottom:2px}
+.ads-search-sub{font-size:11px;color:var(--text3);font-family:var(--mono)}
+
+/* Main input */
+.ads-input-wrap{position:relative;margin-bottom:14px}
+.ads-input-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none}
+.ads-main-input{width:100%;background:rgba(255,255,255,.05);border:1.5px solid var(--border2);border-radius:12px;color:var(--text);font-family:var(--font);font-size:14px;padding:13px 14px 13px 42px;outline:none;transition:border-color .2s,background .2s;letter-spacing:-.1px}
+.ads-main-input:focus{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.03)}
+.ads-main-input::placeholder{color:var(--text3)}
+
+/* Filters row */
+.ads-filters-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+.ads-filter-group{display:flex;flex-direction:column;gap:5px}
+.ads-filter-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
+.ads-select{background:rgba(255,255,255,.05);border:1.5px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 12px;outline:none;cursor:pointer;transition:border-color .2s;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.ads-select:focus{border-color:rgba(34,197,94,.4)}
+.ads-scan-btn{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:800;padding:11px 22px;cursor:pointer;white-space:nowrap;transition:all .25s cubic-bezier(.34,1.2,.64,1);letter-spacing:-.2px;box-shadow:0 4px 16px rgba(34,197,94,.25)}
+.ads-scan-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(34,197,94,.35)}
+.ads-scan-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+@media(max-width:600px){.ads-filters-row{grid-template-columns:1fr 1fr}.ads-scan-btn{grid-column:1/-1}}
+
+/* Summary grid */
+.ads-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.ads-stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center;position:relative;overflow:hidden;transition:transform .2s}
+.ads-stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--stat-accent,var(--border))}
+.ads-stat-card:nth-child(1)::after{background:linear-gradient(90deg,var(--green),transparent)}
+.ads-stat-card:nth-child(2)::after{background:linear-gradient(90deg,#3b82f6,transparent)}
+.ads-stat-card:nth-child(3)::after{background:linear-gradient(90deg,var(--gold),transparent)}
+.ads-stat-val{font-family:var(--mono);font-size:28px;font-weight:900;color:var(--white);line-height:1;margin-bottom:5px;letter-spacing:-2px}
 .ads-stat-label{font-size:9px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;font-family:var(--mono)}
-.ads-competition{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;font-family:var(--mono);letter-spacing:.3px;padding:4px 10px;border-radius:999px}
+.ads-competition{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;font-family:var(--mono);letter-spacing:.3px;padding:5px 12px;border-radius:999px}
 .ads-competition.good{background:var(--green-dim);color:var(--green);border:1px solid var(--green-ln)}
 .ads-competition.mid{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-ln)}
 .ads-competition.bad{background:var(--red-dim);color:var(--red);border:1px solid var(--red-ln)}
 
-/* Section title */
-.ads-section-title{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin:20px 0 10px;gap:8px}
-.ads-section-title::before,.ads-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.ads-section-title::before{display:none}
-.ads-section-title span:first-child{white-space:nowrap;color:var(--text2)}
-.ads-section-tip{font-size:9px;color:var(--text3);letter-spacing:.5px;white-space:nowrap;cursor:help}
+/* Section titles */
+.ads-section-title{display:flex;align-items:center;gap:10px;margin:22px 0 12px;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.ads-section-title>span:first-child{color:var(--text2);font-size:10px;white-space:nowrap}
+.ads-section-line{flex:1;height:1px;background:var(--border)}
+.ads-section-tip{font-size:9px;color:var(--text3);white-space:nowrap;padding:3px 8px;border-radius:6px;background:var(--surface2);border:1px solid var(--border)}
 
-/* Card */
-.ads-card{margin-bottom:10px;animation:karneFadeIn .35s cubic-bezier(.16,1,.3,1) both;border-radius:16px;overflow:hidden;border:1px solid var(--border2);transition:transform .2s cubic-bezier(.34,1.2,.64,1),box-shadow .2s,border-color .2s}
-.ads-card:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.2)}
-.ads-card.power-high{border-color:rgba(34,197,94,.25)}
-.ads-card.power-high:hover{box-shadow:0 12px 32px rgba(34,197,94,.1)}
+/* Ad Card */
+.ads-card{margin-bottom:10px;border-radius:18px;overflow:hidden;border:1px solid var(--border);background:var(--surface);transition:transform .25s cubic-bezier(.34,1.2,.64,1),box-shadow .25s,border-color .25s;animation:adCardIn .4s cubic-bezier(.16,1,.3,1) both}
+@keyframes adCardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ads-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.25)}
+.ads-card.power-high{border-color:rgba(34,197,94,.3);background:linear-gradient(to bottom right,rgba(34,197,94,.04),var(--surface))}
+.ads-card.power-high:hover{box-shadow:0 16px 40px rgba(34,197,94,.12)}
 .ads-card.power-mid{border-color:rgba(250,204,21,.2)}
-.ads-card.power-low{border-color:var(--border)}
-.ads-card-inner{display:flex;background:var(--surface2)}
-.ads-card-accent{width:3px;flex-shrink:0}
-.ads-card.power-high .ads-card-accent{background:linear-gradient(180deg,var(--green),rgba(34,197,94,.3))}
-.ads-card.power-mid .ads-card-accent{background:linear-gradient(180deg,var(--gold),rgba(250,204,21,.3))}
-.ads-card.power-low .ads-card-accent{background:var(--border2)}
-.ads-card-content{flex:1;padding:16px 18px}
+.ads-card.power-mid:hover{box-shadow:0 16px 40px rgba(250,204,21,.08)}
+
+.ads-card-top-bar{height:3px;width:100%}
+.ads-card.power-high .ads-card-top-bar{background:linear-gradient(90deg,#22c55e,#86efac,transparent)}
+.ads-card.power-mid .ads-card-top-bar{background:linear-gradient(90deg,#facc15,#fde68a,transparent)}
+.ads-card.power-low .ads-card-top-bar{background:var(--border)}
+
+.ads-card-body{padding:16px 20px 18px}
 
 /* Card header */
-.ads-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
-.ads-page-info{display:flex;align-items:center;gap:9px;min-width:0}
-.ads-page-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--surface3),var(--border2));border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);flex-shrink:0}
-.ads-page-name{font-size:13px;font-weight:700;color:var(--white);letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ads-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px}
+.ads-page-info{display:flex;align-items:center;gap:10px;min-width:0}
+.ads-page-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--surface2),var(--surface3));border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--text2);flex-shrink:0;font-family:var(--mono)}
+.ads-card.power-high .ads-page-avatar{background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(34,197,94,.05));border-color:var(--green-ln);color:var(--green)}
+.ads-page-name{font-size:14px;font-weight:800;color:var(--white);letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* Power pill */
-.ads-power-pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:5px 10px;font-family:var(--mono);border:1px solid;flex-shrink:0}
-.ads-power-pill.high{background:var(--green-dim);border-color:var(--green-ln)}
-.ads-power-pill.mid{background:var(--gold-dim);border-color:var(--gold-ln)}
-.ads-power-pill.low{background:var(--red-dim);border-color:var(--red-ln)}
-.ads-power-icon{font-size:11px}
-.ads-power-num{font-size:13px;font-weight:800;color:var(--white)}
-.ads-power-sep{font-size:10px;color:var(--text3)}
-.ads-power-lbl{font-size:9px;letter-spacing:.5px;text-transform:uppercase}
+.ads-power-pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 12px;border:1px solid;flex-shrink:0;font-family:var(--mono)}
+.ads-power-pill.high{background:rgba(34,197,94,.1);border-color:var(--green-ln)}
+.ads-power-pill.mid{background:rgba(250,204,21,.08);border-color:var(--gold-ln)}
+.ads-power-pill.low{background:rgba(239,68,68,.06);border-color:var(--red-ln)}
+.ads-power-icon{font-size:12px}
+.ads-power-num{font-size:15px;font-weight:900;color:var(--white);letter-spacing:-1px}
+.ads-power-sep{font-size:9px;color:var(--text3)}
+.ads-power-lbl{font-size:9px;letter-spacing:.5px;text-transform:uppercase;font-weight:700}
 .ads-power-pill.high .ads-power-lbl{color:var(--green)}
 .ads-power-pill.mid .ads-power-lbl{color:var(--gold)}
 .ads-power-pill.low .ads-power-lbl{color:var(--red)}
 
 /* Chips */
-.ads-chips-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
-.ads-chip2{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:10px;letter-spacing:.2px;padding:4px 9px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text2);white-space:nowrap}
-.ads-chip2.highlight{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2);color:var(--green);font-weight:600}
+.ads-chips-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.ads-chip2{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;letter-spacing:.2px;padding:4px 9px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text2)}
+.ads-chip2.hl{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.2);color:var(--green);font-weight:700}
 
-/* Body */
-.ads-ad-title{font-size:12px;font-weight:700;color:var(--white);margin-bottom:5px;letter-spacing:-.1px}
-.ads-ad-body{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+/* Content */
+.ads-ad-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;letter-spacing:-.2px;line-height:1.4}
+.ads-ad-body{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 
 /* Footer */
-.ads-card-footer{display:flex;align-items:center;gap:8px;margin-top:4px}
-.ads-view-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--green);text-decoration:none;font-family:var(--mono);letter-spacing:.3px;padding:6px 12px;border-radius:8px;background:var(--green-dim);border:1px solid var(--green-ln);transition:all .2s}
+.ads-card-footer{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--border)}
+.ads-view-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--green);text-decoration:none;font-family:var(--mono);letter-spacing:.3px;padding:7px 14px;border-radius:9px;background:var(--green-dim);border:1px solid var(--green-ln);transition:all .2s}
 .ads-view-btn:hover{background:rgba(34,197,94,.12);transform:translateX(2px)}
-.ads-copy-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--text2);background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;cursor:pointer;font-family:var(--mono);letter-spacing:.3px;transition:all .2s}
-.ads-copy-btn:hover{color:var(--white);background:rgba(255,255,255,.08)}
+.ads-copy-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--text2);background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:9px;padding:7px 14px;cursor:pointer;font-family:var(--mono);letter-spacing:.3px;transition:all .2s}
+.ads-copy-btn:hover{color:var(--white);background:rgba(255,255,255,.08);border-color:var(--border2)}
 
 /* Empty */
-.ads-empty{text-align:center;padding:48px 20px;font-size:13px;color:var(--text3);font-family:var(--mono);line-height:1.6}
+.ads-empty{text-align:center;padding:60px 20px;font-family:var(--mono)}
+.ads-empty-icon{font-size:36px;margin-bottom:12px}
+.ads-empty-text{font-size:13px;color:var(--text2);margin-bottom:6px}
+.ads-empty-sub{font-size:11px;color:var(--green)}
 
 /* Skeleton */
-.ads-skel-card{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:10px}
-.ads-skel-bar{background:linear-gradient(90deg,var(--surface2) 25%,var(--surface3) 50%,var(--surface2) 75%);background-size:200% 100%;animation:adsSkelShimmer 1.4s infinite;border-radius:4px;height:10px;display:block}
-@keyframes adsSkelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.ads-pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;animation:adsPulse 1.2s ease-in-out infinite}
-@keyframes adsPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.ads-skel-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;margin-bottom:10px;overflow:hidden}
+.ads-skel-bar{background:linear-gradient(90deg,var(--surface2) 25%,var(--surface3) 50%,var(--surface2) 75%);background-size:400% 100%;animation:skelShimmer 1.6s ease-in-out infinite;border-radius:6px}
+@keyframes skelShimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.ads-loading-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.ads-pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
 
 select option{background:var(--surface);color:var(--text)}
 </style>
@@ -355,17 +395,26 @@ select option{background:var(--surface);color:var(--text)}
     </div>
     <!-- REKLAM DEDEKTÖRÜ -->
     <div class="karne-panel" id="karne-panel-ads">
-      <div class="karne-card">
-        <div style="font-size:12px;color:var(--text2);margin-bottom:16px;line-height:1.6">Ürün adını yaz, hangi mağazaların reklam verdiğini, kaç gündür çalıştığını ve rekabet seviyesini gör. Uzun süre çalışan reklam = kazanan ürün.</div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-          <div class="karne-field" style="grid-column:1/-1">
-            <label>Ürün / Anahtar Kelime</label>
-            <input type="text" id="ads-keyword" placeholder="örn: ahşap oyuncak, posture corrector, led ışık" onkeydown="if(event.key==='Enter')runAdsDetector()">
+      <!-- SEARCH BOX -->
+      <div class="ads-search-box">
+        <div class="ads-search-header">
+          <div class="ads-search-icon">🔍</div>
+          <div>
+            <div class="ads-search-title">Reklam Dedektörü</div>
+            <div class="ads-search-sub">Hangi ürünler reklam alıyor? Kim kaç gündür yayında?</div>
           </div>
-          <div class="karne-field">
-            <label>Ülke</label>
-            <select id="ads-country" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 12px;outline:none;width:100%;cursor:pointer">
+        </div>
+
+        <div class="ads-input-wrap">
+          <span class="ads-input-prefix">🔎</span>
+          <input type="text" id="ads-keyword" class="ads-main-input" placeholder="ürün yaz... (örn: boxer, posture corrector, led ışık)" onkeydown="if(event.key==='Enter')runAdsDetector()">
+        </div>
+
+        <div class="ads-filters-row">
+          <div class="ads-filter-group">
+            <label class="ads-filter-label">🌍 Ülke</label>
+            <select id="ads-country" class="ads-select">
               <option value="TR">🇹🇷 Türkiye</option>
               <option value="US">🇺🇸 ABD</option>
               <option value="GB">🇬🇧 İngiltere</option>
@@ -373,26 +422,28 @@ select option{background:var(--surface);color:var(--text)}
               <option value="ALL">🌍 Tüm Ülkeler</option>
             </select>
           </div>
-          <div class="karne-field">
-            <label>Reklam Tipi</label>
-            <select id="ads-type" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 12px;outline:none;width:100%;cursor:pointer">
+          <div class="ads-filter-group">
+            <label class="ads-filter-label">🎬 Format</label>
+            <select id="ads-type" class="ads-select">
               <option value="ALL">Hepsi</option>
               <option value="IMAGE_AND_MEME">Görsel</option>
               <option value="VIDEO_AND_REEL">Video</option>
             </select>
           </div>
+          <button class="ads-scan-btn" id="ads-btn" onclick="runAdsDetector()">
+            <span class="ads-scan-btn-text">Tara →</span>
+          </button>
         </div>
-
-        <button class="karne-btn" id="ads-btn" onclick="runAdsDetector()">Reklamları Tara →</button>
-
-        <!-- ÖZET BAR -->
-        <div id="ads-summary" style="display:none;margin-top:16px;display:none">
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px" id="ads-summary-grid"></div>
-        </div>
-
-        <!-- SONUÇLAR -->
-        <div id="ads-result" style="margin-top:16px"></div>
       </div>
+
+      <!-- ÖZET BAR -->
+      <div id="ads-summary" style="display:none">
+        <div class="ads-summary-grid" id="ads-summary-grid"></div>
+      </div>
+
+      <!-- SONUÇLAR -->
+      <div id="ads-result"></div>
+
     </div>
   </div>
 
@@ -418,6 +469,8 @@ var SITE_ANALIZ_FN=SUPABASE_URL+'/functions/v1/site-analiz';
       bl.href='https://mlynrplan.com?u='+encodeURIComponent(em);
     }
   }catch(e){}
+  // Ads butonunu başlat
+  setTimeout(updateAdsBtn, 100);
 })();
 
 // Tüm .karne-btn'lara ripple ekle
@@ -700,9 +753,51 @@ function runCsvAnaliz(){
   });
 }
 
+function updateAdsBtn(){
+  var usage=getAdsUsage();
+  var btn=document.getElementById('ads-btn');
+  if(!btn)return;
+  var kalan=Math.max(0,ADS_DAILY_LIMIT-usage.count);
+  if(kalan===0){
+    btn.disabled=true;
+    btn.querySelector('.ads-scan-btn-text').textContent='Limit Doldu (0/'+ADS_DAILY_LIMIT+')';
+  } else {
+    btn.disabled=false;
+    btn.querySelector('.ads-scan-btn-text').textContent='Tara → ('+kalan+'/'+ADS_DAILY_LIMIT+')';
+  }
+}
+
+function getAdsUsage(){
+  try{
+    var key='mlynr_ads_usage';
+    var today=new Date().toDateString();
+    var raw=localStorage.getItem(key);
+    var data=raw?JSON.parse(raw):{date:'',count:0};
+    if(data.date!==today) return{date:today,count:0};
+    return data;
+  }catch(e){return{date:new Date().toDateString(),count:0};}
+}
+function setAdsUsage(data){
+  try{localStorage.setItem('mlynr_ads_usage',JSON.stringify(data));}catch(e){}
+}
+var ADS_DAILY_LIMIT=5;
+
 function runAdsDetector(){
   var keyword=document.getElementById('ads-keyword').value.trim();
   if(!keyword){showToast('Önce bir ürün/kelime yaz','error');return;}
+
+  // Günlük limit kontrolü
+  var usage=getAdsUsage();
+  if(usage.count>=ADS_DAILY_LIMIT){
+    showToast('Günlük '+ADS_DAILY_LIMIT+' sorgulama hakkın doldu. Yarın tekrar gel!','error');
+    document.getElementById('ads-result').innerHTML=
+      '<div class="ads-empty">'+
+        '<div class="ads-empty-icon">⏳</div>'+
+        '<div class="ads-empty-text">Bugünlük '+ADS_DAILY_LIMIT+' sorgulama hakkın doldu.</div>'+
+        '<div class="ads-empty-sub">Yarın '+(ADS_DAILY_LIMIT-usage.count)+'/'+ADS_DAILY_LIMIT+' hak yenilenecek.</div>'+
+      '</div>';
+    return;
+  }
   var country=document.getElementById('ads-country').value;
   var adType=document.getElementById('ads-type').value;
   var btn=document.getElementById('ads-btn');
@@ -710,7 +805,12 @@ function runAdsDetector(){
   var summaryEl=document.getElementById('ads-summary');
   var summaryGrid=document.getElementById('ads-summary-grid');
 
-  btn.disabled=true;btn.textContent='Taranıyor...';
+  // Kullanımı artır
+  usage.count++;
+  setAdsUsage(usage);
+  updateAdsBtn();
+
+  btn.disabled=true;btn.querySelector('.ads-scan-btn-text').textContent='Taranıyor...';
   summaryEl.style.display='none';
   resBox.innerHTML=adsSkeletonHTML();
 
@@ -723,7 +823,7 @@ function runAdsDetector(){
   .then(function(data){
     if(data.error){
       resBox.innerHTML='<div class="ads-empty" style="color:var(--red)">⚠️ '+escHtml(data.error)+'</div>';
-      btn.disabled=false;btn.textContent='Reklamları Tara →';
+      btn.disabled=false;updateAdsBtn();
       return;
     }
     var ads=data.ads||[];
@@ -740,7 +840,7 @@ function runAdsDetector(){
 
     if(ads.length===0){
       resBox.innerHTML='<div class="ads-empty">🔍 "<b>'+escHtml(keyword)+'</b>" için aktif reklam bulunamadı.<br><span style="font-size:11px;color:var(--green);margin-top:6px;display:block">Bu niş bakir olabilir — fırsat sinyali!</span></div>';
-      btn.disabled=false;btn.textContent='Tekrar Tara →';
+      btn.disabled=false;updateAdsBtn();
       return;
     }
 
@@ -763,11 +863,11 @@ function runAdsDetector(){
     }
 
     resBox.innerHTML=html;
-    btn.disabled=false;btn.textContent='Tekrar Tara →';
+    btn.disabled=false;updateAdsBtn();
   })
   .catch(function(){
     resBox.innerHTML='<div class="ads-empty" style="color:var(--red)">⚠️ Bağlantı hatası. Tekrar dene.</div>';
-    btn.disabled=false;btn.textContent='Reklamları Tara →';
+    btn.disabled=false;updateAdsBtn();
   });
 }
 
@@ -794,62 +894,52 @@ function adsCardHTML(ad){
   var powerClass=ad.power_score>=70?'high':ad.power_score>=30?'mid':'low';
   var powerLabel=ad.power_score>=70?'Kazanan':ad.power_score>=30?'Test':'Yeni';
   var powerIcon=ad.power_score>=70?'🔥':ad.power_score>=30?'⚙️':'🆕';
-  var powerColor=ad.power_score>=70?'var(--green)':ad.power_score>=30?'var(--gold)':'var(--red)';
 
   var platforms=(ad.platforms||[]).map(function(p){
-    var icons={'facebook':'FB','instagram':'IG','audience_network':'AN','messenger':'MSG','threads':'TH'};
-    return icons[p.toLowerCase()]||p.toUpperCase();
+    var m={'facebook':'FB','instagram':'IG','audience_network':'AN','messenger':'MSG','threads':'TH'};
+    return m[p.toLowerCase()]||p.toUpperCase();
   }).filter(Boolean).join(' · ')||'—';
 
-  var mediaIcon=ad.media_type==='VIDEO'?'🎬 Video':ad.media_type==='IMAGE'?'🖼 Görsel':'📋 Bilinmiyor';
+  var mediaIcon=ad.media_type==='VIDEO'?'🎬 Video':ad.media_type==='IMAGE'?'🖼 Görsel':'📋';
 
-  // Tarih düzeltme — 1970 ise gösterme
   var dateStr='';
-  var daysStr=ad.days_running+' gün';
   if(ad.start_date){
     var d=new Date(typeof ad.start_date==='number'?ad.start_date*1000:ad.start_date);
-    if(d.getFullYear()>2010){
-      dateStr=d.toLocaleDateString('tr-TR',{day:'numeric',month:'short',year:'numeric'});
-    }
+    if(d.getFullYear()>2010) dateStr=d.toLocaleDateString('tr-TR',{day:'numeric',month:'short',year:'numeric'});
   }
 
   var fbLibUrl=ad.snapshot_url||('https://www.facebook.com/ads/library/?id='+ad.id);
   var bodyText=escHtml(ad.body||'');
   var titleText=escHtml(ad.title||'');
+  var avatarLetter=escHtml((ad.page_name||'?')[0].toUpperCase());
+  var delay=(Math.random()*0.15).toFixed(2);
 
-  return '<div class="ads-card power-'+powerClass+'">'+
-    '<div class="ads-card-inner">'+
-      // Sol accent bar
-      '<div class="ads-card-accent" style="background:'+powerColor+'"></div>'+
-      '<div class="ads-card-content">'+
-        // Header
-        '<div class="ads-card-header">'+
-          '<div class="ads-page-info">'+
-            '<div class="ads-page-avatar">'+escHtml((ad.page_name||'?')[0].toUpperCase())+'</div>'+
-            '<div class="ads-page-name">'+escHtml(ad.page_name||'Bilinmiyor')+'</div>'+
-          '</div>'+
-          '<div class="ads-power-pill '+powerClass+'">'+
-            '<span class="ads-power-icon">'+powerIcon+'</span>'+
-            '<span class="ads-power-num">'+ad.power_score+'</span>'+
-            '<span class="ads-power-sep">/100</span>'+
-            '<span class="ads-power-lbl">'+powerLabel+'</span>'+
-          '</div>'+
+  return '<div class="ads-card power-'+powerClass+'" style="animation-delay:'+delay+'s">'+
+    '<div class="ads-card-top-bar"></div>'+
+    '<div class="ads-card-body">'+
+      '<div class="ads-card-header">'+
+        '<div class="ads-page-info">'+
+          '<div class="ads-page-avatar">'+avatarLetter+'</div>'+
+          '<div class="ads-page-name">'+escHtml(ad.page_name||'Bilinmiyor')+'</div>'+
         '</div>'+
-        // Chips
-        '<div class="ads-chips-row">'+
-          (dateStr?'<span class="ads-chip2">📅 '+dateStr+'</span>':'')+
-          '<span class="ads-chip2 highlight">⏱ '+daysStr+'</span>'+
-          '<span class="ads-chip2">'+mediaIcon+'</span>'+
-          '<span class="ads-chip2">📡 '+platforms+'</span>'+
+        '<div class="ads-power-pill '+powerClass+'">'+
+          '<span class="ads-power-icon">'+powerIcon+'</span>'+
+          '<span class="ads-power-num">'+ad.power_score+'</span>'+
+          '<span class="ads-power-sep">/100</span>'+
+          '<span class="ads-power-lbl">'+powerLabel+'</span>'+
         '</div>'+
-        // Body
-        (titleText?'<div class="ads-ad-title">'+titleText+'</div>':'')+
-        (bodyText?'<div class="ads-ad-body">'+bodyText+'</div>':'')+
-        // Footer
-        '<div class="ads-card-footer">'+
-          '<a class="ads-view-btn" href="'+fbLibUrl+'" target="_blank" rel="noopener">FB\'de Gör →</a>'+
-          (bodyText?'<button class="ads-copy-btn" onclick="copyAdText(\''+escAttr(ad.body||'')+'\',this)">📋 Kopyala</button>':'')+
-        '</div>'+
+      '</div>'+
+      '<div class="ads-chips-row">'+
+        (dateStr?'<span class="ads-chip2">📅 '+dateStr+'</span>':'')+
+        '<span class="ads-chip2 hl">⏱ '+ad.days_running+' gün yayında</span>'+
+        '<span class="ads-chip2">'+mediaIcon+'</span>'+
+        '<span class="ads-chip2">📡 '+platforms+'</span>'+
+      '</div>'+
+      (titleText?'<div class="ads-ad-title">'+titleText+'</div>':'')+
+      (bodyText?'<div class="ads-ad-body">'+bodyText+'</div>':'')+
+      '<div class="ads-card-footer">'+
+        '<a class="ads-view-btn" href="'+fbLibUrl+'" target="_blank" rel="noopener">FB\'de Gör →</a>'+
+        (bodyText?'<button class="ads-copy-btn" onclick="copyAdText(\''+escAttr(ad.body||'')+'\',this)">📋 Metni Kopyala</button>':'')+
       '</div>'+
     '</div>'+
   '</div>';
