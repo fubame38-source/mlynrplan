@@ -4,566 +4,933 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MLYNR Insight — AI Mağaza & Reklam Analizi</title>
-<meta name="color-scheme" content="dark light">
-<style>:root{color-scheme:dark}</style>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --font:'Geist',sans-serif;--mono:'Geist Mono',monospace;
-  --bg:#0d0d0d;--surface:#1a1a1a;--surface2:#212121;--surface3:#272727;
-  --border:rgba(255,255,255,.10);--border2:rgba(255,255,255,.16);
-  --text:#f0f0f0;--text2:#888;--text3:#444;--white:#fff;
-  --green:#22c55e;--green-ln:rgba(34,197,94,.2);--green-dim:rgba(34,197,94,.05);
-  --gold:#facc15;--gold-ln:rgba(250,204,21,.2);--gold-dim:rgba(250,204,21,.05);
-  --red:#ef4444;--red-ln:rgba(239,68,68,.2);--red-dim:rgba(239,68,68,.05);
-  --r:14px;
+:root {
+  --navy: #0f1523;
+  --navy2: #151d2e;
+  --navy3: #1c2640;
+  --navy4: #243050;
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,.12);
+  --blue-border: rgba(59,130,246,.25);
+  --yellow: #fbbf24;
+  --yellow-dim: rgba(251,191,36,.1);
+  --green: #34d399;
+  --green-dim: rgba(52,211,153,.1);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,.1);
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --text3: #475569;
+  --border: rgba(255,255,255,.07);
+  --border2: rgba(255,255,255,.12);
+  --font: 'IBM Plex Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sidebar-w: 240px;
 }
-body.light-mode{
-  --bg:#f7f7f5;--surface:#ffffff;--surface2:#f0f0ed;--surface3:#e8e8e5;
-  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.13);
-  --text:#111;--text2:#555;--text3:#999;--white:#111;
-  --green:#16a34a;--green-ln:rgba(22,163,74,.2);--green-dim:rgba(22,163,74,.07);
-  --gold:#92400e;--gold-ln:rgba(146,64,14,.18);--gold-dim:rgba(146,64,14,.05);
-  --red:#dc2626;--red-ln:rgba(220,38,38,.2);--red-dim:rgba(220,38,38,.06);
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:var(--navy); color:var(--text); font-family:var(--font); min-height:100vh; -webkit-font-smoothing:antialiased; display:flex; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--navy2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 28px 0;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 10;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
-.bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
-body.light-mode .bg-grid{background-image:linear-gradient(rgba(0,0,0,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.025) 1px,transparent 1px)}
-.bg-glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:800px;height:480px;background:radial-gradient(ellipse,rgba(34,197,94,.09),transparent 68%);pointer-events:none;z-index:0}
-body.light-mode .bg-glow{background:none}
-.wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:28px 24px 80px}
+.sb-logo {
+  padding: 0 20px 28px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.sb-logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.sb-logo-icon {
+  width: 34px; height: 34px;
+  background: var(--blue);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.sb-logo-text { font-size: 13px; font-weight: 700; color: var(--text); letter-spacing: -.3px; }
+.sb-logo-sub { font-size: 10px; color: var(--text3); font-family: var(--mono); margin-top: 1px; }
 
-/* TOPBAR */
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px}
-.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--text3);text-decoration:none;font-size:11px;font-weight:600;font-family:var(--mono);letter-spacing:.5px;transition:color .2s}
-.back-link:hover{color:var(--text2)}
-.theme-toggle{background:var(--surface);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--text)}
+.sb-section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 0 20px;
+  margin-bottom: 8px;
+}
+.sb-nav { padding: 0 10px; margin-bottom: 24px; }
+.sb-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .15s;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.sb-nav-item:hover { background: var(--navy3); color: var(--text); }
+.sb-nav-item.active { background: var(--blue-dim); color: var(--blue); }
+.sb-nav-item .sb-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
 
-/* HERO */
-.hero{margin-bottom:40px}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:999px;padding:5px 14px;margin-bottom:20px}
-.hero-title{font-size:38px;font-weight:800;letter-spacing:-1.5px;line-height:1.08;margin-bottom:14px}
-.hero-title span{background:linear-gradient(135deg,var(--green),#86efac);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero-sub{font-size:14px;color:var(--text2);line-height:1.65;max-width:520px}
+.sb-divider { border: none; border-top: 1px solid var(--border); margin: 0 20px 20px; }
 
-/* STAT ROW - Dribbble style: big number + small label */
-.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:32px 0 36px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 20px;position:relative;overflow:hidden;transition:border-color .25s,transform .25s}
-.stat-card:hover{border-color:var(--border2);transform:translateY(-2px)}
-.stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--sc-color,transparent);opacity:.6}
-.stat-card.speed{--sc-color:var(--green)}
-.stat-card.seo{--sc-color:#60a5fa}
-.stat-card.cro{--sc-color:var(--gold)}
-.stat-num{font-size:36px;font-weight:800;letter-spacing:-1.5px;line-height:1;color:var(--text);margin-bottom:6px}
-.stat-num span{font-size:16px;font-weight:500;color:var(--text3);letter-spacing:0}
-.stat-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
-.stat-desc{font-size:11px;color:var(--text3);line-height:1.4;margin-top:6px}
-@media(max-width:600px){.stat-row{grid-template-columns:1fr;gap:8px}.stat-num{font-size:28px}}
+.sb-history { padding: 0 10px; flex: 1; overflow: hidden; }
+.sb-history-list { display: flex; flex-direction: column; gap: 3px; }
+.sb-history-item {
+  padding: 8px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background .15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.sb-history-item:hover { background: var(--navy3); }
+.sb-history-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--text3);
+  flex-shrink: 0;
+}
+.sb-history-dot.good { background: var(--green); }
+.sb-history-dot.mid { background: var(--yellow); }
+.sb-history-dot.bad { background: var(--red); }
+.sb-history-url {
+  font-size: 11px;
+  color: var(--text2);
+  font-family: var(--mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+.sb-history-score {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--text3);
+  flex-shrink: 0;
+}
+.sb-history-empty {
+  font-size: 11px;
+  color: var(--text3);
+  padding: 8px 12px;
+  font-style: italic;
+}
 
-/* SECTION (module) */
-.section{background:transparent}
-.karne-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:5px;position:relative}
-.karne-tab{flex:1;background:transparent;border:none;border-radius:10px;padding:13px 10px;cursor:pointer;text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);transition:color .25s;position:relative;z-index:1}
-.karne-tab.active{color:var(--bg)}
-.karne-tab-indicator{position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);background:var(--white);border-radius:10px;transition:transform .3s cubic-bezier(.34,1.2,.64,1);z-index:0;box-shadow:0 2px 12px rgba(0,0,0,.2)}
-.karne-panel{display:none}
-.karne-panel.active{display:block;animation:karneFadeIn .35s cubic-bezier(.16,1,.3,1)}
-@keyframes karneFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.karne-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;position:relative;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,.12)}
-.karne-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.3),transparent)}
-.karne-field{display:flex;flex-direction:column;gap:6px}
-.karne-field label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
-.karne-field input{background:var(--surface2);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:var(--font);font-size:14px;padding:14px 16px;outline:none;transition:border-color .2s,box-shadow .2s}
-.karne-field input:focus{border-color:rgba(34,197,94,.5);box-shadow:0 0 0 3px rgba(34,197,94,.08)}
-.karne-field input::placeholder{color:var(--text3)}
-.karne-btn{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:12px;font-family:var(--font);font-size:14px;font-weight:700;padding:16px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);letter-spacing:-.2px;margin-top:4px}
-.karne-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,255,255,.12)}
-.karne-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
-.karne-result{display:none;margin-top:24px;padding:28px;background:var(--surface2);border:1px solid var(--border2);border-radius:18px;position:relative;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.08)}
-.karne-result.show{display:block;animation:karneFadeIn .4s cubic-bezier(.16,1,.3,1)}
-.karne-result::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--tier-color,var(--border2));border-radius:2px 0 0 2px}
-.karne-result.tier-good{--tier-color:var(--green)}
-.karne-result.tier-mid{--tier-color:var(--gold)}
-.karne-result.tier-bad{--tier-color:var(--red)}
-.karne-score-row{display:flex;align-items:center;gap:24px;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)}
-.karne-ring-wrap{position:relative;width:110px;height:110px;flex-shrink:0;filter:drop-shadow(0 0 20px var(--ring-glow,transparent))}
-.karne-ring{width:100%;height:100%;transform:rotate(-90deg);display:block}
-.karne-ring-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:8}
-.karne-ring-fg{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.3s cubic-bezier(.16,1,.3,1)}
-.karne-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.karne-ring-score{font-family:var(--mono);font-size:30px;font-weight:800;color:var(--white);line-height:1;letter-spacing:-1.5px}
-.karne-ring-label{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:1px;margin-top:3px}
-.karne-score-meta{display:flex;flex-direction:column;gap:6px}
-.karne-score-tier{font-size:22px;font-weight:800;letter-spacing:-.5px}
-.karne-score-tier.good{color:var(--green)}
-.karne-score-tier.mid{color:var(--gold)}
-.karne-score-tier.bad{color:var(--red)}
-.karne-score-sub{font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase}
-.karne-result-heading{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--white);margin:20px 0 10px;font-weight:700;display:flex;align-items:center;gap:8px}
-.karne-result-heading:first-child{margin-top:0}
-.karne-result-heading::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--text3)}
-.karne-section-block{border-radius:16px;padding:20px 22px;margin-bottom:12px;opacity:0;animation:karneSlideIn .5s cubic-bezier(.16,1,.3,1) forwards}
-.karne-section-block:last-child{margin-bottom:0}
-.karne-section-block.good{background:linear-gradient(135deg,var(--green-dim),transparent);border:1px solid var(--green-ln)}
-.karne-section-block.warn{background:linear-gradient(135deg,var(--gold-dim),transparent);border:1px solid var(--gold-ln)}
-.karne-section-block.neutral{background:var(--surface3);border:1px solid var(--border2)}
-.karne-section-block.plan{background:linear-gradient(135deg,rgba(96,165,250,.07),transparent);border:1px solid rgba(96,165,250,.2)}
-.karne-section-block-title{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:14px}
-.karne-section-block-title.good{color:var(--green)}
-.karne-section-block-title.warn{color:var(--gold)}
-.karne-section-block-title.neutral{color:var(--text2)}
-.karne-section-block-title.plan{color:#60a5fa}
-.karne-section-block .karne-bullet-row{margin-bottom:10px}
-.karne-section-block .karne-bullet-row:last-child{margin-bottom:0}
-.karne-section-block .karne-bullet-icon{width:20px;height:20px;font-size:11px;font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.15)}
-.karne-bullet-row{display:flex;gap:12px;margin-bottom:8px;align-items:flex-start}
-.karne-bullet-icon{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:2px}
-.karne-bullet-icon.ok{background:var(--green-dim);color:var(--green)}
-.karne-bullet-icon.warn{background:var(--gold-dim);color:var(--gold)}
-.karne-bullet-icon.bad{background:var(--red-dim);color:var(--red)}
-.karne-result-text{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:5px}
-.karne-loading{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--text3);padding:10px 0}
+.sb-tips { padding: 12px 20px; margin-top: auto; }
+.sb-tip-card {
+  background: var(--blue-dim);
+  border: 1px solid var(--blue-border);
+  border-radius: 10px;
+  padding: 14px;
+}
+.sb-tip-label { font-family: var(--mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
+.sb-tip-text { font-size: 11px; color: var(--text2); line-height: 1.5; }
 
-/* SKELETON / SHIMMER LOADING */
-.karne-skeleton{display:flex;flex-direction:column;gap:14px}
-.karne-skel-row{display:flex;align-items:center;gap:16px}
-.karne-skel-ring{width:96px;height:96px;border-radius:50%;flex-shrink:0;position:relative;overflow:hidden;background:var(--surface3)}
-.karne-skel-ring::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(34,197,94,.25),transparent);animation:karneShimmer 1.4s infinite}
-.karne-skel-lines{flex:1;display:flex;flex-direction:column;gap:8px}
-.karne-skel-bar{height:11px;border-radius:6px;background:var(--surface3);position:relative;overflow:hidden}
-.karne-skel-bar::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);animation:karneShimmer 1.4s infinite}
-@keyframes karneShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.karne-skel-block{height:88px;border-radius:14px;background:var(--surface3);position:relative;overflow:hidden}
-.karne-skel-block::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);animation:karneShimmer 1.6s infinite}
-.karne-skel-status{font-family:var(--mono);font-size:11px;color:var(--text3);text-align:center;letter-spacing:.5px;animation:karnePulseText 1.8s ease-in-out infinite}
-@keyframes karnePulseText{0%,100%{opacity:.5}50%{opacity:1}}
+/* ── MAIN ── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-@keyframes karneSlideIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(15,21,35,.8);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.topbar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -.2px;
+}
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.topbar-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid rgba(52,211,153,.2);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+.back-link {
+  font-size: 11px;
+  color: var(--text3);
+  text-decoration: none;
+  font-family: var(--mono);
+  transition: color .15s;
+}
+.back-link:hover { color: var(--text2); }
 
-/* ADIM ADIM PLAN */
-.karne-step-row{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
-.karne-step-row:last-child{margin-bottom:0}
-.karne-step-num{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--green),#86efac);color:#06240f;font-family:var(--mono);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(34,197,94,.3)}
-.karne-step-text{font-size:13px;color:var(--text2);line-height:1.6;padding-top:2px}
-.karne-dropzone{border:1.5px dashed var(--border2);border-radius:14px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:14px;position:relative}
-.karne-dropzone:hover{border-color:rgba(34,197,94,.45);background:rgba(34,197,94,.03);transform:translateY(-1px)}
-.karne-dropzone.has-file{border-color:rgba(34,197,94,.45);background:var(--green-dim)}
-.karne-dropzone-icon{font-size:30px;margin-bottom:10px}
-.karne-dropzone-text{font-size:12px;color:var(--text2);font-weight:600}
-.karne-dropzone-sub{font-size:10px;color:var(--text3);margin-top:3px}
-.karne-dropzone-filename{font-family:var(--mono);font-size:11px;color:var(--green);margin-top:8px}
-.karne-dropzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
-.karne-rawdata{display:none;margin-top:10px;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden}
-.karne-rawdata.show{display:flex}
-.karne-raw-row{display:flex;justify-content:space-between;padding:8px 12px;font-size:11px;border-bottom:1px solid var(--border)}
-.karne-raw-row:last-child{border-bottom:none}
-.karne-raw-row span:first-child{color:var(--text3);font-family:var(--mono);font-size:10px}
-.karne-raw-row span:last-child{color:var(--text);font-weight:600;text-align:right}
+.content { padding: 32px; flex: 1; }
 
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;color:var(--text);z-index:9100;opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;white-space:nowrap}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast.error{border-color:var(--red-ln);color:var(--red)}
-body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  width: fit-content;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 10px 24px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  cursor: pointer;
+  transition: all .15s;
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
+}
+.tab-btn:last-child { border-right: none; }
+.tab-btn.active { background: var(--navy3); color: var(--text); }
+.tab-btn:hover:not(.active) { color: var(--text2); background: rgba(255,255,255,.03); }
 
-.footer-note{margin-top:40px;text-align:center;font-size:11px;color:var(--text3);line-height:1.6}
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* INPUT ZONE */
+.input-zone {
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.input-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+.input-group { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.input-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.input-field {
+  background: var(--navy3);
+  border: 1px solid var(--border2);
+  border-radius: 9px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  width: 100%;
+}
+.input-field:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.1);
+}
+.input-field::placeholder { color: var(--text3); }
+.scan-btn {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 12px 22px;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.scan-btn:hover { background: #2563eb; transform: translateY(-1px); }
+.scan-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+/* DROPZONE */
+.dropzone {
+  border: 1.5px dashed var(--border2);
+  border-radius: 10px;
+  padding: 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+  margin-bottom: 12px;
+}
+.dropzone:hover, .dropzone.has-file { border-color: var(--blue); background: var(--blue-dim); }
+.dropzone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.dropzone-icon { font-size: 24px; margin-bottom: 8px; }
+.dropzone-text { font-size: 12px; color: var(--text2); font-weight: 500; }
+.dropzone-sub { font-size: 10px; color: var(--text3); margin-top: 3px; font-family: var(--mono); }
+.dropzone-file { font-family: var(--mono); font-size: 11px; color: var(--blue); margin-top: 6px; }
+
+/* RESULT */
+.result-zone { display: none; }
+.result-zone.show { display: block; animation: fadeUp .4s cubic-bezier(.16,1,.3,1); }
+@keyframes fadeUp { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:translateY(0) } }
+
+/* SCORE HEADER */
+.score-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  gap: 20px;
+  align-items: center;
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
+}
+.score-ring-wrap {
+  position: relative;
+  width: 90px; height: 90px;
+  filter: drop-shadow(0 0 18px var(--ring-glow, transparent));
+}
+.score-ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.score-ring-bg { fill: none; stroke: rgba(255,255,255,.06); stroke-width: 7; }
+.score-ring-fg { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset 1.2s cubic-bezier(.16,1,.3,1); }
+.score-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.score-num { font-family: var(--mono); font-size: 26px; font-weight: 600; line-height: 1; letter-spacing: -1px; }
+.score-of { font-family: var(--mono); font-size: 9px; color: var(--text3); margin-top: 2px; letter-spacing: 1px; }
+
+.score-info { display: flex; flex-direction: column; gap: 5px; }
+.score-tier { font-size: 20px; font-weight: 700; letter-spacing: -.5px; }
+.score-tier.good { color: var(--green); }
+.score-tier.mid { color: var(--yellow); }
+.score-tier.bad { color: var(--red); }
+.score-url { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+
+.metric-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--navy3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  min-width: 80px;
+}
+.metric-val { font-family: var(--mono); font-size: 18px; font-weight: 600; color: var(--text); letter-spacing: -.5px; }
+.metric-lbl { font-family: var(--mono); font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); }
+
+/* RESULT CARDS */
+.cards-grid { display: flex; flex-direction: column; gap: 10px; }
+.result-card {
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  opacity: 0;
+  animation: fadeUp .4s cubic-bezier(.16,1,.3,1) forwards;
+}
+.result-card.good { border-left: 3px solid var(--green); }
+.result-card.warn { border-left: 3px solid var(--yellow); }
+.result-card.plan { border-left: 3px solid var(--blue); }
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.card-head-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.card-head-label.good { color: var(--green); }
+.card-head-label.warn { color: var(--yellow); }
+.card-head-label.plan { color: var(--blue); }
+.card-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+.card-row:last-child { margin-bottom: 0; }
+.card-icon {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+.card-icon.ok { background: var(--green-dim); color: var(--green); }
+.card-icon.warn { background: var(--yellow-dim); color: var(--yellow); }
+.card-icon.bad { background: var(--red-dim); color: var(--red); }
+.card-icon.num { background: var(--blue-dim); color: var(--blue); font-family: var(--mono); font-size: 9px; }
+.card-text { font-size: 13px; color: var(--text2); line-height: 1.6; }
+.card-text strong { color: var(--text); font-weight: 600; }
+
+/* SKELETON */
+.skel { display: flex; flex-direction: column; gap: 12px; }
+.skel-header { background: var(--navy2); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; display: flex; gap: 20px; align-items: center; }
+.skel-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--navy3); position: relative; overflow: hidden; flex-shrink: 0; }
+.skel-lines { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.skel-bar { height: 12px; border-radius: 6px; background: var(--navy3); position: relative; overflow: hidden; }
+.skel-block { height: 80px; border-radius: 12px; background: var(--navy2); border: 1px solid var(--border); position: relative; overflow: hidden; }
+.skel-status { font-family: var(--mono); font-size: 10px; color: var(--text3); text-align: center; letter-spacing: 1px; animation: pulse 1.8s ease-in-out infinite; }
+.skel-circle::after, .skel-bar::after, .skel-block::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(59,130,246,.12), transparent);
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+@keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:.9} }
+
+/* RAW DATA */
+.raw-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text3);
+  padding: 10px 0 0;
+  border: none;
+  background: none;
+  transition: color .15s;
+}
+.raw-toggle:hover { color: var(--text2); }
+.raw-table { display: none; margin-top: 10px; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; }
+.raw-table.open { display: block; }
+.raw-row { display: flex; justify-content: space-between; padding: 8px 14px; border-bottom: 1px solid var(--border); }
+.raw-row:last-child { border-bottom: none; }
+.raw-key { font-family: var(--mono); font-size: 10px; color: var(--text3); }
+.raw-val { font-family: var(--mono); font-size: 10px; color: var(--text); font-weight: 500; text-align: right; }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--navy3);
+  border: 1px solid var(--border2);
+  border-radius: 9px;
+  padding: 12px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  z-index: 9100;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all .25s cubic-bezier(.34,1.2,.64,1);
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { border-color: rgba(248,113,113,.3); color: var(--red); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .score-header { grid-template-columns: auto 1fr; grid-template-rows: auto auto; }
+  .metric-pill { display: none; }
+  .input-row { flex-direction: column; }
+}
 </style>
 </head>
 <body>
-<div class="bg-grid"></div>
-<div class="bg-glow"></div>
 
-<div class="wrap">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <a class="sb-logo-mark" href="https://mlynrplan.com" id="back-link">
+      <div class="sb-logo-icon">📊</div>
+      <div>
+        <div class="sb-logo-text">MLYNR Insight</div>
+        <div class="sb-logo-sub">AI Analiz Aracı</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="sb-section-label">Araçlar</div>
+  <nav class="sb-nav">
+    <button class="sb-nav-item active" onclick="switchTab('site')">
+      <span class="sb-icon">🌐</span> Site Analizi
+    </button>
+    <button class="sb-nav-item" onclick="switchTab('csv')">
+      <span class="sb-icon">📈</span> Reklam Analizi
+    </button>
+  </nav>
+
+  <hr class="sb-divider">
+
+  <div class="sb-section-label">Son Taramalar</div>
+  <div class="sb-history">
+    <div class="sb-history-list" id="history-list">
+      <div class="sb-history-empty">Henüz tarama yok</div>
+    </div>
+  </div>
+
+  <div class="sb-tips">
+    <div class="sb-tip-card" id="sb-tip">
+      <div class="sb-tip-label">💡 İpucu</div>
+      <div class="sb-tip-text" id="sb-tip-text">Kendi mağazanı taramadan önce rakiplerini tara, kıyasla.</div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
   <div class="topbar">
-    <a class="back-link" href="https://mlynrplan.com" id="back-link">← Portala Dön</a>
-    <div class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">☀️</div>
-  </div>
-
-  <div class="hero">
-    <div class="hero-badge">✦ MLYNR INSIGHT</div>
-    <div class="hero-title">Mağazanın gerçek<br><span>sağlık durumunu</span> öğren.</div>
-    <div class="hero-sub">Hesap bağlamadan, tek tıkla — sitenin gerçek hızını, SEO/CRO eksiklerini ve Meta reklam performansını AI ile analiz et. Tahmin değil, gerçek veriye dayalı sonuç.</div>
-  </div>
-
-  <div class="stat-row">
-    <div class="stat-card speed">
-      <div class="stat-label">Hız Analizi</div>
-      <div class="stat-num">35<span>%</span></div>
-      <div class="stat-desc">Google PageSpeed gerçek ölçümü — LCP, CLS, hız skoru</div>
-    </div>
-    <div class="stat-card seo">
-      <div class="stat-label">SEO Puanı</div>
-      <div class="stat-num">30<span>%</span></div>
-      <div class="stat-desc">Title, meta, görsel alt text, yapısal kontroller</div>
-    </div>
-    <div class="stat-card cro">
-      <div class="stat-label">CRO Skoru</div>
-      <div class="stat-num">35<span>%</span></div>
-      <div class="stat-desc">Güven rozeti, sticky cart, yorum, dönüşüm sinyalleri</div>
+    <div class="topbar-title" id="topbar-title">Site Analizi</div>
+    <div class="topbar-right">
+      <span class="topbar-badge">● Aktif</span>
+      <a class="back-link" href="https://mlynrplan.com" id="back-link2">← Portala Dön</a>
     </div>
   </div>
 
-  <div class="section">
-    <div class="karne-tabs">
-      <div class="karne-tab-indicator" id="karne-tab-indicator"></div>
-      <div class="karne-tab active" id="karne-tab-site" onclick="switchKarneTab('site')">🌐 Site Analizi</div>
-      <div class="karne-tab" id="karne-tab-csv" onclick="switchKarneTab('csv')">📊 Reklam Analiz</div>
+  <div class="content">
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-site" onclick="switchTab('site')">🌐 Site Analizi</button>
+      <button class="tab-btn" id="tab-csv" onclick="switchTab('csv')">📈 Reklam Analizi</button>
     </div>
 
-    <!-- SİTE ANALİZİ -->
-    <div class="karne-panel active" id="karne-panel-site">
-      <div class="karne-card">
-        <div style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6">Mağaza linkini gir, hız + SEO + CRO taraması yapıp genel bir site sağlık skoru çıkaralım.</div>
-        <div class="karne-field" style="margin-bottom:16px">
-          <label>Mağaza URL</label>
-          <input type="text" id="k-site-url" placeholder="https://magazam.com">
+    <!-- SITE PANELİ -->
+    <div class="panel active" id="panel-site">
+      <div class="input-zone">
+        <div class="input-row">
+          <div class="input-group">
+            <label class="input-label">Mağaza URL</label>
+            <input class="input-field" id="site-url" type="text" placeholder="https://magazam.myshopify.com" />
+          </div>
+          <button class="scan-btn" id="site-btn" onclick="runSiteAnaliz()">Tara →</button>
         </div>
-        <button class="karne-btn" id="karne-site-btn" onclick="runSiteAnaliz()">Siteyi Tara →</button>
-        <div class="karne-result" id="karne-site-result"></div>
       </div>
+      <div class="result-zone" id="site-result"></div>
     </div>
 
-    <!-- REKLAM CSV ANALİZİ -->
-    <div class="karne-panel" id="karne-panel-csv">
-      <div class="karne-card">
-        <div style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6">Meta Ads Manager'dan indirdiğin reklam raporunu (.csv) yükle, AI senin için kampanyaları okuyup hangisi iyi gidiyor hangisi durdurulmalı söylesin.</div>
-        <div class="karne-dropzone" id="karne-dropzone">
-          <div class="karne-dropzone-icon">📄</div>
-          <div class="karne-dropzone-text" id="karne-dropzone-text">CSV dosyasını buraya sürükle veya tıkla</div>
-          <div class="karne-dropzone-sub">Meta Ads Manager → Raporlar → Dışa Aktar (.csv)</div>
-          <div class="karne-dropzone-filename" id="karne-dropzone-filename"></div>
-          <input type="file" accept=".csv" id="karne-csv-input" onchange="handleKarneFile(this)">
+    <!-- CSV PANELİ -->
+    <div class="panel" id="panel-csv">
+      <div class="input-zone">
+        <div class="dropzone" id="dropzone">
+          <input type="file" accept=".csv" id="csv-input" onchange="handleFile(this)">
+          <div class="dropzone-icon">📄</div>
+          <div class="dropzone-text" id="dz-text">CSV dosyasını buraya sürükle veya tıkla</div>
+          <div class="dropzone-sub">Meta Ads Manager → Raporlar → Dışa Aktar (.csv)</div>
+          <div class="dropzone-file" id="dz-file"></div>
         </div>
-        <button class="karne-btn" id="karne-csv-btn" onclick="runCsvAnaliz()" disabled>Önce CSV Yükle</button>
-        <div class="karne-result" id="karne-csv-result"></div>
+        <button class="scan-btn" id="csv-btn" style="width:100%" onclick="runCsvAnaliz()" disabled>Önce CSV Seç</button>
       </div>
+      <div class="result-zone" id="csv-result"></div>
     </div>
-  </div>
 
-  <div class="footer-note">MLYNR Insight — sonuçlar Google PageSpeed verileri ve sayfa yapısı taramasına dayanır.<br>Kesin sonuçlar için manuel inceleme önerilir. AI koç desteği için portala dön.</div>
-</div>
+  </div>
+</main>
 
 <div class="toast" id="toast"></div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
-var SUPABASE_URL='https://xrelhozqawdseobxqbju.supabase.co';
-var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
-var SUPPORT_FN=SUPABASE_URL+'/functions/v1/shopify-endpoint';
-var SITE_ANALIZ_FN=SUPABASE_URL+'/functions/v1/site-analiz';
+var SUPABASE_URL = 'https://xrelhozqawdseobxqbju.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
+var SUPPORT_FN = SUPABASE_URL + '/functions/v1/shopify-endpoint';
+var SITE_ANALIZ_FN = SUPABASE_URL + '/functions/v1/site-analiz';
 
-/* email parametresini koru, portala dönüş linkine ekle */
+// email param
 (function(){
-  try{
-    var params=new URLSearchParams(window.location.search);
-    var em=params.get('u');
-    if(em){
-      var bl=document.getElementById('back-link');
-      bl.href='https://mlynrplan.com?u='+encodeURIComponent(em);
+  try {
+    var p = new URLSearchParams(window.location.search);
+    var em = p.get('u');
+    if (em) {
+      var suffix = '?u=' + encodeURIComponent(em);
+      document.getElementById('back-link').href = 'https://mlynrplan.com' + suffix;
+      document.getElementById('back-link2').href = 'https://mlynrplan.com' + suffix;
     }
-  }catch(e){}
+  } catch(e) {}
 })();
 
-/* THEME */
-function toggleTheme(){
-  var isLight=document.body.classList.toggle('light-mode');
-  document.getElementById('theme-toggle').textContent=isLight?'🌙':'☀️';
-  try{localStorage.setItem('mlynr_theme',isLight?'light':'dark');}catch(e){}
+// TOAST
+function showToast(msg, cls) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (cls ? ' ' + cls : '') + ' show';
+  clearTimeout(window._tt);
+  window._tt = setTimeout(function(){ t.classList.remove('show'); }, 2600);
 }
-(function applyTheme(){
-  try{
-    var t=localStorage.getItem('mlynr_theme');
-    if(t==='light'){document.body.classList.add('light-mode');document.getElementById('theme-toggle').textContent='🌙';}
-  }catch(e){}
-})();
 
-function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(cls?' '+cls:'')+' show';clearTimeout(window._tt);window._tt=setTimeout(function(){t.classList.remove('show');},2600);}
-
-/* ============ MLYNR INSIGHT MODULE ============ */
-function switchKarneTab(tab){
-  var idx=tab==='site'?0:1;
-  document.getElementById('karne-tab-indicator').style.transform='translateX('+(idx*100)+'%)';
-  ['site','csv'].forEach(function(t){
-    document.getElementById('karne-tab-'+t).classList.toggle('active',t===tab);
-    document.getElementById('karne-panel-'+t).classList.toggle('active',t===tab);
+// TAB SWITCH
+var currentTab = 'site';
+var tips = {
+  site: 'Kendi mağazanı taramadan önce rakiplerini tara, kıyasla.',
+  csv: 'ROAS 1.5\'in altındaki kampanyaları hemen durdur, bütçeyi kazananlara aktar.'
+};
+function switchTab(tab) {
+  currentTab = tab;
+  ['site','csv'].forEach(function(t) {
+    document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+    document.getElementById('panel-' + t).classList.toggle('active', t === tab);
+    document.querySelector('.sb-nav-item:nth-child(' + (t==='site'?1:2) + ')').classList.toggle('active', t === tab);
   });
+  document.getElementById('topbar-title').textContent = tab === 'site' ? 'Site Analizi' : 'Reklam Analizi';
+  document.getElementById('sb-tip-text').textContent = tips[tab];
 }
 
-function karneScoreClass(score){
-  if(score>=70)return'good';
-  if(score>=40)return'mid';
-  return'bad';
+// HISTORY (localStorage)
+var HIST_KEY = 'mlynr_insight_history';
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch(e) { return []; }
 }
-
-function karneTierLabel(score){
-  if(score>=70)return'Sağlıklı';
-  if(score>=40)return'Geliştirilebilir';
-  return'Acil Müdahale';
+function saveHistory(item) {
+  var h = getHistory().filter(function(x){ return x.url !== item.url; });
+  h.unshift(item);
+  h = h.slice(0, 5);
+  try { localStorage.setItem(HIST_KEY, JSON.stringify(h)); } catch(e) {}
+  renderHistory();
 }
-
-var _karneRingSeq=0;
-function scoreRingHTML(score,subLabel){
-  _karneRingSeq++;
-  var id='kr'+_karneRingSeq;
-  var tier=karneScoreClass(score);
-  var colors={good:['#22c55e','#86efac'],mid:['#facc15','#fde68a'],bad:['#ef4444','#fca5a5']}[tier];
-  var glow={good:'rgba(34,197,94,.35)',mid:'rgba(250,204,21,.3)',bad:'rgba(239,68,68,.3)'}[tier];
-  var circ=2*Math.PI*42;
-  var offset=circ-(Math.max(0,Math.min(100,score))/100)*circ;
-  return '<div class="karne-ring-wrap" style="--ring-glow:'+glow+'">'+
-    '<svg viewBox="0 0 96 96" class="karne-ring">'+
-      '<defs><linearGradient id="grad-'+id+'" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="'+colors[0]+'"/><stop offset="100%" stop-color="'+colors[1]+'"/></linearGradient></defs>'+
-      '<circle cx="48" cy="48" r="42" class="karne-ring-bg"/>'+
-      '<circle cx="48" cy="48" r="42" class="karne-ring-fg" id="ring-'+id+'" stroke="url(#grad-'+id+')" stroke-dasharray="'+circ.toFixed(1)+'" stroke-dashoffset="'+circ.toFixed(1)+'" data-offset="'+offset.toFixed(1)+'"/>'+
-    '</svg>'+
-    '<div class="karne-ring-center"><div class="karne-ring-score" id="score-'+id+'" data-target="'+score+'">0</div><div class="karne-ring-label">/ 100</div></div>'+
-  '</div>'+
-  '<div class="karne-score-meta"><div class="karne-score-tier '+tier+'">'+karneTierLabel(score)+'</div>'+(subLabel?'<div class="karne-score-sub">'+subLabel+'</div>':'')+'</div>';
+function renderHistory() {
+  var h = getHistory();
+  var el = document.getElementById('history-list');
+  if (!h.length) { el.innerHTML = '<div class="sb-history-empty">Henüz tarama yok</div>'; return; }
+  el.innerHTML = h.map(function(item) {
+    var tierCls = item.score >= 70 ? 'good' : item.score >= 40 ? 'mid' : 'bad';
+    var label = item.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    return '<button class="sb-history-item" onclick="loadHistory(\'' + encodeURIComponent(item.url) + '\')">' +
+      '<span class="sb-history-dot ' + tierCls + '"></span>' +
+      '<span class="sb-history-url">' + label + '</span>' +
+      (item.score ? '<span class="sb-history-score">' + item.score + '</span>' : '') +
+      '</button>';
+  }).join('');
 }
+function loadHistory(encUrl) {
+  var url = decodeURIComponent(encUrl);
+  switchTab('site');
+  document.getElementById('site-url').value = url;
+  showToast('URL yüklendi, tarayabilirsin');
+}
+renderHistory();
 
-function animateKarneRings(){
+// SCORE RING
+var ringSeq = 0;
+function scoreRingHTML(score, subLabel) {
+  ringSeq++;
+  var id = 'r' + ringSeq;
+  var tierCls = score >= 70 ? 'good' : score >= 40 ? 'mid' : 'bad';
+  var color = { good: ['#34d399','#6ee7b7'], mid: ['#fbbf24','#fde68a'], bad: ['#f87171','#fca5a5'] }[tierCls];
+  var glow = { good: 'rgba(52,211,153,.3)', mid: 'rgba(251,191,36,.25)', bad: 'rgba(248,113,113,.25)' }[tierCls];
+  var circ = 2 * Math.PI * 38;
+  var offset = circ - (Math.max(0, Math.min(100, score)) / 100) * circ;
+  return '<div class="score-ring-wrap" style="--ring-glow:' + glow + '">' +
+    '<svg viewBox="0 0 90 90" class="score-ring">' +
+      '<defs><linearGradient id="g' + id + '" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="' + color[0] + '"/><stop offset="100%" stop-color="' + color[1] + '"/></linearGradient></defs>' +
+      '<circle cx="45" cy="45" r="38" class="score-ring-bg"/>' +
+      '<circle cx="45" cy="45" r="38" class="score-ring-fg" id="fg' + id + '" stroke="url(#g' + id + ')" stroke-dasharray="' + circ.toFixed(1) + '" stroke-dashoffset="' + circ.toFixed(1) + '" data-offset="' + offset.toFixed(1) + '"/>' +
+    '</svg>' +
+    '<div class="score-ring-center">' +
+      '<div class="score-num ' + tierCls + '" id="sn' + id + '" data-target="' + score + '">0</div>' +
+      '<div class="score-of">/ 100</div>' +
+    '</div>' +
+  '</div>';
+}
+function tierLabel(s) { return s>=70?'Sağlıklı':s>=40?'Geliştirilebilir':'Acil Müdahale'; }
+function animateRings() {
   requestAnimationFrame(function(){
     setTimeout(function(){
-      document.querySelectorAll('.karne-ring-fg').forEach(function(el){
-        el.style.strokeDashoffset=el.getAttribute('data-offset');
+      document.querySelectorAll('.score-ring-fg').forEach(function(el){
+        el.style.strokeDashoffset = el.getAttribute('data-offset');
       });
-      document.querySelectorAll('.karne-ring-score').forEach(function(el){
-        var target=parseInt(el.getAttribute('data-target'),10);
-        var start=0;
-        var duration=900;
-        var startTime=null;
-        function step(ts){
-          if(!startTime)startTime=ts;
-          var progress=Math.min(1,(ts-startTime)/duration);
-          var eased=1-Math.pow(1-progress,3);
-          el.textContent=Math.round(start+(target-start)*eased);
-          if(progress<1)requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
+      document.querySelectorAll('.score-num[data-target]').forEach(function(el){
+        var target = parseInt(el.getAttribute('data-target'), 10);
+        var t0 = null;
+        (function step(ts){
+          if (!t0) t0 = ts;
+          var p = Math.min(1, (ts - t0) / 900);
+          var e = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * e);
+          if (p < 1) requestAnimationFrame(step);
+        })(performance.now());
       });
-    },50);
+    }, 50);
   });
 }
 
-function parseKarneAI(text){
-  var m=text.match(/SKOR\s*[:\-]?\s*(\d{1,3})/i);
-  var score=m?Math.min(100,parseInt(m[1],10)):null;
-  var clean=text.replace(/SKOR\s*[:\-]?\s*\d{1,3}\s*\/?\s*100?/i,'').trim();
-  return{score:score,text:clean};
+// SKELETON
+function skelHTML(msg) {
+  return '<div class="skel">' +
+    '<div class="skel-header"><div class="skel-circle"></div><div class="skel-lines"><div class="skel-bar" style="width:55%"></div><div class="skel-bar" style="width:35%"></div><div class="skel-bar" style="width:45%"></div></div></div>' +
+    '<div class="skel-block"></div>' +
+    '<div class="skel-block"></div>' +
+    '<div class="skel-status">' + msg + '</div>' +
+  '</div>';
 }
 
-function karneSectionType(label){
-  var l=label.toLocaleUpperCase('tr');
-  if(l.indexOf('PLAN')>-1||l.indexOf('ADIM')>-1)return'plan';
-  if(l.indexOf('İYİ')>-1||l.indexOf('IYI')>-1)return'good';
-  if(l.indexOf('DÜZELT')>-1||l.indexOf('SORUN')>-1||l.indexOf('GEREKEN')>-1||l.indexOf('DIKKAT')>-1||l.indexOf('DİKKAT')>-1)return'warn';
-  return'neutral';
+// PARSE AI TEXT
+function parseScore(text) {
+  var m = text.match(/SKOR\s*[:\-]?\s*(\d{1,3})/i);
+  return m ? Math.min(100, parseInt(m[1], 10)) : null;
 }
-function karneBulletRowHTML(text,stepNum){
-  text=text.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--white)">$1</strong>');
-  if(stepNum){
-    return '<div class="karne-step-row"><span class="karne-step-num">'+stepNum+'</span><span class="karne-step-text">'+text+'</span></div>';
-  }
-  var emojiMatch=text.match(/^(✅|⚠️|❌)\s*(.*)$/);
-  if(emojiMatch){
-    var iconCls=emojiMatch[1]==='✅'?'ok':(emojiMatch[1]==='⚠️'?'warn':'bad');
-    var iconChar=emojiMatch[1]==='✅'?'✓':(emojiMatch[1]==='⚠️'?'!':'✕');
-    return '<div class="karne-bullet-row"><span class="karne-bullet-icon '+iconCls+'">'+iconChar+'</span><span class="karne-result-text" style="margin-bottom:0">'+emojiMatch[2]+'</span></div>';
-  }
-  return '<div class="karne-bullet-row"><span class="karne-bullet-icon" style="background:rgba(255,255,255,.1);color:var(--text2)">•</span><span class="karne-result-text" style="margin-bottom:0">'+text+'</span></div>';
+function cleanText(text) {
+  return text.replace(/SKOR\s*[:\-]?\s*\d{1,3}\s*\/?\s*100?/i, '').trim();
 }
-function formatKarneText(raw){
-  var lines=raw.split('\n').map(function(l){return l.trim();}).filter(function(l){return l&&l!=='---';});
-  var html='';
-  var sectionIdx=0;
-  var section=null; // {title, type, body, stepCount}
-  function flush(){
-    if(!section)return;
-    var delay=(sectionIdx*0.12).toFixed(2);
-    html+='<div class="karne-section-block '+section.type+'" style="animation-delay:'+delay+'s"><div class="karne-section-block-title '+section.type+'">'+section.title+'</div>'+section.body+'</div>';
-    sectionIdx++;
-    section=null;
+function sectionType(label) {
+  var l = label.toLocaleUpperCase('tr');
+  if (l.indexOf('PLAN')>-1 || l.indexOf('ADIM')>-1) return 'plan';
+  if (l.indexOf('İYİ')>-1 || l.indexOf('IYI')>-1) return 'good';
+  if (l.indexOf('DÜZELT')>-1 || l.indexOf('SORUN')>-1 || l.indexOf('GEREKEN')>-1 || l.indexOf('DİKKAT')>-1) return 'warn';
+  return 'warn';
+}
+function renderRow(text, stepNum) {
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  if (stepNum) {
+    return '<div class="card-row"><span class="card-icon num">' + stepNum + '</span><span class="card-text">' + text + '</span></div>';
   }
-  lines.forEach(function(line){
-    var boldHeading=line.match(/^\*\*(.+?)\*\*\s*:?$/);
-    var plainHeading=!boldHeading&&line.length<40&&/:$/.test(line)&&line===line.toLocaleUpperCase('tr')&&/[A-ZÇĞİÖŞÜ]/.test(line);
-    if(boldHeading||plainHeading){
+  var em = text.match(/^(✅|⚠️|❌)\s*(.*)$/);
+  if (em) {
+    var cls = em[1]==='✅'?'ok':em[1]==='⚠️'?'warn':'bad';
+    var ch = em[1]==='✅'?'✓':em[1]==='⚠️'?'!':'✕';
+    return '<div class="card-row"><span class="card-icon ' + cls + '">' + ch + '</span><span class="card-text">' + em[2] + '</span></div>';
+  }
+  return '<div class="card-row"><span class="card-icon" style="background:rgba(255,255,255,.06);color:var(--text3)">·</span><span class="card-text">' + text + '</span></div>';
+}
+function formatText(raw) {
+  var lines = raw.split('\n').map(function(l){return l.trim();}).filter(function(l){return l && l!=='---';});
+  var html = '';
+  var secs = [], cur = null;
+  function flush() {
+    if (!cur) return;
+    secs.push(cur); cur = null;
+  }
+  lines.forEach(function(line) {
+    var bh = line.match(/^\*\*(.+?)\*\*\s*:?$/);
+    var ph = !bh && line.length < 40 && /:$/.test(line) && line === line.toLocaleUpperCase('tr') && /[A-ZÇĞİÖŞÜ]/.test(line);
+    if (bh || ph) {
       flush();
-      var label=boldHeading?boldHeading[1]:line.replace(/:$/,'');
-      section={title:label,type:karneSectionType(label),body:'',stepCount:0};
+      var lbl = bh ? bh[1] : line.replace(/:$/,'');
+      cur = { title: lbl, type: sectionType(lbl), body: '', sc: 0 };
       return;
     }
-    var numberedMatch=line.match(/^(\d+)[\.\)]\s+(.*)$/);
-    var bulletMatch=!numberedMatch&&line.match(/^[-—]\s+(.*)$/);
-    var text=numberedMatch?numberedMatch[2]:(bulletMatch?bulletMatch[1]:line);
-    var stepNum=null;
-    if(numberedMatch&&section&&section.type==='plan'){
-      section.stepCount++;
-      stepNum=section.stepCount;
-    }
-    var rowHtml=karneBulletRowHTML(text,stepNum);
-    if(section){
-      section.body+=rowHtml;
-    } else {
-      html+=rowHtml; // başlıktan önceki serbest metin (nadir)
-    }
+    var nm = line.match(/^(\d+)[\.\)]\s+(.*)$/);
+    var bm = !nm && line.match(/^[-—]\s+(.*)$/);
+    var text = nm ? nm[2] : (bm ? bm[1] : line);
+    var sn = null;
+    if (nm && cur && cur.type === 'plan') { cur.sc++; sn = cur.sc; }
+    var row = renderRow(text, sn);
+    if (cur) cur.body += row;
+    else html += row;
   });
   flush();
-  return html||raw;
+  secs.forEach(function(sec, i) {
+    html += '<div class="result-card ' + sec.type + '" style="animation-delay:' + (i * 0.1).toFixed(2) + 's">' +
+      '<div class="card-head"><span class="card-head-label ' + sec.type + '">' + sec.title + '</span></div>' +
+      sec.body +
+      '</div>';
+  });
+  return html || raw;
 }
 
-function rawDataHTML(data){
-  if(!data)return'';
-  var ps=data.pagespeed||{};
-  var hs=data.htmlSignals||{};
-  var rows=[];
-  rows.push(['Taranan URL',data.url||document.getElementById('k-site-url').value||'—']);
-  rows.push(['Mobil hız skoru (PageSpeed)',typeof ps.performanceScore==='number'?ps.performanceScore+'/100':(ps.error?'Hata: '+ps.error:'—')]);
-  if(ps.lcp)rows.push(['Sayfa yükleme süresi (LCP)',ps.lcp]);
-  rows.push(['Sayfa başlığı (title) var mı',hs.hasTitle?'✓ Evet':'✗ Hayır']);
-  rows.push(['Meta description var mı',hs.hasMetaDescription?'✓ Evet':'✗ Hayır']);
-  if(typeof hs.imgCount==='number')rows.push(['Görsel sayısı / alt text eksik',hs.imgCount+' / '+(hs.imgWithoutAlt||0)]);
-  rows.push(['Trust badge',hs.hasTrustBadge?'✓ Var':'✗ Yok']);
-  rows.push(['Sticky sepete ekle',hs.hasStickyAtc?'✓ Var':'✗ Yok']);
-  rows.push(['Geri sayım sayacı',hs.hasCountdown?'✓ Var':'✗ Yok']);
-  rows.push(['Yorum/review',hs.hasReviews?'✓ Var':'✗ Yok']);
-  if(typeof data.baselineScore==='number')rows.push(['Hesaplanan taban skor',data.baselineScore+'/100']);
-  var id='raw-'+Date.now();
-  return '<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px">'+
-    '<div onclick="document.getElementById(\''+id+'\').classList.toggle(\'show\')" style="cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:6px">🔍 Ham veriyi gör (gerçek mi kontrol et)</div>'+
-    '<div id="'+id+'" class="karne-rawdata">'+
-      rows.map(function(r){return '<div class="karne-raw-row"><span>'+r[0]+'</span><span>'+r[1]+'</span></div>';}).join('')+
-    '</div>'+
-  '</div>';
-}
-
-function extractText(data){
-  var candidates=['sonuc','reply','message','result','content','cevap','text','answer'];
-  for(var i=0;i<candidates.length;i++){
-    var v=data[candidates[i]];
-    if(typeof v==='string'&&v.trim()){
-      var cleaned=v.replace(/```json/gi,'').replace(/```/g,'').trim();
-      if(cleaned.startsWith('{')||cleaned.startsWith('[')){
-        try{var parsed=JSON.parse(cleaned);var innerText=extractText(parsed);if(innerText)return innerText;}catch(e){}
-      }
-      return cleaned;
-    }
-    if(v&&typeof v==='object'&&!Array.isArray(v)){var innerText=extractText(v);if(innerText)return innerText;}
+// EXTRACT TEXT FROM API RESPONSE
+function extractText(data) {
+  var keys = ['sonuc','reply','message','result','content','cevap','text','answer'];
+  for (var i=0;i<keys.length;i++) {
+    var v = data[keys[i]];
+    if (typeof v==='string' && v.trim()) return v.replace(/```json/gi,'').replace(/```/g,'').trim();
+    if (v && typeof v==='object' && !Array.isArray(v)) { var t=extractText(v); if(t) return t; }
   }
-  var parts=[];
-  Object.keys(data).forEach(function(k){if(typeof data[k]==='string'&&data[k].trim().length>10){parts.push(data[k]);}});
-  return parts.join('\n\n')||'';
+  return Object.keys(data).filter(function(k){return typeof data[k]==='string' && data[k].length>10;}).map(function(k){return data[k];}).join('\n\n') || '';
 }
 
-var karneCsvText=null;
-var karneCsvFilename=null;
-function handleKarneFile(input){
-  var file=input.files[0];
-  if(!file)return;
-  if(!/\.csv$/i.test(file.name)){showToast('Sadece .csv dosyası yükle','error');return;}
-  var reader=new FileReader();
-  reader.onload=function(e){
-    karneCsvText=e.target.result;
-    karneCsvFilename=file.name;
-    document.getElementById('karne-dropzone').classList.add('has-file');
-    document.getElementById('karne-dropzone-text').textContent='Dosya seçildi ✓';
-    document.getElementById('karne-dropzone-filename').textContent=file.name;
-    var btn=document.getElementById('karne-csv-btn');
-    btn.disabled=false;btn.textContent='CSV\'yi Analiz Et →';
-  };
-  reader.onerror=function(){showToast('Dosya okunamadı','error');};
-  reader.readAsText(file,'UTF-8');
-}
-
-function karneSkeletonHTML(statusText){
-  return '<div class="karne-skeleton">'+
-    '<div class="karne-skel-row"><div class="karne-skel-ring"></div><div class="karne-skel-lines"><div class="karne-skel-bar" style="width:60%"></div><div class="karne-skel-bar" style="width:40%"></div></div></div>'+
-    '<div class="karne-skel-block"></div>'+
-    '<div class="karne-skel-block"></div>'+
-    '<div class="karne-skel-status">'+statusText+'</div>'+
+// RAW DATA
+function rawDataHTML(data) {
+  if (!data) return '';
+  var ps = data.pagespeed || {};
+  var hs = data.htmlSignals || {};
+  var rows = [
+    ['URL', data.url || '—'],
+    ['Mobil hız (PageSpeed)', typeof ps.performanceScore==='number' ? ps.performanceScore+'/100' : (ps.error?'Hata':'—')],
+    ['LCP', ps.lcp || '—'],
+    ['Title', hs.hasTitle?'✓':'✗'],
+    ['Meta description', hs.hasMetaDescription?'✓':'✗'],
+    ['Görseller / alt eksik', (hs.imgCount||0) + ' / ' + (hs.imgWithoutAlt||0)],
+    ['Trust badge', hs.hasTrustBadge?'✓':'✗'],
+    ['Sticky cart', hs.hasStickyAtc?'✓':'✗'],
+    ['Yorum', hs.hasReviews?'✓':'✗'],
+    ['Hesaplanan skor', typeof data.baselineScore==='number' ? data.baselineScore : '—'],
+  ];
+  var rid = 'raw' + Date.now();
+  return '<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">' +
+    '<button class="raw-toggle" onclick="document.getElementById(\'' + rid + '\').classList.toggle(\'open\')">🔍 Ham veri — gerçek mi kontrol et</button>' +
+    '<div class="raw-table" id="' + rid + '">' +
+    rows.map(function(r){ return '<div class="raw-row"><span class="raw-key">'+r[0]+'</span><span class="raw-val">'+r[1]+'</span></div>'; }).join('') +
+    '</div>' +
   '</div>';
 }
 
-function runCsvAnaliz(){
-  if(!karneCsvText){showToast('Önce bir CSV dosyası seç','error');return;}
-  var btn=document.getElementById('karne-csv-btn');
-  var resBox=document.getElementById('karne-csv-result');
-  btn.disabled=true;btn.textContent='Analiz ediliyor...';
-  resBox.className='karne-result show';
-  resBox.innerHTML=karneSkeletonHTML('⏳ Reklam verileri okunuyor, kampanyalar taranıyor...');
+// BUILD RESULT
+function buildResult(score, url, summary, rawData) {
+  var tierCls = score >= 70 ? 'good' : score >= 40 ? 'mid' : 'bad';
+  var ps = rawData && rawData.pagespeed || {};
+  var speedScore = typeof ps.performanceScore === 'number' ? ps.performanceScore : '—';
+  var lcp = ps.lcp || '—';
 
-  var truncated=karneCsvText.length>9000?karneCsvText.slice(0,9000)+'\n...(dosyanın geri kalanı uzunluk için kesildi)':karneCsvText;
+  var header = '<div class="score-header">' +
+    scoreRingHTML(score, 'Site sağlığı') +
+    '<div class="score-info">' +
+      '<div class="score-tier ' + tierCls + '">' + tierLabel(score) + '</div>' +
+      '<div class="score-url">' + (url || '').replace(/^https?:\/\//,'') + '</div>' +
+    '</div>' +
+    '<div class="metric-pill"><div class="metric-val">' + speedScore + '</div><div class="metric-lbl">Hız Skoru</div></div>' +
+    '<div class="metric-pill"><div class="metric-val">' + lcp + '</div><div class="metric-lbl">LCP</div></div>' +
+    '<div class="metric-pill"><div class="metric-val">' + score + '</div><div class="metric-lbl">Genel</div></div>' +
+  '</div>';
 
-  var prompt='Sen Meta (Facebook/Instagram) reklamları konusunda uzman bir e-ticaret büyüme danışmanısın. Aşağıda Meta Ads Manager\'dan dışa aktarılmış ham CSV verisi var. Sütun başlıkları İngilizce veya Türkçe olabilir (Amount spent / Harcanan tutar, Results / Sonuçlar, ROAS, CPA, Reach / Erişim gibi). Karşındaki kişi e-ticarete yeni başlamış olabilir, ağır teknik/finans terimleri kullanma, gündelik dille konuş.\n\n'+
-    'SKOR HESABI: Skoru rastgele/hisle verme. Şu mantığı izle: aktif kampanyaların kaçta kaçı satış getiriyor (results>0), ortalama satış başına maliyet makul mü (sektör için $5-30 arası iyi, üstü kötü kabul et), boşa harcanan bütçe (sıfır sonuçlu kampanyalara giden toplam tutar) ne kadar. Bu 3 faktöre göre 0-100 arası tutarlı bir skor üret — aynı veriyle her seferinde aynı/yakın skoru üretmen beklenir.\n\n'+
-    'CSV VERİSİ:\n'+truncated+'\n\n'+
-    'Cevap formatı (KESİNLİKLE bu formatta):\n'+
-    '1) İlk satırda "SKOR: XX/100" yaz (genel reklam hesabı performansı)\n'+
-    '2) "İYİ GİDEN:" başlığı altında ✅ ile 2-3 olumlu şeyi sade dille listele — mümkünse hangi kampanya/reklam iyi gidiyor söyle\n'+
-    '3) "DÜZELTMEN GEREKEN:" başlığı altında ⚠️ ile en fazla 3 sorunu listele, her biri için ne yapması gerektiğini söyle (örn. hangi kampanyayı durdurmalı, hangi reklamı tazelemeli)\n'+
-    '4) "ADIM ADIM PLAN:" başlığı altında, bugün/bu hafta sırasıyla yapması gereken 3-4 somut aksiyonu numaralandırarak yaz (1. 2. 3. gibi) — öncelik sırasına göre, en kritik olan 1. sırada\n'+
-    'Türkçe, kısa, net, sıcak dille yaz. JSON kullanma, düz metin yaz, madde başına emoji koy (plan kısmında emoji kullanma, sadece numara). Ağır teknik terim kullanma.';
+  var body = '<div class="cards-grid">' + formatText(summary) + '</div>';
+  if (rawData) body += rawDataHTML(rawData);
+  return header + body;
+}
 
-  fetch(SUPPORT_FN,{
+// ── SITE ANALİZİ ──
+function runSiteAnaliz() {
+  var btn = document.getElementById('site-btn');
+  var res = document.getElementById('site-result');
+  var url = document.getElementById('site-url').value.trim();
+  if (!url) { showToast('Önce URL gir', 'error'); return; }
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+  btn.disabled = true; btn.textContent = 'Taranıyor...';
+  res.className = 'result-zone show';
+  res.innerHTML = skelHTML('⏳ Hız + SEO + CRO taranıyor (15-20sn)...');
+
+  fetch(SITE_ANALIZ_FN, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_KEY, 'apikey': SUPABASE_KEY },
+    body: JSON.stringify({ url: url })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (data && data.error) {
+      res.innerHTML = '<div style="color:var(--red);font-size:13px;padding:16px">' + data.error + '</div>';
+      btn.disabled=false; btn.textContent='Tara →'; return;
+    }
+    var score = data && typeof data.score==='number' ? data.score : null;
+    var summary = data && data.summary ? data.summary : 'Analiz tamamlanamadı.';
+    if (score !== null) {
+      res.innerHTML = buildResult(score, url, summary, data);
+      animateRings();
+      saveHistory({ url: url, score: score, ts: Date.now() });
+    } else {
+      res.innerHTML = '<div class="cards-grid">' + formatText(summary) + '</div>';
+    }
+    btn.disabled=false; btn.textContent='Tekrar Tara →';
+  })
+  .catch(function() {
+    res.innerHTML = '<div style="color:var(--red);font-size:13px;padding:16px">Bağlantı hatası, tekrar dene.</div>';
+    btn.disabled=false; btn.textContent='Tara →';
+  });
+}
+
+// ── CSV ANALİZİ ──
+var csvText = null;
+function handleFile(input) {
+  var file = input.files[0];
+  if (!file) return;
+  if (!/\.csv$/i.test(file.name)) { showToast('Sadece .csv', 'error'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    csvText = e.target.result;
+    document.getElementById('dropzone').classList.add('has-file');
+    document.getElementById('dz-text').textContent = 'Dosya seçildi ✓';
+    document.getElementById('dz-file').textContent = file.name;
+    var btn = document.getElementById('csv-btn');
+    btn.disabled = false; btn.textContent = 'Reklam Verilerini Analiz Et →';
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function runCsvAnaliz() {
+  if (!csvText) { showToast('Önce CSV seç', 'error'); return; }
+  var btn = document.getElementById('csv-btn');
+  var res = document.getElementById('csv-result');
+  btn.disabled=true; btn.textContent='Analiz ediliyor...';
+  res.className='result-zone show';
+  res.innerHTML=skelHTML('⏳ Kampanyalar okunuyor...');
+
+  var truncated = csvText.length>9000 ? csvText.slice(0,9000)+'\n...(kesildi)' : csvText;
+  var prompt = 'Sen Meta reklamları uzmanı bir e-ticaret büyüme danışmanısın. Aşağıda Meta Ads Manager CSV verisi var. Sade Türkçe, gündelik dil kullan.\n\n' +
+    'SKOR: Aktif kampanya başarısı, CPA makullüğü ($5-30 arası iyi), boşa harcanan bütçeye göre 0-100 arası tutarlı skor üret.\n\n' +
+    'CSV:\n' + truncated + '\n\n' +
+    'FORMAT (kesinlikle):\n1) "SKOR: XX/100"\n2) "İYİ GİDEN:" başlığı, ✅ ile 2-3 olumlu\n3) "DÜZELTMEN GEREKEN:" başlığı, ⚠️ ile max 3 sorun + ne yapmalı\n4) "ADIM ADIM PLAN:" başlığı, numaralı 3-4 aksiyon\nJSON kullanma, düz metin.';
+
+  fetch(SUPPORT_FN, {
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY},
     body:JSON.stringify({prompt:prompt})
   })
   .then(function(r){return r.json();})
   .then(function(data){
-    var reply=typeof data==='string'?data:extractText(data);
-    if(!reply){reply='Analiz alınamadı, tekrar dene.';}
-    reply=reply.replace(/```json[\s\S]*?```/g,'').replace(/```[\s\S]*?```/g,'').trim();
-    var parsed=parseKarneAI(reply);
-    var scoreHtml=parsed.score!==null?scoreRingHTML(parsed.score,'Reklam hesabı'):'';
-    resBox.className='karne-result show'+(parsed.score!==null?' tier-'+karneScoreClass(parsed.score):'');
-    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+formatKarneText(parsed.text);
-    animateKarneRings();
-    btn.disabled=false;btn.textContent='Tekrar Analiz Et →';
+    var reply = typeof data==='string' ? data : extractText(data);
+    if (!reply) reply='Analiz alınamadı.';
+    reply = reply.replace(/```[\s\S]*?```/g,'').trim();
+    var score = parseScore(reply);
+    var text = cleanText(reply);
+    var tierCls = score ? (score>=70?'good':score>=40?'mid':'bad') : '';
+    var header = score ? '<div class="score-header" style="grid-template-columns:auto 1fr">' +
+      scoreRingHTML(score, 'Reklam hesabı') +
+      '<div class="score-info"><div class="score-tier ' + tierCls + '">' + tierLabel(score) + '</div><div class="score-url">Reklam Hesabı</div></div>' +
+      '</div>' : '';
+    res.innerHTML = header + '<div class="cards-grid">' + formatText(text) + '</div>';
+    if (score) animateRings();
+    btn.disabled=false; btn.textContent='Tekrar Analiz Et →';
   })
   .catch(function(){
-    resBox.innerHTML='<div class="karne-result-text" style="color:var(--red)">Bağlantı hatası, tekrar dene.</div>';
-    btn.disabled=false;btn.textContent='CSV\'yi Analiz Et →';
+    res.innerHTML='<div style="color:var(--red);font-size:13px;padding:16px">Bağlantı hatası.</div>';
+    btn.disabled=false; btn.textContent='Analiz Et →';
   });
 }
 
-function runSiteAnaliz(){
-  var btn=document.getElementById('karne-site-btn');
-  var resBox=document.getElementById('karne-site-result');
-  var url=document.getElementById('k-site-url').value.trim();
-  if(!url){showToast('Önce mağaza linkini gir','error');return;}
-  if(!/^https?:\/\//i.test(url))url='https://'+url;
-
-  btn.disabled=true;btn.textContent='Taranıyor...';
-  resBox.className='karne-result show';
-  resBox.innerHTML=karneSkeletonHTML('⏳ Site hızı + SEO + CRO taranıyor (15-20sn)...');
-
-  fetch(SITE_ANALIZ_FN,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY},
-    body:JSON.stringify({url:url})
-  })
-  .then(function(r){return r.json();})
-  .then(function(data){
-    if(data&&data.error){
-      resBox.innerHTML='<div class="karne-result-text" style="color:var(--red)">'+data.error+'</div>';
-      btn.disabled=false;btn.textContent='Siteyi Tara →';
-      return;
-    }
-    var score=data&&typeof data.score==='number'?data.score:null;
-    var summary=data&&data.summary?data.summary:'Analiz tamamlanamadı.';
-    summary=formatKarneText(summary);
-    var scoreHtml=score!==null?scoreRingHTML(score,'Site sağlığı'):'';
-    resBox.className='karne-result show'+(score!==null?' tier-'+karneScoreClass(score):'');
-    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+summary+rawDataHTML(data);
-    animateKarneRings();
-    btn.disabled=false;btn.textContent='Siteyi Tara →';
-  })
-  .catch(function(){
-    resBox.innerHTML='<div class="karne-result-text" style="color:var(--red)">Tarama başarısız oldu. Edge Function kurulu mu kontrol et.</div>';
-    btn.disabled=false;btn.textContent='Siteyi Tara →';
-  });
-}
+// Enter key
+document.getElementById('site-url').addEventListener('keydown', function(e){
+  if (e.key==='Enter') runSiteAnaliz();
+});
 </script>
 </body>
 </html>
