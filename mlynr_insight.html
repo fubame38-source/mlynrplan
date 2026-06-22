@@ -333,7 +333,7 @@ select option{background:var(--surface);color:var(--text)}
 
 <div class="wrap">
   <div class="topbar">
-    <a class="back-link" href="https://mlynrplan.com/shopify_portal.html" id="back-link">← Portala Dön</a>
+    <a class="back-link" href="https://mlynrplan.com/shopify_portal/" id="back-link">← Portala Dön</a>
     <div class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">☀️</div>
   </div>
 
@@ -475,7 +475,7 @@ var SITE_ANALIZ_FN=SUPABASE_URL+'/functions/v1/site-analiz';
     var em=params.get('u');
     if(em){
       var bl=document.getElementById('back-link');
-      bl.href='https://mlynrplan.com/shopify_portal.html?u='+encodeURIComponent(em);
+      bl.href='https://mlynrplan.com/shopify_portal/?u='+encodeURIComponent(em);
     }
   }catch(e){}
   // Ads butonunu başlat
