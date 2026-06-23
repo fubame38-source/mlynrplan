@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MLYNR Insight — AI Mağaza & Reklam Analizi</title>
+<meta name="color-scheme" content="dark light">
+<style>:root{color-scheme:dark}</style>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+  --bg:#0d0d0d;--surface:#1a1a1a;--surface2:#212121;--surface3:#272727;
+  --border:rgba(255,255,255,.10);--border2:rgba(255,255,255,.16);
+  --text:#f0f0f0;--text2:#888;--text3:#444;--white:#fff;
+  --green:#22c55e;--green-ln:rgba(34,197,94,.2);--green-dim:rgba(34,197,94,.05);
+  --gold:#facc15;--gold-ln:rgba(250,204,21,.2);--gold-dim:rgba(250,204,21,.05);
+  --red:#ef4444;--red-ln:rgba(239,68,68,.2);--red-dim:rgba(239,68,68,.05);
+  --r:14px;
+}
+body.light-mode{
+  --bg:#f7f7f5;--surface:#ffffff;--surface2:#f0f0ed;--surface3:#e8e8e5;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.13);
+  --text:#111;--text2:#555;--text3:#999;--white:#111;
+  --green:#16a34a;--green-ln:rgba(22,163,74,.2);--green-dim:rgba(22,163,74,.07);
+  --gold:#92400e;--gold-ln:rgba(146,64,14,.18);--gold-dim:rgba(146,64,14,.05);
+  --red:#dc2626;--red-ln:rgba(220,38,38,.2);--red-dim:rgba(220,38,38,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:42px 42px;pointer-events:none;z-index:0}
+body.light-mode .bg-grid{background-image:linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px)}
+.bg-glow{position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:500px;background:radial-gradient(ellipse,rgba(34,197,94,.12),transparent 70%);pointer-events:none;z-index:0}
+body.light-mode .bg-glow{background:none}
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:24px 20px 80px}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px}
+.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--text2);text-decoration:none;font-size:12px;font-weight:600;font-family:var(--mono);transition:color .2s}
+.back-link:hover{color:var(--text)}
+.theme-toggle{background:var(--surface);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--text)}
+
+/* HERO */
+.hero{margin-bottom:32px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green-ln);border-radius:999px;padding:5px 12px;margin-bottom:16px}
+.hero-title{font-size:34px;font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin-bottom:10px}
+.hero-title span{background:linear-gradient(135deg,var(--green),#86efac);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{font-size:14px;color:var(--text2);line-height:1.6;max-width:560px}
+
+/* VALUE PROPS */
+.value-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0 32px}
+.value-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px}
+.value-icon{font-size:18px;margin-bottom:8px}
+.value-title{font-size:12px;font-weight:700;margin-bottom:4px;letter-spacing:-.2px}
+.value-text{font-size:11px;color:var(--text3);line-height:1.5}
+@media(max-width:640px){.value-grid{grid-template-columns:1fr}}
+
+/* SECTION (module) */
+.section{background:transparent}
+.karne-tabs{display:flex;gap:4px;margin-bottom:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;position:relative}
+.karne-tab{flex:1;background:transparent;border:none;border-radius:9px;padding:12px 10px;cursor:pointer;text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);transition:color .25s;position:relative;z-index:1}
+.karne-tab.active{color:var(--bg)}
+.karne-tab-indicator{position:absolute;top:4px;bottom:4px;left:4px;width:calc(33.333% - 4px);background:var(--white);border-radius:9px;transition:transform .3s cubic-bezier(.34,1.2,.64,1);z-index:0;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+.karne-panel{display:none}
+.karne-panel.active{display:block;animation:karneFadeIn .35s cubic-bezier(.16,1,.3,1)}
+@keyframes karneFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.karne-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;position:relative;overflow:hidden}
+.karne-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.4),transparent)}
+.karne-field{display:flex;flex-direction:column;gap:5px}
+.karne-field label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3)}
+.karne-field input{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 12px;outline:none;transition:border-color .2s}
+.karne-field input:focus{border-color:rgba(34,197,94,.4)}
+.karne-field input::placeholder{color:var(--text3)}
+.karne-btn{width:100%;background:var(--white);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;padding:14px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1)}
+.karne-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.1)}
+.karne-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.karne-result{display:none;margin-top:18px;padding:20px 22px;background:var(--surface2);border:1px solid var(--border2);border-radius:14px;position:relative;overflow:hidden}
+.karne-result.show{display:block;animation:karneFadeIn .4s cubic-bezier(.16,1,.3,1)}
+.karne-result::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--tier-color,var(--border2))}
+.karne-result.tier-good{--tier-color:var(--green)}
+.karne-result.tier-mid{--tier-color:var(--gold)}
+.karne-result.tier-bad{--tier-color:var(--red)}
+.karne-score-row{display:flex;align-items:center;gap:18px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.karne-ring-wrap{position:relative;width:96px;height:96px;flex-shrink:0;filter:drop-shadow(0 0 16px var(--ring-glow,transparent))}
+.karne-ring{width:100%;height:100%;transform:rotate(-90deg);display:block}
+.karne-ring-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:8}
+.karne-ring-fg{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.3s cubic-bezier(.16,1,.3,1)}
+.karne-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.karne-ring-score{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--white);line-height:1;letter-spacing:-1px}
+.karne-ring-label{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:1px;margin-top:2px}
+.karne-score-meta{display:flex;flex-direction:column;gap:4px}
+.karne-score-tier{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.karne-score-tier.good{color:var(--green)}
+.karne-score-tier.mid{color:var(--gold)}
+.karne-score-tier.bad{color:var(--red)}
+.karne-score-sub{font-size:11px;color:var(--text3);font-family:var(--mono);letter-spacing:.5px;text-transform:uppercase}
+.karne-result-heading{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--white);margin:16px 0 8px;font-weight:700;display:flex;align-items:center;gap:8px}
+.karne-result-heading:first-child{margin-top:0}
+.karne-result-heading::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--text3)}
+.karne-section-block{border-radius:14px;padding:16px 18px;margin-bottom:14px;opacity:0;animation:karneSlideIn .5s cubic-bezier(.16,1,.3,1) forwards}
+.karne-section-block:last-child{margin-bottom:0}
+.karne-section-block.good{background:linear-gradient(135deg,var(--green-dim),transparent);border:1px solid var(--green-ln)}
+.karne-section-block.warn{background:linear-gradient(135deg,var(--gold-dim),transparent);border:1px solid var(--gold-ln)}
+.karne-section-block.neutral{background:var(--surface3);border:1px solid var(--border2)}
+.karne-section-block.plan{background:linear-gradient(135deg,rgba(96,165,250,.08),transparent);border:1px solid rgba(96,165,250,.25)}
+.karne-section-block-title{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:800;margin-bottom:12px}
+.karne-section-block-title.good{color:var(--green)}
+.karne-section-block-title.warn{color:var(--gold)}
+.karne-section-block-title.neutral{color:var(--text2)}
+.karne-section-block-title.plan{color:#60a5fa}
+.karne-section-block .karne-bullet-row{margin-bottom:10px}
+.karne-section-block .karne-bullet-row:last-child{margin-bottom:0}
+.karne-section-block .karne-bullet-icon{width:20px;height:20px;font-size:11px;font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.karne-bullet-row{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
+.karne-bullet-icon{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px}
+.karne-bullet-icon.ok{background:var(--green-dim);color:var(--green)}
+.karne-bullet-icon.warn{background:var(--gold-dim);color:var(--gold)}
+.karne-bullet-icon.bad{background:var(--red-dim);color:var(--red)}
+.karne-result-text{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:5px}
+.karne-loading{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--text3);padding:10px 0}
+
+/* SKELETON / SHIMMER LOADING */
+.karne-skeleton{display:flex;flex-direction:column;gap:14px}
+.karne-skel-row{display:flex;align-items:center;gap:16px}
+.karne-skel-ring{width:96px;height:96px;border-radius:50%;flex-shrink:0;position:relative;overflow:hidden;background:var(--surface3)}
+.karne-skel-ring::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(34,197,94,.25),transparent);animation:karneShimmer 1.4s infinite}
+.karne-skel-lines{flex:1;display:flex;flex-direction:column;gap:8px}
+.karne-skel-bar{height:11px;border-radius:6px;background:var(--surface3);position:relative;overflow:hidden}
+.karne-skel-bar::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);animation:karneShimmer 1.4s infinite}
+@keyframes karneShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.karne-skel-block{height:88px;border-radius:14px;background:var(--surface3);position:relative;overflow:hidden}
+.karne-skel-block::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);animation:karneShimmer 1.6s infinite}
+.karne-skel-status{font-family:var(--mono);font-size:11px;color:var(--text3);text-align:center;letter-spacing:.5px;animation:karnePulseText 1.8s ease-in-out infinite}
+@keyframes karnePulseText{0%,100%{opacity:.5}50%{opacity:1}}
+
+@keyframes karneSlideIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* PULSE GLOW — score ring */
+@keyframes ringPulse{0%,100%{filter:drop-shadow(0 0 0px var(--ring-glow,transparent))}50%{filter:drop-shadow(0 0 20px var(--ring-glow,transparent))}}
+.karne-ring-wrap{animation:ringPulse 2.2s ease-in-out 2 .8s}
+
+/* HOVER LIFT — section kartları */
+.karne-section-block{transition:transform .2s cubic-bezier(.34,1.2,.64,1),box-shadow .2s}
+.karne-section-block:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.2)}
+
+/* RIPPLE — scan btn */
+.karne-btn{position:relative;overflow:hidden}
+.karne-btn .ripple{position:absolute;border-radius:50%;transform:scale(0);animation:rippleAnim .55s linear;background:rgba(0,0,0,.15);pointer-events:none}
+@keyframes rippleAnim{to{transform:scale(5);opacity:0}}
+
+/* INPUT focus daha belirgin */
+.karne-field input:focus{border-color:rgba(34,197,94,.6);box-shadow:0 0 0 4px rgba(34,197,94,.1),0 2px 16px rgba(34,197,94,.08)}
+
+/* SKELETON daha sinematik */
+.karne-skel-ring::after{background:linear-gradient(90deg,transparent,rgba(34,197,94,.32),transparent);animation:karneShimmer 1.1s infinite}
+.karne-skel-bar::after{animation:karneShimmer 1.1s infinite .12s}
+.karne-skel-block::after{background:linear-gradient(90deg,transparent,rgba(34,197,94,.18),transparent);animation:karneShimmer 1.5s infinite}
+
+/* SCORE TIER — delayed slide-in */
+.karne-score-tier{animation:tierReveal .55s cubic-bezier(.16,1,.3,1) .85s both}
+@keyframes tierReveal{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+.karne-score-sub{animation:tierReveal .55s cubic-bezier(.16,1,.3,1) 1s both}
+
+/* RESULT BOX — dramatik giriş */
+.karne-result.show{animation:resultReveal .5s cubic-bezier(.16,1,.3,1)}
+@keyframes resultReveal{from{opacity:0;transform:translateY(18px) scale(.975)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* HERO — load animasyonu */
+.hero-badge{animation:heroIn .6s cubic-bezier(.16,1,.3,1) both}
+.hero-title{animation:heroIn .65s cubic-bezier(.16,1,.3,1) .08s both}
+.hero-sub{animation:heroIn .65s cubic-bezier(.16,1,.3,1) .18s both}
+.value-grid{animation:heroIn .65s cubic-bezier(.16,1,.3,1) .28s both}
+@keyframes heroIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* VALUE CARD hover */
+.value-card{transition:border-color .2s,transform .22s cubic-bezier(.34,1.2,.64,1),box-shadow .22s}
+.value-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 14px 36px rgba(0,0,0,.22)}
+
+/* TAB INDICATOR daha soft */
+.karne-tab-indicator{box-shadow:0 2px 16px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.12)}
+
+/* ADIM ADIM PLAN */
+.karne-step-row{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
+.karne-step-row:last-child{margin-bottom:0}
+.karne-step-num{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--green),#86efac);color:#06240f;font-family:var(--mono);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(34,197,94,.3)}
+.karne-step-text{font-size:13px;color:var(--text2);line-height:1.6;padding-top:2px}
+.karne-dropzone{border:1.5px dashed var(--border2);border-radius:14px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:14px;position:relative}
+.karne-dropzone:hover{border-color:rgba(34,197,94,.45);background:rgba(34,197,94,.03);transform:translateY(-1px)}
+.karne-dropzone.has-file{border-color:rgba(34,197,94,.45);background:var(--green-dim)}
+.karne-dropzone-icon{font-size:30px;margin-bottom:10px}
+.karne-dropzone-text{font-size:12px;color:var(--text2);font-weight:600}
+.karne-dropzone-sub{font-size:10px;color:var(--text3);margin-top:3px}
+.karne-dropzone-filename{font-family:var(--mono);font-size:11px;color:var(--green);margin-top:8px}
+.karne-dropzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.karne-rawdata{display:none;margin-top:10px;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.karne-rawdata.show{display:flex}
+.karne-raw-row{display:flex;justify-content:space-between;padding:8px 12px;font-size:11px;border-bottom:1px solid var(--border)}
+.karne-raw-row:last-child{border-bottom:none}
+.karne-raw-row span:first-child{color:var(--text3);font-family:var(--mono);font-size:10px}
+.karne-raw-row span:last-child{color:var(--text);font-weight:600;text-align:right}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;color:var(--text);z-index:9100;opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.error{border-color:var(--red-ln);color:var(--red)}
+body.light-mode .toast{background:#fff;border-color:rgba(0,0,0,.1);color:#111}
+
+/* ═══════════════════════════════════════
+   REKLAM DEDEKTÖRÜ — Premium Design v2
+═══════════════════════════════════════ */
+
+/* Search Box */
+.ads-search-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}
+.ads-search-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,197,94,.5),transparent)}
+.ads-search-header{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.ads-search-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(34,197,94,.05));border:1px solid var(--green-ln);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ads-search-title{font-size:15px;font-weight:800;color:var(--white);letter-spacing:-.3px;margin-bottom:2px}
+.ads-search-sub{font-size:11px;color:var(--text3);font-family:var(--mono)}
+
+/* Main input */
+.ads-input-wrap{position:relative;margin-bottom:14px}
+.ads-input-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none}
+.ads-main-input{width:100%;background:rgba(255,255,255,.05);border:1.5px solid var(--border2);border-radius:12px;color:var(--text);font-family:var(--font);font-size:14px;padding:13px 14px 13px 42px;outline:none;transition:border-color .2s,background .2s;letter-spacing:-.1px}
+.ads-main-input:focus{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.03)}
+.ads-main-input::placeholder{color:var(--text3)}
+
+/* Filters row */
+.ads-filters-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+.ads-filter-group{display:flex;flex-direction:column;gap:5px}
+.ads-filter-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
+.ads-select{background:rgba(255,255,255,.05);border:1.5px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 12px;outline:none;cursor:pointer;transition:border-color .2s;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.ads-select:focus{border-color:rgba(34,197,94,.4)}
+.ads-scan-btn{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:800;padding:11px 22px;cursor:pointer;white-space:nowrap;transition:all .25s cubic-bezier(.34,1.2,.64,1);letter-spacing:-.2px;box-shadow:0 4px 16px rgba(34,197,94,.25)}
+.ads-scan-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(34,197,94,.35)}
+.ads-scan-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+@media(max-width:600px){.ads-filters-row{grid-template-columns:1fr 1fr}.ads-scan-btn{grid-column:1/-1}}
+
+/* Summary grid */
+.ads-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.ads-stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center;position:relative;overflow:hidden;transition:transform .2s}
+.ads-stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--stat-accent,var(--border))}
+.ads-stat-card:nth-child(1)::after{background:linear-gradient(90deg,var(--green),transparent)}
+.ads-stat-card:nth-child(2)::after{background:linear-gradient(90deg,#3b82f6,transparent)}
+.ads-stat-card:nth-child(3)::after{background:linear-gradient(90deg,var(--gold),transparent)}
+.ads-stat-val{font-family:var(--mono);font-size:28px;font-weight:900;color:var(--white);line-height:1;margin-bottom:5px;letter-spacing:-2px}
+.ads-stat-label{font-size:9px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;font-family:var(--mono)}
+.ads-competition{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;font-family:var(--mono);letter-spacing:.3px;padding:5px 12px;border-radius:999px}
+.ads-competition.good{background:var(--green-dim);color:var(--green);border:1px solid var(--green-ln)}
+.ads-competition.mid{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-ln)}
+.ads-competition.bad{background:var(--red-dim);color:var(--red);border:1px solid var(--red-ln)}
+
+/* Section titles */
+.ads-section-title{display:flex;align-items:center;gap:10px;margin:22px 0 12px;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.ads-section-title>span:first-child{color:var(--text2);font-size:10px;white-space:nowrap}
+.ads-section-line{flex:1;height:1px;background:var(--border)}
+.ads-section-tip{font-size:9px;color:var(--text3);white-space:nowrap;padding:3px 8px;border-radius:6px;background:var(--surface2);border:1px solid var(--border)}
+
+/* Ad Card */
+.ads-card{margin-bottom:10px;border-radius:18px;overflow:hidden;border:1px solid var(--border);background:var(--surface);transition:transform .25s cubic-bezier(.34,1.2,.64,1),box-shadow .25s,border-color .25s;animation:adCardIn .4s cubic-bezier(.16,1,.3,1) both}
+@keyframes adCardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ads-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.25)}
+.ads-card.power-high{border-color:rgba(34,197,94,.3);background:linear-gradient(to bottom right,rgba(34,197,94,.04),var(--surface))}
+.ads-card.power-high:hover{box-shadow:0 16px 40px rgba(34,197,94,.12)}
+.ads-card.power-mid{border-color:rgba(250,204,21,.2)}
+.ads-card.power-mid:hover{box-shadow:0 16px 40px rgba(250,204,21,.08)}
+
+.ads-card-top-bar{height:3px;width:100%}
+.ads-card.power-high .ads-card-top-bar{background:linear-gradient(90deg,#22c55e,#86efac,transparent)}
+.ads-card.power-mid .ads-card-top-bar{background:linear-gradient(90deg,#facc15,#fde68a,transparent)}
+.ads-card.power-low .ads-card-top-bar{background:var(--border)}
+
+.ads-card-body{padding:16px 20px 18px}
+
+/* Card header */
+.ads-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px}
+.ads-page-info{display:flex;align-items:center;gap:10px;min-width:0}
+.ads-page-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--surface2),var(--surface3));border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--text2);flex-shrink:0;font-family:var(--mono)}
+.ads-card.power-high .ads-page-avatar{background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(34,197,94,.05));border-color:var(--green-ln);color:var(--green)}
+.ads-page-name{font-size:14px;font-weight:800;color:var(--white);letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Power pill */
+.ads-power-pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 12px;border:1px solid;flex-shrink:0;font-family:var(--mono)}
+.ads-power-pill.high{background:rgba(34,197,94,.1);border-color:var(--green-ln)}
+.ads-power-pill.mid{background:rgba(250,204,21,.08);border-color:var(--gold-ln)}
+.ads-power-pill.low{background:rgba(239,68,68,.06);border-color:var(--red-ln)}
+.ads-power-icon{font-size:12px}
+.ads-power-num{font-size:15px;font-weight:900;color:var(--white);letter-spacing:-1px}
+.ads-power-sep{font-size:9px;color:var(--text3)}
+.ads-power-lbl{font-size:9px;letter-spacing:.5px;text-transform:uppercase;font-weight:700}
+.ads-power-pill.high .ads-power-lbl{color:var(--green)}
+.ads-power-pill.mid .ads-power-lbl{color:var(--gold)}
+.ads-power-pill.low .ads-power-lbl{color:var(--red)}
+
+/* Chips */
+.ads-chips-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.ads-chip2{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;letter-spacing:.2px;padding:4px 9px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text2)}
+.ads-chip2.hl{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.2);color:var(--green);font-weight:700}
+
+/* Content */
+.ads-ad-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;letter-spacing:-.2px;line-height:1.4}
+.ads-ad-body{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+/* Footer */
+.ads-card-footer{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--border)}
+.ads-view-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--green);text-decoration:none;font-family:var(--mono);letter-spacing:.3px;padding:7px 14px;border-radius:9px;background:var(--green-dim);border:1px solid var(--green-ln);transition:all .2s}
+.ads-view-btn:hover{background:rgba(34,197,94,.12);transform:translateX(2px)}
+.ads-copy-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--text2);background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:9px;padding:7px 14px;cursor:pointer;font-family:var(--mono);letter-spacing:.3px;transition:all .2s}
+.ads-copy-btn:hover{color:var(--white);background:rgba(255,255,255,.08);border-color:var(--border2)}
+
+/* Empty */
+.ads-empty{text-align:center;padding:60px 20px;font-family:var(--mono)}
+.ads-empty-icon{font-size:36px;margin-bottom:12px}
+.ads-empty-text{font-size:13px;color:var(--text2);margin-bottom:6px}
+.ads-empty-sub{font-size:11px;color:var(--green)}
+
+/* Skeleton */
+.ads-skel-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;margin-bottom:10px;overflow:hidden}
+.ads-skel-bar{background:linear-gradient(90deg,var(--surface2) 25%,var(--surface3) 50%,var(--surface2) 75%);background-size:400% 100%;animation:skelShimmer 1.6s ease-in-out infinite;border-radius:6px}
+@keyframes skelShimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.ads-loading-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.ads-pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+
+.footer-note{margin-top:32px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 20px;font-size:12px;color:var(--text2);line-height:1.5;text-align:center}
+.footer-note strong{color:var(--white);font-weight:700}
+.footer-icon{font-size:14px;flex-shrink:0}
+.footer-divider{color:var(--border2);font-size:16px}
+select option{background:var(--surface);color:var(--text)}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="wrap">
+  <div class="topbar">
+    <a class="back-link" href="https://mlynrplan.com/shopify_portal/" id="back-link">← Portala Dön</a>
+    <div class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">☀️</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-badge">✦ MLYNR INSIGHT</div>
+    <div class="hero-title">Mağazanın gerçek<br><span>sağlık durumunu</span> öğren.</div>
+    <div class="hero-sub">Hesap bağlamadan, tek tıkla — sitenin gerçek hızını, SEO/CRO eksiklerini ve Meta reklam performansını AI ile analiz et. Tahmin değil, gerçek veriye dayalı sonuç.</div>
+  </div>
+
+  <div class="value-grid">
+    <div class="value-card">
+      <div class="value-icon">🔒</div>
+      <div class="value-title">Hesap Bağlama Yok</div>
+      <div class="value-text">Sadece link veya CSV yükle. Shopify/Meta hesabına erişim istemiyoruz.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">📐</div>
+      <div class="value-title">Gerçek Veriye Dayalı</div>
+      <div class="value-text">Skor tahmin değil — gerçek hız ölçümü ve sayfa verisinden hesaplanır.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">🎯</div>
+      <div class="value-title">Net Aksiyon</div>
+      <div class="value-text">"İyi gidiyor / düzeltmen gerekiyor" — ne yapman gerektiğini açıkça söyler.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="karne-tabs">
+      <div class="karne-tab-indicator" id="karne-tab-indicator"></div>
+      <div class="karne-tab active" id="karne-tab-site" onclick="switchKarneTab('site')">🌐 Site Analizi</div>
+      <div class="karne-tab" id="karne-tab-csv" onclick="switchKarneTab('csv')">📊 Reklam Analiz</div>
+      <div class="karne-tab" id="karne-tab-ads" onclick="switchKarneTab('ads')">🔍 Reklam Dedektörü</div>
+    </div>
+
+    <!-- SİTE ANALİZİ -->
+    <div class="karne-panel active" id="karne-panel-site">
+      <div class="karne-card">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:16px;line-height:1.5">Mağaza linkini gir, hız + SEO + CRO taraması yapıp genel bir site sağlık skoru çıkaralım.</div>
+        <div class="karne-field" style="margin-bottom:14px">
+          <label>Mağaza URL</label>
+          <input type="text" id="k-site-url" placeholder="https://magazam.com">
+        </div>
+        <button class="karne-btn" id="karne-site-btn" onclick="runSiteAnaliz()">Siteyi Tara →</button>
+        <div class="karne-result" id="karne-site-result"></div>
+      </div>
+    </div>
+
+    <!-- REKLAM CSV ANALİZİ -->
+    <div class="karne-panel" id="karne-panel-csv">
+      <div class="karne-card">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:16px;line-height:1.5">Meta Ads Manager'dan indirdiğin reklam raporunu (.csv) yükle, AI senin için kampanyaları okuyup hangisi iyi gidiyor hangisi durdurulmalı söylesin.</div>
+        <div class="karne-dropzone" id="karne-dropzone">
+          <div class="karne-dropzone-icon">📄</div>
+          <div class="karne-dropzone-text" id="karne-dropzone-text">CSV dosyasını buraya sürükle veya tıkla</div>
+          <div class="karne-dropzone-sub">Meta Ads Manager → Raporlar → Dışa Aktar (.csv)</div>
+          <div class="karne-dropzone-filename" id="karne-dropzone-filename"></div>
+          <input type="file" accept=".csv" id="karne-csv-input" onchange="handleKarneFile(this)">
+        </div>
+        <button class="karne-btn" id="karne-csv-btn" onclick="runCsvAnaliz()" disabled>Önce CSV Yükle</button>
+        <div class="karne-result" id="karne-csv-result"></div>
+      </div>
+    </div>
+    <!-- REKLAM DEDEKTÖRÜ -->
+    <div class="karne-panel" id="karne-panel-ads">
+
+      <!-- SEARCH BOX -->
+      <div class="ads-search-box">
+        <div class="ads-search-header">
+          <div class="ads-search-icon">🔍</div>
+          <div>
+            <div class="ads-search-title">Reklam Dedektörü</div>
+            <div class="ads-search-sub">Hangi ürünler reklam alıyor? Kim kaç gündür yayında?</div>
+          </div>
+        </div>
+
+        <div class="ads-input-wrap">
+          <span class="ads-input-prefix">🔎</span>
+          <input type="text" id="ads-keyword" class="ads-main-input" placeholder="ürün yaz... (örn: boxer, posture corrector, led ışık)" onkeydown="if(event.key==='Enter')runAdsDetector()">
+        </div>
+
+        <div class="ads-filters-row">
+          <div class="ads-filter-group">
+            <label class="ads-filter-label">🌍 Ülke</label>
+            <select id="ads-country" class="ads-select">
+              <option value="TR">🇹🇷 Türkiye</option>
+              <option value="US">🇺🇸 ABD</option>
+              <option value="GB">🇬🇧 İngiltere</option>
+              <option value="DE">🇩🇪 Almanya</option>
+              <option value="ALL">🌍 Tüm Ülkeler</option>
+            </select>
+          </div>
+          <div class="ads-filter-group">
+            <label class="ads-filter-label">🎬 Format</label>
+            <select id="ads-type" class="ads-select">
+              <option value="ALL">Hepsi</option>
+              <option value="IMAGE_AND_MEME">Görsel</option>
+              <option value="VIDEO_AND_REEL">Video</option>
+            </select>
+          </div>
+          <button class="ads-scan-btn" id="ads-btn" onclick="runAdsDetector()">
+            <span class="ads-scan-btn-text">Tara →</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ÖZET BAR -->
+      <div id="ads-summary" style="display:none">
+        <div class="ads-summary-grid" id="ads-summary-grid"></div>
+      </div>
+
+      <!-- SONUÇLAR -->
+      <div id="ads-result"></div>
+
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <span class="footer-icon">⚡</span>
+    Sonuçlar gerçek veriye dayalıdır, kesin garanti taşımaz.
+    <span class="footer-divider">·</span>
+    Sorularınız için <strong>AI Koç</strong>'a danışabilirsiniz.
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+var SUPABASE_URL='https://xrelhozqawdseobxqbju.supabase.co';
+var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyZWxob3pxYXdkc2VvYnhxYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwNjM4NTgsImV4cCI6MjA1ODYzOTg1OH0.GxLiABl5V0pLEdMGJJpWBH1okS2_fxTHtJJNPXR6yHU';
+var SUPPORT_FN=SUPABASE_URL+'/functions/v1/shopify-endpoint';
+var SITE_ANALIZ_FN=SUPABASE_URL+'/functions/v1/site-analiz';
+
+/* email parametresini koru, portala dönüş linkine ekle */
+(function(){
+  try{
+    var params=new URLSearchParams(window.location.search);
+    var em=params.get('u');
+    if(em){
+      var bl=document.getElementById('back-link');
+      bl.href='https://mlynrplan.com/shopify_portal/?u='+encodeURIComponent(em);
+    }
+  }catch(e){}
+  // Ads butonunu başlat
+  setTimeout(updateAdsBtn, 100);
+})();
+
+// Tüm .karne-btn'lara ripple ekle
+document.addEventListener('click',function(e){
+  var btn=e.target.closest('.karne-btn');
+  if(!btn||btn.disabled)return;
+  var r=document.createElement('span');
+  r.className='ripple';
+  var rect=btn.getBoundingClientRect();
+  var size=Math.max(rect.width,rect.height)*2;
+  r.style.cssText='width:'+size+'px;height:'+size+'px;left:'+(e.clientX-rect.left-size/2)+'px;top:'+(e.clientY-rect.top-size/2)+'px';
+  btn.appendChild(r);
+  setTimeout(function(){r.remove();},600);
+});
+
+/* THEME */
+function toggleTheme(){
+  var isLight=document.body.classList.toggle('light-mode');
+  document.getElementById('theme-toggle').textContent=isLight?'🌙':'☀️';
+  try{localStorage.setItem('mlynr_theme',isLight?'light':'dark');}catch(e){}
+}
+(function applyTheme(){
+  try{
+    var t=localStorage.getItem('mlynr_theme');
+    if(t==='light'){document.body.classList.add('light-mode');document.getElementById('theme-toggle').textContent='🌙';}
+  }catch(e){}
+})();
+
+function showToast(m,cls){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(cls?' '+cls:'')+' show';clearTimeout(window._tt);window._tt=setTimeout(function(){t.classList.remove('show');},2600);}
+
+/* ============ MLYNR INSIGHT MODULE ============ */
+var ADS_WORKER='https://mlynr-ads.fubame38.workers.dev';
+
+function switchKarneTab(tab){
+  var tabs=['site','csv','ads'];
+  var idx=tabs.indexOf(tab);
+  var pct=(100/3);
+  document.getElementById('karne-tab-indicator').style.transform='translateX('+(idx*100)+'%)';
+  tabs.forEach(function(t){
+    document.getElementById('karne-tab-'+t).classList.toggle('active',t===tab);
+    document.getElementById('karne-panel-'+t).classList.toggle('active',t===tab);
+  });
+}
+
+function karneScoreClass(score){
+  if(score>=70)return'good';
+  if(score>=40)return'mid';
+  return'bad';
+}
+
+function karneTierLabel(score){
+  if(score>=70)return'Sağlıklı';
+  if(score>=40)return'Geliştirilebilir';
+  return'Acil Müdahale';
+}
+
+var _karneRingSeq=0;
+function scoreRingHTML(score,subLabel){
+  _karneRingSeq++;
+  var id='kr'+_karneRingSeq;
+  var tier=karneScoreClass(score);
+  var colors={good:['#22c55e','#86efac'],mid:['#facc15','#fde68a'],bad:['#ef4444','#fca5a5']}[tier];
+  var glow={good:'rgba(34,197,94,.35)',mid:'rgba(250,204,21,.3)',bad:'rgba(239,68,68,.3)'}[tier];
+  var circ=2*Math.PI*42;
+  var offset=circ-(Math.max(0,Math.min(100,score))/100)*circ;
+  return '<div class="karne-ring-wrap" style="--ring-glow:'+glow+'">'+
+    '<svg viewBox="0 0 96 96" class="karne-ring">'+
+      '<defs><linearGradient id="grad-'+id+'" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="'+colors[0]+'"/><stop offset="100%" stop-color="'+colors[1]+'"/></linearGradient></defs>'+
+      '<circle cx="48" cy="48" r="42" class="karne-ring-bg"/>'+
+      '<circle cx="48" cy="48" r="42" class="karne-ring-fg" id="ring-'+id+'" stroke="url(#grad-'+id+')" stroke-dasharray="'+circ.toFixed(1)+'" stroke-dashoffset="'+circ.toFixed(1)+'" data-offset="'+offset.toFixed(1)+'"/>'+
+    '</svg>'+
+    '<div class="karne-ring-center"><div class="karne-ring-score" id="score-'+id+'" data-target="'+score+'">0</div><div class="karne-ring-label">/ 100</div></div>'+
+  '</div>'+
+  '<div class="karne-score-meta"><div class="karne-score-tier '+tier+'">'+karneTierLabel(score)+'</div>'+(subLabel?'<div class="karne-score-sub">'+subLabel+'</div>':'')+'</div>';
+}
+
+function animateKarneRings(){
+  requestAnimationFrame(function(){
+    setTimeout(function(){
+      document.querySelectorAll('.karne-ring-fg').forEach(function(el){
+        el.style.strokeDashoffset=el.getAttribute('data-offset');
+      });
+      document.querySelectorAll('.karne-ring-score').forEach(function(el){
+        var target=parseInt(el.getAttribute('data-target'),10);
+        var start=0;
+        var duration=900;
+        var startTime=null;
+        function step(ts){
+          if(!startTime)startTime=ts;
+          var progress=Math.min(1,(ts-startTime)/duration);
+          var eased=1-Math.pow(1-progress,3);
+          el.textContent=Math.round(start+(target-start)*eased);
+          if(progress<1)requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    },50);
+  });
+}
+
+function parseKarneAI(text){
+  var m=text.match(/SKOR\s*[:\-]?\s*(\d{1,3})/i);
+  var score=m?Math.min(100,parseInt(m[1],10)):null;
+  var clean=text.replace(/SKOR\s*[:\-]?\s*\d{1,3}\s*\/?\s*100?/i,'').trim();
+  return{score:score,text:clean};
+}
+
+function karneSectionType(label){
+  var l=label.toLocaleUpperCase('tr');
+  if(l.indexOf('PLAN')>-1||l.indexOf('ADIM')>-1)return'plan';
+  if(l.indexOf('İYİ')>-1||l.indexOf('IYI')>-1)return'good';
+  if(l.indexOf('DÜZELT')>-1||l.indexOf('SORUN')>-1||l.indexOf('GEREKEN')>-1||l.indexOf('DIKKAT')>-1||l.indexOf('DİKKAT')>-1)return'warn';
+  return'neutral';
+}
+function karneBulletRowHTML(text,stepNum){
+  text=text.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--white)">$1</strong>');
+  if(stepNum){
+    return '<div class="karne-step-row"><span class="karne-step-num">'+stepNum+'</span><span class="karne-step-text">'+text+'</span></div>';
+  }
+  var emojiMatch=text.match(/^(✅|⚠️|❌)\s*(.*)$/);
+  if(emojiMatch){
+    var iconCls=emojiMatch[1]==='✅'?'ok':(emojiMatch[1]==='⚠️'?'warn':'bad');
+    var iconChar=emojiMatch[1]==='✅'?'✓':(emojiMatch[1]==='⚠️'?'!':'✕');
+    return '<div class="karne-bullet-row"><span class="karne-bullet-icon '+iconCls+'">'+iconChar+'</span><span class="karne-result-text" style="margin-bottom:0">'+emojiMatch[2]+'</span></div>';
+  }
+  return '<div class="karne-bullet-row"><span class="karne-bullet-icon" style="background:rgba(255,255,255,.1);color:var(--text2)">•</span><span class="karne-result-text" style="margin-bottom:0">'+text+'</span></div>';
+}
+function formatKarneText(raw){
+  var lines=raw.split('\n').map(function(l){return l.trim();}).filter(function(l){return l&&l!=='---';});
+  var html='';
+  var sectionIdx=0;
+  var section=null; // {title, type, body, stepCount}
+  function flush(){
+    if(!section)return;
+    var delay=(sectionIdx*0.12).toFixed(2);
+    html+='<div class="karne-section-block '+section.type+'" style="animation-delay:'+delay+'s"><div class="karne-section-block-title '+section.type+'">'+section.title+'</div>'+section.body+'</div>';
+    sectionIdx++;
+    section=null;
+  }
+  lines.forEach(function(line){
+    var boldHeading=line.match(/^\*\*(.+?)\*\*\s*:?$/);
+    var plainHeading=!boldHeading&&line.length<40&&/:$/.test(line)&&line===line.toLocaleUpperCase('tr')&&/[A-ZÇĞİÖŞÜ]/.test(line);
+    if(boldHeading||plainHeading){
+      flush();
+      var label=boldHeading?boldHeading[1]:line.replace(/:$/,'');
+      section={title:label,type:karneSectionType(label),body:'',stepCount:0};
+      return;
+    }
+    var numberedMatch=line.match(/^(\d+)[\.\)]\s+(.*)$/);
+    var bulletMatch=!numberedMatch&&line.match(/^[-—]\s+(.*)$/);
+    var text=numberedMatch?numberedMatch[2]:(bulletMatch?bulletMatch[1]:line);
+    var stepNum=null;
+    if(numberedMatch&&section&&section.type==='plan'){
+      section.stepCount++;
+      stepNum=section.stepCount;
+    }
+    var rowHtml=karneBulletRowHTML(text,stepNum);
+    if(section){
+      section.body+=rowHtml;
+    } else {
+      html+=rowHtml; // başlıktan önceki serbest metin (nadir)
+    }
+  });
+  flush();
+  return html||raw;
+}
+
+function rawDataHTML(data){
+  if(!data)return'';
+  var ps=data.pagespeed||{};
+  var hs=data.htmlSignals||{};
+  var rows=[];
+  rows.push(['Taranan URL',data.url||document.getElementById('k-site-url').value||'—']);
+  rows.push(['Mobil hız skoru (PageSpeed)',typeof ps.performanceScore==='number'?ps.performanceScore+'/100':(ps.error?'Hata: '+ps.error:'—')]);
+  if(ps.lcp)rows.push(['Sayfa yükleme süresi (LCP)',ps.lcp]);
+  rows.push(['Sayfa başlığı (title) var mı',hs.hasTitle?'✓ Evet':'✗ Hayır']);
+  rows.push(['Meta description var mı',hs.hasMetaDescription?'✓ Evet':'✗ Hayır']);
+  if(typeof hs.imgCount==='number')rows.push(['Görsel sayısı / alt text eksik',hs.imgCount+' / '+(hs.imgWithoutAlt||0)]);
+  rows.push(['Trust badge',hs.hasTrustBadge?'✓ Var':'✗ Yok']);
+  rows.push(['Sticky sepete ekle',hs.hasStickyAtc?'✓ Var':'✗ Yok']);
+  rows.push(['Geri sayım sayacı',hs.hasCountdown?'✓ Var':'✗ Yok']);
+  rows.push(['Yorum/review',hs.hasReviews?'✓ Var':'✗ Yok']);
+  if(typeof data.baselineScore==='number')rows.push(['Hesaplanan taban skor',data.baselineScore+'/100']);
+  var id='raw-'+Date.now();
+  return '<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px">'+
+    '<div onclick="document.getElementById(\''+id+'\').classList.toggle(\'show\')" style="cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:6px">🔍 Ham veriyi gör (gerçek mi kontrol et)</div>'+
+    '<div id="'+id+'" class="karne-rawdata">'+
+      rows.map(function(r){return '<div class="karne-raw-row"><span>'+r[0]+'</span><span>'+r[1]+'</span></div>';}).join('')+
+    '</div>'+
+  '</div>';
+}
+
+function extractText(data){
+  var candidates=['sonuc','reply','message','result','content','cevap','text','answer'];
+  for(var i=0;i<candidates.length;i++){
+    var v=data[candidates[i]];
+    if(typeof v==='string'&&v.trim()){
+      var cleaned=v.replace(/```json/gi,'').replace(/```/g,'').trim();
+      if(cleaned.startsWith('{')||cleaned.startsWith('[')){
+        try{var parsed=JSON.parse(cleaned);var innerText=extractText(parsed);if(innerText)return innerText;}catch(e){}
+      }
+      return cleaned;
+    }
+    if(v&&typeof v==='object'&&!Array.isArray(v)){var innerText=extractText(v);if(innerText)return innerText;}
+  }
+  var parts=[];
+  Object.keys(data).forEach(function(k){if(typeof data[k]==='string'&&data[k].trim().length>10){parts.push(data[k]);}});
+  return parts.join('\n\n')||'';
+}
+
+var karneCsvText=null;
+var karneCsvFilename=null;
+function handleKarneFile(input){
+  var file=input.files[0];
+  if(!file)return;
+  if(!/\.csv$/i.test(file.name)){showToast('Sadece .csv dosyası yükle','error');return;}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    karneCsvText=e.target.result;
+    karneCsvFilename=file.name;
+    document.getElementById('karne-dropzone').classList.add('has-file');
+    document.getElementById('karne-dropzone-text').textContent='Dosya seçildi ✓';
+    document.getElementById('karne-dropzone-filename').textContent=file.name;
+    var btn=document.getElementById('karne-csv-btn');
+    btn.disabled=false;btn.textContent='CSV\'yi Analiz Et →';
+  };
+  reader.onerror=function(){showToast('Dosya okunamadı','error');};
+  reader.readAsText(file,'UTF-8');
+}
+
+function karneSkeletonHTML(statusText){
+  return '<div class="karne-skeleton">'+
+    '<div class="karne-skel-row"><div class="karne-skel-ring"></div><div class="karne-skel-lines"><div class="karne-skel-bar" style="width:60%"></div><div class="karne-skel-bar" style="width:40%"></div></div></div>'+
+    '<div class="karne-skel-block"></div>'+
+    '<div class="karne-skel-block"></div>'+
+    '<div class="karne-skel-status">'+statusText+'</div>'+
+  '</div>';
+}
+
+function runCsvAnaliz(){
+  if(!karneCsvText){showToast('Önce bir CSV dosyası seç','error');return;}
+  var btn=document.getElementById('karne-csv-btn');
+  var resBox=document.getElementById('karne-csv-result');
+  btn.disabled=true;btn.textContent='Analiz ediliyor...';
+  resBox.className='karne-result show';
+  resBox.innerHTML=karneSkeletonHTML('⏳ Reklam verileri okunuyor, kampanyalar taranıyor...');
+
+  var truncated=karneCsvText.length>9000?karneCsvText.slice(0,9000)+'\n...(dosyanın geri kalanı uzunluk için kesildi)':karneCsvText;
+
+  var prompt='Sen Meta (Facebook/Instagram) reklamları konusunda uzman bir e-ticaret büyüme danışmanısın. Aşağıda Meta Ads Manager\'dan dışa aktarılmış ham CSV verisi var. Sütun başlıkları İngilizce veya Türkçe olabilir (Amount spent / Harcanan tutar, Results / Sonuçlar, ROAS, CPA, Reach / Erişim gibi). Karşındaki kişi e-ticarete yeni başlamış olabilir, ağır teknik/finans terimleri kullanma, gündelik dille konuş.\n\n'+
+    'SKOR HESABI: Skoru rastgele/hisle verme. Şu mantığı izle: aktif kampanyaların kaçta kaçı satış getiriyor (results>0), ortalama satış başına maliyet makul mü (sektör için $5-30 arası iyi, üstü kötü kabul et), boşa harcanan bütçe (sıfır sonuçlu kampanyalara giden toplam tutar) ne kadar. Bu 3 faktöre göre 0-100 arası tutarlı bir skor üret — aynı veriyle her seferinde aynı/yakın skoru üretmen beklenir.\n\n'+
+    'CSV VERİSİ:\n'+truncated+'\n\n'+
+    'Cevap formatı (KESİNLİKLE bu formatta):\n'+
+    '1) İlk satırda "SKOR: XX/100" yaz (genel reklam hesabı performansı)\n'+
+    '2) "İYİ GİDEN:" başlığı altında ✅ ile 2-3 olumlu şeyi sade dille listele — mümkünse hangi kampanya/reklam iyi gidiyor söyle\n'+
+    '3) "DÜZELTMEN GEREKEN:" başlığı altında ⚠️ ile en fazla 3 sorunu listele, her biri için ne yapması gerektiğini söyle (örn. hangi kampanyayı durdurmalı, hangi reklamı tazelemeli)\n'+
+    '4) "ADIM ADIM PLAN:" başlığı altında, bugün/bu hafta sırasıyla yapması gereken 3-4 somut aksiyonu numaralandırarak yaz (1. 2. 3. gibi) — öncelik sırasına göre, en kritik olan 1. sırada\n'+
+    'Türkçe, kısa, net, sıcak dille yaz. JSON kullanma, düz metin yaz, madde başına emoji koy (plan kısmında emoji kullanma, sadece numara). Ağır teknik terim kullanma.';
+
+  fetch(SUPPORT_FN,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY},
+    body:JSON.stringify({prompt:prompt})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var reply=typeof data==='string'?data:extractText(data);
+    if(!reply){reply='Analiz alınamadı, tekrar dene.';}
+    reply=reply.replace(/```json[\s\S]*?```/g,'').replace(/```[\s\S]*?```/g,'').trim();
+    var parsed=parseKarneAI(reply);
+    var scoreHtml=parsed.score!==null?scoreRingHTML(parsed.score,'Reklam hesabı'):'';
+    resBox.className='karne-result show'+(parsed.score!==null?' tier-'+karneScoreClass(parsed.score):'');
+    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+formatKarneText(parsed.text);
+    animateKarneRings();
+    btn.disabled=false;btn.textContent='Tekrar Analiz Et →';
+  })
+  .catch(function(){
+    resBox.innerHTML='<div class="karne-result-text" style="color:var(--red)">Bağlantı hatası, tekrar dene.</div>';
+    btn.disabled=false;btn.textContent='CSV\'yi Analiz Et →';
+  });
+}
+
+function updateAdsBtn(){
+  var usage=getAdsUsage();
+  var btn=document.getElementById('ads-btn');
+  if(!btn)return;
+  var kalan=Math.max(0,ADS_DAILY_LIMIT-usage.count);
+  if(kalan===0){
+    btn.disabled=true;
+    btn.querySelector('.ads-scan-btn-text').textContent='Limit Doldu (0/'+ADS_DAILY_LIMIT+')';
+  } else {
+    btn.disabled=false;
+    btn.querySelector('.ads-scan-btn-text').textContent='Tara → ('+kalan+'/'+ADS_DAILY_LIMIT+')';
+  }
+}
+
+function getAdsUsage(){
+  try{
+    var key='mlynr_ads_usage';
+    var today=new Date().toDateString();
+    var raw=localStorage.getItem(key);
+    var data=raw?JSON.parse(raw):{date:'',count:0};
+    if(data.date!==today) return{date:today,count:0};
+    return data;
+  }catch(e){return{date:new Date().toDateString(),count:0};}
+}
+function setAdsUsage(data){
+  try{localStorage.setItem('mlynr_ads_usage',JSON.stringify(data));}catch(e){}
+}
+var ADS_DAILY_LIMIT=5;
+
+function runAdsDetector(){
+  var keyword=document.getElementById('ads-keyword').value.trim();
+  if(!keyword){showToast('Önce bir ürün/kelime yaz','error');return;}
+
+  // Günlük limit kontrolü
+  var usage=getAdsUsage();
+  if(usage.count>=ADS_DAILY_LIMIT){
+    showToast('Günlük '+ADS_DAILY_LIMIT+' sorgulama hakkın doldu. Yarın tekrar gel!','error');
+    document.getElementById('ads-result').innerHTML=
+      '<div class="ads-empty">'+
+        '<div class="ads-empty-icon">⏳</div>'+
+        '<div class="ads-empty-text">Bugünlük '+ADS_DAILY_LIMIT+' sorgulama hakkın doldu.</div>'+
+        '<div class="ads-empty-sub">Yarın '+(ADS_DAILY_LIMIT-usage.count)+'/'+ADS_DAILY_LIMIT+' hak yenilenecek.</div>'+
+      '</div>';
+    return;
+  }
+  var country=document.getElementById('ads-country').value;
+  var adType=document.getElementById('ads-type').value;
+  var btn=document.getElementById('ads-btn');
+  var resBox=document.getElementById('ads-result');
+  var summaryEl=document.getElementById('ads-summary');
+  var summaryGrid=document.getElementById('ads-summary-grid');
+
+  // Kullanımı artır
+  usage.count++;
+  setAdsUsage(usage);
+  updateAdsBtn();
+
+  btn.disabled=true;btn.querySelector('.ads-scan-btn-text').textContent='Taranıyor...';
+  summaryEl.style.display='none';
+  resBox.innerHTML=adsSkeletonHTML();
+
+  fetch(ADS_WORKER,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({search_terms:keyword,countries:country,ad_type:adType,limit:30})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(data.error){
+      resBox.innerHTML='<div class="ads-empty" style="color:var(--red)">⚠️ '+escHtml(data.error)+'</div>';
+      btn.disabled=false;updateAdsBtn();
+      return;
+    }
+    var ads=data.ads||[];
+    var sum=data.summary||{};
+
+    // Özet bar
+    var compIcon=sum.competitionClass==='good'?'🟢':sum.competitionClass==='mid'?'🟡':'🔴';
+    summaryGrid.innerHTML=
+      '<div class="ads-stat-card"><div class="ads-stat-val">'+sum.totalAds+'</div><div class="ads-stat-label">Aktif Reklam</div></div>'+
+      '<div class="ads-stat-card"><div class="ads-stat-val">'+sum.avgDays+'</div><div class="ads-stat-label">Ort. Gün</div></div>'+
+      '<div class="ads-stat-card"><div class="ads-stat-val">'+sum.maxDays+'</div><div class="ads-stat-label">En Uzun</div></div>'+
+      '<div class="ads-stat-card"><div class="ads-stat-val" style="font-size:13px;padding-top:6px"><span class="ads-competition '+sum.competitionClass+'">'+compIcon+' '+sum.competitionLevel+'</span></div><div class="ads-stat-label">Rekabet</div></div>';
+    summaryEl.style.display='block';
+
+    if(ads.length===0){
+      resBox.innerHTML='<div class="ads-empty">🔍 "<b>'+escHtml(keyword)+'</b>" için aktif reklam bulunamadı.<br><span style="font-size:11px;color:var(--green);margin-top:6px;display:block">Bu niş bakir olabilir — fırsat sinyali!</span></div>';
+      btn.disabled=false;updateAdsBtn();
+      return;
+    }
+
+    var winning=ads.filter(function(a){return a.power_score>=70;});
+    var testing=ads.filter(function(a){return a.power_score>=30&&a.power_score<70;});
+    var newOnes=ads.filter(function(a){return a.power_score<30;});
+
+    var html='';
+    if(winning.length){
+      html+='<div class="ads-section-title"><span>🏆 Kazanan Reklamlar</span><span class="ads-section-tip" title="70+ güç skoru — uzun süredir yayında, para kazandırıyor">70+ güç skoru</span></div>';
+      html+=winning.map(function(ad){return adsCardHTML(ad);}).join('');
+    }
+    if(testing.length){
+      html+='<div class="ads-section-title"><span>⚙️ Test Aşamasında</span><span class="ads-section-tip">30-69 güç skoru</span></div>';
+      html+=testing.map(function(ad){return adsCardHTML(ad);}).join('');
+    }
+    if(newOnes.length){
+      html+='<div class="ads-section-title"><span>🆕 Yeni Girenler</span><span class="ads-section-tip">0-29 güç skoru</span></div>';
+      html+=newOnes.map(function(ad){return adsCardHTML(ad);}).join('');
+    }
+
+    resBox.innerHTML=html;
+    btn.disabled=false;updateAdsBtn();
+  })
+  .catch(function(){
+    resBox.innerHTML='<div class="ads-empty" style="color:var(--red)">⚠️ Bağlantı hatası. Tekrar dene.</div>';
+    btn.disabled=false;updateAdsBtn();
+  });
+}
+
+function adsSkeletonHTML(){
+  var cards=['','',''].map(function(){
+    return '<div class="ads-skel-card">'+
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'+
+        '<div class="ads-skel-bar" style="width:38%;height:14px;border-radius:6px"></div>'+
+        '<div class="ads-skel-bar" style="width:22%;height:12px;border-radius:6px"></div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;margin-bottom:12px">'+
+        '<div class="ads-skel-bar" style="width:80px;height:22px;border-radius:6px"></div>'+
+        '<div class="ads-skel-bar" style="width:100px;height:22px;border-radius:6px"></div>'+
+        '<div class="ads-skel-bar" style="width:60px;height:22px;border-radius:6px"></div>'+
+      '</div>'+
+      '<div class="ads-skel-bar" style="width:100%;height:11px;border-radius:4px;margin-bottom:6px"></div>'+
+      '<div class="ads-skel-bar" style="width:75%;height:11px;border-radius:4px"></div>'+
+    '</div>';
+  }).join('');
+  return '<div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px"><span class="ads-pulse-dot"></span>Facebook Ads Library taranıyor...</div>'+cards;
+}
+
+function adsCardHTML(ad){
+  var powerClass=ad.power_score>=70?'high':ad.power_score>=30?'mid':'low';
+  var powerLabel=ad.power_score>=70?'Kazanan':ad.power_score>=30?'Test':'Yeni';
+  var powerIcon=ad.power_score>=70?'🔥':ad.power_score>=30?'⚙️':'🆕';
+
+  var platforms=(ad.platforms||[]).map(function(p){
+    var m={'facebook':'FB','instagram':'IG','audience_network':'AN','messenger':'MSG','threads':'TH'};
+    return m[p.toLowerCase()]||p.toUpperCase();
+  }).filter(Boolean).join(' · ')||'—';
+
+  var mediaIcon=ad.media_type==='VIDEO'?'🎬 Video':ad.media_type==='IMAGE'?'🖼 Görsel':'📋';
+
+  var dateStr='';
+  if(ad.start_date){
+    var d=new Date(typeof ad.start_date==='number'?ad.start_date*1000:ad.start_date);
+    if(d.getFullYear()>2010) dateStr=d.toLocaleDateString('tr-TR',{day:'numeric',month:'short',year:'numeric'});
+  }
+
+  var fbLibUrl=ad.snapshot_url||('https://www.facebook.com/ads/library/?id='+ad.id);
+  var bodyText=escHtml(ad.body||'');
+  var titleText=escHtml(ad.title||'');
+  var avatarLetter=escHtml((ad.page_name||'?')[0].toUpperCase());
+  var delay=(Math.random()*0.15).toFixed(2);
+
+  return '<div class="ads-card power-'+powerClass+'" style="animation-delay:'+delay+'s">'+
+    '<div class="ads-card-top-bar"></div>'+
+    '<div class="ads-card-body">'+
+      '<div class="ads-card-header">'+
+        '<div class="ads-page-info">'+
+          '<div class="ads-page-avatar">'+avatarLetter+'</div>'+
+          '<div class="ads-page-name">'+escHtml(ad.page_name||'Bilinmiyor')+'</div>'+
+        '</div>'+
+        '<div class="ads-power-pill '+powerClass+'">'+
+          '<span class="ads-power-icon">'+powerIcon+'</span>'+
+          '<span class="ads-power-num">'+ad.power_score+'</span>'+
+          '<span class="ads-power-sep">/100</span>'+
+          '<span class="ads-power-lbl">'+powerLabel+'</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="ads-chips-row">'+
+        (dateStr?'<span class="ads-chip2">📅 '+dateStr+'</span>':'')+
+        '<span class="ads-chip2 hl">⏱ '+ad.days_running+' gün yayında</span>'+
+        '<span class="ads-chip2">'+mediaIcon+'</span>'+
+        '<span class="ads-chip2">📡 '+platforms+'</span>'+
+      '</div>'+
+      (titleText?'<div class="ads-ad-title">'+titleText+'</div>':'')+
+      (bodyText?'<div class="ads-ad-body">'+bodyText+'</div>':'')+
+      '<div class="ads-card-footer">'+
+        '<a class="ads-view-btn" href="'+fbLibUrl+'" target="_blank" rel="noopener">FB\'de Gör →</a>'+
+        (bodyText?'<button class="ads-copy-btn" onclick="copyAdText(\''+escAttr(ad.body||'')+'\',this)">📋 Metni Kopyala</button>':'')+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
+function copyAdText(text,btn){
+  navigator.clipboard.writeText(text).then(function(){
+    var orig=btn.textContent;
+    btn.textContent='✓ Kopyalandı';
+    btn.style.color='var(--green)';
+    setTimeout(function(){btn.textContent=orig;btn.style.color='';},1800);
+  }).catch(function(){showToast('Kopyalanamadı','error');});
+}
+
+function escAttr(s){
+  return (s||'').replace(/'/g,'&#39;').replace(/"/g,'&quot;').replace(/\n/g,' ');
+}
+
+function escHtml(s){
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function runSiteAnaliz(){
+  var btn=document.getElementById('karne-site-btn');
+  var resBox=document.getElementById('karne-site-result');
+  var url=document.getElementById('k-site-url').value.trim();
+  if(!url){showToast('Önce mağaza linkini gir','error');return;}
+  if(!/^https?:\/\//i.test(url))url='https://'+url;
+
+  btn.disabled=true;btn.textContent='Taranıyor...';
+  resBox.className='karne-result show';
+  resBox.innerHTML=karneSkeletonHTML('⏳ Site hızı + SEO + CRO taranıyor (15-20sn)...');
+
+  fetch(SITE_ANALIZ_FN,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY},
+    body:JSON.stringify({url:url})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(data&&data.error){
+      resBox.innerHTML='<div class="karne-result-text" style="color:var(--red)">'+data.error+'</div>';
+      btn.disabled=false;btn.textContent='Siteyi Tara →';
+      return;
+    }
+    var score=data&&typeof data.score==='number'?data.score:null;
+    var summary=data&&data.summary?data.summary:'Analiz tamamlanamadı.';
+    summary=formatKarneText(summary);
+    var scoreHtml=score!==null?scoreRingHTML(score,'Site sağlığı'):'';
+    resBox.className='karne-result show'+(score!==null?' tier-'+karneScoreClass(score):'');
+    resBox.innerHTML=(scoreHtml?'<div class="karne-score-row">'+scoreHtml+'</div>':'')+summary+rawDataHTML(data);
+    animateKarneRings();
+    btn.disabled=false;btn.textContent='Siteyi Tara →';
+  })
+  .catch(function(){
+    resBox.innerHTML='<div class="karne-result-text" style="color:var(--red)">Tarama başarısız oldu. Edge Function kurulu mu kontrol et.</div>';
+    btn.disabled=false;btn.textContent='Siteyi Tara →';
+  });
+}
+</script>
+</body>
+</html>
