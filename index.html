@@ -384,14 +384,20 @@ footer a{color:var(--teal);text-decoration:none;font-weight:600}
 <script>
 (function(){
   var p = new URLSearchParams(location.search);
-  var dv = p.get('danisman');
+  function gp(short, long){ return p.get(short) || p.get(long); }
+  var dv = gp('d','danisman');
   if(dv){ document.getElementById('danisman').textContent = 'Danışmanın ' + dv + "'a"; }
 
-  var iv = p.get('isim');
+  var iv = gp('i','isim');
   if(iv){
     document.getElementById('heropill').textContent = iv + ' için hazırlandı';
   }
-  var tv = p.get('tarih');
+  var tv = gp('t','tarih');
+  if(tv && /^\d{1,2}\.\d{1,2}\.\d{4}$/.test(tv)){
+    var aylarM = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+    var tpm = tv.split('.');
+    tv = tpm[0] + ' ' + aylarM[parseInt(tpm[1],10)-1] + ' ' + tpm[2];
+  }
   if(tv){
     document.getElementById('heropill').textContent = (iv ? iv + ' için · ' : 'Görüşme · ') + tv;
   }
@@ -434,13 +440,12 @@ footer a{color:var(--teal);text-decoration:none;font-weight:600}
 function makeLink(){
   var base = location.origin + location.pathname;
   var q = new URLSearchParams();
-  var aylar = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
   var d = new Date();
   var iv = document.getElementById('g-isim').value.trim();
   var dv = document.getElementById('g-danisman').value.trim();
-  if(iv) q.set('isim', iv);
-  if(dv) q.set('danisman', dv);
-  q.set('tarih', d.getDate() + ' ' + aylar[d.getMonth()] + ' ' + d.getFullYear());
+  if(iv) q.set('i', iv);
+  if(dv) q.set('d', dv);
+  q.set('t', d.getDate() + '.' + (d.getMonth()+1) + '.' + d.getFullYear());
   var url = base + '?' + q.toString();
   var out = document.getElementById('g-out');
   out.style.display = 'block';
